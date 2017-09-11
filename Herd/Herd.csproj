@@ -17,10 +17,18 @@
 
   <ItemGroup>
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
+    <Compile Remove="ClientApp\app\components\NewFolder\**" />
     <Content Remove="ClientApp\**" />
+    <EmbeddedResource Remove="ClientApp\app\components\NewFolder\**" />
+    <None Remove="ClientApp\app\components\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\components\login\login.component.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\components\login\login.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\model\NumberObject.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\services\mastodon.service.ts" />
   </ItemGroup>
