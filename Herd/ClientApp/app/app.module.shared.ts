@@ -10,6 +10,7 @@ import { HomeComponent } from './components/home/home.component';
 import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
 import { MastodonService } from './components/shared/services/mastodon.service';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
     declarations: [
@@ -17,7 +18,8 @@ import { MastodonService } from './components/shared/services/mastodon.service';
         NavMenuComponent,
         CounterComponent,
         FetchDataComponent,
-        HomeComponent
+        HomeComponent,
+        LoginComponent
     ],
     imports: [
         CommonModule,
