@@ -17,17 +17,17 @@
 
   <ItemGroup>
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
+    <Compile Remove="Code\**" />
     <Content Remove="ClientApp\**" />
+    <Content Remove="Code\**" />
+    <EmbeddedResource Remove="Code\**" />
+    <None Remove="Code\**" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Herd.Business\Herd.Business.csproj" />
     <ProjectReference Include="..\Herd.Core\Herd.Core.csproj" />
     <ProjectReference Include="..\Herd.Data\Herd.Data.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Code\" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
