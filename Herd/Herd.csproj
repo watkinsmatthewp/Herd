@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mastonet" Version="1.0.0-beta1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
   </ItemGroup>
 
@@ -25,11 +26,15 @@
 
   <ItemGroup>
     <None Remove="ClientApp\app\components\login\login.component.ts" />
+    <None Remove="ClientApp\app\components\shared\model\mastodonAuthentication\MastodonAuthenticationObject.ts" />
+    <None Remove="ClientApp\app\components\shared\pipes\safe.pipe.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\login\login.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\model\mastodonAuthentication\MastodonAuthenticationObject.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\model\NumberObject.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\pipes\safe.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\services\mastodon.service.ts" />
   </ItemGroup>
 

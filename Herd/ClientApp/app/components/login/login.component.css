@@ -22,23 +22,11 @@ body {
 }
 
 .login > h2 {
-    font-size: 20px;
+    font-size: 2.5em;
     margin-left: 5px;
     font-weight: 600;
 }
 
-.email {
-    margin-bottom: 5px;
-}
-
-.password {
-    margin-bottom: 5px;
-}
-
-.submit {
-    margin-top: 5px;
-}
-
-.register {
+.btn {
     margin-top: 5px;
 }
