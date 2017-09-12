@@ -1,5 +1,7 @@
 # Herd specific
 /Herd/node_modules
+/Herd/ClientApp/dist
+/Herd/wwwroot/dist
 
 /Properties/launchSettings.json
 
