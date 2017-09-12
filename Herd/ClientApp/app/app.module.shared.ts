@@ -12,6 +12,9 @@ import { CounterComponent } from './components/counter/counter.component';
 import { MastodonService } from './components/shared/services/mastodon.service';
 import { LoginComponent } from './components/login/login.component';
 
+// Pipes
+import { SafePipe } from './components/shared/pipes/safe.pipe';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -19,7 +22,8 @@ import { LoginComponent } from './components/login/login.component';
         CounterComponent,
         FetchDataComponent,
         HomeComponent,
-        LoginComponent
+        LoginComponent,
+        SafePipe
     ],
     imports: [
         CommonModule,
