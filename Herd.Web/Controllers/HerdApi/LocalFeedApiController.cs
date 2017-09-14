@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Herd.Web.Controllers
 {
     [Route("api/[controller]")]
-    public class LocalFeedController : BaseController
+    public class LocalFeedApiController : BaseController
     {
        
     }
