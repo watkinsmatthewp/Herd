@@ -20,7 +20,7 @@ export class MastodonService {
     }
 
     getRandomNumber() {
-        return this.http.get('api/Mastodon/GetRandomNumber')
+        return this.http.get('api/HerdApi/GetRandomNumber')
             .map(response => response.json() as NumberObject)
             .toPromise();
     }
@@ -28,7 +28,7 @@ export class MastodonService {
     connectToMastodon(instanceName: string) {
         console.log("connectToMastodon", instanceName);
 
-        return this.http.get('api/Mastodon/ConnectToMastodon/' + instanceName)
+        return this.http.get('api/HerdApi/ConnectToMastodon/' + instanceName)
             .map(response => response.json())
             .toPromise();
     }
@@ -36,7 +36,7 @@ export class MastodonService {
     submitOAuthToken(oAuthToken: string) {
         console.log("oauth token", oAuthToken);
 
-        return this.http.get('api/Mastodon/SubmitOAuthToken/' + oAuthToken)
+        return this.http.get('api/HerdApi/SubmitOAuthToken/' + oAuthToken)
             .map(respone => respone.json() as MastodonAuthenticationObject)
             .toPromise();
     }

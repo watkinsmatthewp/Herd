@@ -12,7 +12,7 @@ namespace Herd.Controllers
 
     // api/Mastodon
     [Route("api/[controller]")]
-    public class MastodonController : Controller
+    public class HerdApiController : Controller
     {
         private Mastonet.AuthenticationClient client = null;
         private Mastonet.Entities.AppRegistration appRegistration = null;
