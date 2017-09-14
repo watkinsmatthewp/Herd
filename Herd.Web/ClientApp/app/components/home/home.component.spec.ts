@@ -1,4 +1,8 @@
-/// <reference path="../../../../node_modules/@types/jasmine/index.d.ts" />
+﻿/// <reference path="../../../../node_modules/@types/jasmine/index.d.ts" />
+/**
+// NOTE: THIS WAS PULLED FROM THE DEFAULT COUNTER.COMPONENT.TS
+// THIS COMPONENT SIMPLY HAD TEXT, A DATABINDING FOR COUNT, AND A BUTTON TO INCREASE THAT COUNT 
+
 import { assert } from 'chai';
 import { CounterComponent } from './counter.component';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
@@ -27,3 +31,4 @@ describe('Counter component', () => {
         expect(countElement.textContent).toEqual('1');
     }));
 });
+*/

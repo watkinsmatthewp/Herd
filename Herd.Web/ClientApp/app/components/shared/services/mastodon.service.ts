@@ -7,6 +7,14 @@ import { MastodonAuthenticationObject } from '../model/mastodonAuthentication/Ma
 
 @Injectable()
 export class MastodonService {
+
+    /**
+        We can add "@Inject('BASE_URL') baseUrl: string" here to get the base url of the web app
+        We can pass this on in the below api calls to our server BUT as of now it is working.
+        Maybe this is something to worry about when going to production?
+
+        (Below Ex) this.http.get(baseUrl + 'api/Mastodon/ConnectToMastodon') 
+    */
     constructor(private http: Http) {
 
     }
@@ -34,3 +42,18 @@ export class MastodonService {
     }
 
 }
+
+/**
+We can do this
+
+http.get(baseUrl + 'api/SampleData/WeatherForecasts').subscribe(result => {
+            this.forecasts = result.json() as WeatherForecast[];
+        }, error => console.error(error));
+
+interface WeatherForecast {
+    dateFormatted: string;
+    temperatureC: number;
+    temperatureF: number;
+    summary: string;
+}
+*/

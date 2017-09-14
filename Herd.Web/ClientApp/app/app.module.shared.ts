@@ -5,13 +5,13 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './components/app/app.component';
-import { NavMenuComponent } from './components/navmenu/navmenu.component';
+import { NavMenuComponent } from './components/shared/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
-import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
-import { CounterComponent } from './components/counter/counter.component';
 import { MastodonService } from './components/shared/services/mastodon.service';
 import { LoginComponent } from './components/login/login.component';
 import { LocalFeedComponent } from './components/localfeed/localfeed.component';
+import { NotificationsComponent } from './components/notifications/notifications.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 // Pipes
 import { SafePipe } from './components/shared/pipes/safe.pipe';
@@ -20,11 +20,11 @@ import { SafePipe } from './components/shared/pipes/safe.pipe';
     declarations: [
         AppComponent,
         NavMenuComponent,
-        CounterComponent,
-        FetchDataComponent,
         HomeComponent,
         LoginComponent,
         LocalFeedComponent,
+        NotificationsComponent,
+        ProfileComponent,
         SafePipe
     ],
     imports: [
@@ -32,11 +32,12 @@ import { SafePipe } from './components/shared/pipes/safe.pipe';
         HttpModule,
         FormsModule,
         RouterModule.forRoot([
-            { path: '', redirectTo: 'home', pathMatch: 'full' },
+            { path: '', redirectTo: 'login', pathMatch: 'full' },
+            { path: 'login', component: LoginComponent },
             { path: 'home', component: HomeComponent },
             { path: 'localfeed', component: LocalFeedComponent },
-            { path: 'counter', component: CounterComponent },
-            { path: 'fetch-data', component: FetchDataComponent },
+            { path: 'notifications', component: NotificationsComponent },
+            { path: 'profile', component: ProfileComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ],

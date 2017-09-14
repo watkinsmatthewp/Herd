@@ -31,6 +31,7 @@ li.link-active a:focus {
         border-radius: 0px;
         border-width: 0px;
         height: 100%;
+        padding-right: 1em;
     }
     .navbar-header {
         float: left;
@@ -40,7 +41,7 @@ li.link-active a:focus {
         padding: 0px;
     }
     .navbar ul {
-        float: none;
+
     }
     .navbar li {
         font-size: 15px;

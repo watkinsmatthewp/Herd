@@ -25,9 +25,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\components\home\home.component.spec.ts" />
+    <None Remove="ClientApp\app\components\notifications\notifications.component.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Herd.Business\Herd.Business.csproj" />
     <ProjectReference Include="..\Herd.Core\Herd.Core.csproj" />
     <ProjectReference Include="..\Herd.Data\Herd.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\components\home\home.component.spec.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\notifications\notifications.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\profile\profile.component.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
