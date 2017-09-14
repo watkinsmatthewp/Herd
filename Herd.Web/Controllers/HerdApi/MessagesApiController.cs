@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Herd.Web.Controllers.HerdApi
 {
     [Route("api/[controller]")]
-    public class MessagesApiController : Controller
+    public class MessagesApiController : BaseController
     {
       
     }
