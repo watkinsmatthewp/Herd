@@ -11,15 +11,6 @@ namespace Herd.Web.Controllers
     [Route("api/[controller]")]
     public class AuthApiController : BaseController
     {
-        #region Random Number Region
-        [HttpGet("[action]")]
-        public IActionResult GetRandomNumber()
-        {
-            Random r = new Random();
-            return new ObjectResult(new NumberObject { Numero = r.Next(5, 500) });
-        }
-        #endregion
-
         [HttpGet("[action]/{instance}")]
         public async Task<IActionResult> ConnectToMastodon(string instance)
         {

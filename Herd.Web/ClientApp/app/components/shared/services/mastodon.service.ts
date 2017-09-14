@@ -20,7 +20,7 @@ export class MastodonService {
     }
 
     getRandomNumber() {
-        return this.http.get('api/AuthApi/GetRandomNumber')
+        return this.http.get('api/RandomNumberApi/GetRandomNumber')
             .map(response => response.json() as NumberObject)
             .toPromise();
     }
