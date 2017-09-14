@@ -3,7 +3,6 @@ import { Http, RequestOptionsArgs, RequestOptions, RequestMethod } from '@angula
 import 'rxjs/Rx';
 
 import { NumberObject } from '../model/NumberObject';
-import { MastodonAuthenticationObject } from '../model/mastodonAuthentication/MastodonAuthenticationObject'
 
 @Injectable()
 export class MastodonService {
@@ -20,24 +19,22 @@ export class MastodonService {
     }
 
     getRandomNumber() {
-        return this.http.get('api/RandomNumberApi/GetRandomNumber')
+        return this.http.get('/api/RandomNumberApi/GetRandomNumber')
             .map(response => response.json() as NumberObject)
             .toPromise();
     }
 
-    connectToMastodon(instanceName: string) {
-        console.log("connectToMastodon", instanceName);
-
-        return this.http.get('api/AuthApi/ConnectToMastodon/' + instanceName)
-            .map(response => response.json())
+    getMastodonOAuthURL() {
+        console.log("getMastodonOAuthURL");
+        return this.http.get('/api/AuthApi/GetMastodonOAuthURL')
+            .map(response => response.json().url as string)
             .toPromise();
     }
 
-    submitOAuthToken(oAuthToken: string) {
+    saveOAuthToken(oAuthToken: string) {
         console.log("oauth token", oAuthToken);
-
-        return this.http.get('api/AuthApi/SubmitOAuthToken/' + oAuthToken)
-            .map(respone => respone.json() as MastodonAuthenticationObject)
+        return this.http.post('api/AuthApi/SaveOAuthToken/', oAuthToken)
+            .map(respone => respone.json().success)
             .toPromise();
     }
 

@@ -5,22 +5,19 @@
         <hr />
         
         <div class="login-inner">
-            <form #f="ngForm" (ngSubmit)="login(f)" novalidate>
-                <input type="text" name="instance" class="form-control email" ngModel required placeholder="octodon.social">
-                <!--
-                    <input type="email"     name="email"    class="form-control email"      ngModel required placeholder="@<username>@<ipreo instance>">
-                    <input type="password"  name="password" class="form-control password" ngModel required placeholder="password">
-                -->
-                <input class="btn btn-block btn-lg btn-success submit" type="submit" value="Login"> 
-            </form>
+            <!--
+                TODO: Find a better way to show the hidden div. Writing the script inline is a total hack!
+                Maybe a way to do it in login.components.ts?
+            -->
+            <a id="btnAuth" class="btn btn-block btn-lg btn-success submit" target="_blank" href="{{getMastodonOAuthURL()}}" onclick="document.getElementById('divToken').classList.remove('hidden');">
+                Authenticate
+            </a>
 
-            <br />
+            <hr />
 
-            <div *ngIf="oAuthUrl !== null">
-                <p>If you weren't direct to a new tab click <a href="{{oAuthUrl}}" target="_blank">here</a>.</p>
+            <div id="divToken" class="hidden">
                 <ol>
-                    <li>Navigate to the new <a href="{{oAuthUrl}}" target="_blank">page</a>.</li>
-                    <li>Login to the instance with your email and password.</li>
+                    <li>In the new tab, login to the instance with your email and password.</li>
                     <li>Authorize this web application to use your Herd data.</li>
                     <li>Copy the special access token and paste it back on this page.</li>
                 </ol>

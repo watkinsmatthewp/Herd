@@ -8,31 +8,14 @@ import { MastodonService } from '../shared/services/mastodon.service';
     styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-    oAuthUrl = null;
-
     constructor(private mastodonService: MastodonService) {
+		
     }
 
-    login(f: NgForm) {
-        console.log('form-value', f.value);
-        console.log("f.value.instance", f.value.instance);
-
-        this.mastodonService.connectToMastodon(f.value.instance).then(result => {
-            this.oAuthUrl = result['oAuthUrl'];
-            window.open(result['oAuthUrl'], "_blank"); // this may be blocked my the browser
-        }).catch((ex) => {
-            console.error('Error connecting to mastodon', ex);
-        });
-    }
-
-    submitOauthToken(f: NgForm) {
-        console.log('form-value', f.value);
-        console.log("f.value.oauth_token", f.value.oauth_token);
-
-        // call service to submit access token
-        this.mastodonService.submitOAuthToken(f.value.oauth_token).then(result => {
-            console.log("oauth result", result);
-        });
+    getMastodonOAuthURL() {
+		// TODO: This returns a promise. How in the blazes can we get the value into the UI?
+		// return this.mastodonService.getMastodonOAuthURL();
+		return 'https://mastodon.xyz';
     }
 
     ngOnInit() {
