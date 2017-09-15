@@ -20,12 +20,27 @@ namespace Herd.Web.Controllers
         }
 
         [HttpPost("[action]")]
-        public IActionResult SaveOAuthToken([FromBody] JObject data)
+        public async Task<IActionResult> LoginWithOAuthToken([FromBody] JObject data)
         {
             var oAuthToken = data["oAuthToken"].Value<string>();
-            //ActiveUser.ApiAccessToken = oAuthToken;
-            //HerdApp.Instance.Data.UpdateUser(ActiveUser);
-            return new ObjectResult(new { success = true });
+
+            try
+            {
+                await MastodonApiWrapper.LoginWithOAuthToken(oAuthToken);
+
+                // Get Mastodon User 
+                var activeUser = await MastodonApiWrapper.GetUserAccount();
+
+                // Update ActiveUser with Mastodon user?
+                ActiveUser.UserName = activeUser.UserName;
+                ActiveUser.ID = activeUser.Id;
+                ActiveUser.ApiAccessToken = oAuthToken;
+                HerdApp.Instance.Data.UpdateUser(ActiveUser);
+                return Ok(new { successful = true });
+            } catch (Exception)
+            {
+                return BadRequest("Invalid API Token");
+            }
         }
 
         [HttpGet("[action]")]

@@ -32,15 +32,15 @@ namespace Herd.Web.Controllers
         }
 
         // TODO: Get this from a cookie or User.Identity
-        private long? _activeUserID = null;
-        public long ActiveUserId => _activeUserID ?? (_activeUserID = 1).Value;
+        private static long? _activeUserID = null;
+        public static long ActiveUserId => _activeUserID ?? (_activeUserID = 1).Value;
 
-        private HerdUserDataModel _activeUser = null;
-        public HerdUserDataModel ActiveUser => _activeUser ?? (_activeUser = HerdApp.Instance.Data.GetUser(ActiveUserId));
+        private static HerdUserDataModel _activeUser = null;
+        public static HerdUserDataModel ActiveUser => _activeUser ?? (_activeUser = HerdApp.Instance.Data.GetUser(ActiveUserId));
 
         // TODO: Lazy-load
-        private IMastodonApiWrapper _mastodonApiWrapper = null;
-        public IMastodonApiWrapper MastodonApiWrapper => _mastodonApiWrapper ?? (_mastodonApiWrapper = new MastodonApiWrapper(ActiveUser.MastodonInstanceHost, ActiveUser.ApiAccessToken));
+        private static IMastodonApiWrapper _mastodonApiWrapper = null;
+        public static IMastodonApiWrapper MastodonApiWrapper => _mastodonApiWrapper ?? (_mastodonApiWrapper = new MastodonApiWrapper(ActiveUser.MastodonInstanceHost, ActiveUser.ApiAccessToken));
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {

@@ -28,23 +28,16 @@ export class LoginComponent implements OnInit {
 
     submitOauthToken(form: NgForm) {
         this.mastodonService.saveOAuthToken(form.value.oauth_token).then(data => {
-            if (data === true) {
-                this.router.navigateByUrl('/home');
-            } else {
-                this.router.navigateByUrl('/login');
-            }
-            this.getActiveUser();
-        });
+            this.router.navigateByUrl('/home');
+        }, this.handleError);
     }
 
-    getActiveUser() {
-        this.mastodonService.getActiveUser().then(data => {
-            console.log("active user", data);
-        });
+    private handleError(error: any): Promise<any> {
+        this.router.navigateByUrl('/login');
+        return Promise.reject(error.message || error);
     }
 
     ngOnInit() {
         this.getMastodonOAuthURL();
-        this.getActiveUser();
     }
 }

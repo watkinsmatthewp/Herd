@@ -40,12 +40,12 @@ export class MastodonService {
             one: 'one',
         });
 
-        return this.http.post('api/AuthApi/SaveOAuthToken/', body, options)
-            .map(respone => respone.json().success as boolean)
+        return this.http.post('api/AuthApi/LoginWithOAuthToken/', body, options)
+            .map(respone => respone.json())
             .toPromise();
     }
 
-    getActiveUser() {
+    getActiveUser(): Promise<boolean> {
         return this.http.get('api/AuthApi/GetUsername/')
             .map(response => response.json())
             .toPromise();

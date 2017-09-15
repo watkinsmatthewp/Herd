@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 // Components
 import { AppComponent } from './components/app/app.component';
+import { ErrorPageComponent } from './components/shared/errorpage/errorpage.component';
 import { HomeComponent } from './components/home/home.component';
 import { LocalFeedComponent } from './components/localfeed/localfeed.component';
 import { LoginComponent } from './components/login/login.component';
@@ -20,6 +21,7 @@ import { SafePipe } from './components/shared/pipes/safe.pipe';
     declarations: [
         // Components
         AppComponent,
+        ErrorPageComponent,
         HomeComponent,
         LocalFeedComponent,
         LoginComponent,
@@ -40,6 +42,7 @@ import { SafePipe } from './components/shared/pipes/safe.pipe';
             { path: 'localfeed', component: LocalFeedComponent },
             { path: 'notifications', component: NotificationsComponent },
             { path: 'profile', component: ProfileComponent },
+            { path: 'errorpage', component: ErrorPageComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ],
