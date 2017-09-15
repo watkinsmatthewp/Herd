@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Herd.Business;
+using Newtonsoft.Json.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,10 +20,11 @@ namespace Herd.Web.Controllers
         }
 
         [HttpPost("[action]")]
-        public IActionResult SaveOAuthToken([FromBody] string oAuthToken)
+        public IActionResult SaveOAuthToken([FromBody] JObject data)
         {
-            ActiveUser.ApiAccessToken = oAuthToken;
-            HerdApp.Instance.Data.UpdateUser(ActiveUser);
+            var oAuthToken = data["oAuthToken"].Value<string>();
+            //ActiveUser.ApiAccessToken = oAuthToken;
+            //HerdApp.Instance.Data.UpdateUser(ActiveUser);
             return new ObjectResult(new { success = true });
         }
 
