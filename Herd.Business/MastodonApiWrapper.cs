@@ -3,6 +3,9 @@ using Mastonet.Entities;
 using Herd.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,16 +33,27 @@ namespace Herd.Business
 
         #region constructors
         public MastodonApiWrapper(string hostInstance)
-            : this(hostInstance, null)
+            : this(hostInstance, null, null)
         {
         }
 
         public MastodonApiWrapper(string hostInstance, string userApiToken)
+            : this(hostInstance, userApiToken, null)
+        {
+        }
+
+        // userApiToken and userAuthToken *should* be the same thing really, we should just use Auth probably
+        public MastodonApiWrapper(string hostInstance, string userApiToken, Auth userAuthToken)
         {
             HostInstance = hostInstance;
             UserApiToken = userApiToken;
 
             _authClient = new AuthenticationClient(HostInstance);
+
+            // This will need to be moved somewhere else eventually because the authorization stuff
+            // needs to finish first and the auth token thing needs to be saved.
+            Client = new MastodonClient(_authClient.AppRegistration, userAuthToken);
+            InitializeTimeline();
         }
         #endregion 
 
@@ -79,18 +93,6 @@ namespace Herd.Business
             }
         }
 
-        /**
-         * Connect to the mastodon client using the user supplied OAuth token.
-         */
-        public async Task<bool> LoginWithOAuthToken(string instance, string userApiToken)
-        {
-            this.UserApiToken = userApiToken;
-            SetAuthClientInstance(instance);
-            Auth auth = await _authClient.ConnectWithCode(userApiToken);
-            _mastodonClient = new MastodonClient(_authClient.AppRegistration, auth);
-            return true;
-        }
-
         #region Helper methods
         public async void SetAuthClientInstance(string instance)
         {
@@ -122,30 +124,6 @@ namespace Herd.Business
             }
         }
 
-        /**
-         * Create the app registration by calling the mastodon api.
-         */
-        private async Task<AppRegistration> CreateAppRegistration() {
-            _authClient.AppRegistration = await _authClient.CreateApp("Herd", Scope.Read | Scope.Write | Scope.Follow);
-            SaveAppRegistration(_authClient.AppRegistration);
-            return _authClient.AppRegistration;
-        }
-
-        /**
-         * Save the app registration to the Herd database.
-         */
-        private void SaveAppRegistration(AppRegistration mastodonAppRegistration)
-        {
-            HerdAppRegistrationDataModel registration = new HerdAppRegistrationDataModel
-            {
-                ID = mastodonAppRegistration.Id,
-                RedirectUri = mastodonAppRegistration.RedirectUri,
-                ClientId = mastodonAppRegistration.ClientId,
-                ClientSecret = mastodonAppRegistration.ClientSecret,
-                Instance = mastodonAppRegistration.Instance,
-            };
-            HerdApp.Instance.Data.UpdateAppRegistration(registration);
-        }
         #endregion
     }
 }
