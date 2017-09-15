@@ -1,5 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MastodonService } from '../shared/services/mastodon.service';
 
 @Component({
@@ -8,17 +9,35 @@ import { MastodonService } from '../shared/services/mastodon.service';
     styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-    constructor(private mastodonService: MastodonService) {
+    showSubmitOAuthTokenForm: boolean = false;
+    oAuthUrl: string = '';
+
+    constructor(private mastodonService: MastodonService, private router: Router) {
 		
     }
 
-    getMastodonOAuthURL() {
-		// TODO: This returns a promise. How in the blazes can we get the value into the UI?
-		// return this.mastodonService.getMastodonOAuthURL();
-		return 'https://mastodon.xyz';
+    setShowOauthTokenForm(value: boolean) {
+        this.showSubmitOAuthTokenForm = value;
+    }
+
+    getMastodonOAuthURL() {        
+        this.mastodonService.getMastodonOAuthURL().then(url => {
+            this.oAuthUrl = url;
+        });
+    }
+
+    submitOauthToken(form: NgForm) {
+        this.mastodonService.saveOAuthToken(form.value.oauth_token).then(data => {
+            if (data === true) {
+                this.router.navigateByUrl('/home');
+            } else {
+                this.router.navigateByUrl('/login');
+            }
+            
+        });
     }
 
     ngOnInit() {
-        
+        this.getMastodonOAuthURL();
     }
 }

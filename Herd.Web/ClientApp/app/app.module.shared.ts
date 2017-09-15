@@ -3,28 +3,30 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-
+// Components
 import { AppComponent } from './components/app/app.component';
-import { NavMenuComponent } from './components/shared/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
-import { MastodonService } from './components/shared/services/mastodon.service';
-import { LoginComponent } from './components/login/login.component';
 import { LocalFeedComponent } from './components/localfeed/localfeed.component';
+import { LoginComponent } from './components/login/login.component';
+import { NavMenuComponent } from './components/shared/navmenu/navmenu.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { ProfileComponent } from './components/profile/profile.component';
-
+// Services
+import { MastodonService } from './components/shared/services/mastodon.service';
 // Pipes
 import { SafePipe } from './components/shared/pipes/safe.pipe';
 
 @NgModule({
     declarations: [
+        // Components
         AppComponent,
-        NavMenuComponent,
         HomeComponent,
-        LoginComponent,
         LocalFeedComponent,
+        LoginComponent,
+        NavMenuComponent,
         NotificationsComponent,
         ProfileComponent,
+        // Pipes
         SafePipe
     ],
     imports: [

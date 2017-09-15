@@ -1,32 +1,27 @@
-﻿<div class="container">
-    <div class="login">
-        <h2>Login to Herd</h2>
-
-        <hr />
-        
-        <div class="login-inner">
-            <!--
-                TODO: Find a better way to show the hidden div. Writing the script inline is a total hack!
-                Maybe a way to do it in login.components.ts?
-            -->
-            <a id="btnAuth" class="btn btn-block btn-lg btn-success submit" target="_blank" href="{{getMastodonOAuthURL()}}" onclick="document.getElementById('divToken').classList.remove('hidden');">
-                Authenticate
-            </a>
-
+﻿<ng-template #loading><h2 class="text-center">Loading...</h2></ng-template>
+<div *ngIf="oAuthUrl; else loading;" class="container">
+    <div style="position: relative;">
+        <div class="login">
+            <h2>Login to Herd</h2>
             <hr />
 
-            <div id="divToken" class="hidden">
-                <ol>
-                    <li>In the new tab, login to the instance with your email and password.</li>
-                    <li>Authorize this web application to use your Herd data.</li>
-                    <li>Copy the special access token and paste it back on this page.</li>
-                </ol>
-                <form #oauth="ngForm" (ngSubmit)="submitOauthToken(oauth)" novalidate>
-                    <input type="text" name="oauth_token" class="form-control" ngModel required placeholder="access token">
-                    <input class="btn btn-block btn-lg btn-success submit" type="submit" value="Submit Access Token">
-                </form>
+            <div class="login-inner">
+                <a id="btnAuth" class="btn btn-block btn-lg btn-success submit" target="_blank" href="{{oAuthUrl}}" (click)="setShowOauthTokenForm(true)">
+                    Authenticate
+                </a>
+                <hr />
+                <div *ngIf="showSubmitOAuthTokenForm">
+                    <ol>
+                        <li>In the new tab, login to the instance with your email and password.</li>
+                        <li>Authorize this web application to use your Herd data.</li>
+                        <li>Copy the special access token and paste it back on this page.</li>
+                    </ol>
+                    <form #oauth="ngForm" (ngSubmit)="submitOauthToken(oauth)" novalidate>
+                        <input type="text" name="oauth_token" class="form-control" ngModel required placeholder="access token">
+                        <input class="btn btn-block btn-lg btn-success submit" type="submit" value="Submit Access Token">
+                    </form>
+                </div>
             </div>
         </div>
-            
     </div>
 </div>

@@ -18,8 +18,8 @@ namespace Herd.Web.Controllers
             return new ObjectResult(new { url = await MastodonApiWrapper.GetOAuthUrl("urn:ietf:wg:oauth:2.0:oob") });
         }
 
-        [HttpPost("[action]/{oAuthToken}")]
-        public IActionResult SaveOAuthToken(string oAuthToken)
+        [HttpPost("[action]")]
+        public IActionResult SaveOAuthToken([FromBody] string oAuthToken)
         {
             ActiveUser.ApiAccessToken = oAuthToken;
             HerdApp.Instance.Data.UpdateUser(ActiveUser);

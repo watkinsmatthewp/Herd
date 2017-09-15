@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { Http, RequestOptionsArgs, RequestOptions, RequestMethod } from '@angular/http';
+import { Http, Headers, RequestOptionsArgs, RequestOptions, RequestMethod } from '@angular/http';
 import 'rxjs/Rx';
 
 import { NumberObject } from '../model/NumberObject';
@@ -25,16 +25,23 @@ export class MastodonService {
     }
 
     getMastodonOAuthURL() {
-        console.log("getMastodonOAuthURL");
         return this.http.get('/api/AuthApi/GetMastodonOAuthURL')
             .map(response => response.json().url as string)
             .toPromise();
     }
 
-    saveOAuthToken(oAuthToken: string) {
-        console.log("oauth token", oAuthToken);
-        return this.http.post('api/AuthApi/SaveOAuthToken/', oAuthToken)
-            .map(respone => respone.json().success)
+    saveOAuthToken(oAuthToken: string) {        
+        let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
+        let options = new RequestOptions({ headers: headers });
+
+        let body = JSON.stringify({
+            oAuthToken: oAuthToken,
+            testToken: 'testing',
+            one: 'one',
+        });
+
+        return this.http.post('api/AuthApi/SaveOAuthToken/', body, options)
+            .map(respone => respone.json().success as boolean)
             .toPromise();
     }
 
