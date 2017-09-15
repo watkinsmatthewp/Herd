@@ -18,19 +18,19 @@ export class MastodonService {
 
     }
 
-    getRandomNumber() {
+    getRandomNumber(): Promise<NumberObject> {
         return this.http.get('/api/RandomNumberApi/GetRandomNumber')
             .map(response => response.json() as NumberObject)
             .toPromise();
     }
 
-    getMastodonOAuthURL() {
+    getMastodonOAuthURL(): Promise<string> {
         return this.http.get('/api/AuthApi/GetMastodonOAuthURL')
             .map(response => response.json().url as string)
             .toPromise();
     }
 
-    saveOAuthToken(oAuthToken: string) {        
+    saveOAuthToken(oAuthToken: string): Promise<boolean> {        
         let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
         let options = new RequestOptions({ headers: headers });
 
@@ -42,6 +42,12 @@ export class MastodonService {
 
         return this.http.post('api/AuthApi/SaveOAuthToken/', body, options)
             .map(respone => respone.json().success as boolean)
+            .toPromise();
+    }
+
+    getActiveUser() {
+        return this.http.get('api/AuthApi/GetUsername/')
+            .map(response => response.json())
             .toPromise();
     }
 

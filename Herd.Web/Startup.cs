@@ -67,6 +67,24 @@ namespace Herd_Web
                 MastodonInstanceHost = "mastodon.xyz",
                 UserName = "Matthew"
             });
+            HerdApp.Instance.Data.UpdateUser(new HerdUserDataModel
+            {
+                ID = 2,
+                MastodonInstanceHost = "octodon.social",
+                UserName = "Thomas"
+            });
+            HerdApp.Instance.Data.UpdateUser(new HerdUserDataModel
+            {
+                ID = 3,
+                MastodonInstanceHost = "mastodon.social",
+                UserName = "Dana"
+            });
+            HerdApp.Instance.Data.UpdateUser(new HerdUserDataModel
+            {
+                ID = 4,
+                MastodonInstanceHost = "mastodon.social",
+                UserName = "Jacob"
+            });
         }
     }
 }

@@ -25,5 +25,12 @@ namespace Herd.Web.Controllers
             HerdApp.Instance.Data.UpdateUser(ActiveUser);
             return new ObjectResult(new { success = true });
         }
+
+        [HttpGet("[action]")]
+        public IActionResult GetUsername()
+        {
+            var activeUser = ActiveUser;
+            return new ObjectResult(new { username = ActiveUser.UserName, id = ActiveUser.ID });
+        }
     }
 }

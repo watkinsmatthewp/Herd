@@ -33,11 +33,18 @@ export class LoginComponent implements OnInit {
             } else {
                 this.router.navigateByUrl('/login');
             }
-            
+            this.getActiveUser();
+        });
+    }
+
+    getActiveUser() {
+        this.mastodonService.getActiveUser().then(data => {
+            console.log("active user", data);
         });
     }
 
     ngOnInit() {
         this.getMastodonOAuthURL();
+        this.getActiveUser();
     }
 }
