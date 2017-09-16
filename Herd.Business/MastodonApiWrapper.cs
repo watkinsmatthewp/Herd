@@ -33,25 +33,22 @@ namespace Herd.Business
 
         #region constructors
         public MastodonApiWrapper(string hostInstance)
-            : this(hostInstance, null, null)
+            : this(hostInstance, null)
         {
         }
 
+        // TODO switch userApiToken stuff to Auth instead of string
         public MastodonApiWrapper(string hostInstance, string userApiToken)
-            : this(hostInstance, userApiToken, null)
-        {
-        }
-
-        // userApiToken and userAuthToken *should* be the same thing really, we should just use Auth probably
-        public MastodonApiWrapper(string hostInstance, string userApiToken, Auth userAuthToken)
         {
             HostInstance = hostInstance;
             UserApiToken = userApiToken;
 
             _authClient = new AuthenticationClient(HostInstance);
+        }
 
-            // This will need to be moved somewhere else eventually because the authorization stuff
-            // needs to finish first and the auth token thing needs to be saved.
+        // This has to wait on the login to finish
+        public void SetupMastodonClient(AppRegistration app, Auth userAuthToken)
+        {
             Client = new MastodonClient(_authClient.AppRegistration, userAuthToken);
             InitializeTimeline();
         }
@@ -93,8 +90,17 @@ namespace Herd.Business
             }
         }
 
+
+        private void HomeStream_OnUpdate(object sender, StreamUpdateEventArgs e)
+        {
+            Home.Insert(0, e.Status);
+        }
+
         #region Helper methods
-        public async void SetAuthClientInstance(string instance)
+
+        private async Task<AppRegistration> CreateAppRegistration() => await _authClient.CreateApp("Herd", Scope.Read | Scope.Write | Scope.Follow);
+
+        private async void InitializeTimeline()
         {
             _authClient = new AuthenticationClient(await GetAppRegistrationAsync(instance));
         }
