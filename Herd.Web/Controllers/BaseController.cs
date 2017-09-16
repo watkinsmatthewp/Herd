@@ -13,6 +13,7 @@ namespace Herd.Web.Controllers
     {
         public string RequestedURL => $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
 
+        #region response messages
         public string SuccessMessage
         {
             get => TempData["SuccessMessage"] as string;
@@ -30,6 +31,7 @@ namespace Herd.Web.Controllers
             get => TempData["ErrorMessage"] as string;
             set => TempData["ErrorMessage"] = value;
         }
+        #endregion
 
         // TODO: Get this from a cookie or User.Identity
         private static long? _activeUserID = null;

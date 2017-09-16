@@ -9,6 +9,7 @@ import { MastodonService } from '../shared/services/mastodon.service';
     styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+    loginErrorMessage: string = '';
     showSubmitOAuthTokenForm: boolean = false;
     oAuthUrl: string = '';
 
@@ -29,12 +30,10 @@ export class LoginComponent implements OnInit {
     submitOauthToken(form: NgForm) {
         this.mastodonService.saveOAuthToken(form.value.oauth_token).then(data => {
             this.router.navigateByUrl('/home');
-        }, this.handleError);
-    }
-
-    private handleError(error: any): Promise<any> {
-        this.router.navigateByUrl('/login');
-        return Promise.reject(error.message || error);
+        }, error => {
+            this.showSubmitOAuthTokenForm = false;
+            this.loginErrorMessage = "Failure logging in, try again.";
+        });
     }
 
     ngOnInit() {
