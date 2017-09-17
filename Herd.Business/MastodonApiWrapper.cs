@@ -20,7 +20,7 @@ namespace Herd.Business
         Task<Account> GetUserAccount();
         Task<string> GetOAuthUrl(string redirectURL, string instance);
         Task<bool> LoginToApp(string username, string instance);
-        Task<Boolean> LoginWithOAuthToken(string instance, string userApiToken);
+        Task<bool> LoginWithOAuthToken(string instance, string userApiToken);
     }
 
     public class MastodonApiWrapper : IMastodonApiWrapper
@@ -49,8 +49,8 @@ namespace Herd.Business
         // This has to wait on the login to finish
         public void SetupMastodonClient(AppRegistration app, Auth userAuthToken)
         {
-            Client = new MastodonClient(_authClient.AppRegistration, userAuthToken);
-            InitializeTimeline();
+            _mastodonClient= new MastodonClient(_authClient.AppRegistration, userAuthToken);
+            //InitializeTimeline();
         }
         #endregion 
 
@@ -90,17 +90,26 @@ namespace Herd.Business
             }
         }
 
-
-        private void HomeStream_OnUpdate(object sender, StreamUpdateEventArgs e)
+        /**
+         * Connect to the mastodon client using the user supplied OAuth token.
+         */
+        public async Task<bool> LoginWithOAuthToken(string instance, string userApiToken)
         {
-            Home.Insert(0, e.Status);
+            this.UserApiToken = userApiToken;
+            SetAuthClientInstance(instance);
+            Auth auth = await _authClient.ConnectWithCode(userApiToken);
+            _mastodonClient = new MastodonClient(_authClient.AppRegistration, auth);
+            return true;
         }
 
+
+        //private void HomeStream_OnUpdate(object sender, StreamUpdateEventArgs e)
+        //{
+        //    Home.Insert(0, e.Status);
+        //}
+
         #region Helper methods
-
-        private async Task<AppRegistration> CreateAppRegistration() => await _authClient.CreateApp("Herd", Scope.Read | Scope.Write | Scope.Follow);
-
-        private async void InitializeTimeline()
+        public async void SetAuthClientInstance(string instance)
         {
             _authClient = new AuthenticationClient(await GetAppRegistrationAsync(instance));
         }
@@ -115,7 +124,7 @@ namespace Herd.Business
                 HerdAppRegistrationDataModel herdRegistration = HerdApp.Instance.Data.GetAppRegistration(instance);
                 AppRegistration registration = new AppRegistration
                 {
-                    Id = (int) herdRegistration.ID,
+                    Id = (int)herdRegistration.ID,
                     RedirectUri = herdRegistration.RedirectUri,
                     ClientId = herdRegistration.ClientId,
                     ClientSecret = herdRegistration.ClientSecret,
@@ -130,6 +139,36 @@ namespace Herd.Business
             }
         }
 
+        //private async void InitializeTimeline()
+        //{
+        //    _authClient = new AuthenticationClient(await GetAppRegistrationAsync(instance));
+        //}
+
+        /**
+         * Create the app registration by calling the mastodon api.
+         */
+        private async Task<AppRegistration> CreateAppRegistration()
+        {
+            _authClient.AppRegistration = await _authClient.CreateApp("Herd", Scope.Read | Scope.Write | Scope.Follow);
+            SaveAppRegistration(_authClient.AppRegistration);
+            return _authClient.AppRegistration;
+        }
+
+        /**
+         * Save the app registration to the Herd database.
+         */
+        private void SaveAppRegistration(AppRegistration mastodonAppRegistration)
+        {
+            HerdAppRegistrationDataModel registration = new HerdAppRegistrationDataModel
+            {
+                ID = mastodonAppRegistration.Id,
+                RedirectUri = mastodonAppRegistration.RedirectUri,
+                ClientId = mastodonAppRegistration.ClientId,
+                ClientSecret = mastodonAppRegistration.ClientSecret,
+                Instance = mastodonAppRegistration.Instance,
+            };
+            HerdApp.Instance.Data.UpdateAppRegistration(registration);
+        }
         #endregion
     }
 }
