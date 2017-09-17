@@ -35,7 +35,12 @@ namespace Herd.Data.Providers
         {
             UpdateEntity(user);
         }
+        #endregion
 
+        #region AppRegistration
+        public HerdAppRegistrationDataModel GetAppRegistration(string instance) => GetEntity<HerdAppRegistrationDataModel>(instance);
+
+        public void UpdateAppRegistration(HerdAppRegistrationDataModel registration) => UpdateEntity(registration, registration.Instance);
         #endregion
 
         #region Abstract overrides
@@ -46,7 +51,6 @@ namespace Herd.Data.Providers
         #endregion
 
         #region Private helpers
-
         private T GetEntity<T>(long id) where T : HerdDataModel
         {
             return ReadKey(BuildEntityKey<T>(id)).ParseJson<T>();
@@ -78,7 +82,24 @@ namespace Herd.Data.Providers
         {
             return string.Join(KeyDelimiter, KeyRoot, typeof(T).GetEntityName(), "NextID");
         }
+        #endregion
 
+        #region Thomas
+        private T GetEntity<T>(string id) where T : HerdDataModel
+        {
+            return ReadKey(BuildEntityKey<T>(id)).ParseJson<T>();
+        }
+
+        private T UpdateEntity<T>(T entity, string id) where T : HerdDataModel
+        {
+            WriteKey(BuildEntityKey<T>(id), entity.SerializeAsJson());
+            return entity;
+        }
+
+        private string BuildEntityKey<T>(string id) where T : HerdDataModel
+        {
+            return string.Join(KeyDelimiter, KeyRoot, typeof(T).GetEntityName(), id);
+        }
         #endregion
     }
 }

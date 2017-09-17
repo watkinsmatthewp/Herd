@@ -9,6 +9,7 @@ namespace Herd.Data.Models
         string UserName { get; }
         string MastodonInstanceHost { get; }
         string ApiAccessToken { get; }
+        string Email { get; }
     }
 
     public class HerdUserDataModel : HerdDataModel, IHerdUserDataModel
@@ -16,5 +17,6 @@ namespace Herd.Data.Models
         public string UserName { get; set; }
         public string MastodonInstanceHost { get; set; }
         public string ApiAccessToken { get; set; }
+        public string Email { get; set; }
     }
 }

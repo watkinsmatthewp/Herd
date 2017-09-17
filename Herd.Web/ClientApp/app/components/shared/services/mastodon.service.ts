@@ -14,9 +14,8 @@ export class MastodonService {
 
         (Below Ex) this.http.get(baseUrl + 'api/Mastodon/ConnectToMastodon') 
     */
-    constructor(private http: Http) {
+    constructor(private http: Http) {}
 
-    }
 
     getRandomNumber(): Promise<NumberObject> {
         return this.http.get('/api/RandomNumberApi/GetRandomNumber')
@@ -24,33 +23,33 @@ export class MastodonService {
             .toPromise();
     }
 
-    getMastodonOAuthURL(): Promise<string> {
-        return this.http.get('/api/AuthApi/GetMastodonOAuthURL')
-            .map(response => response.json().url as string)
+    login(username: string, instance: string) {
+        let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8'});
+        let options = new RequestOptions({ headers: headers });
+
+        let body = JSON.stringify({
+            username: username,
+            instance: instance
+        });
+
+        return this.http.post('api/AuthApi/LoginToApp', body, options)
+            .map(respone => respone.json())
             .toPromise();
     }
 
-    saveOAuthToken(oAuthToken: string): Promise<boolean> {        
+    loginWithOAuthToken(instance: string, oAuthToken: string): Promise<boolean> {        
         let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
         let options = new RequestOptions({ headers: headers });
 
         let body = JSON.stringify({
+            instance: instance,
             oAuthToken: oAuthToken,
-            testToken: 'testing',
-            one: 'one',
         });
 
         return this.http.post('api/AuthApi/LoginWithOAuthToken/', body, options)
             .map(respone => respone.json())
             .toPromise();
     }
-
-    getActiveUser(): Promise<boolean> {
-        return this.http.get('api/AuthApi/GetUsername/')
-            .map(response => response.json())
-            .toPromise();
-    }
-
 }
 
 /**

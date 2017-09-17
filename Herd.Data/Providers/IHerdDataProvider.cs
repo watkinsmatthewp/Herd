@@ -10,5 +10,8 @@ namespace Herd.Data.Providers
         HerdUserDataModel GetUser(long id);
         HerdUserDataModel CreateUser(HerdUserDataModel user);
         void UpdateUser(HerdUserDataModel user);
+
+        HerdAppRegistrationDataModel GetAppRegistration(string instance);
+        void UpdateAppRegistration(HerdAppRegistrationDataModel registration);
     }
 }

@@ -10,8 +10,10 @@ import { MastodonService } from '../shared/services/mastodon.service';
 })
 export class LoginComponent implements OnInit {
     loginErrorMessage: string = '';
-    showSubmitOAuthTokenForm: boolean = false;
+    username: string = '';
+    instance: string = '';
     oAuthUrl: string = '';
+    showSubmitOAuthTokenForm: boolean = false;
 
     constructor(private mastodonService: MastodonService, private router: Router) {
 		
@@ -21,14 +23,23 @@ export class LoginComponent implements OnInit {
         this.showSubmitOAuthTokenForm = value;
     }
 
-    getMastodonOAuthURL() {        
-        this.mastodonService.getMastodonOAuthURL().then(url => {
-            this.oAuthUrl = url;
+    submitInstaceRequest(form: NgForm) {
+        let instanceRequest = form.value.instanceRequest;
+        this.username = instanceRequest.split("@")[0];
+        this.instance = instanceRequest.split("@")[1];
+
+        this.mastodonService.login(this.username, this.instance).then(response => {
+            console.log("response", response);
+            if (response.loginSuccessful === true) {
+                this.router.navigateByUrl('/home');
+            } else {
+                this.oAuthUrl = response.url;
+            }
         });
     }
 
     submitOauthToken(form: NgForm) {
-        this.mastodonService.saveOAuthToken(form.value.oauth_token).then(data => {
+        this.mastodonService.loginWithOAuthToken(this.instance, form.value.oauth_token).then(data => {
             this.router.navigateByUrl('/home');
         }, error => {
             this.showSubmitOAuthTokenForm = false;
@@ -36,7 +47,5 @@ export class LoginComponent implements OnInit {
         });
     }
 
-    ngOnInit() {
-        this.getMastodonOAuthURL();
-    }
+    ngOnInit() {}
 }

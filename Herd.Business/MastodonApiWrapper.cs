@@ -1,5 +1,6 @@
 ﻿using Mastonet;
 using Mastonet.Entities;
+using Herd.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,12 +10,14 @@ namespace Herd.Business
 {
     public interface IMastodonApiWrapper
     {
-        string HostInstance { get; }
-        string UserApiToken { get; }
+        string HostInstance { get; set; }
+        string UserApiToken { get; set; }
 
+        void SetAuthClientInstance(string instance);
         Task<Account> GetUserAccount();
-        Task<string> GetOAuthUrl(string redirectURL);
-        Task<Boolean> LoginWithOAuthToken(string userApiToken);
+        Task<string> GetOAuthUrl(string redirectURL, string instance);
+        Task<bool> LoginToApp(string username, string instance);
+        Task<Boolean> LoginWithOAuthToken(string instance, string userApiToken);
     }
 
     public class MastodonApiWrapper : IMastodonApiWrapper
@@ -22,8 +25,8 @@ namespace Herd.Business
         private AuthenticationClient _authClient = null;
         private MastodonClient _mastodonClient = null;
 
-        public string HostInstance { get; private set; }
-        public string UserApiToken { get; private set; }
+        public string HostInstance { get; set; }
+        public string UserApiToken { get; set; }
 
         #region constructors
         public MastodonApiWrapper(string hostInstance)
@@ -46,25 +49,103 @@ namespace Herd.Business
             return currentUser;
         }
 
-        public async Task<string> GetOAuthUrl(string redirectURL)
+        public async Task<string> GetOAuthUrl(string redirectURL, string instance)
         {
-            // TODO: We should only have to register one time EVER for a user
-            _authClient.AppRegistration = _authClient.AppRegistration ?? await CreateAppRegistration();
+            _authClient.AppRegistration = await GetAppRegistrationAsync(instance);
+            // we can use _authClient.AppRegistration.RedirectUri as this is set my the API wrapper
+            // On localhost it does set the correct URL BUT I'm not sure about production.
+            // Probably best to leave it as a hard coded redirectUrl
             return _authClient.OAuthUrl(redirectURL);
         }
 
-        public async Task<bool> LoginWithOAuthToken(string userApiToken)
+        /**
+         * Attempt to Login to the app with a username/instance.
+         */
+        public async Task<bool> LoginToApp(string username, string instance)
         {
-            UserApiToken = userApiToken;
+            try // to get the user's cached oAuth token
+            {
+                HerdUserDataModel user = HerdApp.Instance.Data.GetUser(2); // TODO: CHANGE THIS TO GET USER BASED OFF USERNAME/INSTANCE
+                if (string.IsNullOrEmpty(user.ApiAccessToken))
+                {
+                    throw new Exception("No api token");
+                }
+                this.UserApiToken = user.ApiAccessToken;
+                return await LoginWithOAuthToken(instance, user.ApiAccessToken);
+            }
+            catch (Exception) // User doesn't exist so we have to make it and get authentication
+            {
+                return false;
+            }
+        }
+
+        /**
+         * Connect to the mastodon client using the user supplied OAuth token.
+         */
+        public async Task<bool> LoginWithOAuthToken(string instance, string userApiToken)
+        {
+            this.UserApiToken = userApiToken;
+            SetAuthClientInstance(instance);
             Auth auth = await _authClient.ConnectWithCode(userApiToken);
             _mastodonClient = new MastodonClient(_authClient.AppRegistration, auth);
             return true;
         }
 
         #region Helper methods
+        public async void SetAuthClientInstance(string instance)
+        {
+            _authClient = new AuthenticationClient(await GetAppRegistrationAsync(instance));
+        }
 
-        private async Task<AppRegistration> CreateAppRegistration() => await _authClient.CreateApp("Herd", Scope.Read | Scope.Write | Scope.Follow);
+        /**
+         * Try to get a cached app registration, if it doesn't exist make one.
+         */
+        private async Task<AppRegistration> GetAppRegistrationAsync(string instance)
+        {
+            try // to get an existing registration from the database
+            {
+                HerdAppRegistrationDataModel herdRegistration = HerdApp.Instance.Data.GetAppRegistration(instance);
+                AppRegistration registration = new AppRegistration
+                {
+                    Id = (int) herdRegistration.ID,
+                    RedirectUri = herdRegistration.RedirectUri,
+                    ClientId = herdRegistration.ClientId,
+                    ClientSecret = herdRegistration.ClientSecret,
+                    Instance = herdRegistration.Instance,
+                    Scope = Scope.Read | Scope.Write | Scope.Follow
+                };
+                return registration;
+            }
+            catch (Exception) // if the registration isn't saved in the db then just create it.
+            {
+                return await CreateAppRegistration();
+            }
+        }
 
+        /**
+         * Create the app registration by calling the mastodon api.
+         */
+        private async Task<AppRegistration> CreateAppRegistration() {
+            _authClient.AppRegistration = await _authClient.CreateApp("Herd", Scope.Read | Scope.Write | Scope.Follow);
+            SaveAppRegistration(_authClient.AppRegistration);
+            return _authClient.AppRegistration;
+        }
+
+        /**
+         * Save the app registration to the Herd database.
+         */
+        private void SaveAppRegistration(AppRegistration mastodonAppRegistration)
+        {
+            HerdAppRegistrationDataModel registration = new HerdAppRegistrationDataModel
+            {
+                ID = mastodonAppRegistration.Id,
+                RedirectUri = mastodonAppRegistration.RedirectUri,
+                ClientId = mastodonAppRegistration.ClientId,
+                ClientSecret = mastodonAppRegistration.ClientSecret,
+                Instance = mastodonAppRegistration.Instance,
+            };
+            HerdApp.Instance.Data.UpdateAppRegistration(registration);
+        }
         #endregion
     }
 }
