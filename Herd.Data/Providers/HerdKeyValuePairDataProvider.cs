@@ -25,7 +25,10 @@ namespace Herd.Data.Providers
         {
             return GetEntity<HerdUserDataModel>(id);
         }
-
+        public HerdUserDataModel GetUser(string key)
+        {
+            return GetEntity<HerdUserDataModel>(key);
+        }
         public HerdUserDataModel CreateUser(HerdUserDataModel user)
         {
             return CreateEntity(user);
@@ -34,6 +37,10 @@ namespace Herd.Data.Providers
         public void UpdateUser(HerdUserDataModel user)
         {
             UpdateEntity(user);
+        }
+        public void UpdateUser(HerdUserDataModel user, string key)
+        {
+            UpdateEntity(user, key);
         }
         #endregion
 
@@ -82,9 +89,7 @@ namespace Herd.Data.Providers
         {
             return string.Join(KeyDelimiter, KeyRoot, typeof(T).GetEntityName(), "NextID");
         }
-        #endregion
 
-        #region Thomas
         private T GetEntity<T>(string id) where T : HerdDataModel
         {
             return ReadKey(BuildEntityKey<T>(id)).ParseJson<T>();

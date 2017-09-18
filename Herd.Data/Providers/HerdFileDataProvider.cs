@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Herd.Data.Models;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace Herd.Data.Providers
 {
@@ -27,7 +28,7 @@ namespace Herd.Data.Providers
         {
             try
             {
-                return File.ReadAllText(key);
+                return File.ReadAllText(key + ".json");
             }
             catch (FileNotFoundException) when (autoCreateValue != null)
             {
@@ -44,7 +45,9 @@ namespace Herd.Data.Providers
                 Directory.CreateDirectory(dir);
             }
 
-            File.WriteAllText(key, value);
+            // This deserialises into a temp object just to parse it back into 
+            // JSON BUT it formats it pretty in the output file. My eyes are happier.
+            File.WriteAllText(key + ".json", JsonConvert.SerializeObject(JsonConvert.DeserializeObject(value), Formatting.Indented));
         }
     }
 }

@@ -8,7 +8,9 @@ namespace Herd.Data.Providers
     public interface IHerdDataProvider
     {
         HerdUserDataModel GetUser(long id);
+        HerdUserDataModel GetUser(string key);
         HerdUserDataModel CreateUser(HerdUserDataModel user);
+        void UpdateUser(HerdUserDataModel user, string key);
         void UpdateUser(HerdUserDataModel user);
 
         HerdAppRegistrationDataModel GetAppRegistration(string instance);

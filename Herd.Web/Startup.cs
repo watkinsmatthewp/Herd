@@ -66,28 +66,24 @@ namespace Herd_Web
                 ID = 1,
                 MastodonInstanceHost = "mastodon.xyz",
                 UserName = "Matthew",
-                Email = "mpwatki2@ncsu.edu"
             });
             HerdApp.Instance.Data.UpdateUser(new HerdUserDataModel
             {
                 ID = 2,
                 MastodonInstanceHost = "octodon.social",
                 UserName = "Thomas",
-                Email = "tdortiz@ncsu.edu"
             });
             HerdApp.Instance.Data.UpdateUser(new HerdUserDataModel
             {
                 ID = 3,
                 MastodonInstanceHost = "mastodon.social",
                 UserName = "Dana",
-                Email = "dbchris3@ncsu.edu"
             });
             HerdApp.Instance.Data.UpdateUser(new HerdUserDataModel
             {
                 ID = 4,
                 MastodonInstanceHost = "mastodon.social",
                 UserName = "Jacob",
-                Email = "jcstone3@ncsu.edu"
             });
         }
     }
