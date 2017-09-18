@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit {
                 this.router.navigateByUrl('/home');
             } else {
                 this.oAuthUrl = response.url;
+                window.open(this.oAuthUrl, '_blank').focus();
             }
         });
     }
