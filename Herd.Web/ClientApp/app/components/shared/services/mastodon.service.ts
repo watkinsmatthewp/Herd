@@ -7,6 +7,8 @@ import { NumberObject } from '../model/NumberObject';
 @Injectable()
 export class MastodonService {
 
+    authHeader: string;
+
     /**
         We can add "@Inject('BASE_URL') baseUrl: string" here to get the base url of the web app
         We can pass this on in the below api calls to our server BUT as of now it is working.
@@ -16,10 +18,19 @@ export class MastodonService {
     */
     constructor(private http: Http) {}
 
-
     getRandomNumber(): Promise<NumberObject> {
         return this.http.get('/api/RandomNumberApi/GetRandomNumber')
             .map(response => response.json() as NumberObject)
+            .toPromise();
+    }
+
+    // TODO
+    checkWebAppAccessToken() {
+        let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
+        let options = new RequestOptions({ headers: headers });
+
+        return this.http.get('/api/', options)
+            .map(response => response.json())
             .toPromise();
     }
 
@@ -53,7 +64,7 @@ export class MastodonService {
 }
 
 /**
-We can do this
+Example of parsing result as a WeatherForecast array
 
 http.get(baseUrl + 'api/SampleData/WeatherForecasts').subscribe(result => {
             this.forecasts = result.json() as WeatherForecast[];

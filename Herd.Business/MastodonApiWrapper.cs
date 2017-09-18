@@ -16,7 +16,7 @@ namespace Herd.Business
         string HostInstance { get; set; }
         string UserApiToken { get; set; }
 
-        void SetAuthClientInstance(string instance);
+        Task<AuthenticationClient> SetAuthClientInstance(string instance, string userAuthToken = null);
         Task<Account> GetUserAccount();
         Task<string> GetOAuthUrl(string redirectURL, string instance);
         Task<bool> LoginToApp(string username, string instance);
@@ -25,40 +25,32 @@ namespace Herd.Business
 
     public class MastodonApiWrapper : IMastodonApiWrapper
     {
+        #region fields
         private AuthenticationClient _authClient = null;
         private MastodonClient _mastodonClient = null;
-
         public string HostInstance { get; set; }
         public string UserApiToken { get; set; }
+        #endregion
 
         #region constructors
-        public MastodonApiWrapper(string hostInstance)
-            : this(hostInstance, null)
-        {
-        }
+        public MastodonApiWrapper(string hostInstance) : this(hostInstance, null){}
 
-        // TODO switch userApiToken stuff to Auth instead of string
         public MastodonApiWrapper(string hostInstance, string userApiToken)
         {
             HostInstance = hostInstance;
             UserApiToken = userApiToken;
-
             _authClient = new AuthenticationClient(HostInstance);
         }
 
         // This has to wait on the login to finish
-        public void SetupMastodonClient(AppRegistration app, Auth userAuthToken)
-        {
-            _mastodonClient= new MastodonClient(_authClient.AppRegistration, userAuthToken);
-            //InitializeTimeline();
-        }
+        //public void SetupMastodonClient(AppRegistration app, Auth userAuthToken)
+        //{
+        //    _mastodonClient= new MastodonClient(_authClient.AppRegistration, userAuthToken);
+        //    //InitializeTimeline();
+        //}
         #endregion 
 
-        public async Task<Account> GetUserAccount()
-        {
-            var currentUser = await _mastodonClient.GetCurrentUser();
-            return currentUser;
-        }
+        public async Task<Account> GetUserAccount() => await _mastodonClient.GetCurrentUser();
 
         public async Task<string> GetOAuthUrl(string redirectURL, string instance)
         {
@@ -76,15 +68,12 @@ namespace Herd.Business
         {
             try // to get the user's cached oAuth token
             {
-                HerdUserDataModel user = HerdApp.Instance.Data.GetUser(2); // TODO: CHANGE THIS TO GET USER BASED OFF USERNAME/INSTANCE
-                if (string.IsNullOrEmpty(user.ApiAccessToken))
-                {
-                    throw new Exception("No api token");
-                }
+                HerdUserDataModel user = HerdApp.Instance.Data.GetUser($"{instance}@{username}");
+                if (string.IsNullOrEmpty(user.ApiAccessToken)) throw new Exception("No api token");
                 this.UserApiToken = user.ApiAccessToken;
                 return await LoginWithOAuthToken(instance, user.ApiAccessToken);
             }
-            catch (Exception) // User doesn't exist so we have to make it and get authentication
+            catch (Exception) // Auth Issue or User doesn't exist 
             {
                 return false;
             }
@@ -96,9 +85,9 @@ namespace Herd.Business
         public async Task<bool> LoginWithOAuthToken(string instance, string userApiToken)
         {
             this.UserApiToken = userApiToken;
-            SetAuthClientInstance(instance);
-            Auth auth = await _authClient.ConnectWithCode(userApiToken);
-            _mastodonClient = new MastodonClient(_authClient.AppRegistration, auth);
+            Auth auth = await _authClient.ConnectWithCode(userApiToken); // TODO this throws ServerErrorException --- Invalid Grant :( 
+            await SetAuthClientInstance(instance, userApiToken);
+            _mastodonClient = new MastodonClient(_authClient.AppRegistration, _authClient.AuthToken);
             return true;
         }
 
@@ -109,9 +98,16 @@ namespace Herd.Business
         //}
 
         #region Helper methods
-        public async void SetAuthClientInstance(string instance)
+        public async Task<AuthenticationClient> SetAuthClientInstance(string instance, string userApiToken = null)
         {
-            _authClient = new AuthenticationClient(await GetAppRegistrationAsync(instance));
+            //_authClient = new AuthenticationClient(await GetAppRegistrationAsync(instance));
+            _authClient.AppRegistration = await GetAppRegistrationAsync(instance);
+
+            if (!string.IsNullOrEmpty(userApiToken))
+            {
+                _authClient.AuthToken = await _authClient.ConnectWithCode(userApiToken); // TODO this throws ServerErrorException --- Invalid Grant :( 
+            }
+            return _authClient;
         }
 
         /**
@@ -135,7 +131,7 @@ namespace Herd.Business
             }
             catch (Exception) // if the registration isn't saved in the db then just create it.
             {
-                return await CreateAppRegistration();
+                return await CreateAppRegistration(instance);
             }
         }
 
@@ -147,8 +143,9 @@ namespace Herd.Business
         /**
          * Create the app registration by calling the mastodon api.
          */
-        private async Task<AppRegistration> CreateAppRegistration()
+        private async Task<AppRegistration> CreateAppRegistration(string instance)
         {
+            _authClient = new AuthenticationClient(instance);
             _authClient.AppRegistration = await _authClient.CreateApp("Herd", Scope.Read | Scope.Write | Scope.Follow);
             SaveAppRegistration(_authClient.AppRegistration);
             return _authClient.AppRegistration;

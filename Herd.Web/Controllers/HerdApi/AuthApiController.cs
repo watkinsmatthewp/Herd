@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Herd.Business;
 using Newtonsoft.Json.Linq;
 using Mastonet.Entities;
+using Herd.Data.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,6 +15,13 @@ namespace Herd.Web.Controllers
     [Route("api/[controller]")]
     public class AuthApiController : BaseController
     {
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            // TODO Logout User
+            return Ok();
+        }
+
         /**
          * Attempts to log the user in. If the user can not 
          */
@@ -22,22 +30,16 @@ namespace Herd.Web.Controllers
         {
             var username = body["username"].Value<string>();
             var instance = body["instance"].Value<string>();
-
-            // Sets the instances
             MastodonApiWrapper.HostInstance = instance;
-            MastodonApiWrapper.SetAuthClientInstance(instance);
+            await MastodonApiWrapper.SetAuthClientInstance(instance);
 
             var loggedIn = await MastodonApiWrapper.LoginToApp(username, instance);
             if (loggedIn)
             {
                 var activeUser = await MastodonApiWrapper.GetUserAccount();
-
                 var mastodonUser = await MastodonApiWrapper.GetUserAccount();
-                // Update ActiveUser with Mastodon user?
-                UpdateActiveUser(mastodonUser, MastodonApiWrapper.UserApiToken);
-
-                // TODO return some auth access token?
-                return new ObjectResult(new { loginSuccessful = true });
+                UpdateActiveUser(mastodonUser, instance, MastodonApiWrapper.UserApiToken); // Update ActiveUser with Mastodon user?
+                return new ObjectResult(new { loginSuccessful = true }); // TODO return some auth access token for our website?
             } else
             {
                 return new ObjectResult(new
@@ -48,33 +50,40 @@ namespace Herd.Web.Controllers
             }
         }
 
+        /**
+         * Login with the User supplied OAuth token 
+         */
         [HttpPost("[action]")]
         public async Task<IActionResult> LoginWithOAuthToken([FromBody] JObject body)
         {
             var oAuthToken = body["oAuthToken"].Value<string>();
             var instance = body["instance"].Value<string>();
 
+            MastodonApiWrapper.UserApiToken = oAuthToken;
+            MastodonApiWrapper.HostInstance = instance;
             try
             {
                 await MastodonApiWrapper.LoginWithOAuthToken(instance, oAuthToken);
-                // Get Mastodon User 
                 var mastodonUser = await MastodonApiWrapper.GetUserAccount();
-                // Update ActiveUser with Mastodon user?
-                UpdateActiveUser(mastodonUser, oAuthToken);
-                return Ok(new { successful = true });
+                UpdateActiveUser(mastodonUser, instance, oAuthToken); // Update ActiveUser with Mastodon user?
+                return Ok(new { successful = true }); // TODO return some auth access token for our website?
             } catch (Exception)
             {
-                return BadRequest("Invalid API Token");
+                return BadRequest("Invalid Authentication");
             }
         }
 
-        public void UpdateActiveUser(Account mastodonAccount, string oAuthToken = null)
+        #region Helper Methods
+        public void UpdateActiveUser(Account mastodonAccount, string instance, string oAuthToken)
         {
-            
-            ActiveUser.UserName = mastodonAccount.UserName;
-            ActiveUser.ID = mastodonAccount.Id;
-            ActiveUser.ApiAccessToken = oAuthToken;
-            HerdApp.Instance.Data.UpdateUser(ActiveUser);
+            HerdApp.Instance.Data.UpdateUser(new HerdUserDataModel
+            {
+                ID = mastodonAccount.Id,
+                MastodonInstanceHost = instance,
+                UserName = mastodonAccount.UserName,
+                ApiAccessToken = oAuthToken,
+            }, $"{instance}@{mastodonAccount.UserName}");
         }
+        #endregion
     }
 }
