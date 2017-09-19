@@ -39,6 +39,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\home\home.component.spec.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\notifications\notifications.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\profile\profile.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\services\auth-guard.service.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

@@ -35,12 +35,8 @@ export class LoginComponent {
 
     submitOauthToken(form: NgForm) {
         this.mastodonService.OAuth_Return(form.value.oauth_token).then(response => {
-            var headers = response.headers;
-            if (headers) {
-                var setCookieHeader = headers.get("set-cookie");
-                console.log("Set Cookie Header", setCookieHeader);
-                this.router.navigateByUrl('/home');
-            }
+            localStorage.setItem("session", "true");
+            this.router.navigateByUrl('/home');
         }, error => {
             this.showSubmitOAuthTokenForm = false;
             this.loginErrorMessage = "Failure logging in, try again.";
@@ -49,6 +45,7 @@ export class LoginComponent {
 
     logout() {
         this.mastodonService.Logout().then(data => {
+            localStorage.removeItem("session");
             this.router.navigateByUrl('/login');
         });
     }

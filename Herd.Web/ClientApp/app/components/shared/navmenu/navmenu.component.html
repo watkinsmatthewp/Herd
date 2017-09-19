@@ -10,7 +10,7 @@
             <a class='navbar-brand' [routerLink]="['/login']">Herd</a>
         </div>
         <div class='clearfix'></div>
-        <div class='navbar-collapse collapse'>
+        <div *ngIf="authenticated" class='navbar-collapse collapse'>
             <ul class='nav navbar-nav'>
                 <li [routerLinkActive]="['link-active']"><a [routerLink]="['/home']"><span class='glyphicon glyphicon-home'></span> Home</a></li>
                 <li [routerLinkActive]="['link-active']"><a [routerLink]="['/localfeed']"><span class='glyphicon glyphicon-blackboard'></span> Local Feed</a></li>
@@ -22,5 +22,8 @@
                 <li><a><span class='glyphicon glyphicon-pencil'></span> Toot</a></li>
             </ul>
         </div>
+    </div>
+    <div>
+        <button class="btn btn-primary" (click)="authenticated = !authenticated">{{authenticated}}</button>
     </div>
 </div>
