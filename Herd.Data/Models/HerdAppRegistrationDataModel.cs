@@ -6,7 +6,7 @@ namespace Herd.Data.Models
 {
     public interface IHerdAppRegistrationDataModel : IHerdDataModel
     {
-        string RedirectUri { get; }
+        int RegistrationID { get; }
         string ClientId { get; }
         string ClientSecret { get; }
         string Instance { get; }
@@ -14,7 +14,7 @@ namespace Herd.Data.Models
 
     public class HerdAppRegistrationDataModel : HerdDataModel, IHerdAppRegistrationDataModel
     {
-        public string RedirectUri { get; set; }
+        public int RegistrationID { get; set; }
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }
         public string Instance { get; set; }

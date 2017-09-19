@@ -4,11 +4,14 @@ using System.Text;
 using Herd.Data.Models;
 using System.IO;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace Herd.Data.Providers
 {
     public class HerdFileDataProvider : HerdKeyValuePairDataProvider
     {
+        public static string FILE_EXTENSION = ".json";
+
         public HerdFileDataProvider()
             : base(GetOrCreateRootDataFolder(), Path.DirectorySeparatorChar.ToString())
         {
@@ -24,30 +27,37 @@ namespace Herd.Data.Providers
             return rootDataFolder;
         }
 
-        protected override string ReadKey(string key, string autoCreateValue = null)
+        protected override string ReadKey(string key)
         {
-            try
-            {
-                return File.ReadAllText(key + ".json");
-            }
-            catch (FileNotFoundException) when (autoCreateValue != null)
-            {
-                WriteKey(key, autoCreateValue);
-                return autoCreateValue;
-            }
+            return File.ReadAllText($"{key}{FILE_EXTENSION}");
         }
 
         protected override void WriteKey(string key, string value)
         {
-            var dir = Path.GetDirectoryName(key);
-            if (!Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
+            AutoCreateParentDirectory(key);
+            File.WriteAllText($"{key}{FILE_EXTENSION}", value);
+        }
 
-            // This deserialises into a temp object just to parse it back into 
-            // JSON BUT it formats it pretty in the output file. My eyes are happier.
-            File.WriteAllText(key + ".json", JsonConvert.SerializeObject(JsonConvert.DeserializeObject(value), Formatting.Indented));
+        protected override IEnumerable<string> GetAllKeys(string rootKey)
+        {
+            AutoCreateDirectory(rootKey);
+            foreach (var fileName in Directory.EnumerateFiles(rootKey).Where(f => f.EndsWith(FILE_EXTENSION)))
+            {
+                yield return fileName.Substring(0, fileName.Length - FILE_EXTENSION.Length);
+            }
+        }
+
+        private static void AutoCreateParentDirectory(string key)
+        {
+            AutoCreateDirectory(Path.GetDirectoryName(key));
+        }
+
+        private static void AutoCreateDirectory(string directory)
+        {
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
         }
     }
 }

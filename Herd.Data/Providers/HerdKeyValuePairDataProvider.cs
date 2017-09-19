@@ -2,6 +2,8 @@
 using Herd.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Herd.Data.Providers
@@ -25,10 +27,12 @@ namespace Herd.Data.Providers
         {
             return GetEntity<HerdUserDataModel>(id);
         }
-        public HerdUserDataModel GetUser(string key)
+
+        public HerdUserDataModel GetUser(string username, string instance)
         {
-            return GetEntity<HerdUserDataModel>(key);
+            return GetEntity<HerdUserDataModel>(u => u.UserName == username && u.MastodonInstanceHost == instance);
         }
+
         public HerdUserDataModel CreateUser(HerdUserDataModel user)
         {
             return CreateEntity(user);
@@ -38,29 +42,71 @@ namespace Herd.Data.Providers
         {
             UpdateEntity(user);
         }
-        public void UpdateUser(HerdUserDataModel user, string key)
-        {
-            UpdateEntity(user, key);
-        }
+
         #endregion
 
         #region AppRegistration
-        public HerdAppRegistrationDataModel GetAppRegistration(string instance) => GetEntity<HerdAppRegistrationDataModel>(instance);
 
-        public void UpdateAppRegistration(HerdAppRegistrationDataModel registration) => UpdateEntity(registration, registration.Instance);
+        public HerdAppRegistrationDataModel GetAppRegistration(long id)
+        {
+            return GetEntity<HerdAppRegistrationDataModel>(id);
+        }
+
+        public HerdAppRegistrationDataModel GetAppRegistration(string instance)
+        {
+            return GetEntity<HerdAppRegistrationDataModel>(r => r.Instance == instance);
+        }
+
+        public HerdAppRegistrationDataModel CreateAppRegistration(HerdAppRegistrationDataModel appRegistration)
+        {
+            return CreateEntity(appRegistration);
+        }
+
+        public void UpdateAppRegistration(HerdAppRegistrationDataModel appRegistration)
+        {
+            UpdateEntity(appRegistration);
+        }
+
         #endregion
 
         #region Abstract overrides
 
-        protected abstract string ReadKey(string key, string autoCreateValue = null);
+        protected abstract IEnumerable<string> GetAllKeys(string rootKey);
+        protected abstract string ReadKey(string key);
         protected abstract void WriteKey(string key, string value);
 
         #endregion
 
         #region Private helpers
+
+        private T GetEntity<T>(Func<T, bool> matches) where T : HerdDataModel
+        {
+            return GetAllEntities<T>().FirstOrDefault(matches);
+        }
+
+        private IEnumerable<T> GetAllEntities<T>() where T : HerdDataModel
+        {
+            var entityRootKey = BuildEntityRootKey<T>();
+            return GetAllKeys(entityRootKey)
+                .Select(key => GetEntity<T>(key));
+        }
+
         private T GetEntity<T>(long id) where T : HerdDataModel
         {
-            return ReadKey(BuildEntityKey<T>(id)).ParseJson<T>();
+            return GetEntity<T>(BuildEntityKey<T>(id));
+        }
+
+        private T GetEntity<T>(string key) where T : HerdDataModel
+        {
+            try
+            {
+                return ReadKey(key).ParseJson<T>();
+            }
+            catch
+            {
+                // Not found.
+                return null;
+            }
         }
 
         private T CreateEntity<T>(T entity) where T : HerdDataModel
@@ -68,8 +114,14 @@ namespace Herd.Data.Providers
             lock (_nexIdLock)
             {
                 var nextIdKey = BuildNextIdKey<T>();
-                entity.ID = int.Parse(ReadKey(nextIdKey, "1".SerializeAsJson()));
-                WriteKey(nextIdKey, (entity.ID + 1).SerializeAsJson());
+                string nextIdVal = null;
+                try { nextIdVal = ReadKey(nextIdKey); } catch { }
+                if (string.IsNullOrWhiteSpace(nextIdVal))
+                {
+                    nextIdVal = "1";
+                }
+                entity.ID = int.Parse(nextIdVal);
+                WriteKey(nextIdKey, (entity.ID + 1).SerializeAsJson(true));
             }
             UpdateEntity(entity);
             return entity;
@@ -77,12 +129,17 @@ namespace Herd.Data.Providers
 
         private void UpdateEntity<T>(T entity) where T : HerdDataModel
         {
-            WriteKey(BuildEntityKey<T>(entity.ID), entity.SerializeAsJson());
+            WriteKey(BuildEntityKey<T>(entity.ID), entity.SerializeAsJson(true));
         }
 
         private string BuildEntityKey<T>(long id) where T : HerdDataModel
         {
-            return string.Join(KeyDelimiter, KeyRoot, typeof(T).GetEntityName(), id);
+            return string.Join(KeyDelimiter, BuildEntityRootKey<T>(), id);
+        }
+
+        private string BuildEntityRootKey<T>() where T : HerdDataModel
+        {
+            return string.Join(KeyDelimiter, KeyRoot, typeof(T).GetEntityName());
         }
 
         private string BuildNextIdKey<T>()
@@ -90,21 +147,6 @@ namespace Herd.Data.Providers
             return string.Join(KeyDelimiter, KeyRoot, typeof(T).GetEntityName(), "NextID");
         }
 
-        private T GetEntity<T>(string id) where T : HerdDataModel
-        {
-            return ReadKey(BuildEntityKey<T>(id)).ParseJson<T>();
-        }
-
-        private T UpdateEntity<T>(T entity, string id) where T : HerdDataModel
-        {
-            WriteKey(BuildEntityKey<T>(id), entity.SerializeAsJson());
-            return entity;
-        }
-
-        private string BuildEntityKey<T>(string id) where T : HerdDataModel
-        {
-            return string.Join(KeyDelimiter, KeyRoot, typeof(T).GetEntityName(), id);
-        }
         #endregion
     }
 }

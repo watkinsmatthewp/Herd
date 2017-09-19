@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Herd.Web.Controllers
 {
     [Route("api/[controller]")]
-    public class RandomNumberApiController : BaseController
+    public class RandomNumberApiController : BaseApiController
     {
         private static readonly Random _rand = new Random(Guid.NewGuid().GetHashCode());
 

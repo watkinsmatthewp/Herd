@@ -7,83 +7,52 @@ using Herd.Business;
 using Newtonsoft.Json.Linq;
 using Mastonet.Entities;
 using Herd.Data.Models;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Herd.Web.Controllers
 {
-    [Route("api/[controller]")]
-    public class AuthApiController : BaseController
+    [Route("api/auth")]
+    public class AuthApiController : BaseApiController
     {
-        [HttpGet]
-        public IActionResult Logout()
+        protected override bool RequiresAuthentication(ActionExecutingContext context) => false;
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> oauth_url([FromBody] JObject body)
         {
-            // TODO Logout User
+            // Build the user from the login details and store it in the cookie
+            _activeUser = new Lazy<HerdUserDataModel>(new HerdUserDataModel
+            {
+                UserName = body["username"].Value<string>(),
+                MastodonInstanceHost = body["instance"].Value<string>()
+            });
+
+            SetActiveUserCookie(ActiveUser);
+
+            // Build the redirect URL to send to Mastodon's API
+            var redirectURL = RequestedURL.Contains("localhost")
+                ? "urn:ietf:wg:oauth:2.0:oob"
+                : RequestedURL.Replace(nameof(oauth_url), nameof(oauth_return));
+            
+            // Return the Mastodon OAuth URL
+            return new ObjectResult(new
+            {
+                url = MastodonApiWrapper.GetOAuthUrl(redirectURL)
+            });
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult oauth_return(string code)
+        {
+            ActiveUser.ApiAccessToken = code;
+            SetActiveUserCookie(ActiveUser);
             return Ok();
         }
 
-        /**
-         * Attempts to log the user in. If the user can not 
-         */
-        [HttpPost("[action]")]
-        public async Task<IActionResult> LoginToApp([FromBody] JObject body)
+        [HttpGet]
+        public IActionResult Logout()
         {
-            var username = body["username"].Value<string>();
-            var instance = body["instance"].Value<string>();
-            MastodonApiWrapper.HostInstance = instance;
-            await MastodonApiWrapper.SetAuthClientInstance(instance);
-
-            var loggedIn = await MastodonApiWrapper.LoginToApp(username, instance);
-            if (loggedIn)
-            {
-                var activeUser = await MastodonApiWrapper.GetUserAccount();
-                var mastodonUser = await MastodonApiWrapper.GetUserAccount();
-                UpdateActiveUser(mastodonUser, instance, MastodonApiWrapper.UserApiToken); // Update ActiveUser with Mastodon user?
-                return new ObjectResult(new { loginSuccessful = true }); // TODO return some auth access token for our website?
-            } else
-            {
-                return new ObjectResult(new
-                {
-                    loginSuccessful = false,
-                    url = await MastodonApiWrapper.GetOAuthUrl("urn:ietf:wg:oauth:2.0:oob", instance),
-                });
-            }
+            ClearActiveUser();
+            return Ok();
         }
-
-        /**
-         * Login with the User supplied OAuth token 
-         */
-        [HttpPost("[action]")]
-        public async Task<IActionResult> LoginWithOAuthToken([FromBody] JObject body)
-        {
-            var oAuthToken = body["oAuthToken"].Value<string>();
-            var instance = body["instance"].Value<string>();
-
-            MastodonApiWrapper.UserApiToken = oAuthToken;
-            MastodonApiWrapper.HostInstance = instance;
-            try
-            {
-                await MastodonApiWrapper.LoginWithOAuthToken(instance, oAuthToken);
-                var mastodonUser = await MastodonApiWrapper.GetUserAccount();
-                UpdateActiveUser(mastodonUser, instance, oAuthToken); // Update ActiveUser with Mastodon user?
-                return Ok(new { successful = true }); // TODO return some auth access token for our website?
-            } catch (Exception)
-            {
-                return BadRequest("Invalid Authentication");
-            }
-        }
-
-        #region Helper Methods
-        public void UpdateActiveUser(Account mastodonAccount, string instance, string oAuthToken)
-        {
-            HerdApp.Instance.Data.UpdateUser(new HerdUserDataModel
-            {
-                ID = mastodonAccount.Id,
-                MastodonInstanceHost = instance,
-                UserName = mastodonAccount.UserName,
-                ApiAccessToken = oAuthToken,
-            }, $"{instance}@{mastodonAccount.UserName}");
-        }
-        #endregion
     }
 }
