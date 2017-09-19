@@ -6,9 +6,9 @@ namespace Herd.Data.Models
 {
     public interface IHerdUserDataModel : IHerdDataModel
     {
-        string UserName { get; }
-        string MastodonInstanceHost { get; }
-        string ApiAccessToken { get; }
+        string UserName { get; set; }
+        string MastodonInstanceHost { get; set; }
+        string ApiAccessToken { get; set; }
     }
 
     public class HerdUserDataModel : HerdDataModel, IHerdUserDataModel

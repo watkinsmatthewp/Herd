@@ -1,0 +1,26 @@
+<div class='main-nav'>
+    <div class='navbar navbar-inverse'>
+        <div class='navbar-header'>
+            <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'>
+                <span class='sr-only'>Toggle navigation</span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+            </button>
+            <a class='navbar-brand' [routerLink]="['/login']">Herd</a>
+        </div>
+        <div class='clearfix'></div>
+        <div class='navbar-collapse collapse'>
+            <ul class='nav navbar-nav'>
+                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/home']"><span class='glyphicon glyphicon-home'></span> Home</a></li>
+                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/localfeed']"><span class='glyphicon glyphicon-blackboard'></span> Local Feed</a></li>
+                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/notifications']"><span class='glyphicon glyphicon-bell'></span> Notifications</a></li>
+                <!--Add more routes here -->
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/profile']"><span class='glyphicon glyphicon-user'></span> Profile</a></li>
+                <li><a><span class='glyphicon glyphicon-pencil'></span> Toot</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

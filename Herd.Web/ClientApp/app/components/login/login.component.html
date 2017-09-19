@@ -1,0 +1,38 @@
+﻿<div *ngIf="loginErrorMessage" class="text-center">
+    <h3>{{loginErrorMessage}}</h3>
+</div>
+
+<div class="container">
+    <div class="login">
+        <h2>Login to Herd</h2>
+        Click <a (click)="logout()">here</a> to logout. (For testing only right now)
+        <hr />
+
+        <div class="login-inner">
+            <form #loginForm="ngForm" (ngSubmit)="submitOAuthRequest(loginForm)" novalidate>
+                <input type="text" name="instanceRequest" class="form-control" ngModel required placeholder="<username>@<mastodon instance>" />
+                <input class="btn btn-block btn-lg btn-success submit" type="submit" value="Login">
+            </form>
+
+            <br />
+            <br />
+
+
+            <div *ngIf="oAuthUrl">
+                <h4>You haven't authorized our application yet.</h4>
+                <hr />
+                <div *ngIf="showSubmitOAuthTokenForm">
+                    <ol>
+                        <li>In the new <a href="{{oAuthUrl}}">tab</a>, login to the instance with your email and password.</li>
+                        <li>Authorize this web application to use your Herd data.</li>
+                        <li>Copy the special access token and paste it back on this page.</li>
+                    </ol>
+                    <form #oauth="ngForm" (ngSubmit)="submitOauthToken(oauth)" novalidate>
+                        <input type="text" name="oauth_token" class="form-control" ngModel required placeholder="access token">
+                        <input class="btn btn-block btn-lg btn-success submit" type="submit" value="Submit Access Token">
+                    </form>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
