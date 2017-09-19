@@ -17,7 +17,7 @@ namespace Herd.Web.Controllers
         protected override bool RequiresAuthentication(ActionExecutingContext context) => false;
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> oauth_url([FromBody] JObject body)
+        public IActionResult oauth_url([FromBody] JObject body)
         {
             // Build the user from the login details and store it in the cookie
             _activeUser = new Lazy<HerdUserDataModel>(new HerdUserDataModel
