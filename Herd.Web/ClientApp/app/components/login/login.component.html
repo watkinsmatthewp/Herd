@@ -5,10 +5,11 @@
 <div class="container">
     <div class="login">
         <h2>Login to Herd</h2>
+        Click <a (click)="logout()">here</a> to logout. (For testing only right now)
         <hr />
 
         <div class="login-inner">
-            <form #loginForm="ngForm" (ngSubmit)="submitInstaceRequest(loginForm)" novalidate>
+            <form #loginForm="ngForm" (ngSubmit)="submitOAuthRequest(loginForm)" novalidate>
                 <input type="text" name="instanceRequest" class="form-control" ngModel required placeholder="<username>@<mastodon instance>" />
                 <input class="btn btn-block btn-lg btn-success submit" type="submit" value="Login">
             </form>
@@ -19,13 +20,10 @@
 
             <div *ngIf="oAuthUrl">
                 <h4>You haven't authorized our application yet.</h4>
-                <a id="btnAuth" class="btn btn-block btn-lg btn-success submit" target="_blank" href="{{oAuthUrl}}" (click)="setShowOauthTokenForm(true)">
-                    Authorize
-                </a>
                 <hr />
                 <div *ngIf="showSubmitOAuthTokenForm">
                     <ol>
-                        <li>In the new tab, login to the instance with your email and password.</li>
+                        <li>In the new <a href="{{oAuthUrl}}">tab</a>, login to the instance with your email and password.</li>
                         <li>Authorize this web application to use your Herd data.</li>
                         <li>Copy the special access token and paste it back on this page.</li>
                     </ol>

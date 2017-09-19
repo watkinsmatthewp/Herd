@@ -17,7 +17,7 @@ namespace Herd.Web.Controllers
         protected override bool RequiresAuthentication(ActionExecutingContext context) => false;
 
         [HttpPost("[action]")]
-        public IActionResult oauth_url([FromBody] JObject body)
+        public IActionResult OAuth_Url([FromBody] JObject body)
         {
             // Build the user from the login details and store it in the cookie
             _activeUser = new Lazy<HerdUserDataModel>(new HerdUserDataModel
@@ -31,7 +31,7 @@ namespace Herd.Web.Controllers
             // Build the redirect URL to send to Mastodon's API
             var redirectURL = RequestedURL.Contains("localhost")
                 ? "urn:ietf:wg:oauth:2.0:oob"
-                : RequestedURL.Replace(nameof(oauth_url), nameof(oauth_return));
+                : RequestedURL.Replace(nameof(OAuth_Url), nameof(OAuth_Return));
             
             // Return the Mastodon OAuth URL
             return new ObjectResult(new
@@ -40,15 +40,15 @@ namespace Herd.Web.Controllers
             });
         }
 
-        [HttpGet("[action]")]
-        public IActionResult oauth_return(string code)
+        [HttpGet("[action]/{code}")]
+        public IActionResult OAuth_Return(string code)
         {
             ActiveUser.ApiAccessToken = code;
             SetActiveUserCookie(ActiveUser);
             return Ok();
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public IActionResult Logout()
         {
             ClearActiveUser();
