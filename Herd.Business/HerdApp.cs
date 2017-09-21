@@ -3,6 +3,8 @@ using Herd.Business.Models;
 using Herd.Business.Models.Errors;
 using Herd.Data.Providers;
 using System;
+using Herd.Business.Models.CommandResultData;
+using Herd.Business.Models.Commands;
 
 namespace Herd.Business
 {
@@ -14,6 +16,22 @@ namespace Herd.Business
 
         private HerdApp()
         {
+        }
+
+        public HerdAppCommandResult<HerdAppCreateUserCommandResultData> CreateUser(HerdAppCreateUserCommand createUserCommand)
+        {
+            return ProcessCommand<HerdAppCreateUserCommandResultData>(result =>
+            {
+                throw new NotImplementedException();
+            });
+        }
+
+        public HerdAppCommandResult<HerdAppLoginUserCommandResultData> LoginUser(HerdAppLoginUserCommand loginUserCommand)
+        {
+            return ProcessCommand<HerdAppLoginUserCommandResultData>(result =>
+            {
+                throw new NotImplementedException();
+            });
         }
 
         #region Private helpers
