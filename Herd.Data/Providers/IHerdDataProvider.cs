@@ -5,7 +5,7 @@ namespace Herd.Data.Providers
     public interface IHerdDataProvider
     {
         HerdUserDataModel GetUser(long id);
-        HerdUserDataModel GetUser(string username, string instance);
+        HerdUserDataModel GetUser(string email);
         HerdUserDataModel CreateUser(HerdUserDataModel user);
         void UpdateUser(HerdUserDataModel user);
 

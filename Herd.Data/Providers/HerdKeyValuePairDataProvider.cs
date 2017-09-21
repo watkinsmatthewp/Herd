@@ -26,9 +26,9 @@ namespace Herd.Data.Providers
             return GetEntity<HerdUserDataModel>(id);
         }
 
-        public HerdUserDataModel GetUser(string email, string instance)
+        public HerdUserDataModel GetUser(string email)
         {
-            return GetEntity<HerdUserDataModel>(u => u.Email == email && u.MastodonInstanceHost == instance);
+            return GetEntity<HerdUserDataModel>(u => u.Email == email);
         }
 
         public HerdUserDataModel CreateUser(HerdUserDataModel user)

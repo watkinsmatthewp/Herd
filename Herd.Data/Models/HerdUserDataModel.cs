@@ -5,7 +5,8 @@ namespace Herd.Data.Models
         string FirstName { get; set; }
         string LastName { get; set; }
         string Email { get; set; }
-        string Password { get; set; }
+        long SaltKey { get; set; }
+        string SaltedPassword { get; set; }
         string MastodonInstanceHost { get; set; }
         string ApiAccessToken { get; set; }
     }
@@ -15,7 +16,8 @@ namespace Herd.Data.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; }
+        public long SaltKey { get; set; }
+        public string SaltedPassword { get; set; }
         public string MastodonInstanceHost { get; set; }
         public string ApiAccessToken { get; set; }
     }

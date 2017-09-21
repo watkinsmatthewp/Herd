@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Herd.Core
@@ -23,6 +25,16 @@ namespace Herd.Core
                 task.Wait();
             }
             return task.Result;
+        }
+
+        public static string Hashed(this string originalValue)
+        {
+            return Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(originalValue).Hashed());
+        }
+
+        public static byte[] Hashed(this byte[] originalValue)
+        {
+            return SHA256.Create().ComputeHash(originalValue);
         }
     }
 }
