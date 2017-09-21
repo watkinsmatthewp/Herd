@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
         })
 
         this.mastodonService.getHomeFeed().then(homeFeed => {
-            this.timelinePosts = homeFeed; // This is def wrong but I think the right format
+            //this.timelinePosts = homeFeed; // This is def wrong but I think the right format
         })
     }
 }

@@ -38,4 +38,10 @@ export class MastodonService {
 
     // Logout
     Logout() { return this.http.get('/api/auth/Logout').toPromise(); }
+
+    getHomeFeed() {
+        return this.http.get('api/HomeFeedApi/LoadHomeFeed')
+            .map(response => response.json() as Object) // as a FeedObject? Or something else? Or nothing??
+            .toPromise();
+    }
 }
