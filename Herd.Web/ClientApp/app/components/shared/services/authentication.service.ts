@@ -16,7 +16,15 @@ export class AuthenticationService {
         return false; // not logged in
     }
 
-    login(username: string, password: string) {
+    login(email: string, password: string) {
+        let user = {
+            id: 0,
+            email: email,
+            password: password,
+        };
+        this.localStorage.setItem('currentUser', JSON.stringify(user));
+        return user;
+        /**
         return this.http.post('/api/authenticate', JSON.stringify({ username: username, password: password }))
             .map((response: Response) => {
                 // login successful if there's a jwt token in the response
@@ -27,6 +35,7 @@ export class AuthenticationService {
                 }
                 return user;
             });
+        */
     }
 
     logout() {

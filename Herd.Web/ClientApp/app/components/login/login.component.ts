@@ -31,6 +31,12 @@ export class LoginComponent implements OnInit {
 
     login() {
         this.loading = true;
+        let user = this.authenticationService.login(this.model.email, this.model.password);
+        this.loading = false;
+        this.alertService.success("Successfully Logged in as " + user.email, true);
+        this.router.navigateByUrl('/home');
+
+        /**
         this.authenticationService.login(this.model.username, this.model.password)
             .subscribe(
             data => {
@@ -40,5 +46,6 @@ export class LoginComponent implements OnInit {
                 this.alertService.error(error);
                 this.loading = false;
             });
+        */
     }
 }
