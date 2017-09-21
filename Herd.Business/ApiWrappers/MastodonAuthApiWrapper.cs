@@ -1,16 +1,16 @@
-using System;
-using System.Threading.Tasks;
 using Herd.Data.Models;
 using Mastonet;
 using Mastonet.Entities;
+using System;
+using System.Threading.Tasks;
 
 namespace Herd.Business
 {
     public partial class MastodonApiWrapper : IMastodonApiWrapper
     {
         private const Scope ALL_SCOPES = Scope.Read | Scope.Write | Scope.Follow;
-        
-        private Lazy<AuthenticationClient> _authClient = null;
+
+        private Lazy<AuthenticationClient> _authClient;
         private AuthenticationClient AuthClient => _authClient.Value;
 
         #region Public methods
@@ -27,13 +27,13 @@ namespace Herd.Business
             };
         }
 
-        public async Task<Account> GetUserAccount() => await ApiClient.GetCurrentUser();
+        public Task<Account> GetUserAccount() => ApiClient.GetCurrentUser();
 
         public string GetOAuthUrl(string redirectURL = null) => GetOAuthUrl(AuthClient, redirectURL);
 
         public static string GetOAuthUrl(string instance, string redirectURL = null) => GetOAuthUrl(new AuthenticationClient(instance), redirectURL);
 
-        #endregion
+        #endregion Public methods
 
         #region Private helper methods
 
@@ -67,6 +67,6 @@ namespace Herd.Business
             };
         }
 
-        #endregion
+        #endregion Private helper methods
     }
 }

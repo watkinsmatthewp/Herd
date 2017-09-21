@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Herd.Business
+﻿namespace Herd.Business
 {
     public static class Extensions
     {
