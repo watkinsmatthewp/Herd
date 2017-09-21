@@ -55,8 +55,8 @@ import { StorageService, BrowserStorage, ServerStorage } from "./components/shar
             // Account Settings
             { path: 'instance-picker', component: InstancePickerComponent },
             // TimeLines
-            { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
-            { path: 'localfeed', component: LocalFeedComponent, canActivate: [AuthGuard] },
+            { path: 'home', component: HomeComponent },
+            { path: 'localfeed', component: LocalFeedComponent },
             // Notification
             { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
             // Profile
