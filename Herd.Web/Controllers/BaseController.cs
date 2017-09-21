@@ -70,7 +70,7 @@ namespace Herd.Web.Controllers
         {
             if (user == null)
             {
-                ClearActiveUser();
+                ClearActiveUserCookie();
             }
             else
             {
@@ -78,7 +78,7 @@ namespace Herd.Web.Controllers
             }
         }
 
-        protected void ClearActiveUser()
+        protected void ClearActiveUserCookie()
         {
             Response.Cookies.Delete(USER_COOKIE_NAME);
         }
