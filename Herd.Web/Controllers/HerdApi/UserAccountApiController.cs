@@ -7,6 +7,7 @@ using Herd.Web.CustomAttributes;
 using Herd.Data.Models;
 using Newtonsoft.Json.Linq;
 using Herd.Business;
+using Herd.Business.Models.Commands;
 
 namespace Herd.Web.Controllers.HerdApi
 {
@@ -16,43 +17,30 @@ namespace Herd.Web.Controllers.HerdApi
         [HttpPost("register"), AuthenticationNotRequired]
         public IActionResult Register([FromBody] JObject body)
         {
-            var user = HerdApp.Instance.Data.CreateUser(new HerdUserDataModel
+            return new ObjectResult(HerdApp.Instance.CreateUser(new HerdAppCreateUserCommand
             {
                 Email = body["email"].Value<string>(),
                 FirstName = body["firstname"].Value<string>(),
                 LastName = body["lastname"].Value<string>(),
-                Password = body["password"].Value<string>(),
-            });
-            return Ok();
+                PasswordPlainText = body["password"].Value<string>()
+            }));
         }
 
         [HttpPost("login"), AuthenticationNotRequired]
         public IActionResult Login([FromBody] JObject body)
         {
-            _activeUser = new Lazy<HerdUserDataModel>(new HerdUserDataModel
+            var result = HerdApp.Instance.LoginUser(new HerdAppLoginUserCommand
             {
-                Email = body["username"].Value<string>(),
-                MastodonInstanceHost = body["instance"].Value<string>()
+                Email = body["email"].Value<string>(),
+                PasswordPlainText = body["instance"].Value<string>()
             });
 
-            // Validate passed in Auth
-            bool validAuth = true;
-
-
-            if (validAuth)
+            if (result.Success)
             {
-                SetActiveUserCookie(ActiveUser);
-            }
-            else
-            {
-                // send error message
+                SetActiveUserCookie(result.Data.User);
             }
 
-
-            return new ObjectResult(new
-            {
-
-            });
+            return new ObjectResult(result);
         }
 
         [HttpGet("logout")]

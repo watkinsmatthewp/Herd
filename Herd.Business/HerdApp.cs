@@ -5,11 +5,14 @@ using Herd.Data.Providers;
 using System;
 using Herd.Business.Models.CommandResultData;
 using Herd.Business.Models.Commands;
+using Herd.Data.Models;
 
 namespace Herd.Business
 {
     public class HerdApp : IHerdApp
     {
+        private static Random _saltGenerator = new Random(Guid.NewGuid().GetHashCode());
+
         public static HerdApp Instance { get; } = new HerdApp();
 
         public IHerdDataProvider Data { get; } = new HerdFileDataProvider();
@@ -22,7 +25,21 @@ namespace Herd.Business
         {
             return ProcessCommand<HerdAppCreateUserCommandResultData>(result =>
             {
-                throw new NotImplementedException();
+                var userByEmail = Data.GetUser(createUserCommand.Email);
+                if (userByEmail != null)
+                {
+                    throw new HerdAppUserErrorException("That email address has already been taken");
+                }
+
+                var saltKey = _saltGenerator.Next();
+                result.Data.User = Data.CreateUser(new HerdUserDataModel
+                {
+                    Email = createUserCommand.Email,
+                    FirstName = createUserCommand.FirstName,
+                    LastName = createUserCommand.LastName,
+                    SaltKey = saltKey,
+                    SaltedPassword = createUserCommand.PasswordPlainText.Hashed(saltKey)
+                });
             });
         }
 
@@ -30,7 +47,12 @@ namespace Herd.Business
         {
             return ProcessCommand<HerdAppLoginUserCommandResultData>(result =>
             {
-                throw new NotImplementedException();
+                var userByEmail = Data.GetUser(loginUserCommand.Email);
+                if (userByEmail?.PasswordIs(loginUserCommand.PasswordPlainText) != true)
+                {
+                    throw new HerdAppUserErrorException("Wrong email or password");
+                }
+                result.Data.User = userByEmail;
             });
         }
 
