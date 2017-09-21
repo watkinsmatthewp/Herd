@@ -2,8 +2,7 @@
 import { Http, Headers, RequestOptionsArgs, RequestOptions, RequestMethod } from '@angular/http';
 import 'rxjs/Rx';
 
-import { NumberObject } from '../model/NumberObject';
-declare var localStorage: any;
+import { NumberObject } from '../models/NumberObject';
 
 @Injectable()
 export class MastodonService {
@@ -14,12 +13,6 @@ export class MastodonService {
         return this.http.get('/api/RandomNumberApi/GetRandomNumber')
             .map(response => response.json() as NumberObject)
             .toPromise();
-    }
-
-    isAuthenticated(): boolean {
-        if (window.localStorage.getItem("session"))
-            return true;
-        return false;
     }
 
     // Get the OAuth Token

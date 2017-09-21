@@ -1,21 +1,20 @@
 ﻿import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { CanActivate } from '@angular/router';
+import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 // Import our authentication service
-import { MastodonService } from './mastodon.service';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-    constructor(private mastodonService: MastodonService, private router: Router) { }
+    constructor(private router: Router, private authService: AuthenticationService) { }
 
-    canActivate() {
-        // If the user is not logged in we'll send them back to the home page
-        if (!this.mastodonService.isAuthenticated()) {
-            this.router.navigateByUrl('/login');
-            return false;
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        if (this.authService.isAuthenticated()) {
+            return true;
         }
-        return true;
+        // not logged in so redirect to login page with the return url
+        this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+        return false;
     }
 
 }
