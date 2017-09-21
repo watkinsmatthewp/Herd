@@ -16,6 +16,7 @@ import { NavMenuComponent } from './components/shared/navmenu/navmenu.component'
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { RegisterComponent } from './components/register/register.component';
+import { PostComponent } from './components/post/post.component';
 // Services
 import { AlertService } from './components/shared/services/alert.service';
 import { AuthenticationService } from './components/shared/services/authentication.service';
@@ -40,6 +41,7 @@ import { StorageService, BrowserStorage, ServerStorage } from "./components/shar
         NotificationsComponent,
         ProfileComponent,
         RegisterComponent,
+        PostComponent,
         // Pipes
         SafePipe
     ],

@@ -14,12 +14,6 @@
     <iframe src="https://www.youtube.com/embed/bAojxWZRVKk" width="560" height="315" allowfullscreen></iframe>
 </div>
 
-<div class="container">
-    <div class="homefeed">
-        <div *ngFor='let post of timelinePosts'>
-            <ul>
-                <li>{{post}}</li>
-            </ul>
-        </div>
-    </div>
+<<div class="panel-body">
+    <post *ngFor="let post of homeFeed" [post]="post"></post>
 </div>

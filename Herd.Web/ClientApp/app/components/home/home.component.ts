@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MastodonService } from '../shared/services/mastodon.service';
+import { Post } from '../shared/models/Post';
 
 @Component({
     selector: 'home',
@@ -7,7 +8,9 @@ import { MastodonService } from '../shared/services/mastodon.service';
 })
 export class HomeComponent implements OnInit {
     randomInt: number;
-    timelinePosts: Object[]; // This is the best thing I could find so far for a list
+
+    // List of posts for the home feed
+    homeFeed: Post[];
 
     constructor(private mastodonService: MastodonService) {
     }
@@ -18,8 +21,9 @@ export class HomeComponent implements OnInit {
             this.randomInt = randomNum.numero;
         })
 
-        this.mastodonService.getHomeFeed().then(homeFeed => {
-            //this.timelinePosts = homeFeed; // This is def wrong but I think the right format
+        this.mastodonService.getHomeFeed()
+            .then(feed => {
+                this.homeFeed = feed;
         })
     }
 }

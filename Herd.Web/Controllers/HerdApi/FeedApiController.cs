@@ -14,12 +14,17 @@ namespace Herd.Web.Controllers
         [HttpGet("new_items")]
         public IActionResult NewItems()
         {
-            return new ObjectResult(new []
+            return new ObjectResult(new Post[]
             {
-                new { text = "Hello world!" },
-                new { text = "Another post" },
-                new { text = "Yet another post" }
+                new Post{ Text = "Hello, Morgan." },
+                new Post{ Text = "Another post" },
+                new Post{ Text = "Yet another post" }
             });
         }
+    }
+
+    public class Post
+    {
+        public string Text { get; set; }
     }
 }
