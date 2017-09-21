@@ -46,7 +46,7 @@ namespace Herd.Web.Controllers.HerdApi
         [HttpGet("logout")]
         public IActionResult Logout()
         {
-            this.ClearActiveUser();
+            ClearActiveUserCookie();
             return Ok();
         }
     }
