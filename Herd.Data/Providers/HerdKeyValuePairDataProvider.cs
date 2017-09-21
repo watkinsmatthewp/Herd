@@ -3,8 +3,6 @@ using Herd.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 
 namespace Herd.Data.Providers
 {
@@ -14,7 +12,7 @@ namespace Herd.Data.Providers
 
         protected string KeyRoot { get; private set; }
         protected string KeyDelimiter { get; private set; }
-        
+
         protected HerdKeyValuePairDataProvider(string keyRoot, string keyDelimiter)
         {
             KeyRoot = keyRoot;
@@ -43,7 +41,7 @@ namespace Herd.Data.Providers
             UpdateEntity(user);
         }
 
-        #endregion
+        #endregion Users
 
         #region AppRegistration
 
@@ -67,7 +65,7 @@ namespace Herd.Data.Providers
             UpdateEntity(appRegistration);
         }
 
-        #endregion
+        #endregion AppRegistration
 
         #region Abstract overrides
 
@@ -75,7 +73,7 @@ namespace Herd.Data.Providers
         protected abstract string ReadKey(string key);
         protected abstract void WriteKey(string key, string value);
 
-        #endregion
+        #endregion Abstract overrides
 
         #region Private helpers
 
@@ -147,6 +145,6 @@ namespace Herd.Data.Providers
             return string.Join(KeyDelimiter, KeyRoot, typeof(T).GetEntityName(), "NextID");
         }
 
-        #endregion
+        #endregion Private helpers
     }
 }
