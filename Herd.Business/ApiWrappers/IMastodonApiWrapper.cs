@@ -1,5 +1,5 @@
-using Mastonet.Entities;
 using Herd.Data.Models;
+using Mastonet.Entities;
 using System.Threading.Tasks;
 
 namespace Herd.Business
@@ -15,4 +15,3 @@ namespace Herd.Business
         string GetOAuthUrl(string redirectURL);
     }
 }
-
