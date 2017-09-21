@@ -16,6 +16,11 @@ export class AuthenticationService {
         return false; // not logged in
     }
 
+    /**
+     * GET /api/auth/Login
+     * @param email
+     * @param password
+     */
     login(email: string, password: string) {
         let user = {
             id: 0,
@@ -38,6 +43,9 @@ export class AuthenticationService {
         */
     }
 
+    /**
+     * GET /api/auth/Logout
+     */
     logout() {
         // remove user from local storage to log user out & log user out of backend
         localStorage.removeItem('currentUser');
@@ -45,23 +53,37 @@ export class AuthenticationService {
     }
 
     /**
-     * Get the OAuth Token
-     * GET /oauth/oauth_url?username={username}&instance={instance}
-     * Return: { "url": "https://mastodon.xyz/oauth/whatever?client_id={client_id}...&redirect_url={redirect_url}" }
+     * Get a oAuth token for the instance
+     * GET /api/oauth/url?instance={instance}
+     *
+     * @returns: { "url": "https://oAuthUrl.com" }
      */
     getOAuthUrl(instance: string) {
         let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
         let options = new RequestOptions({ headers: headers });
         let queryString = '?instance=' + instance;
 
-        return this.http.get('oauth/oauth_url' + queryString, options)
-            .map(response => response.json().url as string)
+        return this.http.get('api/oauth/url' + queryString, options)
+            .map(response => response.json())
+            .catch((error: any) => Observable.throw(error.statusText || 'Server error'));
     }
 
-    // Submit the OAuth Token
-    submitOAuthUrl(OAuthToken: string) {
+    /**
+     * Submit the OAuth Token
+     * POST /api/oauth/set_tokens
+     *
+     * @param instance
+     * @param token
+     */
+    submitOAuthToken(instance: string, token: string) {
         let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
         let options = new RequestOptions({ headers: headers });
-        return this.http.get('api/auth/OAuth_Return/' + OAuthToken, options).toPromise();
+        let body = {
+            'instance': instance,
+            'token': token
+        }
+        return this.http.post('api/oauth/set_tokens', body, options)
+            .map(response => response.json())
+            .catch((error: any) => Observable.throw(error.statusText || 'Server error'));
     }
 }

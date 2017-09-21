@@ -8,7 +8,6 @@ import { AuthenticationService } from '../shared/services/authentication.service
 @Component({
     selector: 'instance-picker',
     templateUrl: './instance-picker.component.html',
-    styleUrls: []
 })
 export class InstancePickerComponent {
     model: any = {};
@@ -23,32 +22,22 @@ export class InstancePickerComponent {
 
     getOAuthToken() {
         this.loading = true;
-
-        this.oAuthUrl = "https://google.com";
         this.authenticationService.getOAuthUrl(this.model.instance).subscribe(returnedOAuthUrl => {
             this.oAuthUrl = returnedOAuthUrl;
             window.open(returnedOAuthUrl, '_blank').focus();
         }, error => {
             this.alertService.error(error);
-            this.loading = false;
         });
-        /**
-        this.authenticationService.login(this.model.username, this.model.password)
-            .subscribe(
-            data => {
-                this.router.navigate([this.returnUrl]);
-            },
-            error => {
-                this.alertService.error(error);
-                this.loading = false;
-            });
-        */
         this.loading = false;
     }
 
     submitOAuthToken() {
         this.loading = true;
-        this.alertService.success("Successfully linked with " + this.model.instance, true);
-        this.router.navigate(['/login']); // TODO: this should be home
+        this.authenticationService.submitOAuthToken(this.model.instance, this.model.oAuthToken).subscribe(data => {
+            this.alertService.success("Successfully linked with " + this.model.instance, true);
+            this.router.navigate(['/home']);
+        }, error => {
+            this.alertService.error(error);
+        });
     }
 }
