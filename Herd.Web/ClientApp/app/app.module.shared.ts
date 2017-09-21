@@ -65,12 +65,7 @@ import { StorageService, BrowserStorage, ServerStorage } from "./components/shar
             { path: '**', redirectTo: 'home' }
         ])
     ],
-    providers: [AlertService, AuthenticationService, AuthGuard, MastodonService, UserService,
-        {
-            provide: StorageService,
-            useClass: isPlatformBrowser(PLATFORM_ID) ? BrowserStorage : ServerStorage
-        }
-    ]
+    providers: [AlertService, AuthenticationService, AuthGuard, MastodonService, UserService]
 })
 export class AppModuleShared {
 }
