@@ -14,41 +14,6 @@ namespace Herd.Web.Controllers.HerdApi
     {
         private const string NON_REDIRECT_URL = "urn:ietf:wg:oauth:2.0:oob";
 
-        [HttpPost("login"), AuthenticationNotRequired]
-        public IActionResult Login([FromBody] JObject body)
-        {
-            _activeUser = new Lazy<HerdUserDataModel>(new HerdUserDataModel
-            {
-                UserName = body["username"].Value<string>(),
-                MastodonInstanceHost = body["instance"].Value<string>()
-            });
-
-            // Validate passed in Auth
-            bool validAuth = true;
-
-
-            if (validAuth)
-            {
-                SetActiveUserCookie(ActiveUser);
-            } else
-            {
-                // send error message
-            }
-            
-
-            return new ObjectResult(new
-            {
-
-            });
-        }
-
-        [HttpGet("logout"), AuthenticationNotRequired]
-        public IActionResult Logout()
-        {
-            this.ClearActiveUser();
-            return Ok();
-        }
-
         [HttpGet("url")]
         public IActionResult GetMastodonInstanceOAuthURL(string instance)
         {
