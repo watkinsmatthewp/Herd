@@ -39,6 +39,7 @@ export class MastodonService {
     // Logout
     Logout() { return this.http.get('/api/auth/Logout').toPromise(); }
 
+    // Comment for testing pushes from GitKraken
     getHomeFeed() {
         return this.http.get('api/HomeFeedApi/LoadHomeFeed')
             .map(response => response.json() as Object) // as a FeedObject? Or something else? Or nothing??
