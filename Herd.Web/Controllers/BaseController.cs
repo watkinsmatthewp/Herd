@@ -83,7 +83,11 @@ namespace Herd.Web.Controllers
             Response.Cookies.Delete(USER_COOKIE_NAME);
         }
 
-        protected virtual IActionResult NotAuthorized() => RedirectToAction("Index", "Home");
+        protected virtual IActionResult NotAuthorized()
+        {
+            Response.StatusCode = 401;
+            return RedirectToAction("Index", "Home");
+        }
 
         private bool LoadIsAuthenticated() => !string.IsNullOrWhiteSpace(ActiveUser?.ApiAccessToken);
         private bool LoadRequireAuthentication() => (Request.HttpContext.Items["AllowAnonymous"] as bool?) != true;
