@@ -4,6 +4,7 @@
     password: string;
     firstName: string;
     lastName: string;
+    oAuthToken: string;
 
     constructor(){}
 }
