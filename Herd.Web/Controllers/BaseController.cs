@@ -7,6 +7,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Herd.Core;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Herd.Web.CustomAttributes;
 
 namespace Herd.Web.Controllers
 {
@@ -24,7 +26,15 @@ namespace Herd.Web.Controllers
         protected bool IsAuthenticated => _isAuthenticated.Value;
         protected IMastodonApiWrapper MastodonApiWrapper => _mastodonApiWrapper.Value;
 
-        protected virtual bool RequiresAuthentication(ActionExecutingContext context) => true;
+        protected virtual bool RequiresAuthentication(ActionExecutingContext context)
+        {
+            var controllerActionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
+            if (controllerActionDescriptor == null)
+            {
+                return true;
+            }
+            return !controllerActionDescriptor.MethodInfo.GetCustomAttributes(typeof(AuthenticationNotRequiredAttribute), true).Any();
+        }
 
         public BaseController()
         {

@@ -1,4 +1,5 @@
 ﻿using Herd.Data.Models;
+using Herd.Web.CustomAttributes;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
@@ -13,7 +14,7 @@ namespace Herd.Web.Controllers.HerdApi
     {
         private const string NON_REDIRECT_URL = "urn:ietf:wg:oauth:2.0:oob";
 
-        [HttpPost("login")]
+        [HttpPost("login"), AuthenticationNotRequired]
         public IActionResult Login([FromBody] JObject body)
         {
             _activeUser = new Lazy<HerdUserDataModel>(new HerdUserDataModel
@@ -41,7 +42,7 @@ namespace Herd.Web.Controllers.HerdApi
             });
         }
 
-        [HttpGet("logout")]
+        [HttpGet("logout"), AuthenticationNotRequired]
         public IActionResult Logout()
         {
             this.ClearActiveUser();
