@@ -22,13 +22,14 @@ export class InstancePickerComponent {
 
     getOAuthToken() {
         this.loading = true;
-        this.authenticationService.getOAuthUrl(this.model.instance).subscribe(returnedOAuthUrl => {
+        this.authenticationService.getOAuthUrl(this.model.instance)
+        .finally(() => this.loading = false)
+        .subscribe(returnedOAuthUrl => {
             this.oAuthUrl = returnedOAuthUrl;
             window.open(returnedOAuthUrl, '_blank').focus();
         }, error => {
             this.alertService.error(error);
         });
-        this.loading = false;
     }
 
     submitOAuthToken() {

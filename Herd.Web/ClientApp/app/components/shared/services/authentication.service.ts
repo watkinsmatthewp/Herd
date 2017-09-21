@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 
 import { StorageService } from '../models/Storage';
+import { User } from "../models/User";
 
 @Injectable()
 export class AuthenticationService {
@@ -17,39 +18,42 @@ export class AuthenticationService {
     }
 
     /**
-     * GET /api/auth/Login
-     * @param email
-     * @param password
+     * POST /api/account/register
      */
-    login(email: string, password: string) {
-        let user = {
-            id: 0,
-            email: email,
-            password: password,
-        };
-        this.localStorage.setItem('currentUser', JSON.stringify(user));
-        return user;
-        /**
-        return this.http.post('/api/authenticate', JSON.stringify({ username: username, password: password }))
-            .map((response: Response) => {
-                // login successful if there's a jwt token in the response
-                let user = response.json();
-                if (user && user.token) {
-                    // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify(user));
-                }
-                return user;
-            });
-        */
+    register(email: string, password: string, firstName: string, lastName: string) {
+        let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
+        let options = new RequestOptions({ headers: headers });
+        let body: User = new User(email, password, firstName, lastName)
+
+        return this.http.post('api/account/register', JSON.stringify(body), options)
+            .map(response => response.json())
+            .catch((error: any) => Observable.throw(error.statusText || 'Server error'));
     }
 
     /**
-     * GET /api/auth/Logout
+     * POST /api/account/login
+     *
+     * @returns : {AppUser Obj}
+     */
+    login(email: string, password: string) {
+        let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
+        let options = new RequestOptions({ headers: headers });
+        let body = {
+            'email': email,
+            'password': password
+        }
+        return this.http.post('api/account/login', body, options)
+            .map(response => response.json())
+            .catch((error: any) => Observable.throw(error.statusText || 'Server error'));
+    }
+
+    /**
+     * GET /api/account/logout
      */
     logout() {
         // remove user from local storage to log user out & log user out of backend
         localStorage.removeItem('currentUser');
-        return this.http.get('/api/auth/Logout').toPromise()
+        return this.http.get('api/account/Logout').toPromise()
     }
 
     /**
