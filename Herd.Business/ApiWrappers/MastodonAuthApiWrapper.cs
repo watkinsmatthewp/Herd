@@ -29,11 +29,18 @@ namespace Herd.Business
 
         public async Task<Account> GetUserAccount() => await ApiClient.GetCurrentUser();
 
-        public string GetOAuthUrl(string redirectURL) => AuthClient.OAuthUrl(redirectURL);
+        public string GetOAuthUrl(string redirectURL = null) => GetOAuthUrl(AuthClient, redirectURL);
+
+        public static string GetOAuthUrl(string instance, string redirectURL = null) => GetOAuthUrl(new AuthenticationClient(instance), redirectURL);
 
         #endregion
 
         #region Private helper methods
+
+        private static string GetOAuthUrl(AuthenticationClient authClient, string redirectURL)
+        {
+            return authClient.OAuthUrl(redirectURL);
+        }
 
         private AuthenticationClient LoadAuthenticationClient()
         {

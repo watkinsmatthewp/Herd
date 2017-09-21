@@ -11,33 +11,21 @@ namespace Herd.Web.Controllers.HerdApi
     [Route("api/oauth")]
     public class OAuthApiController : BaseApiController
     {
+        private const string NON_REDIRECT_URL = "urn:ietf:wg:oauth:2.0:oob";
+
         [HttpGet("url")]
-        public IActionResult GetMastodonInstanceOAuthURL(string username, string instance)
+        public IActionResult GetMastodonInstanceOAuthURL(string instance)
         {
-            // Build the user from the login details and store it in the cookie
-            _activeUser = new Lazy<HerdUserDataModel>(new HerdUserDataModel
-            {
-                UserName = username,
-                MastodonInstanceHost = instance
-            });
-
-            SetActiveUserCookie(ActiveUser);
-
-            // Build the redirect URL to send to Mastodon's API
-            var redirectURL = RequestedURL.Contains("localhost")
-                ? "urn:ietf:wg:oauth:2.0:oob"
-                : RequestedURL.Replace("url", "return");
-
-            // Return the Mastodon OAuth URL
             return new ObjectResult(new
             {
-                url = MastodonApiWrapper.GetOAuthUrl(redirectURL)
+                url = Business.MastodonApiWrapper.GetOAuthUrl(instance, NON_REDIRECT_URL)
             });
         }
 
-        [HttpPost("tokens")]
+        [HttpPost("set_tokens")]
         public IActionResult SetMastodonOAuthTokens([FromBody] JObject body)
         {
+            ActiveUser.MastodonInstanceHost = body["instance"].Value<string>();
             ActiveUser.ApiAccessToken = body["token"].Value<string>();
             SetActiveUserCookie(ActiveUser);
             return Ok();
