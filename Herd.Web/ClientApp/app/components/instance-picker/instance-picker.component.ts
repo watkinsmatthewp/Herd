@@ -14,7 +14,6 @@ export class InstancePickerComponent {
     model: any = {};
     loading = false;
     oAuthUrl: string;
-    instance: string;
 
     constructor(
         private route: ActivatedRoute,
@@ -26,6 +25,13 @@ export class InstancePickerComponent {
         this.loading = true;
 
         this.oAuthUrl = "https://google.com";
+        this.authenticationService.getOAuthUrl(this.model.instance).subscribe(returnedOAuthUrl => {
+            this.oAuthUrl = returnedOAuthUrl;
+            window.open(returnedOAuthUrl, '_blank').focus();
+        }, error => {
+            this.alertService.error(error);
+            this.loading = false;
+        });
         /**
         this.authenticationService.login(this.model.username, this.model.password)
             .subscribe(

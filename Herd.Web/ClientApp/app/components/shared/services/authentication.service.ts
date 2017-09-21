@@ -44,18 +44,18 @@ export class AuthenticationService {
         return this.http.get('/api/auth/Logout').toPromise()
     }
 
-    // Get the OAuth Token
-    getOAuthUrl(username: string, instance: string) {
+    /**
+     * Get the OAuth Token
+     * GET /oauth/oauth_url?username={username}&instance={instance}
+     * Return: { "url": "https://mastodon.xyz/oauth/whatever?client_id={client_id}...&redirect_url={redirect_url}" }
+     */
+    getOAuthUrl(instance: string) {
         let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
         let options = new RequestOptions({ headers: headers });
-        let body = JSON.stringify({
-            username: username,
-            instance: instance
-        });
+        let queryString = '?instance=' + instance;
 
-        return this.http.post('api/auth/OAuth_Url', body, options)
-            .map(response => response.json())
-            .toPromise();
+        return this.http.get('oauth/oauth_url' + queryString, options)
+            .map(response => response.json().url as string)
     }
 
     // Submit the OAuth Token
