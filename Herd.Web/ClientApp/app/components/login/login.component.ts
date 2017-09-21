@@ -1,52 +1,44 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
-import { MastodonService } from '../shared/services/mastodon.service';
+import { Router, ActivatedRoute } from '@angular/router';
+
+import { AlertService } from '../shared/services/alert.service';
+import { AuthenticationService } from '../shared/services/authentication.service';
 
 @Component({
     selector: 'login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.css']
+    styleUrls: []
 })
-export class LoginComponent {
-    loginErrorMessage: string = '';
-    username: string = '';
-    instance: string = '';
-    oAuthUrl: string = '';
-    showSubmitOAuthTokenForm: boolean = false;
+export class LoginComponent implements OnInit {
+    model: any = {};
+    loading = false;
+    returnUrl: string;
 
-    constructor(private mastodonService: MastodonService, private router: Router) {}
+    constructor(
+        private route: ActivatedRoute,
+        private router: Router,
+        private authenticationService: AuthenticationService,
+        private alertService: AlertService) { }
 
-    setShowOauthTokenForm(value: boolean) {
-        this.showSubmitOAuthTokenForm = value;
+    ngOnInit() {
+        // reset login status
+        this.authenticationService.logout();
+
+        // get return url from route parameters or default to '/'
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
-    submitOAuthRequest(form: NgForm) {
-        let instanceRequest = form.value.instanceRequest;
-        this.username = instanceRequest.split("@")[0];
-        this.instance = instanceRequest.split("@")[1];
-
-        this.mastodonService.OAuth_Url(this.username, this.instance).then(response => {
-            this.oAuthUrl = response.url;
-            window.open(this.oAuthUrl, '_blank').focus();
-            this.setShowOauthTokenForm(true);
-        });
-    }
-
-    submitOauthToken(form: NgForm) {
-        this.mastodonService.OAuth_Return(form.value.oauth_token).then(response => {
-            localStorage.setItem("session", "true");
-            this.router.navigateByUrl('/home');
-        }, error => {
-            this.showSubmitOAuthTokenForm = false;
-            this.loginErrorMessage = "Failure logging in, try again.";
-        });
-    }
-
-    logout() {
-        this.mastodonService.Logout().then(data => {
-            localStorage.removeItem("session");
-            this.router.navigateByUrl('/login');
-        });
+    login() {
+        this.loading = true;
+        this.authenticationService.login(this.model.username, this.model.password)
+            .subscribe(
+            data => {
+                this.router.navigate([this.returnUrl]);
+            },
+            error => {
+                this.alertService.error(error);
+                this.loading = false;
+            });
     }
 }

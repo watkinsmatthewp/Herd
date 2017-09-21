@@ -1,38 +1,20 @@
-﻿<div *ngIf="loginErrorMessage" class="text-center">
-    <h3>{{loginErrorMessage}}</h3>
-</div>
-
-<div class="container">
-    <div class="login">
-        <h2>Login to Herd</h2>
-        Click <a (click)="logout()">here</a> to logout. (For testing only right now)
-        <hr />
-
-        <div class="login-inner">
-            <form #loginForm="ngForm" (ngSubmit)="submitOAuthRequest(loginForm)" novalidate>
-                <input type="text" name="instanceRequest" class="form-control" ngModel required placeholder="<username>@<mastodon instance>" />
-                <input class="btn btn-block btn-lg btn-success submit" type="submit" value="Login">
-            </form>
-
-            <br />
-            <br />
-
-
-            <div *ngIf="oAuthUrl">
-                <h4>You haven't authorized our application yet.</h4>
-                <hr />
-                <div *ngIf="showSubmitOAuthTokenForm">
-                    <ol>
-                        <li>In the new <a href="{{oAuthUrl}}">tab</a>, login to the instance with your email and password.</li>
-                        <li>Authorize this web application to use your Herd data.</li>
-                        <li>Copy the special access token and paste it back on this page.</li>
-                    </ol>
-                    <form #oauth="ngForm" (ngSubmit)="submitOauthToken(oauth)" novalidate>
-                        <input type="text" name="oauth_token" class="form-control" ngModel required placeholder="access token">
-                        <input class="btn btn-block btn-lg btn-success submit" type="submit" value="Submit Access Token">
-                    </form>
-                </div>
-            </div> 
+﻿<div class="col-md-6 col-md-offset-3">
+    <h2>Login</h2>
+    <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !email.valid }">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" name="email" [(ngModel)]="model.email" #email="ngModel" required />
+            <div *ngIf="f.submitted && !email.valid" class="help-block">email is required</div>
         </div>
-    </div>
+        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel" required />
+            <div *ngIf="f.submitted && !password.valid" class="help-block">Password is required</div>
+        </div>
+        <div class="form-group">
+            <button [disabled]="loading || !f.valid" class="btn btn-primary">Login</button>
+            <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+            <a [routerLink]="['/register']" class="btn btn-link">Register</a>
+        </div>
+    </form>
 </div>
