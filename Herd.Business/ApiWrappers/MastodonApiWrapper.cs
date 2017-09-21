@@ -1,13 +1,6 @@
-﻿using Mastonet;
-using Mastonet.Entities;
-using Herd.Data.Models;
+﻿using Herd.Data.Models;
+using Mastonet;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Herd.Business
 {
@@ -15,18 +8,18 @@ namespace Herd.Business
     {
         #region Private member variables
 
-        private Lazy<MastodonClient> _apiClient = null;
+        private Lazy<MastodonClient> _apiClient;
         private MastodonClient ApiClient => _apiClient.Value;
 
-        #endregion
+        #endregion Private member variables
 
         #region Public properties
 
-        public string MastodonHostInstance { get; private set; }
+        public string MastodonHostInstance { get; }
         public HerdAppRegistrationDataModel AppRegistration { get; set; }
         public string UserApiToken { get; set; }
 
-        #endregion
+        #endregion Public properties
 
         #region Constructors
 
@@ -39,7 +32,6 @@ namespace Herd.Business
         public MastodonApiWrapper(HerdAppRegistrationDataModel registration)
             : this(registration, null)
         {
-
         }
 
         public MastodonApiWrapper(HerdAppRegistrationDataModel registration, string userApiToken)
@@ -52,7 +44,6 @@ namespace Herd.Business
             _apiClient = new Lazy<MastodonClient>(LoadMastodonClient);
         }
 
-        #endregion
+        #endregion Constructors
     }
 }
-

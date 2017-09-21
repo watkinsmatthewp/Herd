@@ -13,4 +13,9 @@
     <ProjectReference Include="..\Herd.Data\Herd.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\CommandResultData\" />
+    <Folder Include="Models\Commands\" />
+  </ItemGroup>
+
 </Project>
