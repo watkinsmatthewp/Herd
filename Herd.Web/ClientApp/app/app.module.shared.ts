@@ -1,9 +1,8 @@
-import { NgModule, PLATFORM_ID } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { Routes, RouterModule, CanActivate } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
 
 // Components
 import { AlertComponent } from './components/shared/alert/alert.component';
@@ -24,8 +23,6 @@ import { MastodonService } from './components/shared/services/mastodon.service';
 import { UserService } from './components/shared/services/user.service'
 // Pipes
 import { SafePipe } from './components/shared/pipes/safe.pipe';
-// Models
-import { StorageService, BrowserStorage, ServerStorage } from "./components/shared/models/Storage";
 
 @NgModule({
     declarations: [
