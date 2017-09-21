@@ -10,7 +10,7 @@ using Herd.Business;
 
 namespace Herd.Web.Controllers.HerdApi
 {
-    [Route("api/oauth")]
+    [Route("api/account")]
     public class UserAccountApiController : BaseApiController
     {
         [HttpPost("register"), AuthenticationNotRequired]
