@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MastodonService } from '../services/mastodon.service';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
     selector: 'nav-menu',
@@ -9,9 +9,9 @@ import { MastodonService } from '../services/mastodon.service';
 export class NavMenuComponent implements OnInit {
     authenticated: boolean = false;
 
-    constructor(private mastodonService: MastodonService) { }
+    constructor(private authService: AuthenticationService) { }
 
     ngOnInit(): void {
-        this.authenticated = this.mastodonService.isAuthenticated();
+        this.authenticated = this.authService.isAuthenticated();
     }
 }

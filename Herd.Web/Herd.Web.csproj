@@ -27,6 +27,7 @@
   <ItemGroup>
     <None Remove="ClientApp\app\components\home\home.component.spec.ts" />
     <None Remove="ClientApp\app\components\notifications\notifications.component.ts" />
+    <None Remove="ClientApp\app\components\shared\services\user.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,7 +40,12 @@
     <TypeScriptCompile Include="ClientApp\app\components\home\home.component.spec.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\notifications\notifications.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\profile\profile.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\models\Storage.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\models\User.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\services\alert.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\services\auth-guard.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\services\authentication.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\services\user.service.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
