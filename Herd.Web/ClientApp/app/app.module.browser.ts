@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppModuleShared } from './app.module.shared';
 import { AppComponent } from './components/app/app.component';
+import { StorageService, BrowserStorage } from "./components/shared/models/Storage";
 
 @NgModule({
     bootstrap: [ AppComponent ],
@@ -12,7 +13,8 @@ import { AppComponent } from './components/app/app.component';
         AppModuleShared
     ],
     providers: [
-        { provide: 'BASE_URL', useFactory: getBaseUrl }
+        { provide: 'BASE_URL', useFactory: getBaseUrl },
+        { provide: StorageService, useClass: BrowserStorage }
     ]
 })
 export class AppModule {

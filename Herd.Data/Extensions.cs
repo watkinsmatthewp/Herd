@@ -1,8 +1,6 @@
 ﻿using Herd.Data.Models;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Herd.Data

@@ -8,8 +8,7 @@ import { MastodonService } from '../shared/services/mastodon.service';
 export class HomeComponent implements OnInit {
     randomInt: number;
     
-    constructor(private mastodonService: MastodonService) {
-    }
+    constructor(private mastodonService: MastodonService) {}
 
     ngOnInit() {
         this.mastodonService.getRandomNumber().then(randomNum => {

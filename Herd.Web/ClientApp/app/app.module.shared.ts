@@ -1,9 +1,8 @@
-import { NgModule, PLATFORM_ID } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { Routes, RouterModule, CanActivate } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
 
 // Components
 import { AlertComponent } from './components/shared/alert/alert.component';
@@ -17,15 +16,15 @@ import { NotificationsComponent } from './components/notifications/notifications
 import { ProfileComponent } from './components/profile/profile.component';
 import { RegisterComponent } from './components/register/register.component';
 // Services
+import { AccountService } from './components/shared/services/account.service';
 import { AlertService } from './components/shared/services/alert.service';
 import { AuthenticationService } from './components/shared/services/authentication.service';
 import { AuthGuard } from './components/shared/services/auth-guard.service';
+import { HttpClientService } from './components/shared/services/http-client.service';
 import { MastodonService } from './components/shared/services/mastodon.service';
-import { UserService } from './components/shared/services/user.service'
+
 // Pipes
 import { SafePipe } from './components/shared/pipes/safe.pipe';
-// Models
-import { StorageService, BrowserStorage, ServerStorage } from "./components/shared/models/Storage";
 
 @NgModule({
     declarations: [
@@ -48,7 +47,7 @@ import { StorageService, BrowserStorage, ServerStorage } from "./components/shar
         HttpModule,
         FormsModule,
         RouterModule.forRoot([
-            { path: '', redirectTo: 'login', pathMatch: 'full' },
+            { path: '', redirectTo: 'home', pathMatch: 'full' },
             // Login, Register
             { path: 'login', component: LoginComponent },
             { path: 'register', component: RegisterComponent },
@@ -65,12 +64,7 @@ import { StorageService, BrowserStorage, ServerStorage } from "./components/shar
             { path: '**', redirectTo: 'home' }
         ])
     ],
-    providers: [AlertService, AuthenticationService, AuthGuard, MastodonService, UserService,
-        {
-            provide: StorageService,
-            useClass: isPlatformBrowser(PLATFORM_ID) ? BrowserStorage : ServerStorage
-        }
-    ]
+    providers: [AccountService, AlertService, AuthenticationService, AuthGuard, HttpClientService, MastodonService]
 })
 export class AppModuleShared {
 }

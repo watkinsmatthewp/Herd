@@ -5,16 +5,16 @@ namespace Herd.Business.App.Exceptions
 {
     public class HerdAppUserErrorException : HerdAppErrorException<HerdAppUserError>
     {
-        protected HerdAppUserErrorException()
+        public HerdAppUserErrorException()
         {
         }
 
-        protected HerdAppUserErrorException(string message)
+        public HerdAppUserErrorException(string message)
             : base(message)
         {
         }
 
-        protected HerdAppUserErrorException(string message, Exception innerException)
+        public HerdAppUserErrorException(string message, Exception innerException)
             : base(message, innerException)
         {
         }

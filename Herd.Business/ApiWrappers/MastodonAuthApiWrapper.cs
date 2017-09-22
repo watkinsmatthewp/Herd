@@ -9,8 +9,8 @@ namespace Herd.Business
     public partial class MastodonApiWrapper : IMastodonApiWrapper
     {
         private const Scope ALL_SCOPES = Scope.Read | Scope.Write | Scope.Follow;
-
-        private Lazy<AuthenticationClient> _authClient;
+        
+        private Lazy<AuthenticationClient> _authClient = null;
         private AuthenticationClient AuthClient => _authClient.Value;
 
         #region Public methods
@@ -27,17 +27,23 @@ namespace Herd.Business
             };
         }
 
-        public Task<Account> GetUserAccount() => ApiClient.GetCurrentUser();
+        public async Task<Account> GetUserAccount() => await ApiClient.GetCurrentUser();
 
         public string GetOAuthUrl(string redirectURL) => AuthClient.OAuthUrl(redirectURL);
 
-        #endregion Public methods
+        #endregion
 
         #region Private helper methods
 
-        private AuthenticationClient LoadAuthenticationClient()
+        private AuthenticationClient BuildMastodonAuthenticationClient()
         {
-            return AppRegistration == null ? new AuthenticationClient(MastodonHostInstance) : new AuthenticationClient(GetAppRegistration());
+            if (string.IsNullOrWhiteSpace(MastodonHostInstance))
+            {
+                throw new ArgumentException($"{nameof(MastodonHostInstance)} cannot be null or empty");
+            }
+            return AppRegistration == null
+                ? new AuthenticationClient(MastodonHostInstance)
+                : new AuthenticationClient(AppRegistration.ToMastodonAppRegistration());
         }
 
         private MastodonClient LoadMastodonClient()
@@ -60,6 +66,14 @@ namespace Herd.Business
             };
         }
 
-        #endregion Private helper methods
+        #endregion
     }
 }
+        private const Scope ALL_SCOPES = Scope.Read | Scope.Write | Scope.Follow;
+        public async Task<HerdAppRegistrationDataModel> RegisterApp() => (await BuildMastodonAuthenticationClient().CreateApp("Herd", ALL_SCOPES)).ToHerdAppRegistration();
+        public Task<Account> GetUserAccount() => BuildMastodonApiClient().GetCurrentUser();
+        public string GetOAuthUrl(string redirectURL = null) => BuildMastodonAuthenticationClient().OAuthUrl(redirectURL);
+
+        #endregion Public methods
+
+        #endregion Private helper methods
