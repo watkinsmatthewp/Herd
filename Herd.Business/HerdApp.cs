@@ -21,6 +21,17 @@ namespace Herd.Business
         {
         }
 
+        public HerdAppCommandResult<HerdAppGetUserCommandResultData> GetUser(HerdAppGetUserCommand getUserCommand)
+        {
+            return ProcessCommand<HerdAppGetUserCommandResultData>(result =>
+            {
+                result.Data = new HerdAppGetUserCommandResultData
+                {
+                    User = Data.GetUser(getUserCommand.UserID)
+                };
+            });
+        }
+
         public HerdAppCommandResult<HerdAppCreateUserCommandResultData> CreateUser(HerdAppCreateUserCommand createUserCommand)
         {
             return ProcessCommand<HerdAppCreateUserCommandResultData>(result =>
@@ -32,14 +43,17 @@ namespace Herd.Business
                 }
 
                 var saltKey = _saltGenerator.Next();
-                result.Data.User = Data.CreateUser(new HerdUserDataModel
+                result.Data = new HerdAppCreateUserCommandResultData
                 {
-                    Email = createUserCommand.Email,
-                    FirstName = createUserCommand.FirstName,
-                    LastName = createUserCommand.LastName,
-                    SaltKey = saltKey,
-                    SaltedPassword = createUserCommand.PasswordPlainText.Hashed(saltKey)
-                });
+                     User = Data.CreateUser(new HerdUserDataModel
+                     {
+                         Email = createUserCommand.Email,
+                         FirstName = createUserCommand.FirstName,
+                         LastName = createUserCommand.LastName,
+                         SaltKey = saltKey,
+                         SaltedPassword = createUserCommand.PasswordPlainText.Hashed(saltKey)
+                     })
+                };
             });
         }
 
@@ -52,7 +66,10 @@ namespace Herd.Business
                 {
                     throw new HerdAppUserErrorException("Wrong email or password");
                 }
-                result.Data.User = userByEmail;
+                result.Data = new HerdAppLoginUserCommandResultData
+                {
+                    User = userByEmail
+                };
             });
         }
 

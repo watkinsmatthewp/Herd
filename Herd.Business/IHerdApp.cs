@@ -9,6 +9,9 @@ namespace Herd.Business
     {
         IHerdDataProvider Data { get; }
 
+        // Basic CRUD
+        HerdAppCommandResult<HerdAppGetUserCommandResultData> GetUser(HerdAppGetUserCommand getUserCommand);
+        
         // Auth
         HerdAppCommandResult<HerdAppCreateUserCommandResultData> CreateUser(HerdAppCreateUserCommand createUserCommand);
         HerdAppCommandResult<HerdAppLoginUserCommandResultData> LoginUser(HerdAppLoginUserCommand loginUserCommand);

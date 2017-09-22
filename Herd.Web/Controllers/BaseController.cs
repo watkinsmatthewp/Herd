@@ -9,12 +9,13 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Herd.Core;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Herd.Web.CustomAttributes;
+using Herd.Business.Models.Commands;
 
 namespace Herd.Web.Controllers
 {
     public class BaseController : Controller
     {
-        protected const string USER_COOKIE_NAME = "HERD_USER";
+        protected const string USER_COOKIE_NAME = "HERD_USER_ID";
 
         protected Lazy<string> _requestedURL;
         protected Lazy<HerdUserDataModel> _activeUser;
@@ -74,7 +75,7 @@ namespace Herd.Web.Controllers
             }
             else
             {
-                Response.Cookies.Append(USER_COOKIE_NAME, user.SerializeAsJson(false));
+                Response.Cookies.Append(USER_COOKIE_NAME, $"{user.ID}|{user.ID.ToString().Hashed(user.SaltKey)}");
             }
         }
 
@@ -95,15 +96,16 @@ namespace Herd.Web.Controllers
 
         private HerdUserDataModel LoadActiveUser()
         {
-            var userCookieJson = Request.Cookies["HERD_USER"];
-            try
+            var userCookieComponents = Request.Cookies[USER_COOKIE_NAME]?.Split('|');
+            if (userCookieComponents.Length == 2 && !string.IsNullOrWhiteSpace(userCookieComponents[1]) && long.TryParse(userCookieComponents[0], out long userID))
             {
-                return userCookieJson.ParseJson<HerdUserDataModel>();
+                var userByID = HerdApp.Instance.GetUser(new HerdAppGetUserCommand { UserID = userID }).Data?.User;
+                if (userByID != null && userID.ToString().Hashed(userByID.SaltKey) == userCookieComponents[1])
+                {
+                    return userByID;
+                }
             }
-            catch
-            {
-                return null;
-            }
+            return null;
         }
 
         private IMastodonApiWrapper LoadMastodonApiWrapper()
