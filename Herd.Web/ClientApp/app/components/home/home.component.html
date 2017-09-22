@@ -3,8 +3,6 @@
     <h3>User's Home</h3>
 </div>
 
-
-
 <div class="panel-body">
-    <post *ngFor="let post of homeFeed" [post]="post"></post>
+    <post class="post" *ngFor="let post of homeFeed" [post]="post"></post>
 </div>

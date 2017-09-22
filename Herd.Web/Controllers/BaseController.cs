@@ -39,7 +39,7 @@ namespace Herd.Web.Controllers
             base.OnActionExecuting(context);
 
             // Authentication check
-            if (IsAuthenticated)
+            /* if (IsAuthenticated)
             {
                 // Parrot back the auth cookie
                 SetActiveUserCookie(ActiveUser);
@@ -49,7 +49,7 @@ namespace Herd.Web.Controllers
                 // Oh no you don't!
                 context.Result = NotAuthorized();
                 return;
-            }
+            } */
 
             // Set the ViewData collection to use in views
             ViewData["RequestedURL"] = RequestedURL;

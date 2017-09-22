@@ -16,9 +16,9 @@ namespace Herd.Web.Controllers
         {
             return new ObjectResult(new Post[]
             {
-                new Post{ Text = "Hello, Morgan." },
-                new Post{ Text = "Another post" },
-                new Post{ Text = "Yet another post" }
+                new Post{ Text = "Hello, Morgan.", Author = "Jacob" },
+                new Post{ Text = "Another post", Author = "Thomas" },
+                new Post{ Text = "Yet another post", Author = "Matthew" }
             });
         }
     }
@@ -26,5 +26,6 @@ namespace Herd.Web.Controllers
     public class Post
     {
         public string Text { get; set; }
+        public string Author { get; set; }
     }
 }
