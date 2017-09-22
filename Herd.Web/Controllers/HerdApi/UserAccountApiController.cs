@@ -32,7 +32,7 @@ namespace Herd.Web.Controllers.HerdApi
             var result = HerdApp.Instance.LoginUser(new HerdAppLoginUserCommand
             {
                 Email = body["email"].Value<string>(),
-                PasswordPlainText = body["instance"].Value<string>()
+                PasswordPlainText = body["password"].Value<string>()
             });
 
             if (result.Success)
