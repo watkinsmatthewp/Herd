@@ -40,7 +40,7 @@ namespace Herd.Web.Controllers
         public BaseController()
         {
             _requestedURL = new Lazy<string>(LoadRequestedURL);
-            _activeUser = new Lazy<HerdUserDataModel>(LoadActiveUser);
+            _activeUser = new Lazy<HerdUserDataModel>(LoadActiveUserFromCookie);
             _isAuthenticated = new Lazy<bool>(LoadIsAuthenticated);
             _mastodonApiWrapper = new Lazy<IMastodonApiWrapper>(LoadMastodonApiWrapper);
         }
@@ -94,7 +94,7 @@ namespace Herd.Web.Controllers
         private bool LoadRequireAuthentication() => (Request.HttpContext.Items["AllowAnonymous"] as bool?) != true;
         private string LoadRequestedURL() => $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
 
-        private HerdUserDataModel LoadActiveUser()
+        private HerdUserDataModel LoadActiveUserFromCookie()
         {
             var userCookieComponents = Request.Cookies[USER_COOKIE_NAME]?.Split('|');
             if (userCookieComponents.Length == 2 && !string.IsNullOrWhiteSpace(userCookieComponents[1]) && long.TryParse(userCookieComponents[0], out long userID))
