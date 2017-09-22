@@ -107,7 +107,7 @@ namespace Herd.Business
         {
             return ProcessCommand<HerdAppGetOAuthURLCommandResultData>(result =>
             {
-                var returnURL = string.IsNullOrWhiteSpace(getOAuthUrlCommand.ReturnURL) ? NON_REDIRECT_URL : getOAuthUrlCommand.ReturnURL
+                var returnURL = string.IsNullOrWhiteSpace(getOAuthUrlCommand.ReturnURL) ? NON_REDIRECT_URL : getOAuthUrlCommand.ReturnURL;
 
                 getOAuthUrlCommand.ApiWrapper.AppRegistration =
                     Data.GetAppRegistration(getOAuthUrlCommand.AppRegistrationID) ?? throw new HerdAppUserErrorException("No app registration with that ID");
