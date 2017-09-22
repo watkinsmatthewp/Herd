@@ -20,8 +20,8 @@ namespace Herd.Web.Controllers.HerdApi
             return new ObjectResult(HerdApp.Instance.CreateUser(new HerdAppCreateUserCommand
             {
                 Email = body["email"].Value<string>(),
-                FirstName = body["firstname"].Value<string>(),
-                LastName = body["lastname"].Value<string>(),
+                FirstName = body["firstName"].Value<string>(),
+                LastName = body["lastName"].Value<string>(),
                 PasswordPlainText = body["password"].Value<string>()
             }));
         }
