@@ -61,8 +61,7 @@ export class AuthenticationService {
      */
     logout() {
         // remove user from local storage to log user out & log user out of backend
-        localStorage.removeItem('currentUser');
-        localStorage.remoteItem('connectedToMastodon');
+        this.localStorage.clear();
         return this.http.get('api/account/Logout').toPromise()
     }
 
