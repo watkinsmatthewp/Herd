@@ -9,7 +9,7 @@ namespace Herd.Business
     {
         public static bool IsAuthenticated(this IMastodonApiWrapper apiWrapper) => !string.IsNullOrWhiteSpace(apiWrapper.UserApiToken);
 
-        public static bool PasswordIs(this IHerdUserDataModel user, string plainTextPassword) => user.SaltedPassword == plainTextPassword.Hashed(user.SaltKey);
+        public static bool PasswordIs(this IHerdUserAccountDataModel user, string plainTextPassword) => user.Security.SaltedPassword == plainTextPassword.Hashed(user.Security.SaltKey);
 
         public static string Hashed(this string passwordPlainText, long saltKey)
         {

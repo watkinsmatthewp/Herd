@@ -18,12 +18,12 @@ namespace Herd.Web.Controllers
         protected const string USER_COOKIE_NAME = "HERD_USER_ID";
 
         protected Lazy<string> _requestedURL;
-        protected Lazy<HerdUserDataModel> _activeUser;
+        protected Lazy<HerdUserAccountDataModel> _activeUser;
         protected Lazy<bool> _isAuthenticated;
         protected Lazy<IMastodonApiWrapper> _mastodonApiWrapper = null;
 
         protected string RequestedURL => _requestedURL.Value;
-        protected HerdUserDataModel ActiveUser => _activeUser.Value;
+        protected HerdUserAccountDataModel ActiveUser => _activeUser.Value;
         protected bool IsAuthenticated => _isAuthenticated.Value;
         protected IMastodonApiWrapper MastodonApiWrapper => _mastodonApiWrapper.Value;
 
@@ -40,7 +40,7 @@ namespace Herd.Web.Controllers
         public BaseController()
         {
             _requestedURL = new Lazy<string>(LoadRequestedURL);
-            _activeUser = new Lazy<HerdUserDataModel>(LoadActiveUserFromCookie);
+            _activeUser = new Lazy<HerdUserAccountDataModel>(LoadActiveUserFromCookie);
             _isAuthenticated = new Lazy<bool>(LoadIsAuthenticated);
             _mastodonApiWrapper = new Lazy<IMastodonApiWrapper>(LoadMastodonApiWrapper);
         }
@@ -67,7 +67,7 @@ namespace Herd.Web.Controllers
             ViewData["ActiveUser"] = ActiveUser;
         }
 
-        protected void SetActiveUserCookie(HerdUserDataModel user)
+        protected void SetActiveUserCookie(HerdUserAccountDataModel user)
         {
             if (user == null)
             {
@@ -75,7 +75,7 @@ namespace Herd.Web.Controllers
             }
             else
             {
-                Response.Cookies.Append(USER_COOKIE_NAME, $"{user.ID}|{user.ID.ToString().Hashed(user.SaltKey)}");
+                Response.Cookies.Append(USER_COOKIE_NAME, $"{user.ID}|{user.ID.ToString().Hashed(user.Security.SaltKey)}");
             }
         }
 
@@ -90,17 +90,17 @@ namespace Herd.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        private bool LoadIsAuthenticated() => !string.IsNullOrWhiteSpace(ActiveUser?.ApiAccessToken);
+        private bool LoadIsAuthenticated() => ActiveUser != null;
         private bool LoadRequireAuthentication() => (Request.HttpContext.Items["AllowAnonymous"] as bool?) != true;
         private string LoadRequestedURL() => $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
 
-        private HerdUserDataModel LoadActiveUserFromCookie()
+        private HerdUserAccountDataModel LoadActiveUserFromCookie()
         {
             var userCookieComponents = Request.Cookies[USER_COOKIE_NAME]?.Split('|');
             if (userCookieComponents?.Length == 2 && !string.IsNullOrWhiteSpace(userCookieComponents[1]) && long.TryParse(userCookieComponents[0], out long userID))
             {
                 var userByID = HerdApp.Instance.GetUser(new HerdAppGetUserCommand { UserID = userID }).Data?.User;
-                if (userByID != null && userID.ToString().Hashed(userByID.SaltKey) == userCookieComponents[1])
+                if (userByID != null && userID.ToString().Hashed(userByID.Security.SaltKey) == userCookieComponents[1])
                 {
                     return userByID;
                 }
@@ -111,13 +111,13 @@ namespace Herd.Web.Controllers
         private IMastodonApiWrapper LoadMastodonApiWrapper()
         {
             // See if there is an app registration for this instance in the DB
-            var appRegistration = HerdApp.Instance.Data.GetAppRegistration(ActiveUser.MastodonInstanceHost);
+            var appRegistration = HerdApp.Instance.Data.GetAppRegistration(ActiveUser.MastodonConnection.Instance);
             if (appRegistration == null)
             {
                 // Nope, we have to register
-                appRegistration = HerdApp.Instance.Data.CreateAppRegistration(new MastodonApiWrapper(ActiveUser.MastodonInstanceHost).RegisterApp().Synchronously());
+                appRegistration = HerdApp.Instance.Data.CreateAppRegistration(new MastodonApiWrapper(ActiveUser.MastodonConnection.Instance).RegisterApp().Synchronously());
             }
-            return new MastodonApiWrapper(appRegistration, ActiveUser.ApiAccessToken);
+            return new MastodonApiWrapper(appRegistration, ActiveUser.MastodonConnection.ApiAccessToken);
         }
     }
 }

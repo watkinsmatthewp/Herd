@@ -17,13 +17,21 @@ namespace Herd.Web.Controllers.HerdApi
         [HttpPost("register"), AuthenticationNotRequired]
         public IActionResult Register([FromBody] JObject body)
         {
-            return new ObjectResult(HerdApp.Instance.CreateUser(new HerdAppCreateUserCommand
+            var result = HerdApp.Instance.CreateUser(new HerdAppCreateUserCommand
             {
                 Email = body["email"].Value<string>(),
                 FirstName = body["firstName"].Value<string>(),
                 LastName = body["lastName"].Value<string>(),
                 PasswordPlainText = body["password"].Value<string>()
-            }));
+            });
+
+            // Visible to user. Only expose necessary fields
+            if (result.Data != null)
+            {
+                result.Data.User = ClearUnnecessaryOrSensitiveData(result.Data.User);
+            }
+
+            return new ObjectResult(result);
         }
 
         [HttpPost("login"), AuthenticationNotRequired]
@@ -40,6 +48,12 @@ namespace Herd.Web.Controllers.HerdApi
                 SetActiveUserCookie(result.Data.User);
             }
 
+            // Visible to user. Only expose necessary fields
+            if (result.Data != null)
+            {
+                result.Data.User = ClearUnnecessaryOrSensitiveData(result.Data.User);
+            }
+
             return new ObjectResult(result);
         }
 
@@ -49,5 +63,14 @@ namespace Herd.Web.Controllers.HerdApi
             ClearActiveUserCookie();
             return Ok();
         }
+
+        #region Private helpers
+
+        private HerdUserAccountDataModel ClearUnnecessaryOrSensitiveData(HerdUserAccountDataModel userAccount) => new HerdUserAccountDataModel
+        {
+            ID = userAccount.ID
+        };
+
+        #endregion
     }
 }

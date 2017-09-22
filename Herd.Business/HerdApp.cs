@@ -45,15 +45,24 @@ namespace Herd.Business
                 var saltKey = _saltGenerator.Next();
                 result.Data = new HerdAppCreateUserCommandResultData
                 {
-                     User = Data.CreateUser(new HerdUserDataModel
-                     {
-                         Email = createUserCommand.Email,
-                         FirstName = createUserCommand.FirstName,
-                         LastName = createUserCommand.LastName,
-                         SaltKey = saltKey,
-                         SaltedPassword = createUserCommand.PasswordPlainText.Hashed(saltKey)
-                     })
+                    User = Data.CreateUser(new HerdUserAccountDataModel
+                    {
+                        Email = createUserCommand.Email,
+                        Security = new HerdUserAccountSecurity
+                        {
+                            SaltKey = saltKey,
+                            SaltedPassword = createUserCommand.PasswordPlainText.Hashed(saltKey)
+                        }
+                    })
                 };
+                result.Data.Profile = Data.CreateProfile(new HerdUserProfileDataModel
+                {
+                    FirstName = createUserCommand.FirstName,
+                    LastName = createUserCommand.LastName,
+                    UserID = result.Data.User.ID
+                });
+                result.Data.User.ProfileID = result.Data.Profile.ID;
+                Data.UpdateUser(result.Data.User);
             });
         }
 

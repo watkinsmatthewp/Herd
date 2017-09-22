@@ -4,14 +4,21 @@ namespace Herd.Data.Providers
 {
     public interface IHerdDataProvider
     {
-        HerdUserDataModel GetUser(long id);
-        HerdUserDataModel GetUser(string email);
-        HerdUserDataModel CreateUser(HerdUserDataModel user);
-        void UpdateUser(HerdUserDataModel user);
-
+        // App registration
         HerdAppRegistrationDataModel GetAppRegistration(long id);
         HerdAppRegistrationDataModel GetAppRegistration(string instance);
-        HerdAppRegistrationDataModel CreateAppRegistration(HerdAppRegistrationDataModel registration);
-        void UpdateAppRegistration(HerdAppRegistrationDataModel registration);
+        HerdAppRegistrationDataModel CreateAppRegistration(HerdAppRegistrationDataModel appRegistration);
+        void UpdateAppRegistration(HerdAppRegistrationDataModel appRegistration);
+
+        // Users
+        HerdUserAccountDataModel GetUser(long id);
+        HerdUserAccountDataModel GetUser(string email);
+        HerdUserAccountDataModel CreateUser(HerdUserAccountDataModel user);
+        void UpdateUser(HerdUserAccountDataModel user);
+
+        // Profiles
+        HerdUserProfileDataModel GetProfile(long id);
+        HerdUserProfileDataModel CreateProfile(HerdUserProfileDataModel profile);
+        void UpdateProfile(HerdUserProfileDataModel profile);
     }
 }

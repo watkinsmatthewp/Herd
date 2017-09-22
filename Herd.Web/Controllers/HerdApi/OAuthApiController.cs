@@ -26,8 +26,11 @@ namespace Herd.Web.Controllers.HerdApi
         [HttpPost("set_tokens")]
         public IActionResult SetMastodonOAuthTokens([FromBody] JObject body)
         {
-            ActiveUser.MastodonInstanceHost = body["instance"].Value<string>();
-            ActiveUser.ApiAccessToken = body["token"].Value<string>();
+            ActiveUser.MastodonConnection = new HerdUserMastodonConnectionDetails
+            {
+                ApiAccessToken = body["token"].Value<string>(),
+                Instance = body["instance"].Value<string>()
+            };
             SetActiveUserCookie(ActiveUser);
             return Ok();
         }
