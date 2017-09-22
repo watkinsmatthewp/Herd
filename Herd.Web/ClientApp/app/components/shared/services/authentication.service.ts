@@ -3,12 +3,13 @@ import { Http, Headers, Response, RequestOptionsArgs, RequestOptions, RequestMet
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 
+import { HttpClientService } from '../services/http-client.service';
 import { StorageService } from '../models/Storage';
 import { User } from "../models/User";
 
 @Injectable()
 export class AuthenticationService {
-    constructor(private http: Http, private localStorage: StorageService) { }
+    constructor(private http: Http, private httpClient: HttpClientService, private localStorage: StorageService) { }
 
     checkIfConnectedToMastodon(): boolean {
         if (localStorage.getItem('connectedToMastodon') === "true") {
@@ -51,9 +52,17 @@ export class AuthenticationService {
             'email': email,
             'password': password
         }
+
+        /**
+        return this.httpClient.post('api/account/login', body, options)
+            .map(response => response.json())
+            .catch((error: any) => Observable.throw(error.statusText || 'Server error'));
+        */
+        
         return this.http.post('api/account/login', body, options)
             .map(response => response.json())
             .catch((error: any) => Observable.throw(error.statusText || 'Server error'));
+        
     }
 
     /**
