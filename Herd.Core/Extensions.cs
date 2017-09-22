@@ -29,7 +29,7 @@ namespace Herd.Core
 
         public static string Hashed(this string originalValue)
         {
-            return Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(originalValue).Hashed());
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(originalValue).Hashed());
         }
 
         public static byte[] Hashed(this byte[] originalValue)

@@ -86,6 +86,7 @@ namespace Herd.Data.Providers
         {
             var entityRootKey = BuildEntityRootKey<T>();
             return GetAllKeys(entityRootKey)
+                .Where(key => long.TryParse(key, out _))
                 .Select(key => GetEntity<T>(key));
         }
 
@@ -116,9 +117,9 @@ namespace Herd.Data.Providers
                 try { nextIdVal = ReadKey(nextIdKey); } catch { }
                 if (string.IsNullOrWhiteSpace(nextIdVal))
                 {
-                    nextIdVal = "1";
+                    nextIdVal = ((long)1).SerializeAsJson(true);
                 }
-                entity.ID = int.Parse(nextIdVal);
+                entity.ID = nextIdVal.ParseJson<long>();
                 WriteKey(nextIdKey, (entity.ID + 1).SerializeAsJson(true));
             }
             UpdateEntity(entity);
