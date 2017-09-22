@@ -97,7 +97,7 @@ namespace Herd.Web.Controllers
         private HerdUserDataModel LoadActiveUserFromCookie()
         {
             var userCookieComponents = Request.Cookies[USER_COOKIE_NAME]?.Split('|');
-            if (userCookieComponents.Length == 2 && !string.IsNullOrWhiteSpace(userCookieComponents[1]) && long.TryParse(userCookieComponents[0], out long userID))
+            if (userCookieComponents?.Length == 2 && !string.IsNullOrWhiteSpace(userCookieComponents[1]) && long.TryParse(userCookieComponents[0], out long userID))
             {
                 var userByID = HerdApp.Instance.GetUser(new HerdAppGetUserCommand { UserID = userID }).Data?.User;
                 if (userByID != null && userID.ToString().Hashed(userByID.SaltKey) == userCookieComponents[1])
