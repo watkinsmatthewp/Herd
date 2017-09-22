@@ -10,6 +10,16 @@ import { User } from "../models/User";
 export class AuthenticationService {
     constructor(private http: Http, private localStorage: StorageService) { }
 
+    checkIfConnectedToMastodon(): boolean {
+        if (localStorage.getItem('connectedToMastodon') === "true") {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks if a person is authenticated by checking their currentUser item in local storage
+     */
     isAuthenticated() {
         if (this.localStorage.getItem('currentUser')) {
             return true; //logged in
@@ -52,6 +62,7 @@ export class AuthenticationService {
     logout() {
         // remove user from local storage to log user out & log user out of backend
         localStorage.removeItem('currentUser');
+        localStorage.remoteItem('connectedToMastodon');
         return this.http.get('api/account/Logout').toPromise()
     }
 
