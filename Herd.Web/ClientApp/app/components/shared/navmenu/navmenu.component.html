@@ -11,8 +11,10 @@
             <a *ngIf="authService.isAuthenticated()" class='navbar-brand' [routerLink]="['/home']">Herd</a>
         </div>
         <div class='clearfix'></div>
-        <div *ngIf="authService.isAuthenticated()" class='navbar-collapse collapse'>
-            <ul class='nav navbar-nav'>
+
+        <!-- Logged in menu -->
+        <div *ngIf="authService.isAuthenticated() && authService.checkIfConnectedToMastodon()" class='navbar-collapse collapse'>
+            <ul *ngIf="localStorage.getItem('connectedToMastodon')" class='nav navbar-nav'>
                 <li [routerLinkActive]="['link-active']"><a [routerLink]="['/home']"><span class='glyphicon glyphicon-home'></span> Home</a></li>
                 <li [routerLinkActive]="['link-active']"><a [routerLink]="['/localfeed']"><span class='glyphicon glyphicon-blackboard'></span> Local Feed</a></li>
                 <li [routerLinkActive]="['link-active']"><a [routerLink]="['/notifications']"><span class='glyphicon glyphicon-bell'></span> Notifications</a></li>
@@ -29,9 +31,19 @@
                     </div>
                 </form>
             </div>
-            <ul class="nav navbar-nav navbar-right">
+            <ul  class="nav navbar-nav navbar-right">
                 <li [routerLinkActive]="['link-active']"><a [routerLink]="['/profile']"><span class='glyphicon glyphicon-user'></span> Profile</a></li>
                 <li><a><span class='glyphicon glyphicon-pencil'></span> Toot</a></li>
+                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/login']"><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Logged in but didn't pick instance -->
+        <div *ngIf="authService.isAuthenticated() && !authService.checkIfConnectedToMastodon()" class='navbar-collapse collapse'>
+            <ul class='nav navbar-nav'>
+                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/instance-picker']"><span class='glyphicon glyphicon-th-list'></span> Instance Picker</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
                 <li [routerLinkActive]="['link-active']"><a [routerLink]="['/login']"><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>
             </ul>
         </div>
