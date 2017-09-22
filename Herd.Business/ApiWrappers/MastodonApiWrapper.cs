@@ -1,18 +1,12 @@
 ﻿using Herd.Data.Models;
 using Mastonet;
+using Mastonet.Entities;
 using System;
 
 namespace Herd.Business
 {
     public partial class MastodonApiWrapper : IMastodonApiWrapper
     {
-        #region Private member variables
-
-        private Lazy<MastodonClient> _apiClient;
-        private MastodonClient ApiClient => _apiClient.Value;
-
-        #endregion Private member variables
-
         #region Public properties
 
         public string MastodonHostInstance { get; }
@@ -39,9 +33,26 @@ namespace Herd.Business
             AppRegistration = registration;
             MastodonHostInstance = AppRegistration?.Instance;
             UserApiToken = userApiToken;
+        }
 
-            _authClient = new Lazy<AuthenticationClient>(LoadAuthenticationClient);
-            _apiClient = new Lazy<MastodonClient>(LoadMastodonClient);
+        #endregion Constructors
+
+        #region Private helper methods
+
+        private MastodonClient BuildMastodonApiClient()
+        {
+            if (AppRegistration == null)
+            {
+                throw new ArgumentNullException(nameof(AppRegistration));
+            }
+            if (string.IsNullOrWhiteSpace(UserApiToken))
+            {
+                throw new ArgumentException($"{nameof(UserApiToken)} cannot be null or empty");
+            }
+            return new MastodonClient(AppRegistration.ToMastodonAppRegistration(), new Auth
+            {
+                AccessToken = UserApiToken
+            });
         }
 
         #endregion Constructors

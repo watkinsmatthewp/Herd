@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
@@ -6,12 +6,7 @@ import { AuthenticationService } from '../services/authentication.service';
     templateUrl: './navmenu.component.html',
     styleUrls: ['./navmenu.component.css']
 })
-export class NavMenuComponent implements OnInit {
-    authenticated: boolean = false;
+export class NavMenuComponent {
 
     constructor(private authService: AuthenticationService) { }
-
-    ngOnInit(): void {
-        this.authenticated = this.authService.isAuthenticated();
-    }
 }
