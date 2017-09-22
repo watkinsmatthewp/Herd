@@ -20,12 +20,11 @@ export class AuthenticationService {
     /**
      * POST /api/account/register
      */
-    register(email: string, password: string, firstName: string, lastName: string) {
+    register(user: User) {
         let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
         let options = new RequestOptions({ headers: headers });
-        let body: User = new User(email, password, firstName, lastName)
 
-        return this.http.post('api/account/register', JSON.stringify(body), options)
+        return this.http.post('api/account/register', JSON.stringify(user), options)
             .map(response => response.json())
             .catch((error: any) => Observable.throw(error.statusText || 'Server error'));
     }
