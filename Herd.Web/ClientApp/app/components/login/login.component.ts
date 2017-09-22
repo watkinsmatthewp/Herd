@@ -39,10 +39,10 @@ export class LoginComponent implements OnInit {
         this.authenticationService.login(this.model.email, this.model.password)
         .finally(() => this.loading = false)
         .subscribe(user => {
-            if (user && user.email && user.instance) {
+            if (user && user.email && !user.instance) {
                 this.localStorage.setItem('currentUser', JSON.stringify(user));
                 this.alertService.success("Successfully Logged", true);
-                this.router.navigateByUrl('/home');
+                this.router.navigateByUrl('/instance-picker');
             }
         }, error => {
             this.alertService.error(error);
