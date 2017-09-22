@@ -31,7 +31,7 @@ namespace Herd.Web.Controllers.HerdApi
                 result.Data.User = ClearUnnecessaryOrSensitiveData(result.Data.User);
             }
 
-            return new ObjectResult(result);
+            return ApiJson(result);
         }
 
         [HttpPost("login"), AuthenticationNotRequired]
@@ -54,7 +54,7 @@ namespace Herd.Web.Controllers.HerdApi
                 result.Data.User = ClearUnnecessaryOrSensitiveData(result.Data.User);
             }
 
-            return new ObjectResult(result);
+            return ApiJson(result);
         }
 
         [HttpGet("logout")]
@@ -68,7 +68,8 @@ namespace Herd.Web.Controllers.HerdApi
 
         private HerdUserAccountDataModel ClearUnnecessaryOrSensitiveData(HerdUserAccountDataModel userAccount) => new HerdUserAccountDataModel
         {
-            ID = userAccount.ID
+            ID = userAccount.ID,
+            ProfileID = userAccount.ProfileID
         };
 
         #endregion

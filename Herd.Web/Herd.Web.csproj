@@ -49,10 +49,6 @@
     <TypeScriptCompile Include="ClientApp\app\components\shared\services\user.service.ts" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\API\" />
-  </ItemGroup>
-
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">

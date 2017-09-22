@@ -17,7 +17,7 @@ namespace Herd.Web.Controllers.HerdApi
         [HttpGet("url")]
         public IActionResult GetMastodonInstanceOAuthURL(string instance)
         {
-            return new ObjectResult(new
+            return ApiJson(new
             {
                 url = Business.MastodonApiWrapper.GetOAuthUrl(instance, NON_REDIRECT_URL)
             });

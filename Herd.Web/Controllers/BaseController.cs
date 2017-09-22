@@ -90,6 +90,15 @@ namespace Herd.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        protected JsonResult ApiJson(object o, bool serializeNulls = false, bool indent = false)
+        {
+            return Json(o, new Newtonsoft.Json.JsonSerializerSettings
+            {
+                Formatting = indent ? Newtonsoft.Json.Formatting.Indented : Newtonsoft.Json.Formatting.None,
+                NullValueHandling = serializeNulls ? Newtonsoft.Json.NullValueHandling.Include : Newtonsoft.Json.NullValueHandling.Ignore
+            });
+        }
+
         private bool LoadIsAuthenticated() => ActiveUser != null;
         private bool LoadRequireAuthentication() => (Request.HttpContext.Items["AllowAnonymous"] as bool?) != true;
         private string LoadRequestedURL() => $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
