@@ -19,12 +19,12 @@ namespace Herd.Web.Controllers
 
         protected Lazy<string> _requestedURL;
         protected Lazy<HerdUserAccountDataModel> _activeUser;
-        protected Lazy<bool> _isAuthenticated;
-        protected Lazy<IMastodonApiWrapper> _mastodonApiWrapper = null;
+        protected Lazy<HerdAppRegistrationDataModel> _appRegistration;
+        protected Lazy<IMastodonApiWrapper> _mastodonApiWrapper;
 
         protected string RequestedURL => _requestedURL.Value;
         protected HerdUserAccountDataModel ActiveUser => _activeUser.Value;
-        protected bool IsAuthenticated => _isAuthenticated.Value;
+        protected HerdAppRegistrationDataModel AppRegistration => _appRegistration.Value;
         protected IMastodonApiWrapper MastodonApiWrapper => _mastodonApiWrapper.Value;
 
         protected virtual bool RequiresAuthentication(ActionExecutingContext context)
@@ -41,26 +41,25 @@ namespace Herd.Web.Controllers
         {
             _requestedURL = new Lazy<string>(LoadRequestedURL);
             _activeUser = new Lazy<HerdUserAccountDataModel>(LoadActiveUserFromCookie);
-            _isAuthenticated = new Lazy<bool>(LoadIsAuthenticated);
-            _mastodonApiWrapper = new Lazy<IMastodonApiWrapper>(LoadMastodonApiWrapper);
+            _appRegistration = new Lazy<HerdAppRegistrationDataModel>(LoadAppRegistrationFromActiveUser);
+            _mastodonApiWrapper = new Lazy<IMastodonApiWrapper>(LoadMastodonApiWrapperFromAppRegistration);
         }
+        
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
 
             // Authentication check
-            if (IsAuthenticated)
-            {
-                // Parrot back the auth cookie
-                SetActiveUserCookie(ActiveUser);
-            }
-            else if (RequiresAuthentication(context))
+            if (RequiresAuthentication(context) && User == null)
             {
                 // Oh no you don't!
                 context.Result = NotAuthorized();
                 return;
             }
+
+            // Parrot back the auth cookie
+            SetActiveUserCookie(ActiveUser);
 
             // Set the ViewData collection to use in views
             ViewData["RequestedURL"] = RequestedURL;
@@ -117,15 +116,19 @@ namespace Herd.Web.Controllers
             return null;
         }
 
-        private IMastodonApiWrapper LoadMastodonApiWrapper()
+        private HerdAppRegistrationDataModel LoadAppRegistrationFromActiveUser()
         {
-            // See if there is an app registration for this instance in the DB
-            var appRegistration = HerdApp.Instance.Data.GetAppRegistration(ActiveUser.MastodonConnection.AppRegistrationID);
-            if (appRegistration == null)
+            if (ActiveUser.MastodonConnection?.AppRegistrationID > 0)
             {
-                throw new NotImplementedException();
+                var result = HerdApp.Instance.GetRegistration(new HerdAppGetRegistrationCommand { ID = ActiveUser.MastodonConnection.AppRegistrationID });
+                return result.Data?.Registration;
             }
-            return new MastodonApiWrapper(appRegistration, ActiveUser.MastodonConnection.ApiAccessToken);
+            return null;
+        }
+
+        private IMastodonApiWrapper LoadMastodonApiWrapperFromAppRegistration()
+        {
+            return AppRegistration == null ? null : new MastodonApiWrapper(AppRegistration);
         }
     }
 }

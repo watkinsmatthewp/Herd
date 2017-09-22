@@ -14,8 +14,6 @@ namespace Herd.Web.Controllers.HerdApi
     [Route("api/oauth")]
     public class OAuthApiController : BaseApiController
     {
-        private const string NON_REDIRECT_URL = "urn:ietf:wg:oauth:2.0:oob";
-
         [HttpGet("registration_id")]
         public IActionResult GetAppRegistrationID(string instance)
         {
@@ -37,9 +35,14 @@ namespace Herd.Web.Controllers.HerdApi
         [HttpGet("url")]
         public IActionResult GetMastodonInstanceOAuthURL(long registrationID, string returnURL = null)
         {
+            var registration = HerdApp.Instance.GetRegistration(new HerdAppGetRegistrationCommand
+            {
+                ID = registrationID
+            }).Data.Registration;
+
             return ApiJson(HerdApp.Instance.GetOAuthURL(new HerdAppGetOAuthURLCommand
             {
-                ApiWrapper = MastodonApiWrapper,
+                ApiWrapper = new MastodonApiWrapper(registration),
                 AppRegistrationID = registrationID,
                 ReturnURL = returnURL
             }));

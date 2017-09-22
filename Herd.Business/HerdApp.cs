@@ -13,9 +13,11 @@ namespace Herd.Business
 {
     public class HerdApp : IHerdApp
     {
+        private const string NON_REDIRECT_URL = "urn:ietf:wg:oauth:2.0:oob";
+
         private static Random _saltGenerator = new Random(Guid.NewGuid().GetHashCode());
 
-        public static HerdApp Instance { get; } = new HerdApp();
+        public static IHerdApp Instance { get; } = new HerdApp();
 
         public IHerdDataProvider Data { get; } = new HerdFileDataProvider();
 
@@ -90,10 +92,23 @@ namespace Herd.Business
 
         #region App registration
 
+        public HerdAppCommandResult<HerdAppGetRegistrationCommandResultData> GetRegistration(HerdAppGetRegistrationCommand getRegistrationCommand)
+        {
+            return ProcessCommand<HerdAppGetRegistrationCommandResultData>(result =>
+            {
+                result.Data = new HerdAppGetRegistrationCommandResultData
+                {
+                    Registration = Data.GetAppRegistration(getRegistrationCommand.ID)
+                };
+            });
+        }
+
         public HerdAppCommandResult<HerdAppGetOAuthURLCommandResultData> GetOAuthURL(HerdAppGetOAuthURLCommand getOAuthUrlCommand)
         {
             return ProcessCommand<HerdAppGetOAuthURLCommandResultData>(result =>
             {
+                var returnURL = string.IsNullOrWhiteSpace(getOAuthUrlCommand.ReturnURL) ? NON_REDIRECT_URL : getOAuthUrlCommand.ReturnURL
+
                 getOAuthUrlCommand.ApiWrapper.AppRegistration =
                     Data.GetAppRegistration(getOAuthUrlCommand.AppRegistrationID) ?? throw new HerdAppUserErrorException("No app registration with that ID");
 
@@ -104,11 +119,11 @@ namespace Herd.Business
             });
         }
 
-        public HerdAppCommandResult<HerdAppGetOrCreateRegistrationCommandResultData> GetOrCreateRegistration(HerdAppGetOrCreateRegistrationCommand getOrCreateRegistrationCommand)
+        public HerdAppCommandResult<HerdAppGetRegistrationCommandResultData> GetOrCreateRegistration(HerdAppGetOrCreateRegistrationCommand getOrCreateRegistrationCommand)
         {
-            return ProcessCommand<HerdAppGetOrCreateRegistrationCommandResultData>(result =>
+            return ProcessCommand<HerdAppGetRegistrationCommandResultData>(result =>
             {
-                result.Data = new HerdAppGetOrCreateRegistrationCommandResultData
+                result.Data = new HerdAppGetRegistrationCommandResultData
                 {
                     Registration = Data.GetAppRegistration(getOrCreateRegistrationCommand.Instance)
                         ?? Data.CreateAppRegistration(getOrCreateRegistrationCommand.ApiWrapper.RegisterApp().Synchronously())

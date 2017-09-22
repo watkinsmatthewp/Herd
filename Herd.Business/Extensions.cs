@@ -1,5 +1,6 @@
 ﻿using Herd.Core;
 using Herd.Data.Models;
+using Mastonet.Entities;
 using System;
 using System.Linq;
 
@@ -17,5 +18,21 @@ namespace Herd.Business
             var mungedPassword = new string($"{passwordPlainText}{saltKey}".OrderBy(c => random.Next()).ToArray());
             return mungedPassword.Hashed();
         }
+
+        public static HerdAppRegistrationDataModel ToHerdAppRegistration(this AppRegistration mastodonAppRegistration) => new HerdAppRegistrationDataModel
+        {
+            ClientId = mastodonAppRegistration.ClientId,
+            ClientSecret = mastodonAppRegistration.ClientSecret,
+            MastodonAppRegistrationID = mastodonAppRegistration.Id,
+            Instance = mastodonAppRegistration.Instance
+        };
+
+        public static AppRegistration ToMastodonAppRegistration(this HerdAppRegistrationDataModel herdAppRegistration) => new AppRegistration
+        {
+            ClientId = herdAppRegistration.ClientId,
+            Id = herdAppRegistration.MastodonAppRegistrationID,
+            ClientSecret = herdAppRegistration.ClientSecret,
+            Instance = herdAppRegistration.Instance
+        };
     }
 }

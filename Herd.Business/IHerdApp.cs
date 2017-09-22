@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Herd.Business
 {
-    interface IHerdApp
+    public interface IHerdApp
     {
         IHerdDataProvider Data { get; }
 
@@ -14,7 +14,8 @@ namespace Herd.Business
         HerdAppCommandResult<HerdAppGetUserCommandResultData> GetUser(HerdAppGetUserCommand getUserCommand);
 
         // App registration
-        HerdAppCommandResult<HerdAppGetOrCreateRegistrationCommandResultData> GetOrCreateRegistration(HerdAppGetOrCreateRegistrationCommand getOrCreateRegistrationCommand);
+        HerdAppCommandResult<HerdAppGetRegistrationCommandResultData> GetRegistration(HerdAppGetRegistrationCommand getRegistrationCommand);
+        HerdAppCommandResult<HerdAppGetRegistrationCommandResultData> GetOrCreateRegistration(HerdAppGetOrCreateRegistrationCommand getOrCreateRegistrationCommand);
         HerdAppCommandResult<HerdAppGetOAuthURLCommandResultData> GetOAuthURL(HerdAppGetOAuthURLCommand getOAuthUrlCommand);
 
         // Auth

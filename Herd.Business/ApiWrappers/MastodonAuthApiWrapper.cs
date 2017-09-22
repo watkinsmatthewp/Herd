@@ -10,61 +10,25 @@ namespace Herd.Business
     {
         private const Scope ALL_SCOPES = Scope.Read | Scope.Write | Scope.Follow;
 
-        private Lazy<AuthenticationClient> _authClient;
-        private AuthenticationClient AuthClient => _authClient.Value;
-
         #region Public methods
 
-        public async Task<HerdAppRegistrationDataModel> RegisterApp()
-        {
-            var appRegistration = await AuthClient.CreateApp("Herd", ALL_SCOPES);
-            return new HerdAppRegistrationDataModel
-            {
-                ClientId = appRegistration.ClientId,
-                ClientSecret = appRegistration.ClientSecret,
-                MastodonAppRegistrationID = appRegistration.Id,
-                Instance = appRegistration.Instance
-            };
-        }
-
-        public Task<Account> GetUserAccount() => ApiClient.GetCurrentUser();
-
-        public string GetOAuthUrl(string redirectURL = null) => GetOAuthUrl(AuthClient, redirectURL);
-
-        public static string GetOAuthUrl(string instance, string redirectURL = null) => GetOAuthUrl(new AuthenticationClient(instance), redirectURL);
+        public async Task<HerdAppRegistrationDataModel> RegisterApp() => (await BuildMastodonAuthenticationClient().CreateApp("Herd", ALL_SCOPES)).ToHerdAppRegistration();
+        public Task<Account> GetUserAccount() => BuildMastodonApiClient().GetCurrentUser();
+        public string GetOAuthUrl(string redirectURL = null) => BuildMastodonAuthenticationClient().OAuthUrl(redirectURL);
 
         #endregion Public methods
 
         #region Private helper methods
 
-        private static string GetOAuthUrl(AuthenticationClient authClient, string redirectURL)
+        private AuthenticationClient BuildMastodonAuthenticationClient()
         {
-            return authClient.OAuthUrl(redirectURL);
-        }
-
-        private AuthenticationClient LoadAuthenticationClient()
-        {
-            return AppRegistration == null ? new AuthenticationClient(MastodonHostInstance) : new AuthenticationClient(GetAppRegistration());
-        }
-
-        private MastodonClient LoadMastodonClient()
-        {
-            return new MastodonClient(GetAppRegistration(), new Auth
+            if (string.IsNullOrWhiteSpace(MastodonHostInstance))
             {
-                AccessToken = UserApiToken
-            });
-        }
-
-        private AppRegistration GetAppRegistration()
-        {
-            return new AppRegistration
-            {
-                ClientId = AppRegistration.ClientId,
-                ClientSecret = AppRegistration.ClientSecret,
-                Id = AppRegistration.MastodonAppRegistrationID,
-                Instance = AppRegistration.Instance,
-                Scope = ALL_SCOPES
-            };
+                throw new ArgumentException($"{nameof(MastodonHostInstance)} cannot be null or empty");
+            }
+            return AppRegistration == null
+                ? new AuthenticationClient(MastodonHostInstance)
+                : new AuthenticationClient(AppRegistration.ToMastodonAppRegistration());
         }
 
         #endregion Private helper methods
