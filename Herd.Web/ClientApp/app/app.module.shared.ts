@@ -19,6 +19,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { AlertService } from './components/shared/services/alert.service';
 import { AuthenticationService } from './components/shared/services/authentication.service';
 import { AuthGuard } from './components/shared/services/auth-guard.service';
+import { HttpClientService } from './components/shared/services/http-client.service';
 import { MastodonService } from './components/shared/services/mastodon.service';
 import { UserService } from './components/shared/services/user.service'
 // Pipes
@@ -62,7 +63,7 @@ import { SafePipe } from './components/shared/pipes/safe.pipe';
             { path: '**', redirectTo: 'home' }
         ])
     ],
-    providers: [AlertService, AuthenticationService, AuthGuard, MastodonService, UserService]
+    providers: [AlertService, AuthenticationService, AuthGuard, HttpClientService, MastodonService, UserService]
 })
 export class AppModuleShared {
 }
