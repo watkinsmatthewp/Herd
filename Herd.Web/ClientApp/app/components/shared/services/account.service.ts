@@ -6,8 +6,9 @@ import { User } from '../models/User';
 
  
 @Injectable()
-export class UserService {
+export class AccountService {
     constructor(private http: Http) { }
+
 
 
 }

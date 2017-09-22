@@ -3,7 +3,6 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AlertService } from '../shared/services/alert.service';
-import { UserService } from '../shared/services/user.service';
 import { AuthenticationService } from '../shared/services/authentication.service';
 import { User } from '../shared/models/User';
 
@@ -25,7 +24,7 @@ export class RegisterComponent {
             .finally(() => this.loading = false)
             .subscribe(user => {
                 this.alertService.success('Registration successful', true);
-                this.router.navigateByUrl('/login', { queryParams: { email: this.model.email } });
+                this.router.navigate(['/login'], { queryParams: { email: this.model.email } });
             }, error => {
                 this.alertService.error(error);
             });
