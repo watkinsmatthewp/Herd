@@ -126,7 +126,7 @@ namespace Herd.Business
                 result.Data = new HerdAppGetRegistrationCommandResultData
                 {
                     Registration = Data.GetAppRegistration(getOrCreateRegistrationCommand.Instance)
-                        ?? Data.CreateAppRegistration(getOrCreateRegistrationCommand.ApiWrapper.RegisterApp().Synchronously())
+                        ?? Data.CreateAppRegistration(new MastodonApiWrapper(getOrCreateRegistrationCommand.Instance).RegisterApp().Synchronously())
                 };
             });
         }

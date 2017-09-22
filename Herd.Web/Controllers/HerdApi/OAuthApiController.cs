@@ -33,7 +33,7 @@ namespace Herd.Web.Controllers.HerdApi
         }
 
         [HttpGet("url")]
-        public IActionResult GetMastodonInstanceOAuthURL(long registrationID, string returnURL = null)
+        public IActionResult GetMastodonInstanceOAuthURL(long registrationID)
         {
             var registration = HerdApp.Instance.GetRegistration(new HerdAppGetRegistrationCommand
             {
@@ -43,8 +43,7 @@ namespace Herd.Web.Controllers.HerdApi
             return ApiJson(HerdApp.Instance.GetOAuthURL(new HerdAppGetOAuthURLCommand
             {
                 ApiWrapper = new MastodonApiWrapper(registration),
-                AppRegistrationID = registrationID,
-                ReturnURL = returnURL
+                AppRegistrationID = registrationID
             }));
         }
 
