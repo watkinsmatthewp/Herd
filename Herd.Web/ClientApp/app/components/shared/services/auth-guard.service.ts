@@ -12,7 +12,7 @@ export class AuthGuard implements CanActivate {
         if (this.authService.isAuthenticated()) {
             // Were authenticated but we didnt pick our instance yet
             if (!this.authService.checkIfConnectedToMastodon()) {
-                this.router.navigate(['/instance-picker']);
+                this.router.navigateByUrl('/instance-picker');
                 return false;
             }
             return true;

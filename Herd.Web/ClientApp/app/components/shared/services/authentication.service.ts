@@ -71,7 +71,7 @@ export class AuthenticationService {
     logout() {
         // remove user from local storage to log user out & log user out of backend
         this.localStorage.clear();
-        return this.http.get('api/account/Logout').toPromise()
+        return this.http.get('api/account/Logout').toPromise();
     }
 
     /**
@@ -80,12 +80,22 @@ export class AuthenticationService {
      *
      * @returns: { "url": "https://oAuthUrl.com" }
      */
-    getOAuthUrl(instance: string) {
+    getOAuthUrl(registrationId: number) {
+        let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
+        let options = new RequestOptions({ headers: headers });
+        let queryString = '?registrationID=' + registrationId;
+
+        return this.http.get('api/oauth/url' + queryString, options)
+            .map(response => response.json())
+            .catch((error: any) => Observable.throw(error.statusText || 'Server error'));
+    }
+
+    getRegistrationId(instance: string) {
         let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
         let options = new RequestOptions({ headers: headers });
         let queryString = '?instance=' + instance;
 
-        return this.http.get('api/oauth/url' + queryString, options)
+        return this.http.get('api/oauth/registration_id' + queryString, options)
             .map(response => response.json())
             .catch((error: any) => Observable.throw(error.statusText || 'Server error'));
     }
@@ -97,15 +107,15 @@ export class AuthenticationService {
      * @param instance
      * @param token
      */
-    submitOAuthToken(instance: string, token: string) {
+    submitOAuthToken(token: string, registrationID: number) {
         let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
         let options = new RequestOptions({ headers: headers });
         let body = {
-            'instance': instance,
-            'token': token
+            'token': token,
+            'app_registration_id': registrationID,
+            
         }
         return this.http.post('api/oauth/set_tokens', body, options)
-            .map(response => response.json())
             .catch((error: any) => Observable.throw(error.statusText || 'Server error'));
     }
 }

@@ -28,7 +28,7 @@ export class HttpClientService {
             .catch((error: any) => Observable.throw(error.statusText || 'Server error'));
     }
 
-    post<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<Response> {
+    post<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<any> {
         const newData = this.prepareData(data);
         let request = options != null ? this.http.post(url, newData, options) : this.http.post(url, newData);
         return request
@@ -36,14 +36,17 @@ export class HttpClientService {
             .catch((error: any) => Observable.throw(error.statusText || 'Server error'));
     }
 
+    /**
+     * Returns data if no error otherwise return exception
+     * @param res
+     */
     mapRequest(res: Response) {
         if (res) {
             let json = res.json();
             if (json.Success == false) {
                 return Observable.throw(new Error(json.errors));
-            }
-            else {
-                return res;
+            } else {
+                return json.Data;
             }
         }
     }

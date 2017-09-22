@@ -14,7 +14,7 @@
 
         <!-- Logged in menu -->
         <div *ngIf="authService.isAuthenticated() && authService.checkIfConnectedToMastodon()" class='navbar-collapse collapse'>
-            <ul *ngIf="localStorage.getItem('connectedToMastodon')" class='nav navbar-nav'>
+            <ul class='nav navbar-nav'>
                 <li [routerLinkActive]="['link-active']"><a [routerLink]="['/home']"><span class='glyphicon glyphicon-home'></span> Home</a></li>
                 <li [routerLinkActive]="['link-active']"><a [routerLink]="['/localfeed']"><span class='glyphicon glyphicon-blackboard'></span> Local Feed</a></li>
                 <li [routerLinkActive]="['link-active']"><a [routerLink]="['/notifications']"><span class='glyphicon glyphicon-bell'></span> Notifications</a></li>

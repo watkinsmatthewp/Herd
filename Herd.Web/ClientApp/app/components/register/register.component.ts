@@ -25,7 +25,7 @@ export class RegisterComponent {
             .finally(() => this.loading = false)
             .subscribe(user => {
                 this.alertService.success('Registration successful', true);
-                this.router.navigate(['/login'], { queryParams: { email: this.model.email } });
+                this.router.navigateByUrl('/login', { queryParams: { email: this.model.email } });
             }, error => {
                 this.alertService.error(error);
             });
