@@ -22,7 +22,7 @@ namespace Herd.Business
             {
                 ClientId = appRegistration.ClientId,
                 ClientSecret = appRegistration.ClientSecret,
-                RegistrationID = appRegistration.Id,
+                MastodonAppRegistrationID = appRegistration.Id,
                 Instance = appRegistration.Instance
             };
         }
@@ -61,7 +61,7 @@ namespace Herd.Business
             {
                 ClientId = AppRegistration.ClientId,
                 ClientSecret = AppRegistration.ClientSecret,
-                Id = AppRegistration.RegistrationID,
+                Id = AppRegistration.MastodonAppRegistrationID,
                 Instance = AppRegistration.Instance,
                 Scope = ALL_SCOPES
             };

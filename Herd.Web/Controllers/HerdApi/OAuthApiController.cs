@@ -1,4 +1,6 @@
-﻿using Herd.Data.Models;
+﻿using Herd.Business;
+using Herd.Business.Models.Commands;
+using Herd.Data.Models;
 using Herd.Web.CustomAttributes;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
@@ -14,13 +16,33 @@ namespace Herd.Web.Controllers.HerdApi
     {
         private const string NON_REDIRECT_URL = "urn:ietf:wg:oauth:2.0:oob";
 
-        [HttpGet("url")]
-        public IActionResult GetMastodonInstanceOAuthURL(string instance)
+        [HttpGet("registration_id")]
+        public IActionResult GetAppRegistrationID(string instance)
         {
-            return ApiJson(new
+            var result = HerdApp.Instance.GetOrCreateRegistration(new HerdAppGetOrCreateRegistrationCommand
             {
-                url = Business.MastodonApiWrapper.GetOAuthUrl(instance, NON_REDIRECT_URL)
+                ApiWrapper = MastodonApiWrapper,
+                Instance = instance
             });
+
+            // Visible to user. Only expose necessary fields
+            if (result.Data != null)
+            {
+                result.Data.Registration = ClearUnnecessaryOrSensitiveData(result.Data.Registration);
+            }
+
+            return ApiJson(result);
+        }
+
+        [HttpGet("url")]
+        public IActionResult GetMastodonInstanceOAuthURL(long registrationID, string returnURL = null)
+        {
+            return ApiJson(HerdApp.Instance.GetOAuthURL(new HerdAppGetOAuthURLCommand
+            {
+                ApiWrapper = MastodonApiWrapper,
+                AppRegistrationID = registrationID,
+                ReturnURL = returnURL
+            }));
         }
 
         [HttpPost("set_tokens")]
@@ -29,10 +51,19 @@ namespace Herd.Web.Controllers.HerdApi
             ActiveUser.MastodonConnection = new HerdUserMastodonConnectionDetails
             {
                 ApiAccessToken = body["token"].Value<string>(),
-                Instance = body["instance"].Value<string>()
+                AppRegistrationID = body["app_registration_id"].Value<long>()
             };
-            SetActiveUserCookie(ActiveUser);
+            HerdApp.Instance.Data.UpdateUser(ActiveUser);
             return Ok();
         }
+
+        #region Private helpers
+
+        private HerdAppRegistrationDataModel ClearUnnecessaryOrSensitiveData(HerdAppRegistrationDataModel registration) => new HerdAppRegistrationDataModel
+        {
+            ID = registration.ID
+        };
+
+        #endregion
     }
 }

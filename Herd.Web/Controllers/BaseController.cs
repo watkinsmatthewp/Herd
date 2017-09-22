@@ -120,11 +120,10 @@ namespace Herd.Web.Controllers
         private IMastodonApiWrapper LoadMastodonApiWrapper()
         {
             // See if there is an app registration for this instance in the DB
-            var appRegistration = HerdApp.Instance.Data.GetAppRegistration(ActiveUser.MastodonConnection.Instance);
+            var appRegistration = HerdApp.Instance.Data.GetAppRegistration(ActiveUser.MastodonConnection.AppRegistrationID);
             if (appRegistration == null)
             {
-                // Nope, we have to register
-                appRegistration = HerdApp.Instance.Data.CreateAppRegistration(new MastodonApiWrapper(ActiveUser.MastodonConnection.Instance).RegisterApp().Synchronously());
+                throw new NotImplementedException();
             }
             return new MastodonApiWrapper(appRegistration, ActiveUser.MastodonConnection.ApiAccessToken);
         }

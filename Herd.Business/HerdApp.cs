@@ -6,6 +6,8 @@ using System;
 using Herd.Business.Models.CommandResultData;
 using Herd.Business.Models.Commands;
 using Herd.Data.Models;
+using System.Threading.Tasks;
+using Herd.Core;
 
 namespace Herd.Business
 {
@@ -20,6 +22,8 @@ namespace Herd.Business
         private HerdApp()
         {
         }
+
+        #region Users
 
         public HerdAppCommandResult<HerdAppGetUserCommandResultData> GetUser(HerdAppGetUserCommand getUserCommand)
         {
@@ -81,6 +85,38 @@ namespace Herd.Business
                 };
             });
         }
+
+        #endregion
+
+        #region App registration
+
+        public HerdAppCommandResult<HerdAppGetOAuthURLCommandResultData> GetOAuthURL(HerdAppGetOAuthURLCommand getOAuthUrlCommand)
+        {
+            return ProcessCommand<HerdAppGetOAuthURLCommandResultData>(result =>
+            {
+                getOAuthUrlCommand.ApiWrapper.AppRegistration =
+                    Data.GetAppRegistration(getOAuthUrlCommand.AppRegistrationID) ?? throw new HerdAppUserErrorException("No app registration with that ID");
+
+                result.Data = new HerdAppGetOAuthURLCommandResultData
+                {
+                    URL = getOAuthUrlCommand.ApiWrapper.GetOAuthUrl(getOAuthUrlCommand.ReturnURL)
+                };
+            });
+        }
+
+        public HerdAppCommandResult<HerdAppGetOrCreateRegistrationCommandResultData> GetOrCreateRegistration(HerdAppGetOrCreateRegistrationCommand getOrCreateRegistrationCommand)
+        {
+            return ProcessCommand<HerdAppGetOrCreateRegistrationCommandResultData>(result =>
+            {
+                result.Data = new HerdAppGetOrCreateRegistrationCommandResultData
+                {
+                    Registration = Data.GetAppRegistration(getOrCreateRegistrationCommand.Instance)
+                        ?? Data.CreateAppRegistration(getOrCreateRegistrationCommand.ApiWrapper.RegisterApp().Synchronously())
+                };
+            });
+        }
+
+        #endregion
 
         #region Private helpers
 
