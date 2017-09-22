@@ -4,16 +4,7 @@
 </div>
 
 
-<hr />
-<div class="text-center">
-    <p>Your random number is {{randomInt}}</p>
-</div>
-<hr />
 
-<div class="text-center">
-    <iframe src="https://www.youtube.com/embed/bAojxWZRVKk" width="560" height="315" allowfullscreen></iframe>
-</div>
-
-<<div class="panel-body">
+<div class="panel-body">
     <post *ngFor="let post of homeFeed" [post]="post"></post>
 </div>
