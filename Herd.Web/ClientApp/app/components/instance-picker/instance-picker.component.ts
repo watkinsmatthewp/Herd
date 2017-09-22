@@ -1,6 +1,6 @@
 ﻿import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { AlertService } from '../shared/services/alert.service';
 import { AuthenticationService } from '../shared/services/authentication.service';
@@ -15,7 +15,6 @@ export class InstancePickerComponent {
     oAuthUrl: string;
 
     constructor(
-        private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
         private alertService: AlertService) { }
@@ -34,7 +33,9 @@ export class InstancePickerComponent {
 
     submitOAuthToken() {
         this.loading = true;
-        this.authenticationService.submitOAuthToken(this.model.instance, this.model.oAuthToken).subscribe(data => {
+        this.authenticationService.submitOAuthToken(this.model.instance, this.model.oAuthToken)
+        .finally(() => this.loading = false)
+        .subscribe(data => {
             this.alertService.success("Successfully linked with " + this.model.instance, true);
             this.router.navigate(['/home']);
         }, error => {
