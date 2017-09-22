@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Herd.Business;
 using Herd.Data.Models;
+using Herd.Business.Models.Commands;
 
 namespace Herd_Web
 {
@@ -63,29 +64,33 @@ namespace Herd_Web
 
         private void OnRun()
         {
-            HerdApp.Instance.Data.UpdateUser(new HerdUserDataModel
+            HerdApp.Instance.CreateUser(new HerdAppCreateUserCommand
             {
-                ID = 1,
-                MastodonInstanceHost = "mastodon.xyz",
                 Email = "mpwatki2@ncsu.edu",
+                FirstName = "Matthew",
+                LastName = "Watkins",
+                PasswordPlainText = "password"
             });
-            HerdApp.Instance.Data.UpdateUser(new HerdUserDataModel
+            HerdApp.Instance.CreateUser(new HerdAppCreateUserCommand
             {
-                ID = 2,
-                MastodonInstanceHost = "octodon.social",
                 Email = "tdortiz@ncsu.edu",
+                FirstName = "Thomas",
+                LastName = "Ortiz",
+                PasswordPlainText = "password"
             });
-            HerdApp.Instance.Data.UpdateUser(new HerdUserDataModel
+            HerdApp.Instance.CreateUser(new HerdAppCreateUserCommand
             {
-                ID = 3,
-                MastodonInstanceHost = "mastodon.social",
-                Email = "dnchris3@ncsu.edu",
+                Email = "dbchris3@ncsu.edu",
+                FirstName = "Dana",
+                LastName = "Chritso",
+                PasswordPlainText = "password"
             });
-            HerdApp.Instance.Data.UpdateUser(new HerdUserDataModel
+            HerdApp.Instance.CreateUser(new HerdAppCreateUserCommand
             {
-                ID = 4,
-                MastodonInstanceHost = "mastodon.social",
                 Email = "jcstone3@ncsu.edu",
+                FirstName = "Jacob",
+                LastName = "Stone",
+                PasswordPlainText = "password"
             });
         }
     }
