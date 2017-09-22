@@ -10,10 +10,15 @@ export class AuthGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         if (this.authService.isAuthenticated()) {
+            // Were authenticated but we didnt pick our instance yet
+            if (!this.authService.checkIfConnectedToMastodon()) {
+                this.router.navigate(['/instance-picker']);
+                return false;
+            }
             return true;
         }
         // not logged in so redirect to login page with the return url
-        this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+        this.router.navigateByUrl('/login', { queryParams: { returnUrl: state.url } });
         return false;
     }
 
