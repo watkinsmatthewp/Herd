@@ -86,7 +86,7 @@ namespace Herd.Data.Providers
         {
             var entityRootKey = BuildEntityRootKey<T>();
             return GetAllKeys(entityRootKey)
-                .Where(key => long.TryParse(key, out _))
+                .Where(key => long.TryParse(key.Split(KeyDelimiter).Last(), out _))
                 .Select(key => GetEntity<T>(key));
         }
 
