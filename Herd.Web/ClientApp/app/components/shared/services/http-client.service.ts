@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptionsArgs, Headers } from '@angular/http';
+import { Http, Response, RequestOptionsArgs, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -19,13 +19,15 @@ export class HttpClientService {
     constructor(private http: Http) { }
 
     get<T>(url: string, options?: RequestOptionsArgs): Observable<T> {
-        let request = options != null ? this.http.get(url, this.generateOptions(options)) : this.http.get(url);
+        let request = options != null ? this.http.get(url, this.generateOptions(options)) :
+                                        this.http.get(url, new RequestOptions({ headers: this.defaultHeaders }));
         return request.map(this.mapRequest)
     }
 
     post<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<any> {
         const newData = this.prepareData(data);
-        let request = options != null ? this.http.post(url, newData, this.generateOptions(options)) : this.http.post(url, newData);
+        let request = options != null ? this.http.post(url, newData, this.generateOptions(options)) :
+                                        this.http.post(url, newData, new RequestOptions({ headers: this.defaultHeaders }));
         return request.map(this.mapRequest)
     }
 
