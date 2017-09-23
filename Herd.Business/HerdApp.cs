@@ -179,6 +179,13 @@ namespace Herd.Business
                             AuthorUserName = "jcstone3",
                             AuthorAvatarURL = "http://mist.motifake.com/image/demotivational-poster/1003/pity-the-fool-mister-e-t-demotivational-poster-1267758828.jpg",
                             Text = "Programming today is a race between software engineers striving to build bigger and better idiot-proof programs, and the universe trying to produce bigger and better idiots. So far, the universe is winning."
+                        },
+                         new RecentFeedItem
+                        {
+                            AuthorDisplayname = "Dana Christo",
+                            AuthorUserName = "dbchris3",
+                            AuthorAvatarURL = "https://yt3.ggpht.com/-AC_X27FHo80/AAAAAAAAAAI/AAAAAAAAAAA/YfGKh9RmAC0/s900-c-k-no-mo-rj-c0xffffff/photo.jpg",
+                            Text = "I'm out."
                         }
                     };
                 }
