@@ -1,8 +1,9 @@
 ﻿<div class="well well-sm mouseOver post-format">
     <div class="row">
         <div class="col-sm-6 col-xs-6">
-            <p class="author-name">{{ post.author }}</p>
-            <p>{{ post.text }}</p>
+            <p class="author-name">{{ post.AuthorDisplayname }}</p>
+            <p>{{ post.Text }}</p>
+            <p><a href="{{ post.AuthorAvatarUrl }}">AvatarUrl</a></p>
         </div>
     </div>
 </div>

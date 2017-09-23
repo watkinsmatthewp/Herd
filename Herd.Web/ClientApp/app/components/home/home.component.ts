@@ -21,9 +21,8 @@ export class HomeComponent implements OnInit {
 
     ngOnInit() {
         this.mastodonService.getRandomNumber().then(randomNum => {
-            console.log("Random Number", randomNum);
             this.randomInt = randomNum.numero;
-        })
+        });
 
         this.loading = true;
         this.mastodonService.getHomeFeed()

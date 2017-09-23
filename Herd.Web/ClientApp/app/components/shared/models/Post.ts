@@ -1,7 +1,8 @@
 ﻿export class Post {
-    text: string;
+    AuthorAvatarUrl: string;
+    AuthorDisplayname: string
+    Text: string;
     id: number;
-    author: string;
 
     constructor(){}
 }
