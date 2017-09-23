@@ -32,12 +32,7 @@ export class AuthenticationService {
      * POST /api/account/register
      */
     register(user: User) {
-        let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
-        let options = new RequestOptions({ headers: headers });
-
-        return this.http.post('api/account/register', JSON.stringify(user), options)
-            .map(response => response.json())
-            .catch((error: any) => Observable.throw(error.statusText || 'Server error'));
+        return this.httpClient.post('api/account/register', JSON.stringify(user))
     }
 
     /**
