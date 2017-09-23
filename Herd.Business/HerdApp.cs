@@ -171,7 +171,7 @@ namespace Herd.Business
                             AuthorDisplayname = "Matthew Watkins",
                             AuthorUserName = "mpwatki2",
                             AuthorAvatarURL = "https://calculatedbravery.files.wordpress.com/2014/01/nerd.jpg",
-                            Text = "Always code as if the guy who ends up maintaining your code will be a violent psychopath who knows where you live."
+                            Text = "Always code as if the person who ends up maintaining your code will be a violent psychopath who knows where you live."
                         },
                         new RecentFeedItem
                         {
