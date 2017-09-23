@@ -14,28 +14,4 @@ export class MastodonService {
             .map(response => response.json() as NumberObject)
             .toPromise();
     }
-
-    // Get the OAuth Token
-    OAuth_Url(username: string, instance: string) {
-        let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
-        let options = new RequestOptions({ headers: headers });
-        let body = JSON.stringify({
-            username: username,
-            instance: instance
-        });
-
-        return this.http.post('api/auth/OAuth_Url', body, options)
-            .map(response => response.json())
-            .toPromise();
-    }
-
-    // Submit the OAuth Token
-    OAuth_Return(OAuthToken: string) {
-        let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
-        let options = new RequestOptions({ headers: headers });
-        return this.http.get('api/auth/OAuth_Return/' + OAuthToken, options).toPromise();
-    }
-
-    // Logout
-    Logout() { return this.http.get('/api/auth/Logout').toPromise(); }
 }
