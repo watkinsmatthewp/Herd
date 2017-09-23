@@ -8,6 +8,8 @@ using Herd.Business.Models.Commands;
 using Herd.Data.Models;
 using System.Threading.Tasks;
 using Herd.Core;
+using System.Collections.Generic;
+using static Herd.Business.Models.CommandResultData.HerdAppGetRecentFeedItemsCommandResultData;
 
 namespace Herd.Business
 {
@@ -133,9 +135,24 @@ namespace Herd.Business
 
         #endregion
 
-        #region Homefeed
+        #region Feed
 
-
+        public HerdAppCommandResult<HerdAppGetRecentFeedItemsCommandResultData> GetRecentFeedItems(HerdAppGetRecentFeedItemsCommand getRecentFeedItemsCommand)
+        {
+            return new HerdAppCommandResult<HerdAppGetRecentFeedItemsCommandResultData>
+            {
+                Data = new HerdAppGetRecentFeedItemsCommandResultData
+                {
+                    RecentFeedItems = new List<RecentFeedItem>
+                    {
+                        new RecentFeedItem { Text = "you are near?" },
+                        new RecentFeedItem { Text = "Every time" },
+                        new RecentFeedItem { Text = "Suddenly appear" },
+                        new RecentFeedItem { Text = "Why do birds" }
+                    }
+                }
+            };
+        }
 
         #endregion
 
