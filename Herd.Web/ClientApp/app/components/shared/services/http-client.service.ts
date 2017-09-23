@@ -18,7 +18,7 @@ export class HttpClientService {
 
     constructor(private http: Http) { }
 
-    get<T>(url: string, options?: RequestOptionsArgs): Observable<T> {
+    get<T>(url: string, options?: RequestOptionsArgs): Observable<any> {
         let request = options != null ? this.http.get(url, this.generateOptions(options)) :
                                         this.http.get(url, new RequestOptions({ headers: this.defaultHeaders }));
         return request.map(this.mapRequest)
@@ -94,7 +94,7 @@ export class HttpClientService {
      * @param res
      */
     protected mapRequest(res: Response) {
-        let json = res.json();
+        let json = res.text() ? res.json() : {};
         if (json.Success == false) {
             let errors: string = "";
             let arr = json.Errors;
