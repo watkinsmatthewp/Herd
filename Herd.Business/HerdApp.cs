@@ -140,9 +140,9 @@ namespace Herd.Business
 
         public HerdAppCommandResult<HerdAppGetRecentFeedItemsCommandResultData> GetRecentFeedItems(HerdAppGetRecentFeedItemsCommand getRecentFeedItemsCommand)
         {
-            return new HerdAppCommandResult<HerdAppGetRecentFeedItemsCommandResultData>
+            return ProcessCommand<HerdAppGetRecentFeedItemsCommandResultData>(result =>
             {
-                Data = new HerdAppGetRecentFeedItemsCommandResultData
+                result.Data = new HerdAppGetRecentFeedItemsCommandResultData
                 {
                     RecentFeedItems = getRecentFeedItemsCommand.MastodonApiWrapper
                         .GetRecentStatuses(getRecentFeedItemsCommand.MaxCount).Synchronously()
@@ -153,8 +153,36 @@ namespace Herd.Business
                             AuthorDisplayname = s.Account.DisplayName,
                             AuthorAvatarURL = s.Account.AvatarUrl
                         }).ToList()
+                };
+
+                if (result.Data.RecentFeedItems.Count == 0)
+                {
+                    result.Data.RecentFeedItems = new List<RecentFeedItem>
+                    {
+                        new RecentFeedItem
+                        {
+                            AuthorDisplayname = "Thomas Ortiz",
+                            AuthorUserName = "tdortiz",
+                            AuthorAvatarURL = "https://i.ytimg.com/vi/mRSTCUTtjWc/hqdefault.jpg",
+                            Text = "The best thing about a boolean is even if you are wrong, you are only off by a bit."
+                        },
+                        new RecentFeedItem
+                        {
+                            AuthorDisplayname = "Matthew Watkins",
+                            AuthorUserName = "mpwatki2",
+                            AuthorAvatarURL = "https://calculatedbravery.files.wordpress.com/2014/01/nerd.jpg",
+                            Text = "Always code as if the guy who ends up maintaining your code will be a violent psychopath who knows where you live."
+                        },
+                        new RecentFeedItem
+                        {
+                            AuthorDisplayname = "Jacob Stone",
+                            AuthorUserName = "jcstone3",
+                            AuthorAvatarURL = "http://mist.motifake.com/image/demotivational-poster/1003/pity-the-fool-mister-e-t-demotivational-poster-1267758828.jpg",
+                            Text = "Programming today is a race between software engineers striving to build bigger and better idiot-proof programs, and the universe trying to produce bigger and better idiots. So far, the universe is winning."
+                        }
+                    };
                 }
-            };
+            });
         }
 
         #endregion
@@ -180,6 +208,7 @@ namespace Herd.Business
             }
             catch (Exception e)
             {
+                Console.WriteLine(e);
                 result.Errors.Add(new HerdAppSystemError
                 {
                     Message = $"Unhandled exception: {e.Message}"

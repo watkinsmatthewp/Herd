@@ -128,7 +128,15 @@ namespace Herd.Web.Controllers
 
         private IMastodonApiWrapper LoadMastodonApiWrapperFromAppRegistration()
         {
-            return AppRegistration == null ? null : new MastodonApiWrapper(AppRegistration);
+            if (AppRegistration == null)
+            {
+                return null;
+            }
+            if (string.IsNullOrWhiteSpace(ActiveUser.MastodonConnection?.ApiAccessToken))
+            {
+                return new MastodonApiWrapper(AppRegistration);
+            }
+            return new MastodonApiWrapper(AppRegistration, ActiveUser.MastodonConnection?.ApiAccessToken);
         }
     }
 }

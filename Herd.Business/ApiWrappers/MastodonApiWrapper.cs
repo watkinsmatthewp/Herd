@@ -2,6 +2,7 @@
 using Mastonet;
 using Mastonet.Entities;
 using System;
+using Herd.Core;
 
 namespace Herd.Business
 {
@@ -49,10 +50,8 @@ namespace Herd.Business
             {
                 throw new ArgumentException($"{nameof(UserApiToken)} cannot be null or empty");
             }
-            return new MastodonClient(AppRegistration.ToMastodonAppRegistration(), new Auth
-            {
-                AccessToken = UserApiToken
-            });
+            var authClient = BuildMastodonAuthenticationClient();
+            return new MastodonClient(AppRegistration.ToMastodonAppRegistration(), authClient.ConnectWithCode(UserApiToken).Synchronously());
         }
 
         #endregion
