@@ -13,6 +13,7 @@ namespace Herd.Web.Controllers.HerdApi
 {
     [Route("api/account")]
     public class UserAccountApiController : BaseApiController
+    {
         [HttpPost("register"), AuthenticationNotRequired]
         public IActionResult Register([FromBody] JObject body)
         {

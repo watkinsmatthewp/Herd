@@ -44,19 +44,22 @@ namespace Herd.Web.Controllers
             _appRegistration = new Lazy<HerdAppRegistrationDataModel>(LoadAppRegistrationFromActiveUser);
             _mastodonApiWrapper = new Lazy<IMastodonApiWrapper>(LoadMastodonApiWrapperFromAppRegistration);
         }
-        
+
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
 
             // Authentication check
-            if (IsAuthenticated)
+            if (RequiresAuthentication(context) && User == null)
             {
                 // Oh no you don't!
                 context.Result = NotAuthorized();
                 return;
             }
+
+            // Parrot back the auth cookie
+            SetActiveUserCookie(ActiveUser);
 
             // Set the ViewData collection to use in views
             ViewData["RequestedURL"] = RequestedURL;
@@ -129,8 +132,3 @@ namespace Herd.Web.Controllers
         }
     }
 }
-            if (RequiresAuthentication(context) && User == null)
-            }
-
-            // Parrot back the auth cookie
-            SetActiveUserCookie(ActiveUser);
