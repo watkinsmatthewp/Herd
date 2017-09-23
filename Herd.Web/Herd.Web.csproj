@@ -26,7 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\app\components\home\home.component.spec.ts" />
+    <None Remove="ClientApp\app\components\app\app.spec.ts" />
+    <None Remove="ClientApp\app\components\instance-picker\instance-picker.spec.ts" />
     <None Remove="ClientApp\app\components\notifications\notifications.component.ts" />
     <None Remove="ClientApp\app\components\shared\services\user.service.ts" />
   </ItemGroup>
@@ -38,7 +39,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\app\components\home\home.component.spec.ts" />
+    <TypeScriptCompile Include="ClientApp\app\example.spec.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\app\app.spec.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\home\home.spec.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\instance-picker\instance-picker.spec.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\notifications\notifications.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\post\post.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\profile\profile.component.ts" />
