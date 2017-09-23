@@ -14,6 +14,5 @@ export class LocalFeedComponent implements OnInit {
     constructor(private mastodonService: MastodonService) { }
 
     ngOnInit(): void {
-        throw new Error("Method not implemented.");
     }
 }
