@@ -8,23 +8,32 @@ import 'rxjs/add/observable/throw';
 type ResponseInterceptor = (response: any) => any;
 type RequestInterceptor = (request: any) => any;
 type ErrorInterceptor = (error: any) => any;
-const absoluteURLPattern = /^((?:https:\/\/)|(?:http:\/\/)|(?:www))/;
 
 @Injectable()
 export class HttpClientService {
 
     private defaultHeaders: Headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
-    protected baseUrl = '';
     private responseInterceptors: Array<ResponseInterceptor> = [];
     private requestInterceptors: Array<RequestInterceptor> = [];
 
     constructor(private http: Http) { }
 
+    get<T>(url: string, options?: RequestOptionsArgs): Observable<T> {
+        let request = options != null ? this.http.get(url, this.generateOptions(options)) : this.http.get(url);
+        return request.map(this.mapRequest)
+    }
+
+    post<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<any> {
+        const newData = this.prepareData(data);
+        let request = options != null ? this.http.post(url, newData, this.generateOptions(options)) : this.http.post(url, newData);
+        return request.map(this.mapRequest)
+    }
+
     /**
-     * Sets header for all requests.
-     * @param key      A header key.
-     * @param value    A value for the key.
-     */
+ * Sets header for all requests.
+ * @param key      A header key.
+ * @param value    A value for the key.
+ */
     setHeader(key: string, value: string) {
         this.defaultHeaders.append(key, value);
     }
@@ -44,7 +53,7 @@ export class HttpClientService {
      */
     removeHeader(key: string) {
         this.defaultHeaders.delete(key);
-    } 
+    }
 
     /**
      * Handler which generate options for all requests from headers.
@@ -61,7 +70,7 @@ export class HttpClientService {
         let mergedHeaders: Headers = new Headers();
         options.headers.forEach((value, name) => {
             name = name || "";
-            if(!mergedHeaders.has(name))
+            if (!mergedHeaders.has(name))
                 mergedHeaders.append(name, value[0]);
         });
 
@@ -72,21 +81,11 @@ export class HttpClientService {
         });
 
         options.headers = mergedHeaders;
-        
+
         let mergedJson = mergedHeaders.toJSON();
         return options;
     }
 
-    get<T>(url: string, options?: RequestOptionsArgs): Observable<T> {
-        let request = options != null ? this.http.get(url, this.generateOptions(options)) : this.http.get(url);
-        return request.map(this.mapRequest)
-    }
-
-    post<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<any> {
-        const newData = this.prepareData(data);
-        let request = options != null ? this.http.post(url, newData, this.generateOptions(options)) : this.http.post(url, newData);
-        return request.map(this.mapRequest)
-    }
 
     /**
      * Returns data if no error, otherwise return exception
