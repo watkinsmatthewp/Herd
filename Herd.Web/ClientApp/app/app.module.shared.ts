@@ -54,10 +54,10 @@ import { SafePipe } from './components/shared/pipes/safe.pipe';
             { path: 'login', component: LoginComponent },
             { path: 'register', component: RegisterComponent },
             // Account Settings
-            { path: 'instance-picker', component: InstancePickerComponent },
+            { path: 'instance-picker', component: InstancePickerComponent, canActivate: [AuthGuard] },
             // TimeLines
-            { path: 'home', component: HomeComponent },
-            { path: 'localfeed', component: LocalFeedComponent },
+            { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+            { path: 'localfeed', component: LocalFeedComponent, canActivate: [AuthGuard] },
             // Notification
             { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
             // Profile
