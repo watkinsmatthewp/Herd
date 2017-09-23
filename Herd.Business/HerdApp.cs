@@ -133,6 +133,12 @@ namespace Herd.Business
 
         #endregion
 
+        #region Homefeed
+
+
+
+        #endregion
+
         #region Private helpers
 
         private HerdAppCommandResult<D> ProcessCommand<D>(Action<HerdAppCommandResult<D>> doWork)
