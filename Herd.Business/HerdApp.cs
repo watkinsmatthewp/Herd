@@ -3,6 +3,7 @@ using Herd.Business.Models;
 using Herd.Business.Models.Errors;
 using Herd.Data.Providers;
 using System;
+using System.Linq;
 using Herd.Business.Models.CommandResultData;
 using Herd.Business.Models.Commands;
 using Herd.Data.Models;
@@ -143,13 +144,15 @@ namespace Herd.Business
             {
                 Data = new HerdAppGetRecentFeedItemsCommandResultData
                 {
-                    RecentFeedItems = new List<RecentFeedItem>
-                    {
-                        new RecentFeedItem { Text = "you are near?" },
-                        new RecentFeedItem { Text = "Every time" },
-                        new RecentFeedItem { Text = "Suddenly appear" },
-                        new RecentFeedItem { Text = "Why do birds" }
-                    }
+                    RecentFeedItems = getRecentFeedItemsCommand.MastodonApiWrapper
+                        .GetRecentStatuses(getRecentFeedItemsCommand.MaxCount).Synchronously()
+                        .Select(s => new RecentFeedItem
+                        {
+                            Text = s.SpoilerText,
+                            AuthorUserName = s.Account.UserName,
+                            AuthorDisplayname = s.Account.DisplayName,
+                            AuthorAvatarURL = s.Account.AvatarUrl
+                        }).ToList()
                 }
             };
         }
