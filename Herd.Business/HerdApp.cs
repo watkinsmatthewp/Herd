@@ -1,4 +1,4 @@
-﻿using Herd.Business.App.Exceptions;
+﻿﻿using Herd.Business.App.Exceptions;
 using Herd.Business.Models;
 using Herd.Business.Models.Errors;
 using Herd.Data.Providers;
