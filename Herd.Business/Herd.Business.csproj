@@ -12,5 +12,4 @@
     <ProjectReference Include="..\Herd.Core\Herd.Core.csproj" />
     <ProjectReference Include="..\Herd.Data\Herd.Data.csproj" />
   </ItemGroup>
-
 </Project>
