@@ -91,7 +91,7 @@ export class HttpClientService {
      * Returns data if no error, otherwise return exception
      * @param res
      */
-    mapRequest(res: Response) {
+    protected mapRequest(res: Response) {
         let json = res.json();
         if (json.Success == false) {
             let errors: string = "";
