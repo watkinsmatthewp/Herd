@@ -64,23 +64,13 @@ export class AuthenticationService {
      * @returns: { "url": "https://oAuthUrl.com" }
      */
     getOAuthUrl(registrationId: number) {
-        let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
-        let options = new RequestOptions({ headers: headers });
         let queryString = '?registrationID=' + registrationId;
-
-        return this.http.get('api/oauth/url' + queryString, options)
-            .map(response => response.json())
-            .catch((error: any) => Observable.throw(error.statusText || 'Server error'));
+        return this.httpClient.get('api/oauth/url' + queryString);
     }
 
     getRegistrationId(instance: string) {
-        let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
-        let options = new RequestOptions({ headers: headers });
         let queryString = '?instance=' + instance;
-
-        return this.http.get('api/oauth/registration_id' + queryString, options)
-            .map(response => response.json())
-            .catch((error: any) => Observable.throw(error.statusText || 'Server error'));
+        return this.httpClient.get('api/oauth/registration_id' + queryString);
     }
 
     /**
@@ -91,14 +81,10 @@ export class AuthenticationService {
      * @param token
      */
     submitOAuthToken(token: string, registrationID: number) {
-        let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
-        let options = new RequestOptions({ headers: headers });
         let body = {
             'token': token,
             'app_registration_id': registrationID,
-            
         }
-        return this.http.post('api/oauth/set_tokens', body, options)
-            .catch((error: any) => Observable.throw(error.statusText || 'Server error'));
+        return this.httpClient.post('api/oauth/set_tokens', body);
     }
 }

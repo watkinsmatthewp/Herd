@@ -24,38 +24,33 @@ export class InstancePickerComponent {
 
     getOAuthToken() {
         this.loading = true;
-        let registrationID = -1;
         this.authenticationService.getRegistrationId(this.model.instance)
             .finally(() => this.loading = false)
             .subscribe(body => {
-                this.registrationID = body.Data.Registration.ID;
-                if (this.registrationID > 0) {
-                    this.authenticationService.getOAuthUrl(this.registrationID)
-                        .finally(() => this.loading = false)
-                        .subscribe(body => {
-                            this.oAuthUrl = body.Data.URL
-                            window.open(this.oAuthUrl, '_blank').focus();
-                        }, error => {
-                            this.alertService.error(error);
-                        });
-                } else {
-
-                }
+                this.registrationID = body.Registration.ID;
+                this.authenticationService.getOAuthUrl(this.registrationID)
+                    .finally(() => this.loading = false)
+                    .subscribe(body => {
+                        this.oAuthUrl = body.URL
+                        window.open(this.oAuthUrl, '_blank').focus();
+                    }, error => {
+                        this.alertService.error(error.error);
+                    });
             }, error => {
-                this.alertService.error(error);
+                this.alertService.error(error.error);
             });
     }
 
     submitOAuthToken() {
         this.loading = true;
         this.authenticationService.submitOAuthToken(this.model.oAuthToken, this.registrationID)
-        .finally(() => this.loading = false)
-        .subscribe(data => {
-            this.alertService.success("Successfully linked with " + this.model.instance, true);
-            this.localStorage.setItem('connectedToMastodon', true);
-            this.router.navigateByUrl('/home');
-        }, error => {
-            this.alertService.error(error);
-        });
+            .finally(() => this.loading = false)
+            .subscribe(data => {
+                this.alertService.success("Successfully linked with " + this.model.instance, true);
+                this.localStorage.setItem('connectedToMastodon', true);
+                this.router.navigateByUrl('/home');
+            }, error => {
+                this.alertService.error(error.error);
+            });
     }
 }
