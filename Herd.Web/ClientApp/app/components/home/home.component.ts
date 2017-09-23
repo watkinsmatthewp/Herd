@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+
+import { AlertService } from '../shared/services/alert.service';
 import { MastodonService } from '../shared/services/mastodon.service';
 import { Post } from '../shared/models/Post';
 
@@ -9,11 +11,12 @@ import { Post } from '../shared/models/Post';
 })
 export class HomeComponent implements OnInit {
     randomInt: number;
+    loading: boolean = false;
 
     // List of posts for the home feed
     homeFeed: Post[];
 
-    constructor(private mastodonService: MastodonService) {
+    constructor(private mastodonService: MastodonService, private alertService: AlertService) {
     }
 
     ngOnInit() {
@@ -22,9 +25,13 @@ export class HomeComponent implements OnInit {
             this.randomInt = randomNum.numero;
         })
 
+        this.loading = true;
         this.mastodonService.getHomeFeed()
-            .then(feed => {
+            .finally(() => this.loading = false)
+            .subscribe(feed => {
                 this.homeFeed = feed;
-        })
+            }, error => {
+                this.alertService.error(error.error);
+            });
     }
 }
