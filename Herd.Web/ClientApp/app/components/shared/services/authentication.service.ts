@@ -1,7 +1,4 @@
 ﻿import { Injectable } from '@angular/core';
-import { Http, Headers, Response, RequestOptionsArgs, RequestOptions, RequestMethod } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map'
 
 import { HttpClientService } from '../services/http-client.service';
 import { StorageService } from '../models/Storage';
@@ -9,7 +6,7 @@ import { User } from "../models/User";
 
 @Injectable()
 export class AuthenticationService {
-    constructor(private http: Http, private httpClient: HttpClientService, private localStorage: StorageService) { }
+    constructor(private httpClient: HttpClientService, private localStorage: StorageService) { }
 
     checkIfConnectedToMastodon(): boolean {
         if (localStorage.getItem('connectedToMastodon') === "true") {
@@ -54,7 +51,7 @@ export class AuthenticationService {
     logout() {
         // remove user from local storage to log user out & log user out of backend
         this.localStorage.clear();
-        return this.http.get('api/account/logout');
+        return this.httpClient.get('api/account/logout');
     }
 
     /**
