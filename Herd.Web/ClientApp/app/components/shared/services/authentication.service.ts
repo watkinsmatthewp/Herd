@@ -54,7 +54,7 @@ export class AuthenticationService {
     logout() {
         // remove user from local storage to log user out & log user out of backend
         this.localStorage.clear();
-        return this.http.get('api/account/Logout').toPromise();
+        return this.http.get('api/account/logout');
     }
 
     /**
