@@ -22,11 +22,11 @@ export class RegisterComponent {
 
         this.authenticationService.register(user)
             .finally(() => this.loading = false)
-            .subscribe(user => {
+            .subscribe(response => {
                 this.alertService.success('Registration successful', true);
                 this.router.navigate(['/login'], { queryParams: { email: this.model.email } });
             }, error => {
-                this.alertService.error(error);
+                this.alertService.error(error.error);
             });
     }
 }
