@@ -19,10 +19,14 @@
   <ItemGroup>
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
     <Compile Remove="Code\**" />
+    <Compile Remove="Models\**" />
     <Content Remove="ClientApp\**" />
     <Content Remove="Code\**" />
+    <Content Remove="Models\**" />
     <EmbeddedResource Remove="Code\**" />
+    <EmbeddedResource Remove="Models\**" />
     <None Remove="Code\**" />
+    <None Remove="Models\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,10 +54,6 @@
     <TypeScriptCompile Include="ClientApp\app\components\shared\services\authentication.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\services\http-client.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\services\account.service.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\API\" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
