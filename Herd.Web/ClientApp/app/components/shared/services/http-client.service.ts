@@ -13,41 +13,97 @@ const absoluteURLPattern = /^((?:https:\/\/)|(?:http:\/\/)|(?:www))/;
 @Injectable()
 export class HttpClientService {
 
-    private headers: any = {};
+    private defaultHeaders: Headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
     protected baseUrl = '';
     private responseInterceptors: Array<ResponseInterceptor> = [];
     private requestInterceptors: Array<RequestInterceptor> = [];
-    private errorInterceptors: Array<ErrorInterceptor> = [];
 
     constructor(private http: Http) { }
 
+    /**
+     * Sets header for all requests.
+     * @param key      A header key.
+     * @param value    A value for the key.
+     */
+    setHeader(key: string, value: string) {
+        this.defaultHeaders.append(key, value);
+    }
+
+    /**
+     * Gets header by key for all requests.
+     * @param key      A header key.
+     * @returns value
+     */
+    getHeaderByKey(key: string) {
+        return this.defaultHeaders.get(key);
+    }
+
+    /**
+     * Removes header for all requests.
+     * @param key      A header key.
+     */
+    removeHeader(key: string) {
+        this.defaultHeaders.delete(key);
+    } 
+
+    /**
+     * Handler which generate options for all requests from headers.
+     * @param options   Request options arguments
+     * @returns         Request options arguments
+     */
+    protected generateOptions(options: RequestOptionsArgs = {}): RequestOptionsArgs {
+        if (!options.headers) {
+            options.headers = new Headers();
+        }
+        let headerJson = this.defaultHeaders.toJSON();
+        let optionsJson = options.headers.toJSON();
+
+        let mergedHeaders: Headers = new Headers();
+        options.headers.forEach((value, name) => {
+            name = name || "";
+            if(!mergedHeaders.has(name))
+                mergedHeaders.append(name, value[0]);
+        });
+
+        this.defaultHeaders.forEach((value, name) => {
+            name = name || "";
+            if (!mergedHeaders.has(name))
+                mergedHeaders.append(name || "", value[0]);
+        });
+
+        options.headers = mergedHeaders;
+        
+        let mergedJson = mergedHeaders.toJSON();
+        return options;
+    }
+
     get<T>(url: string, options?: RequestOptionsArgs): Observable<T> {
-        let request = options != null ? this.http.get(url, options) : this.http.get(url);
-        return request
-            .map(this.mapRequest)
-            .catch((error: any) => Observable.throw(error.statusText || 'Server error'));
+        let request = options != null ? this.http.get(url, this.generateOptions(options)) : this.http.get(url);
+        return request.map(this.mapRequest)
     }
 
     post<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<any> {
         const newData = this.prepareData(data);
-        let request = options != null ? this.http.post(url, newData, options) : this.http.post(url, newData);
-        return request
-            .map(this.mapRequest)
-            .catch((error: any) => Observable.throw(error.statusText || 'Server error'));
+        let request = options != null ? this.http.post(url, newData, this.generateOptions(options)) : this.http.post(url, newData);
+        return request.map(this.mapRequest)
     }
 
     /**
-     * Returns data if no error otherwise return exception
+     * Returns data if no error, otherwise return exception
      * @param res
      */
     mapRequest(res: Response) {
-        if (res) {
-            let json = res.json();
-            if (json.Success == false) {
-                return Observable.throw(new Error(json.errors));
-            } else {
-                return json.Data;
+        let json = res.json();
+        if (json.Success == false) {
+            let errors: string = "";
+            let arr = json.Errors;
+            // aggregate the errors if multiple
+            for (var i = 0, len = arr.length; i < len; i++) {
+                errors += arr[i].Message;
             }
+            throw Observable.throw(errors);
+        } else {
+            return json.Data;
         }
     }
 
@@ -67,11 +123,5 @@ export class HttpClientService {
      */
     protected responseHandler(resp: Response): any {
         return this.responseInterceptors.reduce((acc: any, interceptor: any) => interceptor(acc), resp);
-    }
-
-    protected errorHandler(error: Response): Observable<any> {
-        return Observable.throw(
-            this.errorInterceptors.reduce((acc: any, interceptor: any) => interceptor(acc), error)
-        );
     }
 }
