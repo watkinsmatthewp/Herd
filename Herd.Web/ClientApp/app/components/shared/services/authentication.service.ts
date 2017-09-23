@@ -46,23 +46,11 @@ export class AuthenticationService {
      * @returns : {AppUser Obj}
      */
     login(email: string, password: string) {
-        let headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
-        let options = new RequestOptions({ headers: headers });
         let body = {
             'email': email,
             'password': password
         }
-
-        /**
-        return this.httpClient.post('api/account/login', body, options)
-            .map(response => response.json())
-            .catch((error: any) => Observable.throw(error.statusText || 'Server error'));
-        */
-        
-        return this.http.post('api/account/login', body, options)
-            .map(response => response.json())
-            .catch((error: any) => Observable.throw(error.statusText || 'Server error'));
-        
+        return this.httpClient.post('api/account/login', body)       
     }
 
     /**
