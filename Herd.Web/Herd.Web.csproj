@@ -87,6 +87,3 @@
   </Target>
 
 </Project>
-    <None Remove="ClientApp\app\components\post\post.component.ts" />
-    <None Remove="ClientApp\app\components\shared\models\Post.ts" />
-    <None Remove="ClientApp\app\components\shared\services\user.service.ts" />
