@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
 
     ngOnInit() {
         // reset login status
-        this.authenticationService.logout();
+        this.authenticationService.logout().subscribe();;
         // if coming from register default the email
         this.model.email = this.route.snapshot.queryParams['email'] || ''; 
     }
