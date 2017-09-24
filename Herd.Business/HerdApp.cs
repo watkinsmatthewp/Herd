@@ -142,53 +142,47 @@ namespace Herd.Business
             {
                 result.Data = new HerdAppGetRecentFeedItemsCommandResultData
                 {
-                    RecentFeedItems = _mastodonApiWrapper.GetRecentStatuses(getRecentFeedItemsCommand.MaxCount).Synchronously().ToList()
+                    RecentFeedItems = _mastodonApiWrapper.GetRecentStatuses(getRecentFeedItemsCommand.MaxCount).Synchronously().Select(s => new RecentFeedItem
+                    {
+                        Text = s.SpoilerText,
+                        AuthorUserName = s.Account.UserName,
+                        AuthorDisplayname = s.Account.DisplayName,
+                        AuthorAvatarURL = s.Account.AvatarUrl
+                    }).ToList()
                 };
 
                 // Test data
                 if (result.Data.RecentFeedItems.Count <= 25)
                 {
-                    result.Data.RecentFeedItems.Add(new Mastonet.Entities.Status
+                    result.Data.RecentFeedItems.Add(new RecentFeedItem
                     {
-                        Account = new Mastonet.Entities.Account
-                        {
-                            DisplayName = "Thomas Ortiz",
-                            UserName = "tdortiz",
-                            AvatarUrl = "https://i.ytimg.com/vi/mRSTCUTtjWc/hqdefault.jpg",
-                        },
-                        Content = "The best thing about a boolean is even if you are wrong, you are only off by a bit."
+                        AuthorDisplayname = "Thomas Ortiz",
+                        AuthorUserName = "tdortiz",
+                        AuthorAvatarURL = "https://i.ytimg.com/vi/mRSTCUTtjWc/hqdefault.jpg",
+                        Text = "The best thing about a boolean is even if you are wrong, you are only off by a bit."
                     });
-                    result.Data.RecentFeedItems.Add(new Mastonet.Entities.Status
+                    result.Data.RecentFeedItems.Add(new RecentFeedItem
                     {
-                        Account = new Mastonet.Entities.Account
-                        {
-                            DisplayName = "Matthew Watkins",
-                            UserName = "mpwatki2",
-                            AvatarUrl = "https://calculatedbravery.files.wordpress.com/2014/01/nerd.jpg",
-                        },
-                        Content = "Always code as if the person who ends up maintaining your code will be a violent psychopath who knows where you live."
+                        AuthorDisplayname = "Matthew Watkins",
+                        AuthorUserName = "mpwatki2",
+                        AuthorAvatarURL = "https://calculatedbravery.files.wordpress.com/2014/01/nerd.jpg",
+                        Text = "Always code as if the person who ends up maintaining your code will be a violent psychopath who knows where you live."
                     });
-                    result.Data.RecentFeedItems.Add(new Mastonet.Entities.Status
+                    result.Data.RecentFeedItems.Add(new RecentFeedItem
                     {
-                        Account = new Mastonet.Entities.Account
-                        {
-                            DisplayName = "Jacob Stone",
-                            UserName = "jcstone3",
-                            AvatarUrl = "http://mist.motifake.com/image/demotivational-poster/1003/pity-the-fool-mister-e-t-demotivational-poster-1267758828.jpg",
-                        },
-                        Content = "Programming today is a race between software engineers striving to build bigger " +
+                        AuthorDisplayname = "Jacob Stone",
+                        AuthorUserName = "jcstone3",
+                        AuthorAvatarURL = "http://mist.motifake.com/image/demotivational-poster/1003/pity-the-fool-mister-e-t-demotivational-poster-1267758828.jpg",
+                        Text = "Programming today is a race between software engineers striving to build bigger " +
                                    "and better idiot-proof programs, and the universe trying to produce bigger and " +
                                    "better idiots. So far, the universe is winning."
                     });
-                    result.Data.RecentFeedItems.Add(new Mastonet.Entities.Status
+                    result.Data.RecentFeedItems.Add(new RecentFeedItem
                     {
-                        Account = new Mastonet.Entities.Account
-                        {
-                            DisplayName = "Dana Christo",
-                            UserName = "dbchris3",
-                            AvatarUrl = "https://yt3.ggpht.com/-AC_X27FHo80/AAAAAAAAAAI/AAAAAAAAAAA/YfGKh9RmAC0/s900-c-k-no-mo-rj-c0xffffff/photo.jpg",
-                        },
-                        Content = "I'm out."
+                        AuthorDisplayname = "Dana Christo",
+                        AuthorUserName = "dbchris3",
+                        AuthorAvatarURL = "https://yt3.ggpht.com/-AC_X27FHo80/AAAAAAAAAAI/AAAAAAAAAAA/YfGKh9RmAC0/s900-c-k-no-mo-rj-c0xffffff/photo.jpg",
+                        Text = "I'm out."
                     });
                 }
             });
