@@ -146,7 +146,7 @@ namespace Herd.Web.Controllers
             {
                 return new MastodonApiWrapper(_appRegistration.Value);
             }
-            return new MastodonApiWrapper(_appRegistration.Value, ActiveUser.MastodonConnection?.ApiAccessToken);
+            return new MastodonApiWrapper(_appRegistration.Value, ActiveUser.MastodonConnection);
         }
 
         private IHerdApp LoadHerdApp() => new HerdApp(_dataProvider.Value, _mastodonApiWrapper.Value);

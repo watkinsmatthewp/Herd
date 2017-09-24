@@ -8,8 +8,6 @@ namespace Herd.Business
 {
     public static class Extensions
     {
-        public static bool IsAuthenticated(this IMastodonApiWrapper apiWrapper) => !string.IsNullOrWhiteSpace(apiWrapper.UserApiToken);
-
         public static bool PasswordIs(this IHerdUserAccountDataModel user, string plainTextPassword) => user.Security.SaltedPassword == plainTextPassword.Hashed(user.Security.SaltKey);
 
         public static string Hashed(this string passwordPlainText, long saltKey)
@@ -33,6 +31,23 @@ namespace Herd.Business
             Id = herdAppRegistration.MastodonAppRegistrationID,
             ClientSecret = herdAppRegistration.ClientSecret,
             Instance = herdAppRegistration.Instance
+        };
+
+        public static Auth ToMastodonAuth(this HerdUserMastodonConnectionDetails connectionDetails) => new Auth
+        {
+            AccessToken = connectionDetails.ApiAccessToken,
+            CreatedAt = connectionDetails.CreatedAt,
+            Scope = connectionDetails.Scope,
+            TokenType = connectionDetails.TokenType
+        };
+
+        public static HerdUserMastodonConnectionDetails ToHerdConnectionDetails(this Auth auth, long appRegistrationID) => new HerdUserMastodonConnectionDetails
+        {
+            ApiAccessToken = auth.AccessToken,
+            AppRegistrationID = appRegistrationID,
+            CreatedAt = auth.CreatedAt,
+            Scope = auth.Scope,
+            TokenType = auth.TokenType
         };
     }
 }

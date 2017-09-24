@@ -9,7 +9,7 @@ namespace Herd.Business
     {
         string MastodonHostInstance { get; }
         HerdAppRegistrationDataModel AppRegistration { get; set; }
-        string UserApiToken { get; set; }
+        HerdUserMastodonConnectionDetails UserMastodonConnectionDetails { get; set; }
 
         Task<HerdAppRegistrationDataModel> RegisterApp();
         Task<Account> GetUserAccount();
