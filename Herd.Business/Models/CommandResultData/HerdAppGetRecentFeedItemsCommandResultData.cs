@@ -14,6 +14,6 @@ namespace Herd.Business.Models.CommandResultData
             public string Text { get; set; }
         }
 
-        public List<RecentFeedItem> RecentFeedItems { get; set; }
+        public List<Mastonet.Entities.Status> RecentFeedItems { get; set; }
     }
 }
