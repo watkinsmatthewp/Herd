@@ -3,6 +3,4 @@
     AuthorDisplayname: string
     Text: string;
     id: number;
-
-    constructor() { }
 }

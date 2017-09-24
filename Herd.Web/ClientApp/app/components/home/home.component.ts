@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { AlertService } from '../shared/services/alert.service';
 import { MastodonService } from '../shared/services/mastodon.service';
-import { Post } from '../shared/models/Post';
+import { Status } from '../shared/models/mastodon/Status';
 
 @Component({
     selector: 'home',
@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
     loading: boolean = false;
 
     // List of posts for the home feed
-    homeFeed: Post[];
+    homeFeed: Status[];
 
     constructor(private mastodonService: MastodonService, private alertService: AlertService) {
     }

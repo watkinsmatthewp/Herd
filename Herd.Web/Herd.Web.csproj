@@ -32,6 +32,7 @@
   <ItemGroup>
     <None Remove="ClientApp\app\components\home\home.component.spec.ts" />
     <None Remove="ClientApp\app\components\notifications\notifications.component.ts" />
+    <None Remove="ClientApp\app\components\shared\models\mastodon\Application.ts" />
     <None Remove="ClientApp\app\components\shared\services\user.service.ts" />
   </ItemGroup>
 
@@ -46,7 +47,8 @@
     <TypeScriptCompile Include="ClientApp\app\components\notifications\notifications.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\post\post.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\profile\profile.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\components\shared\models\Post.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\models\mastodon\Account.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\models\mastodon\Application.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\models\Storage.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\models\User.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\services\alert.service.ts" />
