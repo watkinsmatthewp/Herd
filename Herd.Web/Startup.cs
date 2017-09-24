@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Herd.Business;
 using Herd.Data.Models;
 using Herd.Business.Models.Commands;
+using Herd.Data.Providers;
 
 namespace Herd_Web
 {
@@ -64,34 +65,55 @@ namespace Herd_Web
 
         private void OnRun()
         {
-            HerdApp.Instance.CreateUser(new HerdAppCreateUserCommand
+            var app = new HerdApp(new HerdFileDataProvider(), new MastodonApiWrapper("mastodon.xyz"));
+
+            try
             {
-                Email = "mpwatki2@ncsu.edu",
-                FirstName = "Matthew",
-                LastName = "Watkins",
-                PasswordPlainText = "password"
-            });
-            HerdApp.Instance.CreateUser(new HerdAppCreateUserCommand
+                app.CreateUser(new HerdAppCreateUserCommand
+                {
+                    Email = "mpwatki2@ncsu.edu",
+                    FirstName = "Matthew",
+                    LastName = "Watkins",
+                    PasswordPlainText = "password"
+                });
+            }
+            catch { }
+
+            try
             {
-                Email = "tdortiz@ncsu.edu",
-                FirstName = "Thomas",
-                LastName = "Ortiz",
-                PasswordPlainText = "password"
-            });
-            HerdApp.Instance.CreateUser(new HerdAppCreateUserCommand
+                app.CreateUser(new HerdAppCreateUserCommand
+                {
+                    Email = "tdortiz@ncsu.edu",
+                    FirstName = "Thomas",
+                    LastName = "Ortiz",
+                    PasswordPlainText = "password"
+                });
+            }
+            catch { }
+
+            try
             {
-                Email = "dbchris3@ncsu.edu",
-                FirstName = "Dana",
-                LastName = "Chritso",
-                PasswordPlainText = "password"
-            });
-            HerdApp.Instance.CreateUser(new HerdAppCreateUserCommand
+                app.CreateUser(new HerdAppCreateUserCommand
+                {
+                    Email = "dbchris3@ncsu.edu",
+                    FirstName = "Dana",
+                    LastName = "Chritso",
+                    PasswordPlainText = "password"
+                });
+            }
+            catch { }
+
+            try
             {
-                Email = "jcstone3@ncsu.edu",
-                FirstName = "Jacob",
-                LastName = "Stone",
-                PasswordPlainText = "password"
-            });
+                app.CreateUser(new HerdAppCreateUserCommand
+                {
+                    Email = "jcstone3@ncsu.edu",
+                    FirstName = "Jacob",
+                    LastName = "Stone",
+                    PasswordPlainText = "password"
+                });
+            }
+            catch { }
         }
     }
 }

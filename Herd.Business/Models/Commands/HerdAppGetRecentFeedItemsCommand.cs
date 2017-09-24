@@ -7,6 +7,6 @@ namespace Herd.Business.Models.Commands
     public class HerdAppGetRecentFeedItemsCommand : HerdAppCommand
     {
         public int MaxCount { get; set; } = 30;
-        public IMastodonApiWrapper MastodonApiWrapper { get; set; }
+        public string BeforeFeedID { get; set; }
     }
 }

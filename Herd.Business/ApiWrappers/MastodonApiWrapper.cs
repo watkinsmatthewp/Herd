@@ -18,6 +18,12 @@ namespace Herd.Business
 
         #region Constructors
 
+        public MastodonApiWrapper()
+            : this(null as string)
+        {
+
+        }
+
         public MastodonApiWrapper(string mastodonHostInstance)
             : this(null as HerdAppRegistrationDataModel)
         {

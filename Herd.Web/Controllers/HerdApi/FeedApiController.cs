@@ -14,9 +14,6 @@ namespace Herd.Web.Controllers
     public class FeedApiController : BaseApiController
     {
         [HttpGet("new_items")]
-        public IActionResult NewItems() => ApiJson(HerdApp.Instance.GetRecentFeedItems(new HerdAppGetRecentFeedItemsCommand
-        {
-            MastodonApiWrapper = MastodonApiWrapper
-        }));
+        public IActionResult NewItems() => ApiJson(App.GetRecentFeedItems(new HerdAppGetRecentFeedItemsCommand()));
     }
 }
