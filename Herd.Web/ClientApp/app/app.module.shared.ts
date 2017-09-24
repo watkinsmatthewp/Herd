@@ -49,7 +49,7 @@ import { SafePipe } from './components/shared/pipes/safe.pipe';
         HttpModule,
         FormsModule,
         RouterModule.forRoot([
-            { path: '', redirectTo: 'login', pathMatch: 'full' },
+            { path: '', redirectTo: 'home', pathMatch: 'full' },
             // Login, Register
             { path: 'login', component: LoginComponent },
             { path: 'register', component: RegisterComponent },
@@ -63,7 +63,7 @@ import { SafePipe } from './components/shared/pipes/safe.pipe';
             // Profile
             { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
             // Etc Pages
-            { path: '**', redirectTo: 'login' }
+            { path: '**', redirectTo: 'home' }
         ])
     ],
     providers: [AccountService, AlertService, AuthenticationService, AuthGuard, HttpClientService, MastodonService]
