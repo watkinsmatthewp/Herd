@@ -15,7 +15,7 @@ import { NavMenuComponent } from './components/shared/navmenu/navmenu.component'
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { RegisterComponent } from './components/register/register.component';
-import { PostComponent } from './components/post/post.component';
+import { StatusComponent } from './components/status/status.component';
 // Services
 import { AccountService } from './components/shared/services/account.service';
 import { AlertService } from './components/shared/services/alert.service';
@@ -40,7 +40,7 @@ import { SafePipe } from './components/shared/pipes/safe.pipe';
         NotificationsComponent,
         ProfileComponent,
         RegisterComponent,
-        PostComponent,
+        StatusComponent,
         // Pipes
         SafePipe
     ],

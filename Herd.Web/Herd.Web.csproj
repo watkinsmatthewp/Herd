@@ -45,7 +45,6 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\home\home.component.spec.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\notifications\notifications.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\components\post\post.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\profile\profile.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\models\mastodon\Account.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\models\mastodon\Application.ts" />
