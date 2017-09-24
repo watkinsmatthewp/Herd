@@ -29,6 +29,46 @@ namespace Herd.Business
             _mastodonApiWrapper = mastodonApiWrapper ?? throw new ArgumentNullException(nameof(mastodonApiWrapper));
         }
 
+        #region App registration
+
+        public HerdAppCommandResult<HerdAppGetRegistrationCommandResultData> GetRegistration(HerdAppGetRegistrationCommand getRegistrationCommand)
+        {
+            return ProcessCommand<HerdAppGetRegistrationCommandResultData>(result =>
+            {
+                result.Data = new HerdAppGetRegistrationCommandResultData
+                {
+                    Registration = _data.GetAppRegistration(getRegistrationCommand.ID)
+                };
+            });
+        }
+
+        public HerdAppCommandResult<HerdAppGetOAuthURLCommandResultData> GetOAuthURL(HerdAppGetOAuthURLCommand getOAuthUrlCommand)
+        {
+            return ProcessCommand<HerdAppGetOAuthURLCommandResultData>(result =>
+            {
+                var returnURL = string.IsNullOrWhiteSpace(getOAuthUrlCommand.ReturnURL) ? NON_REDIRECT_URL : getOAuthUrlCommand.ReturnURL;
+                _mastodonApiWrapper.AppRegistration = _data.GetAppRegistration(getOAuthUrlCommand.AppRegistrationID) ?? throw new HerdAppUserErrorException("No app registration with that ID");
+                result.Data = new HerdAppGetOAuthURLCommandResultData
+                {
+                    URL = _mastodonApiWrapper.GetOAuthUrl(getOAuthUrlCommand.ReturnURL)
+                };
+            });
+        }
+
+        public HerdAppCommandResult<HerdAppGetRegistrationCommandResultData> GetOrCreateRegistration(HerdAppGetOrCreateRegistrationCommand getOrCreateRegistrationCommand)
+        {
+            return ProcessCommand<HerdAppGetRegistrationCommandResultData>(result =>
+            {
+                result.Data = new HerdAppGetRegistrationCommandResultData
+                {
+                    Registration = _data.GetAppRegistration(getOrCreateRegistrationCommand.Instance)
+                        ?? _data.CreateAppRegistration(new MastodonApiWrapper(getOrCreateRegistrationCommand.Instance).RegisterApp().Synchronously())
+                };
+            });
+        }
+
+        #endregion
+
         #region Users
 
         public HerdAppCommandResult<HerdAppGetUserCommandResultData> GetUser(HerdAppGetUserCommand getUserCommand)
@@ -88,46 +128,6 @@ namespace Herd.Business
                 result.Data = new HerdAppLoginUserCommandResultData
                 {
                     User = userByEmail
-                };
-            });
-        }
-
-        #endregion
-
-        #region App registration
-
-        public HerdAppCommandResult<HerdAppGetRegistrationCommandResultData> GetRegistration(HerdAppGetRegistrationCommand getRegistrationCommand)
-        {
-            return ProcessCommand<HerdAppGetRegistrationCommandResultData>(result =>
-            {
-                result.Data = new HerdAppGetRegistrationCommandResultData
-                {
-                    Registration = _data.GetAppRegistration(getRegistrationCommand.ID)
-                };
-            });
-        }
-
-        public HerdAppCommandResult<HerdAppGetOAuthURLCommandResultData> GetOAuthURL(HerdAppGetOAuthURLCommand getOAuthUrlCommand)
-        {
-            return ProcessCommand<HerdAppGetOAuthURLCommandResultData>(result =>
-            {
-                var returnURL = string.IsNullOrWhiteSpace(getOAuthUrlCommand.ReturnURL) ? NON_REDIRECT_URL : getOAuthUrlCommand.ReturnURL;
-                _mastodonApiWrapper.AppRegistration = _data.GetAppRegistration(getOAuthUrlCommand.AppRegistrationID) ?? throw new HerdAppUserErrorException("No app registration with that ID");
-                result.Data = new HerdAppGetOAuthURLCommandResultData
-                {
-                    URL = _mastodonApiWrapper.GetOAuthUrl(getOAuthUrlCommand.ReturnURL)
-                };
-            });
-        }
-
-        public HerdAppCommandResult<HerdAppGetRegistrationCommandResultData> GetOrCreateRegistration(HerdAppGetOrCreateRegistrationCommand getOrCreateRegistrationCommand)
-        {
-            return ProcessCommand<HerdAppGetRegistrationCommandResultData>(result =>
-            {
-                result.Data = new HerdAppGetRegistrationCommandResultData
-                {
-                    Registration = _data.GetAppRegistration(getOrCreateRegistrationCommand.Instance)
-                        ?? _data.CreateAppRegistration(new MastodonApiWrapper(getOrCreateRegistrationCommand.Instance).RegisterApp().Synchronously())
                 };
             });
         }
