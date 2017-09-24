@@ -144,10 +144,32 @@ namespace Herd.Business
                 {
                     RecentFeedItems = _mastodonApiWrapper.GetRecentStatuses(getRecentFeedItemsCommand.MaxCount).Synchronously().Select(s => new RecentFeedItem
                     {
-                        Text = s.SpoilerText,
-                        AuthorUserName = s.Account.UserName,
-                        AuthorDisplayname = s.Account.DisplayName,
-                        AuthorAvatarURL = s.Account.AvatarUrl
+                        Account = new Models.MastodonWrappers.Account {
+                            AccountName = s.Account.AccountName,
+                            AvatarUrl = s.Account.AvatarUrl,
+                            DisplayName = s.Account.DisplayName,
+                            Id = s.Account.Id,
+                            ProfileUrl = s.Account.ProfileUrl,
+                            UserName = s.Account.UserName,
+                        },
+                        Content = s.Content,
+                        CreatedAt = s.CreatedAt,
+                        Favourited = s.Favourited,
+                        FavouritesCount = s.FavouritesCount,
+                        Id = s.Id,
+                        InReplyToAccountId = s.InReplyToAccountId,
+                        InReplyToId = s.InReplyToId,
+                        MediaAttachments = s.MediaAttachments,
+                        Mentions = s.Mentions,
+                        Reblog = s.Reblog,
+                        ReblogCount = s.ReblogCount,
+                        Reblogged = s.Reblogged,
+                        Sensitive = s.Sensitive,
+                        SpoilerText = s.SpoilerText,
+                        Tags = s.Tags,
+                        Uri = s.Uri,
+                        Url = s.Url,
+                        Visibility = s.Visibility,
                     }).ToList()
                 };
 
@@ -156,33 +178,45 @@ namespace Herd.Business
                 {
                     result.Data.RecentFeedItems.Add(new RecentFeedItem
                     {
-                        AuthorDisplayname = "Thomas Ortiz",
-                        AuthorUserName = "tdortiz",
-                        AuthorAvatarURL = "https://i.ytimg.com/vi/mRSTCUTtjWc/hqdefault.jpg",
-                        Text = "The best thing about a boolean is even if you are wrong, you are only off by a bit."
+                        Account = new Models.MastodonWrappers.Account
+                        {
+                           DisplayName = "Thomas Ortiz",
+                           UserName = "tdortiz",
+                           AvatarUrl = "https://i.ytimg.com/vi/mRSTCUTtjWc/hqdefault.jpg",
+                        },
+                        Content = "The best thing about a boolean is even if you are wrong, you are only off by a bit."
                     });
                     result.Data.RecentFeedItems.Add(new RecentFeedItem
                     {
-                        AuthorDisplayname = "Matthew Watkins",
-                        AuthorUserName = "mpwatki2",
-                        AuthorAvatarURL = "https://calculatedbravery.files.wordpress.com/2014/01/nerd.jpg",
-                        Text = "Always code as if the person who ends up maintaining your code will be a violent psychopath who knows where you live."
+                        Account = new Models.MastodonWrappers.Account
+                        {
+                            DisplayName = "Matthew Watkins",
+                            UserName = "mpwatki2",
+                            AvatarUrl = "https://calculatedbravery.files.wordpress.com/2014/01/nerd.jpg",
+                        },
+                        Content = "Always code as if the person who ends up maintaining your code will be a violent psychopath who knows where you live."
                     });
                     result.Data.RecentFeedItems.Add(new RecentFeedItem
                     {
-                        AuthorDisplayname = "Jacob Stone",
-                        AuthorUserName = "jcstone3",
-                        AuthorAvatarURL = "http://mist.motifake.com/image/demotivational-poster/1003/pity-the-fool-mister-e-t-demotivational-poster-1267758828.jpg",
-                        Text = "Programming today is a race between software engineers striving to build bigger " +
+                        Account = new Models.MastodonWrappers.Account
+                        {
+                            DisplayName = "Jacob Stone",
+                            UserName = "jcstone3",
+                            AvatarUrl = "http://mist.motifake.com/image/demotivational-poster/1003/pity-the-fool-mister-e-t-demotivational-poster-1267758828.jpg",
+                        },
+                        Content = "Programming today is a race between software engineers striving to build bigger " +
                                    "and better idiot-proof programs, and the universe trying to produce bigger and " +
                                    "better idiots. So far, the universe is winning."
                     });
                     result.Data.RecentFeedItems.Add(new RecentFeedItem
                     {
-                        AuthorDisplayname = "Dana Christo",
-                        AuthorUserName = "dbchris3",
-                        AuthorAvatarURL = "https://yt3.ggpht.com/-AC_X27FHo80/AAAAAAAAAAI/AAAAAAAAAAA/YfGKh9RmAC0/s900-c-k-no-mo-rj-c0xffffff/photo.jpg",
-                        Text = "I'm out."
+                        Account = new Models.MastodonWrappers.Account
+                        {
+                            DisplayName = "Dana Christo",
+                            UserName = "dbchris3",
+                            AvatarUrl = "https://yt3.ggpht.com/-AC_X27FHo80/AAAAAAAAAAI/AAAAAAAAAAA/YfGKh9RmAC0/s900-c-k-no-mo-rj-c0xffffff/photo.jpg",
+                        },
+                        Content = "I'm out."
                     });
                 }
             });

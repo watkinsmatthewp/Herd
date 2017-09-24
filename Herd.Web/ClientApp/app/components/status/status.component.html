@@ -1,9 +1,9 @@
 ﻿<div class="well well-sm mouseOver post-format">
     <div class="row">
         <div class="col-sm-6 col-xs-6">
-            <p class="author-name">{{ status.AuthorDisplayname }}</p>
-            <p>{{ status.Text }}</p>
-            <p><a href="{{ status.AuthorAvatarUrl }}">AvatarUrl</a></p>
+            <p class="author-name">{{ status.Account.DisplayName }}</p>
+            <p [innerHTML]="status.Content"></p>
+            <p><img style="width:60px; height: 60px;" src="{{ status.Account.AvatarUrl }}" /></p>
         </div>
     </div>
 </div>
