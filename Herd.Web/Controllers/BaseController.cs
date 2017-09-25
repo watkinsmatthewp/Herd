@@ -19,14 +19,12 @@ namespace Herd.Web.Controllers
         protected const string USER_COOKIE_NAME = "HERD_USER_ID";
 
         protected Lazy<string> _requestedURL;
-        protected Lazy<IHerdDataProvider> _dataProvider;
         protected Lazy<HerdUserAccountDataModel> _activeUser;
         protected Lazy<HerdAppRegistrationDataModel> _appRegistration;
         protected Lazy<IMastodonApiWrapper> _mastodonApiWrapper;
         protected Lazy<IHerdApp> _app;
 
         protected string RequestedURL => _requestedURL.Value;
-        protected IHerdDataProvider DataProvider => _dataProvider.Value;
         protected HerdUserAccountDataModel ActiveUser => _activeUser.Value;
         protected HerdAppRegistrationDataModel AppRegistration => _appRegistration.Value;
         protected IHerdApp App => _app.Value;
@@ -34,7 +32,6 @@ namespace Herd.Web.Controllers
         public BaseController()
         {
             _requestedURL = new Lazy<string>(LoadRequestedURL);
-            _dataProvider = new Lazy<IHerdDataProvider>(LoadDataProvider);
             _activeUser = new Lazy<HerdUserAccountDataModel>(LoadActiveUserFromCookie);
             _appRegistration = new Lazy<HerdAppRegistrationDataModel>(LoadAppRegistrationFromActiveUser);
             _mastodonApiWrapper = new Lazy<IMastodonApiWrapper>(LoadMastodonApiWrapperFromAppRegistration);
@@ -111,14 +108,13 @@ namespace Herd.Web.Controllers
         }
 
         private string LoadRequestedURL() => $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
-        private IHerdDataProvider LoadDataProvider() => new HerdFileDataProvider();
 
         private HerdUserAccountDataModel LoadActiveUserFromCookie()
         {
             var userCookieComponents = Request.Cookies[USER_COOKIE_NAME]?.Split('|');
             if (userCookieComponents?.Length == 2 && !string.IsNullOrWhiteSpace(userCookieComponents[1]) && long.TryParse(userCookieComponents[0], out long userID))
             {
-                var userByID = _dataProvider.Value.GetUser(userID);
+                var userByID = HerdWebApp.Instance.DataProvider.GetUser(userID);
                 if (userByID != null && userID.ToString().Hashed(userByID.Security.SaltKey) == userCookieComponents[1])
                 {
                     return userByID;
@@ -131,7 +127,7 @@ namespace Herd.Web.Controllers
         {
             if (ActiveUser?.MastodonConnection?.AppRegistrationID > 0)
             {
-                return _dataProvider.Value.GetAppRegistration(ActiveUser.MastodonConnection.AppRegistrationID);
+                return HerdWebApp.Instance.DataProvider.GetAppRegistration(ActiveUser.MastodonConnection.AppRegistrationID);
             }
             return null;
         }
@@ -149,7 +145,7 @@ namespace Herd.Web.Controllers
             return new MastodonApiWrapper(_appRegistration.Value, ActiveUser.MastodonConnection);
         }
 
-        private IHerdApp LoadHerdApp() => new HerdApp(_dataProvider.Value, _mastodonApiWrapper.Value);
+        private IHerdApp LoadHerdApp() => new HerdApp(HerdWebApp.Instance.DataProvider, _mastodonApiWrapper.Value);
 
         #endregion
     }

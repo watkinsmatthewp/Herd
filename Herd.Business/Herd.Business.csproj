@@ -15,5 +15,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Herd.Core\Herd.Core.csproj" />
     <ProjectReference Include="..\Herd.Data\Herd.Data.csproj" />
+    <ProjectReference Include="..\Herd.Logging\Herd.Logging.csproj" />
   </ItemGroup>
 </Project>
