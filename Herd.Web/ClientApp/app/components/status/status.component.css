@@ -2,6 +2,11 @@
     background-color: #ffffff;
 }
 
+.post-format:hover {
+    background-color: #f8f9fa;
+    box-shadow: 2px 2px 2px #4dadf7;
+}
+
 p {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 110%;
