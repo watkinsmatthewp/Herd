@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Herd.Core;
 using System.Collections.Generic;
 using static Herd.Business.Models.CommandResultData.HerdAppGetRecentFeedItemsCommandResultData;
+using Herd.Logging;
 
 namespace Herd.Business
 {
@@ -22,11 +23,13 @@ namespace Herd.Business
 
         private IHerdDataProvider _data;
         private IMastodonApiWrapper _mastodonApiWrapper;
+        private IHerdLogger _logger;
 
-        public HerdApp(IHerdDataProvider data, IMastodonApiWrapper mastodonApiWrapper)
+        public HerdApp(IHerdDataProvider data, IMastodonApiWrapper mastodonApiWrapper, IHerdLogger logger)
         {
             _data = data ?? throw new ArgumentNullException(nameof(data));
             _mastodonApiWrapper = mastodonApiWrapper ?? throw new ArgumentNullException(nameof(mastodonApiWrapper));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #region App registration
@@ -239,14 +242,11 @@ namespace Herd.Business
             {
                 doWork(result);
             }
-            catch (HerdAppErrorException e)
-            {
-                result.Errors.Add(e.Error);
-            }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                result.Errors.Add(new HerdAppSystemError
+                var errorID = Guid.NewGuid();
+                _logger.Error(errorID, "Error in HerdApp", null, e);
+                result.Errors.Add((e as HerdAppErrorException)?.Error ?? new HerdAppSystemError
                 {
                     Message = $"Unhandled exception: {e.Message}"
                 });

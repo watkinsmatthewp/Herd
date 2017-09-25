@@ -38,7 +38,7 @@ namespace Herd.Web.Controllers.HerdApi
         [HttpGet("url")]
         public IActionResult GetMastodonInstanceOAuthURL(long registrationID)
         {
-            _appRegistration = new Lazy<HerdAppRegistrationDataModel>(DataProvider.GetAppRegistration(registrationID));
+            _appRegistration = new Lazy<HerdAppRegistrationDataModel>(HerdWebApp.Instance.DataProvider.GetAppRegistration(registrationID));
             _mastodonApiWrapper = new Lazy<IMastodonApiWrapper>(new MastodonApiWrapper(AppRegistration));
 
             return ApiJson(App.GetOAuthURL(new HerdAppGetOAuthURLCommand
@@ -57,13 +57,13 @@ namespace Herd.Web.Controllers.HerdApi
             // We need to clean it up, wrap it in a command, and move it to the business layer
 
             // Get the app registration for the ID provided
-            var appRegistration = DataProvider.GetAppRegistration(appRegistrationID);
+            var appRegistration = HerdWebApp.Instance.DataProvider.GetAppRegistration(appRegistrationID);
 
             // Connect with the one-time use code to get the permanent code
             var authClient = new AuthenticationClient(appRegistration.ToMastodonAppRegistration());
             var auth = authClient.ConnectWithCode(oneTimeUserApiAccessToken).Synchronously();
             ActiveUser.MastodonConnection = auth.ToHerdConnectionDetails(appRegistrationID);
-            DataProvider.UpdateUser(ActiveUser);
+            HerdWebApp.Instance.DataProvider.UpdateUser(ActiveUser);
 
             // END TODO
 

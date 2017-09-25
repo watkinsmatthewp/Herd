@@ -1,23 +1,27 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Herd.Web", "Herd.Web\Herd.Web.csproj", "{C99F9A9A-EB4D-44FA-8FBC-2254EC7B2210}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Herd.Web", "Herd.Web\Herd.Web.csproj", "{C99F9A9A-EB4D-44FA-8FBC-2254EC7B2210}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Herd.Core", "Herd.Core\Herd.Core.csproj", "{8BEAF194-3997-44DF-A9B1-B2CE0086BFD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Herd.Core", "Herd.Core\Herd.Core.csproj", "{8BEAF194-3997-44DF-A9B1-B2CE0086BFD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Herd.Business", "Herd.Business\Herd.Business.csproj", "{4F1A8695-00E4-49B0-B76A-95BB0E9B9ADC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Herd.Business", "Herd.Business\Herd.Business.csproj", "{4F1A8695-00E4-49B0-B76A-95BB0E9B9ADC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Herd.Web.UnitTests", "Herd.Web.UnitTests\Herd.Web.UnitTests.csproj", "{213E3EE9-907B-4D18-BB0B-0DB75CE464AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Herd.Web.UnitTests", "Herd.Web.UnitTests\Herd.Web.UnitTests.csproj", "{213E3EE9-907B-4D18-BB0B-0DB75CE464AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Herd.Core.UnitTests", "Herd.Core.UnitTests\Herd.Core.UnitTests.csproj", "{1B41F5D6-AF25-4283-A36E-D39E9499D02C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Herd.Core.UnitTests", "Herd.Core.UnitTests\Herd.Core.UnitTests.csproj", "{1B41F5D6-AF25-4283-A36E-D39E9499D02C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Herd.Business.UnitTests", "Herd.Business.UnitTests\Herd.Business.UnitTests.csproj", "{4F88CC33-8A31-470E-88A8-BA548CAAA7AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Herd.Business.UnitTests", "Herd.Business.UnitTests\Herd.Business.UnitTests.csproj", "{4F88CC33-8A31-470E-88A8-BA548CAAA7AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Herd.Data", "Herd.Data\Herd.Data.csproj", "{34E67738-EEAB-4DAD-81ED-FD86ECB52F58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Herd.Data", "Herd.Data\Herd.Data.csproj", "{34E67738-EEAB-4DAD-81ED-FD86ECB52F58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Herd.Data.UnitTests", "Herd.Data.UnitTests\Herd.Data.UnitTests.csproj", "{B1C2210F-9103-4C1C-B9A7-21C50ACDFE82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Herd.Data.UnitTests", "Herd.Data.UnitTests\Herd.Data.UnitTests.csproj", "{B1C2210F-9103-4C1C-B9A7-21C50ACDFE82}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Herd.Logging", "Herd.Logging\Herd.Logging.csproj", "{5C3BD1A7-E24F-44A7-8EE1-08BB5FA8CB2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Herd.Logging.UnitTests", "Herd.Logging.UnitTests\Herd.Logging.UnitTests.csproj", "{27C7655F-A6A3-4D9C-8FE4-05F99A2A152A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +61,14 @@ Global
 		{B1C2210F-9103-4C1C-B9A7-21C50ACDFE82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1C2210F-9103-4C1C-B9A7-21C50ACDFE82}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1C2210F-9103-4C1C-B9A7-21C50ACDFE82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C3BD1A7-E24F-44A7-8EE1-08BB5FA8CB2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C3BD1A7-E24F-44A7-8EE1-08BB5FA8CB2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C3BD1A7-E24F-44A7-8EE1-08BB5FA8CB2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C3BD1A7-E24F-44A7-8EE1-08BB5FA8CB2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27C7655F-A6A3-4D9C-8FE4-05F99A2A152A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27C7655F-A6A3-4D9C-8FE4-05F99A2A152A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27C7655F-A6A3-4D9C-8FE4-05F99A2A152A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27C7655F-A6A3-4D9C-8FE4-05F99A2A152A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
