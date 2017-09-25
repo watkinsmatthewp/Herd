@@ -2,6 +2,7 @@
 using Mastonet;
 using Mastonet.Entities;
 using System;
+using Herd.Core;
 
 namespace Herd.Business
 {
@@ -11,11 +12,17 @@ namespace Herd.Business
 
         public string MastodonHostInstance { get; }
         public HerdAppRegistrationDataModel AppRegistration { get; set; }
-        public string UserApiToken { get; set; }
+        public HerdUserMastodonConnectionDetails UserMastodonConnectionDetails { get; set; }
 
         #endregion Public properties
 
         #region Constructors
+
+        public MastodonApiWrapper()
+            : this(null as string)
+        {
+
+        }
 
         public MastodonApiWrapper(string mastodonHostInstance)
             : this(null as HerdAppRegistrationDataModel)
@@ -28,11 +35,11 @@ namespace Herd.Business
         {
         }
 
-        public MastodonApiWrapper(HerdAppRegistrationDataModel registration, string userApiToken)
+        public MastodonApiWrapper(HerdAppRegistrationDataModel registration, HerdUserMastodonConnectionDetails userMastodonConnectionDetails)
         {
             AppRegistration = registration;
             MastodonHostInstance = AppRegistration?.Instance;
-            UserApiToken = userApiToken;
+            UserMastodonConnectionDetails = userMastodonConnectionDetails;
         }
 
         #endregion Constructors
@@ -45,14 +52,11 @@ namespace Herd.Business
             {
                 throw new ArgumentNullException(nameof(AppRegistration));
             }
-            if (string.IsNullOrWhiteSpace(UserApiToken))
+            if (UserMastodonConnectionDetails == null)
             {
-                throw new ArgumentException($"{nameof(UserApiToken)} cannot be null or empty");
+                throw new ArgumentNullException(nameof(UserMastodonConnectionDetails));
             }
-            return new MastodonClient(AppRegistration.ToMastodonAppRegistration(), new Auth
-            {
-                AccessToken = UserApiToken
-            });
+            return new MastodonClient(AppRegistration.ToMastodonAppRegistration(), UserMastodonConnectionDetails.ToMastodonAuth());
         }
 
         #endregion

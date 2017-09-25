@@ -15,6 +15,7 @@ import { NavMenuComponent } from './components/shared/navmenu/navmenu.component'
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { RegisterComponent } from './components/register/register.component';
+import { StatusComponent } from './components/status/status.component';
 // Services
 import { AccountService } from './components/shared/services/account.service';
 import { AlertService } from './components/shared/services/alert.service';
@@ -39,6 +40,7 @@ import { SafePipe } from './components/shared/pipes/safe.pipe';
         NotificationsComponent,
         ProfileComponent,
         RegisterComponent,
+        StatusComponent,
         // Pipes
         SafePipe
     ],
@@ -52,7 +54,7 @@ import { SafePipe } from './components/shared/pipes/safe.pipe';
             { path: 'login', component: LoginComponent },
             { path: 'register', component: RegisterComponent },
             // Account Settings
-            { path: 'instance-picker', component: InstancePickerComponent },
+            { path: 'instance-picker', component: InstancePickerComponent, canActivate: [AuthGuard] },
             // TimeLines
             { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
             { path: 'localfeed', component: LocalFeedComponent, canActivate: [AuthGuard] },

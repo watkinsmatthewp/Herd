@@ -17,7 +17,7 @@ namespace Herd.Web.Controllers.HerdApi
         [HttpPost("register"), AuthenticationNotRequired]
         public IActionResult Register([FromBody] JObject body)
         {
-            var result = HerdApp.Instance.CreateUser(new HerdAppCreateUserCommand
+            var result = App.CreateUser(new HerdAppCreateUserCommand
             {
                 Email = body["email"].Value<string>(),
                 FirstName = body["firstName"].Value<string>(),
@@ -37,7 +37,7 @@ namespace Herd.Web.Controllers.HerdApi
         [HttpPost("login"), AuthenticationNotRequired]
         public IActionResult Login([FromBody] JObject body)
         {
-            var result = HerdApp.Instance.LoginUser(new HerdAppLoginUserCommand
+            var result = App.LoginUser(new HerdAppLoginUserCommand
             {
                 Email = body["email"].Value<string>(),
                 PasswordPlainText = body["password"].Value<string>()

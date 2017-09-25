@@ -1,0 +1,13 @@
+﻿.post-format {
+    background-color: #ffffff;
+}
+
+p {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 110%;
+}
+
+.author-name {
+    font-weight: bold;
+    font-size: 120%;
+}

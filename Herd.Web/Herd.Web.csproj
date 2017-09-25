@@ -19,15 +19,21 @@
   <ItemGroup>
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
     <Compile Remove="Code\**" />
+    <Compile Remove="Models\**" />
     <Content Remove="ClientApp\**" />
     <Content Remove="Code\**" />
+    <Content Remove="Models\**" />
     <EmbeddedResource Remove="Code\**" />
+    <EmbeddedResource Remove="Models\**" />
     <None Remove="Code\**" />
+    <None Remove="Models\**" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="ClientApp\app\components\home\home.component.spec.ts" />
     <None Remove="ClientApp\app\components\notifications\notifications.component.ts" />
+    <None Remove="ClientApp\app\components\shared\models\mastodon\Application.ts" />
+    <None Remove="ClientApp\app\components\shared\services\user.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,6 +46,8 @@
     <TypeScriptCompile Include="ClientApp\app\components\home\home.component.spec.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\notifications\notifications.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\profile\profile.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\models\mastodon\Account.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\models\mastodon\Application.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\models\Storage.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\models\User.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\services\alert.service.ts" />
@@ -47,10 +55,6 @@
     <TypeScriptCompile Include="ClientApp\app\components\shared\services\authentication.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\services\http-client.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\services\account.service.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\API\" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

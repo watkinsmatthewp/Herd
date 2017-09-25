@@ -10,6 +10,9 @@ namespace Herd.Data.Models
     {
         public long AppRegistrationID { get; set; }
         public string ApiAccessToken { get; set; }
+        public string CreatedAt { get; set; }
+        public string Scope { get; set; }
+        public string TokenType { get; set; }
     }
 
     public interface IHerdUserAccountDataModel : IHerdDataModel
