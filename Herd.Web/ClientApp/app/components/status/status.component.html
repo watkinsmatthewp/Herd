@@ -1,14 +1,17 @@
-﻿<div class="well well-sm mouseOver post-format">
-    <div class="row">
-        <div class="col-sm-6 col-xs-6">
-            <p><img style="width:60px; height: 60px;" src="{{ status.Account.AvatarUrl }}" />
-                <a href="{{ status.Account.Url }}">
-                    <span class="author-name">{{ status.Account.DisplayName }}</span>
-                    <span class="username">@{{ status.Account.UserName }}</span>
-                </a>
-                <span class="time-stamp"> | {{ status.CreatedAt | date: 'dd/MM/yyyy' }}</span>
-            </p>
-            <p [innerHTML]="status.Content"></p>
+﻿<a href="{{ status.Url }}">
+    <div class="well well-sm mouseOver post-format">
+        <div class="row">
+            <div class="col-sm-6 col-xs-6">
+                <p>
+                    <img style="width:60px; height: 60px;" src="{{ status.Account.AvatarUrl }}" />
+                    <a href="{{ status.Account.Url }}">
+                        <span class="author-name">{{ status.Account.DisplayName }}</span>
+                        <span class="username">@{{ status.Account.UserName }}</span>
+                    </a>
+                    <span class="time-stamp"> | {{ status.CreatedAt | date: 'dd/MM/yyyy' }}</span>
+                </p>
+                <p [innerHTML]="status.Content"></p>
+            </div>
         </div>
     </div>
-</div>
+</a>
