@@ -5,7 +5,9 @@
                 <a href="{{ status.Account.Url }}">
                     <span class="author-name">{{ status.Account.DisplayName }}</span>
                     <span class="username">@{{ status.Account.UserName }}</span>
-                </a></p>
+                </a>
+                <span class="time-stamp"> | {{ status.CreatedAt }}</span>
+            </p>
             <p [innerHTML]="status.Content"></p>
         </div>
     </div>
