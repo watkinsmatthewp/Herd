@@ -106,7 +106,7 @@ namespace Herd_Web
 
         private void OnRun()
         {
-            var app = new HerdApp(new HerdFileDataProvider(), new MastodonApiWrapper("mastodon.xyz"));
+            var app = new HerdApp(new HerdFileDataProvider(), new MastodonApiWrapper("mastodon.xyz"), HerdWebApp.Instance.Logger);
 
             try
             {
