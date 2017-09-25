@@ -6,7 +6,7 @@
                     <span class="author-name">{{ status.Account.DisplayName }}</span>
                     <span class="username">@{{ status.Account.UserName }}</span>
                 </a>
-                <span class="time-stamp"> | {{ status.CreatedAt }}</span>
+                <span class="time-stamp"> | {{ status.CreatedAt | date: 'dd/MM/yyyy' }}</span>
             </p>
             <p [innerHTML]="status.Content"></p>
         </div>
