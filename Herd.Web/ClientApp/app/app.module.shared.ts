@@ -16,6 +16,7 @@ import { NotificationsComponent } from './components/notifications/notifications
 import { ProfileComponent } from './components/profile/profile.component';
 import { RegisterComponent } from './components/register/register.component';
 import { StatusComponent } from './components/status/status.component';
+import { StatusFormComponent } from './components/status-form/status-form.component';
 // Services
 import { AccountService } from './components/shared/services/account.service';
 import { AlertService } from './components/shared/services/alert.service';
@@ -41,6 +42,7 @@ import { SafePipe } from './components/shared/pipes/safe.pipe';
         ProfileComponent,
         RegisterComponent,
         StatusComponent,
+        StatusFormComponent,
         // Pipes
         SafePipe
     ],

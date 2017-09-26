@@ -1,0 +1,26 @@
+﻿<div class="panel">
+    <div class="panel-body">
+        <form name="form" (ngSubmit)="f.form.valid && submitStatus()" #f="ngForm" novalidate>
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !status.valid }">
+                <label for="status">Status : <small>{{ model.status.length }}</small></label>
+                <textarea class="form-control" name="status" [(ngModel)]="model.status" #status="ngModel" required placeholder="What's happening?" maxlength="600" rows="3"></textarea>
+                <div *ngIf="f.submitted && !status.valid" class="help-block">Status is required</div>
+            </div>
+            <div class="form-group">
+                <div class="pull-left">
+                    <button class="btn"><span class='glyphicon glyphicon-camera'></span></button>
+                    <button class="btn"><span class='glyphicon glyphicon-warning-sign'></span></button>
+                    <button class="btn"><span class='glyphicon glyphicon-eye-open'></span></button>
+                    <button class="btn"><span class='glyphicon glyphicon-user'></span></button>
+                </div>
+                <div class="pull-right">
+                    <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                    <button [disabled]="loading || !f.valid" class="btn btn-primary">
+                        <span class='glyphicon glyphicon-pencil'></span>
+                        Create Status
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div><!-- /.panel-body -->
+</div><!-- /.panel -->
