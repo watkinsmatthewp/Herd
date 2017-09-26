@@ -2,7 +2,7 @@
     <div class="panel-body">
         <form name="form" (ngSubmit)="f.form.valid && submitStatus()" #f="ngForm" novalidate>
             <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !status.valid }">
-                <label for="status">Status : <small>{{ model.status.length }}</small></label>
+                <label for="status">Status | <small>{{ model.status.length }}</small></label>
                 <textarea class="form-control" name="status" [(ngModel)]="model.status" #status="ngModel" required placeholder="What's happening?" maxlength="600" rows="3"></textarea>
                 <div *ngIf="f.submitted && !status.valid" class="help-block">Status is required</div>
             </div>

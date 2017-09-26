@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
     constructor(private mastodonService: MastodonService, private alertService: AlertService) {
     }
 
-    ngOnInit() {
+    getMostRecentHomeFeed() {
         this.loading = true;
         this.mastodonService.getHomeFeed()
             .finally(() => this.loading = false)
@@ -28,5 +28,9 @@ export class HomeComponent implements OnInit {
             }, error => {
                 this.alertService.error(error.error);
             });
+    }
+
+    ngOnInit() {
+        this.getMostRecentHomeFeed();
     }
 }
