@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\CommandResultData\HerdAppGetFeedItemCommandResultData.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <PackageReference Include="Mastonet" Version="1.0.0-beta1" />
   </ItemGroup>
 
@@ -12,10 +16,4 @@
     <ProjectReference Include="..\Herd.Core\Herd.Core.csproj" />
     <ProjectReference Include="..\Herd.Data\Herd.Data.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\CommandResultData\" />
-    <Folder Include="Models\Commands\" />
-  </ItemGroup>
-
 </Project>

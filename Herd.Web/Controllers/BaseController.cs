@@ -44,7 +44,7 @@ namespace Herd.Web.Controllers
             _appRegistration = new Lazy<HerdAppRegistrationDataModel>(LoadAppRegistrationFromActiveUser);
             _mastodonApiWrapper = new Lazy<IMastodonApiWrapper>(LoadMastodonApiWrapperFromAppRegistration);
         }
-        
+
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {

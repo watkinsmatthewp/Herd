@@ -55,6 +55,6 @@ namespace Herd.Business
             });
         }
 
-        #endregion Constructors
+        #endregion
     }
 }

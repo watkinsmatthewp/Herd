@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
 
     ngOnInit() {
         // reset login status
-        this.authenticationService.logout();
+        this.authenticationService.logout().subscribe();;
         // if coming from register default the email
         this.model.email = this.route.snapshot.queryParams['email'] || ''; 
     }
@@ -33,25 +33,21 @@ export class LoginComponent implements OnInit {
     login() {
         this.loading = true;
         this.authenticationService.login(this.model.email, this.model.password)
-        .finally(() => this.loading = false)
-        .subscribe(response => {
-            if (!response.Success) {
-                this.alertService.error("Failure Logging In");
-                return;
-            }
-            let user = response.Data.User;
-            this.localStorage.setItem('currentUser', JSON.stringify(user));
-            this.alertService.success("Successfully Logged In", true);
+            .finally(() => this.loading = false)
+            .subscribe(response => {
+                let user = response.User;
+                this.localStorage.setItem('currentUser', JSON.stringify(user));
+                this.alertService.success("Successfully Logged In", true);
 
-            // Reroute user depending on if they picked a mastodon instance yet.
-            if (user && user.ID && !user.MastodonConnection ) {
-                this.router.navigateByUrl('/instance-picker');
-            } else {
-                this.localStorage.setItem('connectedToMastodon', true);
-                this.router.navigateByUrl('/home');
-            }
-        }, error => {
-            this.alertService.error(error);
-        });
+                // Reroute user depending on if they picked a mastodon instance yet.
+                if (user && user.ID && !user.MastodonConnection) {
+                    this.router.navigateByUrl('/instance-picker');
+                } else {
+                    this.localStorage.setItem('connectedToMastodon', true);
+                    this.router.navigateByUrl('/home');
+                }
+            }, error => {
+                this.alertService.error(error.error);
+            });
     }
 }

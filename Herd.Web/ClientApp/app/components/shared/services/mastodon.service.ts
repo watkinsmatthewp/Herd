@@ -3,6 +3,7 @@ import { Http, Headers, RequestOptionsArgs, RequestOptions, RequestMethod } from
 import 'rxjs/Rx';
 
 import { NumberObject } from '../models/NumberObject';
+import { Post } from '../models/Post';
 
 @Injectable()
 export class MastodonService {
@@ -14,4 +15,11 @@ export class MastodonService {
             .map(response => response.json() as NumberObject)
             .toPromise();
     }
+
+    // Get a list of posts for the home feed
+    getHomeFeed() {
+        return this.http.get('api/feed/new_items')
+            .map(response => response.json() as Post[])
+    }
+
 }

@@ -1,4 +1,4 @@
-﻿using Herd.Business.App.Exceptions;
+﻿﻿using Herd.Business.App.Exceptions;
 using Herd.Business.Models;
 using Herd.Business.Models.Errors;
 using Herd.Data.Providers;
@@ -8,6 +8,8 @@ using Herd.Business.Models.Commands;
 using Herd.Data.Models;
 using System.Threading.Tasks;
 using Herd.Core;
+using System.Collections.Generic;
+using static Herd.Business.Models.CommandResultData.HerdAppGetRecentFeedItemsCommandResultData;
 
 namespace Herd.Business
 {
@@ -129,6 +131,27 @@ namespace Herd.Business
                         ?? Data.CreateAppRegistration(new MastodonApiWrapper(getOrCreateRegistrationCommand.Instance).RegisterApp().Synchronously())
                 };
             });
+        }
+
+        #endregion
+
+        #region Feed
+
+        public HerdAppCommandResult<HerdAppGetRecentFeedItemsCommandResultData> GetRecentFeedItems(HerdAppGetRecentFeedItemsCommand getRecentFeedItemsCommand)
+        {
+            return new HerdAppCommandResult<HerdAppGetRecentFeedItemsCommandResultData>
+            {
+                Data = new HerdAppGetRecentFeedItemsCommandResultData
+                {
+                    RecentFeedItems = new List<RecentFeedItem>
+                    {
+                        new RecentFeedItem { Text = "you are near?" },
+                        new RecentFeedItem { Text = "Every time" },
+                        new RecentFeedItem { Text = "Suddenly appear" },
+                        new RecentFeedItem { Text = "Why do birds" }
+                    }
+                }
+            };
         }
 
         #endregion
