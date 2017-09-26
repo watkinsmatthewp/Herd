@@ -6,3 +6,9 @@
 .color-scheme {
     background-color: #ccedff;
 }
+
+.container {
+    width: 100%;
+    padding-left: 5em;
+    padding-right: 5em;
+}
