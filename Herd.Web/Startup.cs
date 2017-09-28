@@ -10,6 +10,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Herd.Business;
 using Herd.Data.Models;
 using Herd.Business.Models.Commands;
+using Herd.Data.Providers;
+using Herd.Logging;
+using Microsoft.AspNetCore.Diagnostics;
+using System.IO;
+using Microsoft.AspNetCore.Http;
+using System.Text;
+using Herd.Web;
 
 namespace Herd_Web
 {
@@ -31,19 +38,14 @@ namespace Herd_Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseDeveloperExceptionPage();
+            RegisterErrorHandler(app);
 
             if (env.IsDevelopment())
             {
-                //app.UseDeveloperExceptionPage();
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
                     HotModuleReplacement = true
                 });
-            }
-            else
-            {
-                //app.UseExceptionHandler("/Home/Error");
             }
 
             app.UseStaticFiles();
@@ -62,36 +64,97 @@ namespace Herd_Web
             OnRun();
         }
 
+        private static void RegisterErrorHandler(IApplicationBuilder app)
+        {
+            app.UseExceptionHandler(errorApp =>
+            {
+                errorApp.Run(async context =>
+                {
+                    var errorID = Guid.NewGuid();
+                    var error = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+                    Console.WriteLine($"ERROR {errorID}: {error}");
+                    try
+                    {
+                        HerdWebApp.Instance.Logger.Error(errorID, "Error processing request", new Dictionary<string, string>
+                        {
+                            ["PATH"] = context.Request.Path,
+                            ["HEDERS"] = FormatHeaders(context.Request.Headers),
+                            ["BODY"] = await new StreamReader(context.Request.Body ?? new MemoryStream()).ReadToEndAsync(),
+                        }, error);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+
+                    context.Response.StatusCode = 500;
+                    var enpdoint = context.Request.ContentType?.Contains("json") == true ? "/json" : "";
+                    context.Response.Redirect($"/error/{enpdoint}?id={errorID}");
+                });
+            });
+        }
+
+        private static string FormatHeaders(IHeaderDictionary headers)
+        {
+            var sb = new StringBuilder();
+            foreach (var headerGroup in headers)
+            {
+                sb.Append($"{headerGroup.Key}={string.Join(",", headerGroup.Value)};");
+            }
+            return sb.ToString();
+        }
+
         private void OnRun()
         {
-            HerdApp.Instance.CreateUser(new HerdAppCreateUserCommand
+            var app = new HerdApp(new HerdFileDataProvider(), new MastodonApiWrapper("mastodon.xyz"), HerdWebApp.Instance.Logger);
+
+            try
             {
-                Email = "mpwatki2@ncsu.edu",
-                FirstName = "Matthew",
-                LastName = "Watkins",
-                PasswordPlainText = "password"
-            });
-            HerdApp.Instance.CreateUser(new HerdAppCreateUserCommand
+                app.CreateUser(new HerdAppCreateUserCommand
+                {
+                    Email = "mpwatki2@ncsu.edu",
+                    FirstName = "Matthew",
+                    LastName = "Watkins",
+                    PasswordPlainText = "password"
+                });
+            }
+            catch { }
+
+            try
             {
-                Email = "tdortiz@ncsu.edu",
-                FirstName = "Thomas",
-                LastName = "Ortiz",
-                PasswordPlainText = "password"
-            });
-            HerdApp.Instance.CreateUser(new HerdAppCreateUserCommand
+                app.CreateUser(new HerdAppCreateUserCommand
+                {
+                    Email = "tdortiz@ncsu.edu",
+                    FirstName = "Thomas",
+                    LastName = "Ortiz",
+                    PasswordPlainText = "password"
+                });
+            }
+            catch { }
+
+            try
             {
-                Email = "dbchris3@ncsu.edu",
-                FirstName = "Dana",
-                LastName = "Chritso",
-                PasswordPlainText = "password"
-            });
-            HerdApp.Instance.CreateUser(new HerdAppCreateUserCommand
+                app.CreateUser(new HerdAppCreateUserCommand
+                {
+                    Email = "dbchris3@ncsu.edu",
+                    FirstName = "Dana",
+                    LastName = "Chritso",
+                    PasswordPlainText = "password"
+                });
+            }
+            catch { }
+
+            try
             {
-                Email = "jcstone3@ncsu.edu",
-                FirstName = "Jacob",
-                LastName = "Stone",
-                PasswordPlainText = "password"
-            });
+                app.CreateUser(new HerdAppCreateUserCommand
+                {
+                    Email = "jcstone3@ncsu.edu",
+                    FirstName = "Jacob",
+                    LastName = "Stone",
+                    PasswordPlainText = "password"
+                });
+            }
+            catch { }
         }
     }
 }

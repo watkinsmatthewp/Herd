@@ -11,7 +11,8 @@ export class AuthGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         if (this.authService.isAuthenticated()) {
             // Were authenticated but we didnt pick our instance yet
-            if (!this.authService.checkIfConnectedToMastodon()) {
+            let url = state.url;
+            if (url != "/instance-picker" && !this.authService.checkIfConnectedToMastodon()) {
                 this.router.navigateByUrl('/instance-picker');
                 return false;
             }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { AlertService } from '../shared/services/alert.service';
 import { MastodonService } from '../shared/services/mastodon.service';
-import { Post } from '../shared/models/Post';
+import { Status } from '../shared/models/mastodon/Status';
 
 @Component({
     selector: 'home',
@@ -14,17 +14,12 @@ export class HomeComponent implements OnInit {
     loading: boolean = false;
 
     // List of posts for the home feed
-    homeFeed: Post[];
+    homeFeed: Status[];
 
     constructor(private mastodonService: MastodonService, private alertService: AlertService) {
     }
 
-    ngOnInit() {
-        this.mastodonService.getRandomNumber().then(randomNum => {
-            console.log("Random Number", randomNum);
-            this.randomInt = randomNum.numero;
-        })
-
+    getMostRecentHomeFeed() {
         this.loading = true;
         this.mastodonService.getHomeFeed()
             .finally(() => this.loading = false)
@@ -33,5 +28,9 @@ export class HomeComponent implements OnInit {
             }, error => {
                 this.alertService.error(error.error);
             });
+    }
+
+    ngOnInit() {
+        this.getMostRecentHomeFeed();
     }
 }

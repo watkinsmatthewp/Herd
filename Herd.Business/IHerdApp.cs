@@ -8,8 +8,6 @@ namespace Herd.Business
 {
     public interface IHerdApp
     {
-        IHerdDataProvider Data { get; }
-
         // Basic CRUD
         HerdAppCommandResult<HerdAppGetUserCommandResultData> GetUser(HerdAppGetUserCommand getUserCommand);
 

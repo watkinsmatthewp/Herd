@@ -15,9 +15,9 @@
         <!-- Logged in menu -->
         <div *ngIf="authService.isAuthenticated() && authService.checkIfConnectedToMastodon()" class='navbar-collapse collapse'>
             <ul class='nav navbar-nav'>
-                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/home']"><span class='glyphicon glyphicon-home'></span> Home</a></li>
-                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/localfeed']"><span class='glyphicon glyphicon-blackboard'></span> Local Feed</a></li>
-                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/notifications']"><span class='glyphicon glyphicon-bell'></span> Notifications</a></li>
+                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/home']"><fa name="home"></fa> Home</a></li>
+                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/localfeed']"><fa name="globe"></fa> Local Feed</a></li>
+                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/notifications']"><fa name="bell"></fa> Notifications</a></li>
                 <!--Add more routes here -->
             </ul>
             <div class="nav navbar-nav navbar-right">
@@ -31,19 +31,19 @@
                 </form>
             </div>
             <ul  class="nav navbar-nav navbar-right">
-                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/profile']"><span class='glyphicon glyphicon-user'></span> Profile</a></li>
-                <li><a><span class='glyphicon glyphicon-pencil'></span> Toot</a></li>
-                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/login']"><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>
+                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/profile']"><fa name="user"></fa> Profile</a></li>
+                <li><a><fa name="pencil"></fa> Create Status</a></li>
+                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/login']"><fa name="sign-out"></fa> Logout</a></li>
             </ul>
         </div>
 
         <!-- Logged in but didn't pick instance -->
         <div *ngIf="authService.isAuthenticated() && !authService.checkIfConnectedToMastodon()" class='navbar-collapse collapse'>
             <ul class='nav navbar-nav'>
-                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/instance-picker']"><span class='glyphicon glyphicon-th-list'></span> Instance Picker</a></li>
+                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/instance-picker']"><fa name="th-list"></fa> Instance Picker</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/login']"><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>
+                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/login']"><fa name="sign-out"></fa> Logout</a></li>
             </ul>
         </div>
     </div>
