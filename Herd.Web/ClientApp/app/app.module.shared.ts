@@ -1,3 +1,4 @@
+import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -50,6 +51,7 @@ import { SafePipe } from './components/shared/pipes/safe.pipe';
         SafePipe
     ],
     imports: [
+        Angular2FontawesomeModule,
         CommonModule,
         HttpModule,
         FormsModule,
