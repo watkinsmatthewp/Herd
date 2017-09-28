@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 import { Routes, RouterModule, CanActivate } from '@angular/router';
 
 // Components
+import { AdminComponent } from './components/admin/admin.component';
 import { AlertComponent } from './components/shared/alert/alert.component';
 import { AppComponent } from './components/app/app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -19,6 +20,7 @@ import { StatusComponent } from './components/status/status.component';
 import { StatusFormComponent } from './components/status-form/status-form.component';
 // Services
 import { AccountService } from './components/shared/services/account.service';
+import { AdminAuthGuard } from './components/shared/services/admin-auth-guard.service';
 import { AlertService } from './components/shared/services/alert.service';
 import { AuthenticationService } from './components/shared/services/authentication.service';
 import { AuthGuard } from './components/shared/services/auth-guard.service';
@@ -31,6 +33,7 @@ import { SafePipe } from './components/shared/pipes/safe.pipe';
 @NgModule({
     declarations: [
         // Components
+        AdminComponent,
         AlertComponent,
         AppComponent,
         HomeComponent,
@@ -52,6 +55,8 @@ import { SafePipe } from './components/shared/pipes/safe.pipe';
         FormsModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
+            // Admin Page 
+            { path: 'admin', component: AdminComponent },
             // Login, Register
             { path: 'login', component: LoginComponent },
             { path: 'register', component: RegisterComponent },
@@ -68,7 +73,7 @@ import { SafePipe } from './components/shared/pipes/safe.pipe';
             { path: '**', redirectTo: 'home' }
         ])
     ],
-    providers: [AccountService, AlertService, AuthenticationService, AuthGuard, HttpClientService, MastodonService]
+    providers: [AccountService, AdminAuthGuard, AlertService, AuthenticationService, AuthGuard, HttpClientService, MastodonService]
 })
 export class AppModuleShared {
 }

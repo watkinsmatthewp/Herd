@@ -50,6 +50,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\shared\models\mastodon\Application.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\models\Storage.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\models\User.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\services\admin-auth-guard.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\services\alert.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\services\auth-guard.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\services\authentication.service.ts" />
