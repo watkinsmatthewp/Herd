@@ -7,6 +7,12 @@ import { AuthenticationService } from '../services/authentication.service';
     styleUrls: ['./navmenu.component.css']
 })
 export class NavMenuComponent {
+    model: any = {};
+
 
     constructor(private authService: AuthenticationService) { }
+
+    search() {
+        alert(this.model.searchItem);
+    }
 }

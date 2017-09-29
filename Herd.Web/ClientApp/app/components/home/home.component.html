@@ -1,4 +1,3 @@
-<div class="container">
 
     <!-- Left Column -->
     <div class="row">
@@ -26,7 +25,7 @@
             <div class="text-center">
                 <button [disabled]="loading" class="btn btn-default" (click)="getMostRecentHomeFeed()">
                     <fa *ngIf="loading" name="spinner" spin=true></fa>
-                    <i *ngIf="!loading" class="glyphicon glyphicon-refresh"></i>
+                    <fa *ngIf="!loading" name="refresh"></fa>
                 </button>
             </div>
             <br />
@@ -44,4 +43,3 @@
             </div>
         </div>
     </div>
-</div>
