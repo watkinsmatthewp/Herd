@@ -50,24 +50,15 @@ namespace Herd.Web.Controllers.HerdApi
         [HttpPost("set_tokens")]
         public IActionResult SetMastodonOAuthTokens([FromBody] JObject body)
         {
-            var oneTimeUserApiAccessToken = body["token"].Value<string>();
-            var appRegistrationID = body["app_registration_id"].Value<long>();
+            _appRegistration = new Lazy<HerdAppRegistrationDataModel>(HerdWebApp.Instance.DataProvider.GetAppRegistration(body["app_registration_id"].Value<long>()));
+            _mastodonApiWrapper = new Lazy<IMastodonApiWrapper>(new MastodonApiWrapper(AppRegistration));
 
-            // TODO: All the code below is here only temporarily. It doesn't belong here. 
-            // We need to clean it up, wrap it in a command, and move it to the business layer
-
-            // Get the app registration for the ID provided
-            var appRegistration = HerdWebApp.Instance.DataProvider.GetAppRegistration(appRegistrationID);
-
-            // Connect with the one-time use code to get the permanent code
-            var authClient = new AuthenticationClient(appRegistration.ToMastodonAppRegistration());
-            var auth = authClient.ConnectWithCode(oneTimeUserApiAccessToken).Synchronously();
-            ActiveUser.MastodonConnection = auth.ToHerdConnectionDetails(appRegistrationID);
-            HerdWebApp.Instance.DataProvider.UpdateUser(ActiveUser);
-
-            // END TODO
-
-            return Ok();
+            return ApiJson(App.UpdateUserMastodonConnection(new HerdAppUpdateUserMastodonConnectionCommand
+            {
+                AppRegistrationID = body["app_registration_id"].Value<long>(),
+                Token = body["token"].Value<string>(),
+                UserID = ActiveUser.ID
+            }));
         }
 
         #region Private helpers

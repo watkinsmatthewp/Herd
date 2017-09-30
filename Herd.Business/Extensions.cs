@@ -31,7 +31,8 @@ namespace Herd.Business
             ClientId = herdAppRegistration.ClientId,
             Id = herdAppRegistration.MastodonAppRegistrationID,
             ClientSecret = herdAppRegistration.ClientSecret,
-            Instance = herdAppRegistration.Instance
+            Instance = herdAppRegistration.Instance,
+            Scope = MastodonApiWrapper.ALL_SCOPES
         };
 
         public static Auth ToMastodonAuth(this HerdUserMastodonConnectionDetails connectionDetails) => new Auth
