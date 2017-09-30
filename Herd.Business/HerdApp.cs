@@ -253,6 +253,14 @@ namespace Herd.Business
             });
         }
 
+        public HerdAppCommandResult CreateNewPost(HerdAppCreateNewPostCommand createNewPostCommand)
+        {
+            return ProcessCommand(result =>
+            {
+                _mastodonApiWrapper.CreateNewPost(createNewPostCommand.Message).Synchronously();
+            });
+        }
+
         #endregion
 
         #region Private helpers
