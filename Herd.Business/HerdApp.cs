@@ -135,6 +135,34 @@ namespace Herd.Business
             });
         }
 
+        public HerdAppCommandResult UpdateUserMastodonConnection(HerdAppUpdateUserMastodonConnectionCommand updateUserMastodonConnectionCommand)
+        {
+            return ProcessCommand(result =>
+            {
+                // Check the token
+                if (string.IsNullOrWhiteSpace(updateUserMastodonConnectionCommand.Token))
+                {
+                    throw new HerdAppUserErrorException("Token cannot be empty");
+                }
+
+                // Check the user ID
+                var user = _data.GetUser(updateUserMastodonConnectionCommand.UserID);
+                if (user == null)
+                {
+                    throw new HerdAppUserErrorException("Could not find a user with that ID");
+                }
+                
+                // Connect with the one-time use code to get the permanent code
+                _mastodonApiWrapper.AppRegistration = _data.GetAppRegistration(updateUserMastodonConnectionCommand.AppRegistrationID)
+                    ?? throw new HerdAppUserErrorException("Could not find a registration with that ID");
+                _mastodonApiWrapper.UserMastodonConnectionDetails = _mastodonApiWrapper.Connect(updateUserMastodonConnectionCommand.Token).Synchronously();
+
+                // Update the user details
+                user.MastodonConnection = _mastodonApiWrapper.UserMastodonConnectionDetails;
+                _data.UpdateUser(user);
+            });
+        }
+
         #endregion
 
         #region Feed
@@ -235,8 +263,12 @@ namespace Herd.Business
             return ProcessCommand(new HerdAppCommandResult<D>(), doWork);
         }
 
-        private R ProcessCommand<R>(R result, Action<R> doWork)
-            where R : HerdAppCommandResult
+        private HerdAppCommandResult ProcessCommand(Action<HerdAppCommandResult> doWork)
+        {
+            return ProcessCommand(new HerdAppCommandResult(), doWork);
+        }
+
+        private R ProcessCommand<R>(R result, Action<R> doWork) where R : HerdAppCommandResult
         {
             try
             {
