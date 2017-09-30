@@ -1,0 +1,29 @@
+﻿<div class="col-md-6 col-md-offset-3">
+    <h3>Choose a Mastodon instance</h3>
+    <form name="submitOAuthForm" (ngSubmit)="f.form.valid && getOAuthToken()" #f="ngForm" novalidate>
+        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !instance.valid }">
+            <label for="instance">Instance</label>
+            <input type="text" class="form-control" name="instance" [(ngModel)]="model.instance" #instance="ngModel" required placeholder="octodon.social"/>
+            <div *ngIf="f.submitted && !instance.valid" class="help-block">Instance is required</div>
+        </div>
+        <div class="form-group">
+            <button [disabled]="loading || !f.valid" class="btn btn-primary">Submit</button>
+            <fa *ngIf="loading" name="spinner" spin=true></fa>
+        </div>
+    </form>
+
+    <br />
+    
+    <form *ngIf="oAuthUrl" name="getOAuthForm" (ngSubmit)="f.form.valid && submitOAuthToken()" #f="ngForm" novalidate>
+        <p>Click <a href="{{oAuthUrl}}" target="_blank">here</a> to get your OAuth token.</p>
+        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !oAuthToken.valid }">
+            <label for="oAuthToken">OAuth Token</label>
+            <input type="text" class="form-control" name="oAuthToken" [(ngModel)]="model.oAuthToken" #oAuthToken="ngModel" required />
+            <div *ngIf="f.submitted && !oAuthToken.valid" class="help-block">An OAuth Token is required</div>
+        </div>
+        <div class="form-group">
+            <button [disabled]="loading || !f.valid" class="btn btn-primary">Submit</button>
+            <fa *ngIf="loading" name="spinner" spin=true></fa>
+        </div>
+    </form>
+</div>

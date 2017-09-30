@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Herd.Data.Models;
+﻿using System.Collections.Generic;
 using System.IO;
-using Newtonsoft.Json;
 using System.Linq;
 
 namespace Herd.Data.Providers

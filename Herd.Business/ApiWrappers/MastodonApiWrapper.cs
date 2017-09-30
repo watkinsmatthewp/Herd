@@ -1,34 +1,28 @@
-﻿using Mastonet;
+﻿using Herd.Data.Models;
+using Mastonet;
 using Mastonet.Entities;
-using Herd.Data.Models;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using Herd.Core;
 
 namespace Herd.Business
 {
     public partial class MastodonApiWrapper : IMastodonApiWrapper
     {
-        #region Private member variables
-
-        private Lazy<MastodonClient> _apiClient = null;
-        private MastodonClient ApiClient => _apiClient.Value;
-
-        #endregion
-
         #region Public properties
 
-        public string MastodonHostInstance { get; private set; }
+        public string MastodonHostInstance { get; }
         public HerdAppRegistrationDataModel AppRegistration { get; set; }
-        public string UserApiToken { get; set; }
+        public HerdUserMastodonConnectionDetails UserMastodonConnectionDetails { get; set; }
 
-        #endregion
+        #endregion Public properties
 
         #region Constructors
+
+        public MastodonApiWrapper()
+            : this(null as string)
+        {
+
+        }
 
         public MastodonApiWrapper(string mastodonHostInstance)
             : this(null as HerdAppRegistrationDataModel)
@@ -39,20 +33,32 @@ namespace Herd.Business
         public MastodonApiWrapper(HerdAppRegistrationDataModel registration)
             : this(registration, null)
         {
-
         }
 
-        public MastodonApiWrapper(HerdAppRegistrationDataModel registration, string userApiToken)
+        public MastodonApiWrapper(HerdAppRegistrationDataModel registration, HerdUserMastodonConnectionDetails userMastodonConnectionDetails)
         {
             AppRegistration = registration;
             MastodonHostInstance = AppRegistration?.Instance;
-            UserApiToken = userApiToken;
+            UserMastodonConnectionDetails = userMastodonConnectionDetails;
+        }
 
-            _authClient = new Lazy<AuthenticationClient>(LoadAuthenticationClient);
-            _apiClient = new Lazy<MastodonClient>(LoadMastodonClient);
+        #endregion Constructors
+
+        #region Private helper methods
+
+        private MastodonClient BuildMastodonApiClient()
+        {
+            if (AppRegistration == null)
+            {
+                throw new ArgumentNullException(nameof(AppRegistration));
+            }
+            if (UserMastodonConnectionDetails == null)
+            {
+                throw new ArgumentNullException(nameof(UserMastodonConnectionDetails));
+            }
+            return new MastodonClient(AppRegistration.ToMastodonAppRegistration(), UserMastodonConnectionDetails.ToMastodonAuth());
         }
 
         #endregion
     }
 }
-

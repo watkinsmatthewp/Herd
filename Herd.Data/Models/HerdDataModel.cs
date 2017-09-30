@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Herd.Data.Models
+﻿namespace Herd.Data.Models
 {
     public interface IHerdDataModel
     {

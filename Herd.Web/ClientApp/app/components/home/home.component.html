@@ -1,15 +1,45 @@
-<hr />
-<div class="text-center">
-    <h3>User's Home</h3>
-</div>
 
+    <!-- Left Column -->
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3>Future Profile Box</h3>
+                </div>
+                <div class="panel-body">
 
-<hr />
-<div class="text-center">
-    <p>Your random number is {{randomInt}}</p>
-</div>
-<hr />
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3>Popular Hashtags</h3>
+                </div>
+                <div class="panel-body">
 
-<div class="text-center">
-    <iframe src="https://www.youtube.com/embed/bAojxWZRVKk" width="560" height="315" allowfullscreen></iframe>
-</div>
+                </div>
+            </div>
+        </div>
+        <!-- Middle Column -->
+        <div class="col-sm-6">
+            <status-form></status-form>
+            <div class="text-center">
+                <button [disabled]="loading" class="btn btn-default" (click)="getMostRecentHomeFeed()">
+                    <fa *ngIf="loading" name="spinner" spin=true></fa>
+                    <fa *ngIf="!loading" name="refresh"></fa>
+                </button>
+            </div>
+            <br />
+            <status class="post" *ngFor="let status of homeFeed" [status]="status"></status>
+        </div>
+        <!-- Right Column -->
+        <div class="col-sm-3">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3>Future Integrations Box</h3>
+                </div>
+                <div class="panel-body">
+
+                </div>
+            </div>
+        </div>
+    </div>

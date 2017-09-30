@@ -1,6 +1,7 @@
-using Mastonet.Entities;
 using Herd.Data.Models;
+using Mastonet.Entities;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Herd.Business
 {
@@ -8,11 +9,14 @@ namespace Herd.Business
     {
         string MastodonHostInstance { get; }
         HerdAppRegistrationDataModel AppRegistration { get; set; }
-        string UserApiToken { get; set; }
+        HerdUserMastodonConnectionDetails UserMastodonConnectionDetails { get; set; }
 
         Task<HerdAppRegistrationDataModel> RegisterApp();
-        Task<Account> GetUserAccount();
         string GetOAuthUrl(string redirectURL);
+        Task<HerdUserMastodonConnectionDetails> Connect(string token);
+
+        Task<Account> GetUserAccount();
+        Task<IList<Status>> GetRecentStatuses(int limit = 30);
+        Task<Status> CreateNewPost(string text);
     }
 }
-

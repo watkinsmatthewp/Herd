@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,15 +19,22 @@
   <ItemGroup>
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
     <Compile Remove="Code\**" />
+    <Compile Remove="Models\**" />
     <Content Remove="ClientApp\**" />
     <Content Remove="Code\**" />
+    <Content Remove="Models\**" />
     <EmbeddedResource Remove="Code\**" />
+    <EmbeddedResource Remove="Models\**" />
     <None Remove="Code\**" />
+    <None Remove="Models\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\app\components\home\home.component.spec.ts" />
+    <None Remove="ClientApp\app\components\app\app.spec.ts" />
+    <None Remove="ClientApp\app\components\instance-picker\instance-picker.spec.ts" />
     <None Remove="ClientApp\app\components\notifications\notifications.component.ts" />
+    <None Remove="ClientApp\app\components\shared\models\mastodon\Application.ts" />
+    <None Remove="ClientApp\app\components\shared\services\user.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,9 +44,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\app\components\home\home.component.spec.ts" />
+    <TypeScriptCompile Include="ClientApp\app\example.spec.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\app\app.spec.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\home\home.spec.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\instance-picker\instance-picker.spec.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\notifications\notifications.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\profile\profile.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\models\mastodon\Account.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\models\mastodon\Application.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\models\Storage.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\models\User.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\services\admin-auth-guard.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\services\alert.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\services\auth-guard.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\services\authentication.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\services\http-client.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\services\account.service.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
