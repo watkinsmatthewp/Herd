@@ -50,6 +50,9 @@ namespace Herd.Web.Controllers.HerdApi
         [HttpPost("set_tokens")]
         public IActionResult SetMastodonOAuthTokens([FromBody] JObject body)
         {
+            _appRegistration = new Lazy<HerdAppRegistrationDataModel>(HerdWebApp.Instance.DataProvider.GetAppRegistration(body["app_registration_id"].Value<long>()));
+            _mastodonApiWrapper = new Lazy<IMastodonApiWrapper>(new MastodonApiWrapper(AppRegistration));
+
             return ApiJson(App.UpdateUserMastodonConnection(new HerdAppUpdateUserMastodonConnectionCommand
             {
                 AppRegistrationID = body["app_registration_id"].Value<long>(),

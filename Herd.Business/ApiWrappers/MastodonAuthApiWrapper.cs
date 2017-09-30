@@ -8,7 +8,7 @@ namespace Herd.Business
 {
     public partial class MastodonApiWrapper : IMastodonApiWrapper
     {
-        private const Scope ALL_SCOPES = Scope.Read | Scope.Write | Scope.Follow;
+        public const Scope ALL_SCOPES = Scope.Read | Scope.Write | Scope.Follow;
 
         #region Public methods
 
