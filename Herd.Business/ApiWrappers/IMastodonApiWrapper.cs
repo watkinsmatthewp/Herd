@@ -17,5 +17,6 @@ namespace Herd.Business
 
         Task<Account> GetUserAccount();
         Task<IList<Status>> GetRecentStatuses(int limit = 30);
+        Task<Status> CreateNewPost(string text);
     }
 }

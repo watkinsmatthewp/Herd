@@ -23,5 +23,6 @@ namespace Herd.Business
 
         // Feed
         HerdAppCommandResult<HerdAppGetRecentFeedItemsCommandResultData> GetRecentFeedItems(HerdAppGetRecentFeedItemsCommand getRecentFeedItemsCommand);
+        HerdAppCommandResult CreateNewPost(HerdAppCreateNewPostCommand createNewPostCommand);
     }
 }
