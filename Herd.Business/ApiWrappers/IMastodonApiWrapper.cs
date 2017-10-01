@@ -12,8 +12,11 @@ namespace Herd.Business
         HerdUserMastodonConnectionDetails UserMastodonConnectionDetails { get; set; }
 
         Task<HerdAppRegistrationDataModel> RegisterApp();
-        Task<Account> GetUserAccount();
         string GetOAuthUrl(string redirectURL);
+        Task<HerdUserMastodonConnectionDetails> Connect(string token);
+
+        Task<Account> GetUserAccount();
         Task<IList<Status>> GetRecentStatuses(int limit = 30);
+        Task<Status> CreateNewPost(string text);
     }
 }

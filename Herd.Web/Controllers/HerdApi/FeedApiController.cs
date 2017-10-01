@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Herd.Business;
 using Herd.Business.Models.Commands;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Newtonsoft.Json.Linq;
 
 namespace Herd.Web.Controllers
 {
@@ -15,5 +14,11 @@ namespace Herd.Web.Controllers
     {
         [HttpGet("new_items")]
         public IActionResult NewItems() => ApiJson(App.GetRecentFeedItems(new HerdAppGetRecentFeedItemsCommand()));
+
+        [HttpPost("new_post")]
+        public IActionResult NewPost([FromBody] JObject body) => ApiJson(App.CreateNewPost(new HerdAppCreateNewPostCommand
+        {
+            Message = body["message"].Value<string>()
+        }));
     }
 }
