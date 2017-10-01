@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthenticationService } from '../services/authentication.service';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
     selector: 'nav-menu',
@@ -8,7 +8,6 @@ import { AuthenticationService } from '../services/authentication.service';
 })
 export class NavMenuComponent {
     model: any = {};
-
 
     constructor(private authService: AuthenticationService) { }
 

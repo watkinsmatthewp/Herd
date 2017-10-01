@@ -2,9 +2,9 @@
 
 @Component({
     selector: 'notifications',
-    templateUrl: './notifications.component.html',
+    templateUrl: './notifications.page.html',
 })
-export class NotificationsComponent {
+export class NotificationsPage {
     constructor() {
     }
 }

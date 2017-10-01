@@ -2,15 +2,15 @@
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { AlertService } from '../shared/services/alert.service';
-import { AuthenticationService } from '../shared/services/authentication.service';
-import { User } from '../shared/models/User';
+import { AlertService } from '../../services/alert.service';
+import { AuthenticationService } from '../../services/authentication.service';
+import { User } from '../../models/User';
 
 @Component({
     selector: 'register',
-    templateUrl: './register.component.html'
+    templateUrl: './register.page.html'
 })
-export class RegisterComponent {
+export class RegisterPage {
     model: any = {};
     loading = false;
 

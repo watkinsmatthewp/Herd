@@ -1,12 +1,12 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { Status } from '../shared/models/mastodon/Status';
-import { MastodonService } from '../shared/services/mastodon.service';
+import { Status } from '../../models/mastodon/Status';
+import { MastodonService } from "../../services/mastodon.service";
 
 @Component({
     selector: 'localfeed',
-    templateUrl: './localfeed.component.html'
+    templateUrl: './localfeed.page.html'
 })
-export class LocalFeedComponent implements OnInit {
+export class LocalFeedPage implements OnInit {
 
     // List of posts for the localFeed
     localFeed: Status[];

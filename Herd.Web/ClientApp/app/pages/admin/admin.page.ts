@@ -2,6 +2,6 @@ import { Component } from '@angular/core';
 
 @Component({
     selector: 'admin',
-    templateUrl: './admin.component.html',
+    templateUrl: './admin.page.html',
 })
-export class AdminComponent {}
+export class AdminPage {}

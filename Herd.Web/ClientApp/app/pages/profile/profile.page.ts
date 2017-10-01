@@ -2,9 +2,9 @@
 
 @Component({
     selector: 'profile',
-    templateUrl: './profile.component.html',
+    templateUrl: './profile.page.html',
 })
-export class ProfileComponent {
+export class ProfilePage {
     constructor() {
     }
 }

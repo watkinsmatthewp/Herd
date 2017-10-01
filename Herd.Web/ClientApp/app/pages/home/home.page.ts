@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AlertService } from '../shared/services/alert.service';
-import { MastodonService } from '../shared/services/mastodon.service';
-import { Status } from '../shared/models/mastodon/Status';
+import { MastodonService } from "../../services/mastodon.service";
+import { AlertService } from "../../services/alert.service";
+import { Status } from "../../models/mastodon/Status";
 
 @Component({
     selector: 'home',
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.css']
+    templateUrl: './home.page.html',
 })
-export class HomeComponent implements OnInit {
+export class HomePage implements OnInit {
     randomInt: number;
     loading: boolean = false;
 

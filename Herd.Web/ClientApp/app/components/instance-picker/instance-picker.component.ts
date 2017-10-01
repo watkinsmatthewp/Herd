@@ -2,9 +2,9 @@
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { AlertService } from '../shared/services/alert.service';
-import { AuthenticationService } from '../shared/services/authentication.service';
-import { StorageService } from '../shared/models/Storage'
+import { AlertService } from '../../services/alert.service';
+import { AuthenticationService } from '../../services/authentication.service';
+import { StorageService } from '../../models/Storage'
 
 @Component({
     selector: 'instance-picker',
