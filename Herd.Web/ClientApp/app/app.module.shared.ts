@@ -29,49 +29,37 @@ import { SafePipe } from './pipes';
 @NgModule({
     declarations: [
         // Page
-        AdminPage,
-        AppPage,
-        HomePage,
-        LocalFeedPage,
-        LoginPage,
-        NotificationsPage,
-        ProfilePage,
-        RegisterPage,
+        AdminPage, AppPage, HomePage, LocalFeedPage,
+        LoginPage, NotificationsPage, ProfilePage, RegisterPage,
         // Components
-        AlertComponent,
-        InstancePickerComponent,
-        NavMenuComponent,
-        StatusComponent,
-        StatusFormComponent,
+        AlertComponent, InstancePickerComponent, NavMenuComponent,
+        StatusComponent, StatusFormComponent,
         // Pipes
         SafePipe
     ],
     imports: [
-        Angular2FontawesomeModule,
-        CommonModule,
-        HttpModule,
-        FormsModule,
+        Angular2FontawesomeModule, CommonModule,
+        HttpModule, FormsModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             // Admin Page 
-            { path: 'admin', component: AdminPage },
+            { path: 'admin', component: AdminPage, data: { title: "Admin" } },
             // Login, Register
-            { path: 'login', component: LoginPage },
-            { path: 'register', component: RegisterPage },
+            { path: 'login', component: LoginPage, data: { title: "Login" } },
+            { path: 'register', component: RegisterPage, data: { title: "Registration" } },
             // Account Settings
-            { path: 'instance-picker', component: InstancePickerComponent, canActivate: [AuthGuard] },
+            { path: 'instance-picker', component: InstancePickerComponent, canActivate: [AuthGuard], data: { title: "Instance Picker" } },
             // TimeLines
-            { path: 'home', component: HomePage, canActivate: [AuthGuard] },
-            { path: 'localfeed', component: LocalFeedPage, canActivate: [AuthGuard] },
+            { path: 'home', component: HomePage, canActivate: [AuthGuard], data: { title: "Home" } },
+            { path: 'localfeed', component: LocalFeedPage, canActivate: [AuthGuard], data: { title: "Local Feed" } },
             // Notification
-            { path: 'notifications', component: NotificationsPage, canActivate: [AuthGuard] },
+            { path: 'notifications', component: NotificationsPage, canActivate: [AuthGuard], data: { title: "Notifications" } },
             // Profile
-            { path: 'profile', component: ProfilePage, canActivate: [AuthGuard] },
+            { path: 'profile', component: ProfilePage, canActivate: [AuthGuard], data: { title: "Profile" } },
             // Etc Pages
             { path: '**', redirectTo: 'home' }
         ])
     ],
     providers: [AccountService, AdminAuthGuard, AlertService, AuthenticationService, AuthGuard, HttpClientService, MastodonService]
 })
-export class AppModuleShared {
-}
+export class AppModuleShared {}
