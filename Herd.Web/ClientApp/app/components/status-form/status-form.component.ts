@@ -6,12 +6,12 @@
     styleUrls: ['./status-form.component.css']
 })
 export class StatusFormComponent {
+    maxStatusLength: number = 200;
     model: any = {
         status: ""
     };
 
-    constructor() {
-    }
+    constructor() { }
 
     submitStatus() {
 
