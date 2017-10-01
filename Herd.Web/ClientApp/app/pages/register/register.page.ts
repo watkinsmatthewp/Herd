@@ -2,9 +2,8 @@
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { AlertService } from '../../services/alert.service';
-import { AuthenticationService } from '../../services/authentication.service';
-import { User } from '../../models/User';
+import { AlertService, AuthenticationService } from '../../services';
+import { User } from '../../models';
 
 @Component({
     selector: 'register',

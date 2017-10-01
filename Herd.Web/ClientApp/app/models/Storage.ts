@@ -1,11 +1,11 @@
-﻿export abstract class StorageService {
+﻿export abstract class Storage {
     abstract clear(): void;
     abstract getItem(key: string): any;
     abstract setItem(key: string, val: any): void;
     abstract removeItem(key: string): void;
 }
 
-export class BrowserStorage extends StorageService {
+export class BrowserStorage extends Storage {
     clear() {
         localStorage.clear();
     }
@@ -23,7 +23,7 @@ export class BrowserStorage extends StorageService {
     }
 }
 
-export class ServerStorage extends StorageService {
+export class ServerStorage extends Storage {
     clear() {}
     getItem(key: string) { return ''; }
     setItem(key: string, val: any) {}

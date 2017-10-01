@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { MastodonService } from "../../services/mastodon.service";
-import { AlertService } from "../../services/alert.service";
-import { Status } from "../../models/mastodon/Status";
+import { AlertService, MastodonService } from "../../services";
+import { Status } from "../../models/mastodon";
 
 @Component({
     selector: 'home',

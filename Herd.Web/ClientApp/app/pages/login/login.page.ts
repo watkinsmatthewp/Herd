@@ -2,9 +2,8 @@
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { AlertService } from '../../services/alert.service';
-import { AuthenticationService } from '../../services/authentication.service';
-import { StorageService } from '../../models/Storage';
+import { AlertService, AuthenticationService } from '../../services';
+import { Storage } from '../../models';
 
 @Component({
     selector: 'login',
@@ -21,7 +20,7 @@ export class LoginPage implements OnInit {
         private router: Router,
         private authenticationService: AuthenticationService,
         private alertService: AlertService,
-        private localStorage: StorageService) { }
+        private localStorage: Storage) { }
 
     ngOnInit() {
         // reset login status

@@ -6,33 +6,25 @@ import { HttpModule } from '@angular/http';
 import { Routes, RouterModule, CanActivate } from '@angular/router';
 
 // Pages
-import { AdminPage } from './pages/admin/admin.page';
-import { AppPage } from './pages/app/app.page';
-import { HomePage } from './pages/home/home.page';
-import { LocalFeedPage } from './pages/localfeed/localfeed.page';
-import { LoginPage } from './pages/login/login.page';
-import { NotificationsPage } from './pages/notifications/notifications.page';
-import { ProfilePage } from './pages/profile/profile.page';
-import { RegisterPage } from './pages/register/register.page';
+import {
+    AdminPage, AppPage, HomePage, LocalFeedPage,
+    LoginPage, NotificationsPage, ProfilePage, RegisterPage
+} from './pages';
 
 // Components
-import { AlertComponent } from './components/alert/alert.component';
-import { InstancePickerComponent } from './components/instance-picker/instance-picker.component';
-import { NavMenuComponent } from './components/navmenu/navmenu.component';
-import { StatusComponent } from './components/status/status.component';
-import { StatusFormComponent } from './components/status-form/status-form.component';
+import {
+    AlertComponent, InstancePickerComponent, NavMenuComponent,
+    StatusComponent, StatusFormComponent
+} from './components';
 
 // Services
-import { AccountService } from './services/account.service';
-import { AdminAuthGuard } from './services/admin-auth-guard.service';
-import { AlertService } from './services/alert.service';
-import { AuthenticationService } from './services/authentication.service';
-import { AuthGuard } from './services/auth-guard.service';
-import { HttpClientService } from './services/http-client.service';
-import { MastodonService } from './services/mastodon.service';
+import {
+    AccountService, AdminAuthGuard, AlertService, AuthenticationService,
+    AuthGuard, HttpClientService, MastodonService
+} from './services';
 
 // Pipes
-import { SafePipe } from './pipes/safe.pipe';
+import { SafePipe } from './pipes';
 
 @NgModule({
     declarations: [

@@ -1,6 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { Status } from '../../models/mastodon/Status';
-import { MastodonService } from "../../services/mastodon.service";
+
+import { MastodonService } from '../../services';
+import { Status } from '../../models/mastodon';
 
 @Component({
     selector: 'localfeed',

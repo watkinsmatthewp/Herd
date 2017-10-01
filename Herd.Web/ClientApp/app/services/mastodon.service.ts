@@ -2,8 +2,8 @@
 import { Http, Headers, RequestOptionsArgs, RequestOptions, RequestMethod } from '@angular/http';
 import 'rxjs/Rx';
 
-import { Status } from '../models/mastodon/Status';
-import { HttpClientService } from "./http-client.service";
+import { Status } from '../models/mastodon';
+import { HttpClientService } from './http-client.service';
 
 @Injectable()
 export class MastodonService {

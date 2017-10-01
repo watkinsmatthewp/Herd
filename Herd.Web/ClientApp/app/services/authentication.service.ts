@@ -1,12 +1,12 @@
 ﻿import { Injectable } from '@angular/core';
 
-import { HttpClientService } from '../services/http-client.service';
-import { StorageService } from '../models/Storage';
-import { User } from "../models/User";
+import { HttpClientService } from './http-client.service';
+import { Storage } from '../models';
+import { User } from "../models";
 
 @Injectable()
 export class AuthenticationService {
-    constructor(private httpClient: HttpClientService, private localStorage: StorageService) { }
+    constructor(private httpClient: HttpClientService, private localStorage: Storage) { }
 
     checkIfConnectedToMastodon(): boolean {
         if (localStorage.getItem('connectedToMastodon') === "true") {

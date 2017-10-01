@@ -1,6 +1,6 @@
 ﻿import { Component, Input } from '@angular/core';
 
-import { Status } from '../../models/mastodon/status';
+import { Status } from '../../models/mastodon';
 
 @Component({
     selector: 'status',

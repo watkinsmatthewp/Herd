@@ -30,8 +30,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\components\index.ts" />
     <None Remove="ClientApp\app\example-test.spec.ts" />
+    <None Remove="ClientApp\app\models\index.ts" />
     <None Remove="ClientApp\app\models\mastodon\Application.ts" />
+    <None Remove="ClientApp\app\pages\index.ts" />
+    <None Remove="ClientApp\app\services\index.ts" />
     <None Remove="ClientApp\app\services\user.service.ts" />
   </ItemGroup>
 
@@ -42,20 +46,26 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\components\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\example-test.spec.ts" />
+    <TypeScriptCompile Include="ClientApp\app\models\index.ts" />
+    <TypeScriptCompile Include="ClientApp\app\models\mastodon\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\pages\home\home.page.spec.ts" />
+    <TypeScriptCompile Include="ClientApp\app\pages\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\pages\notifications\notifications.page.ts" />
     <TypeScriptCompile Include="ClientApp\app\pages\profile\profile.page.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\mastodon\Account.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\mastodon\Application.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\Storage.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\User.ts" />
+    <TypeScriptCompile Include="ClientApp\app\pipes\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\admin-auth-guard.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\alert.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\auth-guard.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\authentication.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\http-client.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\account.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\services\index.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
