@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppModuleShared } from './app.module.shared';
 import { AppPage } from './pages/app/app.page';
-import { Storage, BrowserStorage } from "./models";
+import { Storage, BrowserStorage } from './models';
 
 @NgModule({
     bootstrap: [ AppPage ],
