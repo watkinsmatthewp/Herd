@@ -2,9 +2,8 @@
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { AlertService } from '../shared/services/alert.service';
-import { AuthenticationService } from '../shared/services/authentication.service';
-import { StorageService } from '../shared/models/Storage'
+import { AlertService, AuthenticationService } from '../../services';
+import { Storage } from '../../models';
 
 @Component({
     selector: 'instance-picker',
@@ -20,7 +19,7 @@ export class InstancePickerComponent {
         private router: Router,
         private authenticationService: AuthenticationService,
         private alertService: AlertService,
-        private localStorage: StorageService) { }
+        private localStorage: Storage) { }
 
     getOAuthToken() {
         this.loading = true;

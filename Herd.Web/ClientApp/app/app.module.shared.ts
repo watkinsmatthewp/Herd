@@ -5,46 +5,42 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { Routes, RouterModule, CanActivate } from '@angular/router';
 
+// Pages
+import {
+    AdminPage, AppPage, HomePage, LocalFeedPage,
+    LoginPage, NotificationsPage, ProfilePage, RegisterPage
+} from './pages';
+
 // Components
-import { AdminComponent } from './components/admin/admin.component';
-import { AlertComponent } from './components/shared/alert/alert.component';
-import { AppComponent } from './components/app/app.component';
-import { HomeComponent } from './components/home/home.component';
-import { InstancePickerComponent } from './components/instance-picker/instance-picker.component';
-import { LocalFeedComponent } from './components/localfeed/localfeed.component';
-import { LoginComponent } from './components/login/login.component';
-import { NavMenuComponent } from './components/shared/navmenu/navmenu.component';
-import { NotificationsComponent } from './components/notifications/notifications.component';
-import { ProfileComponent } from './components/profile/profile.component';
-import { RegisterComponent } from './components/register/register.component';
-import { StatusComponent } from './components/status/status.component';
-import { StatusFormComponent } from './components/status-form/status-form.component';
+import {
+    AlertComponent, InstancePickerComponent, NavMenuComponent,
+    StatusComponent, StatusFormComponent
+} from './components';
+
 // Services
-import { AccountService } from './components/shared/services/account.service';
-import { AdminAuthGuard } from './components/shared/services/admin-auth-guard.service';
-import { AlertService } from './components/shared/services/alert.service';
-import { AuthenticationService } from './components/shared/services/authentication.service';
-import { AuthGuard } from './components/shared/services/auth-guard.service';
-import { HttpClientService } from './components/shared/services/http-client.service';
-import { MastodonService } from './components/shared/services/mastodon.service';
+import {
+    AccountService, AdminAuthGuard, AlertService, AuthenticationService,
+    AuthGuard, HttpClientService, MastodonService
+} from './services';
 
 // Pipes
-import { SafePipe } from './components/shared/pipes/safe.pipe';
+import { SafePipe } from './pipes';
 
 @NgModule({
     declarations: [
+        // Page
+        AdminPage,
+        AppPage,
+        HomePage,
+        LocalFeedPage,
+        LoginPage,
+        NotificationsPage,
+        ProfilePage,
+        RegisterPage,
         // Components
-        AdminComponent,
         AlertComponent,
-        AppComponent,
-        HomeComponent,
         InstancePickerComponent,
-        LocalFeedComponent,
-        LoginComponent,
         NavMenuComponent,
-        NotificationsComponent,
-        ProfileComponent,
-        RegisterComponent,
         StatusComponent,
         StatusFormComponent,
         // Pipes
@@ -58,19 +54,19 @@ import { SafePipe } from './components/shared/pipes/safe.pipe';
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             // Admin Page 
-            { path: 'admin', component: AdminComponent },
+            { path: 'admin', component: AdminPage },
             // Login, Register
-            { path: 'login', component: LoginComponent },
-            { path: 'register', component: RegisterComponent },
+            { path: 'login', component: LoginPage },
+            { path: 'register', component: RegisterPage },
             // Account Settings
             { path: 'instance-picker', component: InstancePickerComponent, canActivate: [AuthGuard] },
             // TimeLines
-            { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
-            { path: 'localfeed', component: LocalFeedComponent, canActivate: [AuthGuard] },
+            { path: 'home', component: HomePage, canActivate: [AuthGuard] },
+            { path: 'localfeed', component: LocalFeedPage, canActivate: [AuthGuard] },
             // Notification
-            { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
+            { path: 'notifications', component: NotificationsPage, canActivate: [AuthGuard] },
             // Profile
-            { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+            { path: 'profile', component: ProfilePage, canActivate: [AuthGuard] },
             // Etc Pages
             { path: '**', redirectTo: 'home' }
         ])
