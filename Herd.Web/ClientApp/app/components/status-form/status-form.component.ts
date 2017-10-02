@@ -19,7 +19,7 @@ export class StatusFormComponent implements OnInit {
 
     submitStatus(form: NgForm) {
         console.log(this.model.status);
-
+        this.mastodonService.makeNewPost(this.model.status);
         // on finish reset form models
         form.resetForm();
         this.model.status = "";
