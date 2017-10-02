@@ -8,8 +8,10 @@ import { HttpClientService } from './http-client.service';
 import { Status } from '../models/mastodon';
 
 describe('Service: Mastodon Service', () => {
+    let mastodonService: MastodonService;
 
     beforeEach(() => {
+        // Set up the test bed
         TestBed.configureTestingModule({
             imports: [HttpModule],
             providers: [
@@ -20,9 +22,14 @@ describe('Service: Mastodon Service', () => {
         });
     });
 
+    // Inject commonly used services
+    beforeEach(inject([MastodonService], (ms: MastodonService) => {
+        mastodonService = ms;
+    }));
+
     describe('Get Home Timeline', () => {
         it('should return an array of statuses if following people who have posted',
-            inject([MastodonService, XHRBackend], (mastodonService: MastodonService, mockBackend: MockBackend) => {
+            inject([XHRBackend], (mockBackend: MockBackend) => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {
@@ -57,7 +64,7 @@ describe('Service: Mastodon Service', () => {
         );
 
         it('should return an empty array of statuses if following no one',
-            inject([MastodonService, XHRBackend], (mastodonService: MastodonService, mockBackend: MockBackend) => {
+            inject([XHRBackend], (mockBackend: MockBackend) => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {

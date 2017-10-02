@@ -31,7 +31,6 @@
 
   <ItemGroup>
     <None Remove="ClientApp\app\components\index.ts" />
-    <None Remove="ClientApp\app\example-test.spec.ts" />
     <None Remove="ClientApp\app\models\index.ts" />
     <None Remove="ClientApp\app\models\mastodon\Application.ts" />
     <None Remove="ClientApp\app\pages\index.ts" />
@@ -49,7 +48,6 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\index.ts" />
-    <TypeScriptCompile Include="ClientApp\app\example-test.spec.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\mastodon\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\pages\index.ts" />
@@ -60,9 +58,7 @@
     <TypeScriptCompile Include="ClientApp\app\models\Storage.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\User.ts" />
     <TypeScriptCompile Include="ClientApp\app\pipes\index.ts" />
-    <TypeScriptCompile Include="ClientApp\app\services\admin-auth-guard.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\alert.service.ts" />
-    <TypeScriptCompile Include="ClientApp\app\services\auth-guard.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\authentication.service.spec.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\authentication.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\http-client.service.ts" />
