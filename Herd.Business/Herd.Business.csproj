@@ -10,6 +10,7 @@
   
   <ItemGroup>
     <PackageReference Include="Mastonet" Version="1.0.0-beta1" />
+    <PackageReference Include="Microsoft.CodeCoverage" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>
