@@ -6,23 +6,27 @@ module.exports = function (config) {
         basePath: '.',
         frameworks: ['jasmine'],
         files: [
+            '../../node_modules/es6-shim/es6-shim.js',
+            '../../node_modules/babel-polyfill/dist/polyfill.js',
             '../../wwwroot/dist/vendor.js',
-            './boot-tests.ts'
+            './boot-tests.ts',
         ],
         preprocessors: {
-            './boot-tests.ts': ['webpack']
+            './boot-tests.ts': ['webpack'],
         },
-        //generation of HTML reports
+        reporters: ['dots', 'html', 'coverage'],
         htmlReporter: {
-            //directory ,report will get generated inside folder `testcases` in the root folder
-            outputDir: 'karma_html',
+            outputDir: './ClientApp/test/karma_html', // report will get generated inside folder `karma_html` in the test folder
         },
-        reporters: ['progress', 'html'],
+        coverageReporter: {
+            type: 'html',
+            dir: 'karma_coverage_html', // report will get generated inside folder `karma_coverage_html` in the test folder
+        },
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
         autoWatch: true,
-        browsers: ['Chrome'],
+        browsers: ['PhantomJS'],
         mime: { 'application/javascript': ['ts','tsx'] },
         singleRun: true,
         webpack: require('../../webpack.config.js')().filter(config => config.target !== 'node'), // Test against client bundle, because tests run in a browser
