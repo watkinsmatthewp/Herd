@@ -29,10 +29,15 @@ export class LoginPage implements OnInit {
         this.model.email = this.route.snapshot.queryParams['email'] || ''; 
     }
 
-    login() {
+    login(form: NgForm) {
         this.loading = true;
         this.authenticationService.login(this.model.email, this.model.password)
-            .finally(() => this.loading = false)
+            .finally(() => {
+                this.loading = false
+                form.resetForm();
+                this.model.email = "";
+                this.model.password = "";
+            })
             .subscribe(response => {
                 let user = response.User;
                 this.localStorage.setItem('currentUser', JSON.stringify(user));
