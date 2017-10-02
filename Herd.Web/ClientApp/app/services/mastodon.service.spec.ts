@@ -20,8 +20,8 @@ describe('Service: Mastodon Service', () => {
         });
     });
 
-    describe('Login Process', () => {
-        it('should return a User on successful login',
+    describe('Get Home Timeline', () => {
+        it('should return an array of statuses if following people who have posted',
             inject([MastodonService, XHRBackend], (mastodonService: MastodonService, mockBackend: MockBackend) => {
                 // Create a mockedResponse
                 const mockResponse = {
@@ -52,6 +52,29 @@ describe('Service: Mastodon Service', () => {
                     expect(response[2].Content).toBe("Content3");
                     expect(response[2].Id).toBe(3);
                     expect(response[2].Url).toBe('example.com/3');
+                });
+            })
+        );
+
+        it('should return an empty array of statuses if following no one',
+            inject([MastodonService, XHRBackend], (mastodonService: MastodonService, mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Data: {
+                        RecentFeedItems: []
+                    }
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the login request from our authentication service
+                mastodonService.getHomeFeed().subscribe((response) => {
+                    expect(response.length).toBe(0);
                 });
             })
         );
