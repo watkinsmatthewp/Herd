@@ -16,11 +16,11 @@ module.exports = function (config) {
         },
         reporters: ['dots', 'html', 'coverage'],
         htmlReporter: {
-            outputDir: './ClientApp/test/karma_html', // report will get generated inside folder `karma_html` in the test folder
+            outputDir: './ClientApp/test/karma_html', // report will get generated inside folder `test/karma_html`
         },
         coverageReporter: {
             type: 'html',
-            dir: 'karma_coverage_html', // report will get generated inside folder `karma_coverage_html` in the test folder
+            dir: 'karma_coverage_html', // report will get generated inside folder `test/karma_coverage_html`
         },
         port: 9876,
         colors: true,
