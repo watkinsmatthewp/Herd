@@ -8,7 +8,7 @@ export class AuthenticationService {
     constructor(private httpClient: HttpClientService, private localStorage: Storage) { }
 
     checkIfConnectedToMastodon(): boolean {
-        if (localStorage.getItem('connectedToMastodon') === "true") {
+        if (this.localStorage.getItem('connectedToMastodon') === "true") {
             return true;
         }
         return false;
@@ -17,7 +17,7 @@ export class AuthenticationService {
     /**
      * Checks if a person is authenticated by checking their currentUser item in local storage
      */
-    isAuthenticated() {
+    isAuthenticated(): boolean {
         if (this.localStorage.getItem('currentUser')) {
             return true; //logged in
         }
