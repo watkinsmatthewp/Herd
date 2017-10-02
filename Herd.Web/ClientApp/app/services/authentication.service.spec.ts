@@ -5,7 +5,7 @@ import { Observable } from "rxjs/Observable";
 
 import { AuthenticationService } from './authentication.service';
 import { HttpClientService } from './http-client.service';
-import { Storage, BrowserStorage } from '../models';
+import { Storage, BrowserStorage, User } from '../models';
 
 describe('Service: Authentication Service', () => {
 
@@ -142,6 +142,7 @@ describe('Service: Authentication Service', () => {
 
     describe('OAuth Process', () => {
         it('should be able to get an app registrations ID', inject([AuthenticationService, XHRBackend], (authService: AuthenticationService, mockBackend: MockBackend) => {
+            const instanceName = 'instance-name';
             // Create a mockedResponse
             const mockResponse = {
                 Success: true,
@@ -160,10 +161,138 @@ describe('Service: Authentication Service', () => {
             });
 
             // Make the login request from our authentication service
-            authService.getRegistrationId('instance-name').subscribe((response) => {
+            authService.getRegistrationId(instanceName).subscribe((response) => {
                 expect(response.Registration.ID).toBe(1);
             });
-
         }));
-    })
+
+        it('should be able to get an oAuth Url', inject([AuthenticationService, XHRBackend], (authService: AuthenticationService, mockBackend: MockBackend) => {
+            const instanceID = 1;
+            // Create a mockedResponse
+            const mockResponse = {
+                Success: true,
+                Data: {
+                    URL: 'https://example.com'
+                }
+            };
+
+            // If there is an HTTP request intercept it and return the above mockedResponse
+            mockBackend.connections.subscribe((connection: MockConnection) => {
+                connection.mockRespond(new Response(new ResponseOptions({
+                    body: JSON.stringify(mockResponse)
+                })));
+            });
+
+            // Make the login request from our authentication service
+            authService.getOAuthUrl(instanceID).subscribe((response) => {
+                expect(response.URL).toBe('https://example.com');
+            });
+        }));
+
+        it('should be able to submit an oAuth token', inject([AuthenticationService, XHRBackend], (authService: AuthenticationService, mockBackend: MockBackend) => {
+            // Create a mockedResponse
+            const mockResponse = {
+                Success: true,
+                Data: {
+                    assignedToken: true
+                }
+            };
+
+            // If there is an HTTP request intercept it and return the above mockedResponse
+            mockBackend.connections.subscribe((connection: MockConnection) => {
+                connection.mockRespond(new Response(new ResponseOptions({
+                    body: JSON.stringify(mockResponse)
+                })));
+            });
+
+            // Make the login request from our authentication service
+            authService.submitOAuthToken('abc123', 1).subscribe((response) => {
+                expect(response.assignedToken).toBe(true);
+            });
+        }));
+    });
+
+    describe('Register Process', () => {
+        it('should let a new user register successfully',
+            inject([AuthenticationService, XHRBackend], (authService: AuthenticationService, mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Data: {
+                        Profile: {
+                            FirstName: 'Jane',
+                            LastName: 'Doe',
+                            ID: 1,
+                            UserID: 1,
+                        },
+                        User: {
+                            ID: 1,
+                            ProfileID: 1.
+                        }
+                    }
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the login request from our authentication service
+                const mockUser: User = {
+                    id: 1,
+                    email: 'JaneDoe@gmail.com',
+                    password: 'password',
+                    firstName: 'Jane',
+                    lastName: 'Doe',
+                    oAuthToken: 'token',
+                };
+                authService.register(mockUser).subscribe((response) => {
+                    let user = response.User;
+                    let profile = response.Profile;
+                    expect(profile.FirstName).toEqual('Jane');
+                    expect(profile.LastName).toEqual('Doe');
+                    expect(profile.ID).toEqual(1);
+                    expect(profile.UserID).toEqual(1);
+                    expect(user.ID).toEqual(1);
+                    expect(user.ProfileID).toEqual(1);
+                });
+            })
+        );
+
+        it('should return an error when new user registers with a pre-existing email',
+            inject([AuthenticationService, XHRBackend], (authService: AuthenticationService, mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Data: {
+                        Errors: [
+                            { Message: 'Email is already registered' }
+                        ]
+                    }
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                const mockUser: User = {
+                    id: 1,
+                    email: 'pre-existing-email',
+                    password: 'password',
+                    firstName: 'Jane',
+                    lastName: 'Doe',
+                    oAuthToken: 'token',
+                }
+                // Make the login request from our authentication service
+                authService.register(mockUser).subscribe((response) => {
+                    let errors = response.Errors;
+                    expect(errors.length).toEqual(1);
+                    expect(errors[0].Message).toEqual('Email is already registered');
+                });
+            })
+        );
+    });
 });
