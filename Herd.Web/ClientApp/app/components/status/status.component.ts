@@ -13,8 +13,5 @@ export class StatusComponent {
 
     constructor() { // MastodonService was here from Dana commit
     }
-
-    //makeNewPostInFeed() {
-        //this.mastodonService.makeNewPost();
-    //}
+    
 }
