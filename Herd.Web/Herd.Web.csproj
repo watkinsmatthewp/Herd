@@ -37,6 +37,7 @@
     <None Remove="ClientApp\app\pages\index.ts" />
     <None Remove="ClientApp\app\services\authentication.service.spec.ts" />
     <None Remove="ClientApp\app\services\index.ts" />
+    <None Remove="ClientApp\app\services\mastodon.service.spec.ts" />
     <None Remove="ClientApp\app\services\user.service.ts" />
   </ItemGroup>
 
@@ -67,6 +68,7 @@
     <TypeScriptCompile Include="ClientApp\app\services\http-client.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\account.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\index.ts" />
+    <TypeScriptCompile Include="ClientApp\app\services\mastodon.service.spec.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

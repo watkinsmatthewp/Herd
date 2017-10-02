@@ -22,14 +22,14 @@ describe('Service: Authentication Service', () => {
     });
 
     describe('Initial Auth on creation', () => {
-        it('return false for isAuthenticatied',
+        it('should return false for isAuthenticatied',
             inject([AuthenticationService], (authService: AuthenticationService) => {
                 let isAuthenticated = authService.isAuthenticated();
                 expect(isAuthenticated).toBeFalsy();
             })
         );
 
-        it('return false for isConnectedToMastodon',
+        it('should return false for isConnectedToMastodon',
             inject([AuthenticationService], (authService: AuthenticationService) => {
                 let isConnectedToMastodon = authService.checkIfConnectedToMastodon();
                 expect(isConnectedToMastodon).toBeFalsy();
