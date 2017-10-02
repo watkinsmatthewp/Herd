@@ -11,10 +11,10 @@ import { Status } from '../../models/mastodon';
 export class StatusComponent {
     @Input() status: Status;
 
-    constructor(private mastodonService: MastodonService) {
+    constructor() { // MastodonService was here from Dana commit
     }
 
-    makeNewPostInFeed() {
-        this.mastodonService.makeNewPost();
-    }
+    //makeNewPostInFeed() {
+        //this.mastodonService.makeNewPost();
+    //}
 }
