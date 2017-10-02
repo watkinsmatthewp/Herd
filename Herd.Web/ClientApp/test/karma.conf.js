@@ -12,7 +12,12 @@ module.exports = function (config) {
         preprocessors: {
             './boot-tests.ts': ['webpack']
         },
-        reporters: ['progress'],
+        //generation of HTML reports
+        htmlReporter: {
+            //directory ,report will get generated inside folder `testcases` in the root folder
+            outputDir: 'karma_html',
+        },
+        reporters: ['progress', 'html'],
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
