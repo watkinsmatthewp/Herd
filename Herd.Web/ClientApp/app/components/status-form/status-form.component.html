@@ -14,7 +14,7 @@
                 </div>
                 <div class="pull-right">
                     <fa *ngIf="loading" name="spinner" spin=true></fa>
-                    <button class="btn btn-primary" (click)="submitStatus()">
+                    <button [disabled]="loading || !f.valid" class="btn btn-primary">
                         <span><fa name="pencil"> Create Status</fa> Create Status</span>
                     </button>
                 </div>
