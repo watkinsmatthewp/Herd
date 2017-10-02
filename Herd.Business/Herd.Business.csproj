@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <!-- Required in both test/product projects. This is a temporary workaround for https://github.com/Microsoft/vstest/issues/800 -->
+    <DebugType>Full</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,6 +12,7 @@
   
   <ItemGroup>
     <PackageReference Include="Mastonet" Version="1.0.0-beta1" />
+    <!-- Required. Include this reference for coverage -->
     <PackageReference Include="Microsoft.CodeCoverage" Version="1.0.3" />
   </ItemGroup>
 
