@@ -1,6 +1,6 @@
 ﻿<div class="row col-md-4 col-md-offset-4">
     <h2>Login</h2>
-    <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+    <form name="form" (ngSubmit)="f.form.valid && login(f)" #f="ngForm" novalidate>
         <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !email.valid }">
             <label for="email">Email</label>
             <input type="email" class="form-control" name="email" [(ngModel)]="model.email" #email="ngModel" required />
@@ -12,7 +12,7 @@
             <div *ngIf="f.submitted && !password.valid" class="help-block">Password is required</div>
         </div>
         <div class="form-group">
-            <button [disabled]="loading || !f.valid" class="btn btn-primary">Login</button>
+            <button [disabled]="loading || !f.valid" type="submit" class="btn btn-primary">Login</button>
             <fa *ngIf="loading" name="spinner" spin=true></fa>
             <a [routerLink]="['/register']" class="btn btn-link">Register</a>
         </div>

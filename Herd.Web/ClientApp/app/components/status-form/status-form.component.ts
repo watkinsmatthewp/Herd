@@ -1,4 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 
 import { MastodonService } from "../../services";
@@ -16,8 +17,12 @@ export class StatusFormComponent implements OnInit {
 
     constructor(private mastodonService: MastodonService) { }
 
-    submitStatus() {
+    submitStatus(form: NgForm) {
         console.log(this.model.status);
+
+        // on finish reset form models
+        form.resetForm();
+        this.model.status = "";
     }
 
     ngOnInit() {
