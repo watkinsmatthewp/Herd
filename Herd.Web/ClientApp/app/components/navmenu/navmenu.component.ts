@@ -12,6 +12,14 @@ export class NavMenuComponent {
 
     constructor(private authService: AuthenticationService) { }
 
+    isAuthenticated(): boolean {
+        return this.authService.isAuthenticated();
+    }
+
+    isConnectedToMastodon(): boolean {
+        return this.authService.checkIfConnectedToMastodon();
+    }
+
     search() {
         alert(this.model.searchItem);
     }
