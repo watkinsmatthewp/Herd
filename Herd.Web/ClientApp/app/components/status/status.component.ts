@@ -1,5 +1,6 @@
 ﻿import { Component, Input } from '@angular/core';
 
+import { MastodonService } from "../../services";
 import { Status } from '../../models/mastodon';
 
 @Component({
@@ -10,7 +11,10 @@ import { Status } from '../../models/mastodon';
 export class StatusComponent {
     @Input() status: Status;
 
-    constructor() {
+    constructor(private mastodonService: MastodonService) {
     }
 
+    makeNewPostInFeed() {
+        this.mastodonService.makeNewPost();
+    }
 }
