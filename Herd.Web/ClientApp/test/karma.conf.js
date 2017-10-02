@@ -12,7 +12,7 @@ module.exports = function (config) {
             './boot-tests.ts',
         ],
         preprocessors: {
-            './boot-tests.ts': ['webpack'],
+            './boot-tests.ts': ['webpack', 'coverage'],
         },
         reporters: ['dots', 'html', 'coverage'],
         htmlReporter: {
