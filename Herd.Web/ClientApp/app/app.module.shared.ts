@@ -17,10 +17,13 @@ import {
     StatusComponent, StatusFormComponent
 } from './components';
 
+// Guards
+import { AdminAuthGuard, AuthGuard } from './guards'
+
 // Services
 import {
-    AccountService, AdminAuthGuard, AlertService, AuthenticationService,
-    AuthGuard, HttpClientService, MastodonService
+    AccountService, AlertService, AuthenticationService,
+    HttpClientService, MastodonService
 } from './services';
 
 // Pipes
