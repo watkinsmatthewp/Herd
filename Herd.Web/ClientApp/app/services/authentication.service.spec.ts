@@ -8,8 +8,10 @@ import { HttpClientService } from './http-client.service';
 import { Storage, BrowserStorage, User } from '../models';
 
 describe('Service: Authentication Service', () => {
+    let authService: AuthenticationService;
 
     beforeEach(() => {
+        // Set up the test bed
         TestBed.configureTestingModule({
             imports: [HttpModule],
             providers: [
@@ -17,29 +19,30 @@ describe('Service: Authentication Service', () => {
                 { provide: XHRBackend, useClass: MockBackend },
                 HttpClientService,
                 { provide: Storage, useClass: BrowserStorage },
-            ]
+            ],
         });
     });
 
+    // Inject commonly used services
+    beforeEach(inject([AuthenticationService], (as: AuthenticationService) => {
+        authService = as;
+    }));
+    
     describe('Initial Auth on creation', () => {
-        it('should return false for isAuthenticatied',
-            inject([AuthenticationService], (authService: AuthenticationService) => {
-                let isAuthenticated = authService.isAuthenticated();
-                expect(isAuthenticated).toBeFalsy();
-            })
-        );
+        it('should return false for isAuthenticatied', () => {
+            let isAuthenticated = authService.isAuthenticated();
+            expect(isAuthenticated).toBeFalsy();
+        });
 
-        it('should return false for isConnectedToMastodon',
-            inject([AuthenticationService], (authService: AuthenticationService) => {
-                let isConnectedToMastodon = authService.checkIfConnectedToMastodon();
-                expect(isConnectedToMastodon).toBeFalsy();
-            })
-        );
+        it('should return false for isConnectedToMastodon', () => {
+            let isConnectedToMastodon = authService.checkIfConnectedToMastodon();
+            expect(isConnectedToMastodon).toBeFalsy();
+        });
     });
 
     describe('Login Process', () => {
         it('should return a User on successful login',
-            inject([AuthenticationService, XHRBackend], (authService: AuthenticationService, mockBackend: MockBackend) => {
+            inject([XHRBackend], (mockBackend: MockBackend) => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {
@@ -70,7 +73,7 @@ describe('Service: Authentication Service', () => {
         );
 
         it('should return an Error on unSuccessful login',
-            inject([AuthenticationService, XHRBackend], (authService: AuthenticationService, mockBackend: MockBackend) => {
+            inject([XHRBackend], (mockBackend: MockBackend) => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {
@@ -115,8 +118,12 @@ describe('Service: Authentication Service', () => {
             localStorage.setItem('connectedToMastodon', true);
         }));
 
+        afterEach(inject([Storage], (localStorage: Storage) => {
+            localStorage.clear();
+        }));
+
         it('should logout successfully',
-            inject([AuthenticationService, XHRBackend], (authService: AuthenticationService, mockBackend: MockBackend) => {
+            inject([XHRBackend], (mockBackend: MockBackend) => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Success: true,
@@ -132,6 +139,8 @@ describe('Service: Authentication Service', () => {
                     })));
                 });
 
+                expect(localStorage.getItem("currentUser")).toBeDefined();
+                expect(localStorage.getItem("connectedToMastodon")).toBeTruthy();
                 // Make the login request from our authentication service
                 authService.logout().subscribe((response) => {
                     expect(response.logoutSuccessful).toBe(true);
@@ -141,32 +150,34 @@ describe('Service: Authentication Service', () => {
     });
 
     describe('OAuth Process', () => {
-        it('should be able to get an app registrations ID', inject([AuthenticationService, XHRBackend], (authService: AuthenticationService, mockBackend: MockBackend) => {
-            const instanceName = 'instance-name';
-            // Create a mockedResponse
-            const mockResponse = {
-                Success: true,
-                Data: {
-                    Registration: {
-                        ID: 1
+        it('should be able to get an app registrations ID',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                const instanceName = 'instance-name';
+                // Create a mockedResponse
+                const mockResponse = {
+                    Success: true,
+                    Data: {
+                        Registration: {
+                            ID: 1
+                        }
                     }
-                }
-            };
+                };
 
-            // If there is an HTTP request intercept it and return the above mockedResponse
-            mockBackend.connections.subscribe((connection: MockConnection) => {
-                connection.mockRespond(new Response(new ResponseOptions({
-                    body: JSON.stringify(mockResponse)
-                })));
-            });
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
 
-            // Make the login request from our authentication service
-            authService.getRegistrationId(instanceName).subscribe((response) => {
-                expect(response.Registration.ID).toBe(1);
-            });
-        }));
+                // Make the login request from our authentication service
+                authService.getRegistrationId(instanceName).subscribe((response) => {
+                    expect(response.Registration.ID).toBe(1);
+                });
+            })
+        );
 
-        it('should be able to get an oAuth Url', inject([AuthenticationService, XHRBackend], (authService: AuthenticationService, mockBackend: MockBackend) => {
+        it('should be able to get an oAuth Url', inject([XHRBackend], (mockBackend: MockBackend) => {
             const instanceID = 1;
             // Create a mockedResponse
             const mockResponse = {
@@ -189,7 +200,7 @@ describe('Service: Authentication Service', () => {
             });
         }));
 
-        it('should be able to submit an oAuth token', inject([AuthenticationService, XHRBackend], (authService: AuthenticationService, mockBackend: MockBackend) => {
+        it('should be able to submit an oAuth token', inject([XHRBackend], (mockBackend: MockBackend) => {
             // Create a mockedResponse
             const mockResponse = {
                 Success: true,
@@ -214,7 +225,7 @@ describe('Service: Authentication Service', () => {
 
     describe('Register Process', () => {
         it('should let a new user register successfully',
-            inject([AuthenticationService, XHRBackend], (authService: AuthenticationService, mockBackend: MockBackend) => {
+            inject([XHRBackend], (mockBackend: MockBackend) => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {
@@ -261,7 +272,7 @@ describe('Service: Authentication Service', () => {
         );
 
         it('should return an error when new user registers with a pre-existing email',
-            inject([AuthenticationService, XHRBackend], (authService: AuthenticationService, mockBackend: MockBackend) => {
+            inject([XHRBackend], (mockBackend: MockBackend) => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {

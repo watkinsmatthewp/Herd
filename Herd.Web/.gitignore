@@ -12,6 +12,10 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
+# Karma Coverage/Output Output
+/ClientApp/test/karma_coverage_html
+/ClientApp/test/karma_html
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
