@@ -14,10 +14,10 @@
                     <p [innerHTML]="status.Content"></p>
                 </div>   
                 <div class="status-action-items text-center">
-                    <span class="btn" title="Reply"><fa name="comments"></fa><span>5</span></span>
-                    <span class="btn" title="Retweet"><fa name="retweet"></fa><span>3</span></span>
-                    <span class="btn" title="Like"><fa name="heart-o"></fa><span>15</span></span>
-                    <span class="btn" title="Direct Message"><fa name="envelope-o"></fa></span>
+                    <span class="btn" title="Reply" (click)="reply()"><fa name="comments"></fa><span>5</span></span>
+                    <span class="btn" title="Retweet" (click)="retweet()"><fa name="retweet"></fa><span>3</span></span>
+                    <span class="btn" title="Like" (click)="like()"><fa name="heart-o"></fa><span>15</span></span>
+                    <span class="btn" title="Direct Message" (click)="directMessage()"><fa name="envelope-o"></fa></span>
                 </div>
             </div>
         </div>
