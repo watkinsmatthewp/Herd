@@ -16,12 +16,21 @@ export class MastodonService {
             .map(response => response.RecentFeedItems as Status[])
     }
 
-    // Make a new post on the home feed
+    // Make a new status on the home feed
     makeNewPost(message: string) {
         let body = {
             'message': message
         }
         return this.httpClient.post('api/feed/new_post', body);
+    }
+
+    // Make a new reply to a status
+    makeNewReply(message: string, inReplyToId: number) {
+        let body = {
+            'message': message,
+            'inReplyToId': inReplyToId,
+        }
+        return this.httpClient.post('api/feed/new_post/' + inReplyToId, body);
     }
 
 }
