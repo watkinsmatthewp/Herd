@@ -14,7 +14,7 @@ import {
 // Components
 import {
     AlertComponent, InstancePickerComponent, NavMenuComponent,
-    StatusComponent, StatusFormComponent
+    StatusComponent, StatusFormComponent, StatusModalComponent
 } from './components';
 
 // Guards
@@ -36,7 +36,7 @@ import { SafePipe } from './pipes';
         LoginPage, NotificationsPage, ProfilePage, RegisterPage,
         // Components
         AlertComponent, InstancePickerComponent, NavMenuComponent,
-        StatusComponent, StatusFormComponent,
+        StatusComponent, StatusFormComponent, StatusModalComponent,
         // Pipes
         SafePipe
     ],

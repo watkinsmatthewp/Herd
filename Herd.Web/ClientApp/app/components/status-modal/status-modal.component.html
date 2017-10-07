@@ -1,0 +1,47 @@
+﻿<div class="modal fade" [attr.id]="modalId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="row">
+                    <div class="col-sm-6 status-content">
+                        <div class="status-header">
+                            <img class="profile-picture" src="{{ status.Account.AvatarUrl }}" />
+                            <a href="{{ status.Account.Url }}">
+                                <span class="author-name">{{ status.Account.DisplayName }}</span>
+                                <span class="username">@{{ status.Account.UserName }}</span>
+                            </a>
+                            <span class="time-stamp"> | {{ status.CreatedAt | date: 'short' }}</span>
+                        </div>
+                        <div class="status-body">
+                            <p [innerHTML]="status.Content"></p>
+                        </div>
+                        <div class="status-action-items text-center">
+                            <span class="btn retweet-btn" title="Retweet" (click)="retweet()">
+                                <fa name="retweet">
+                                </fa><span>{{ status.ReblogCount }}</span>
+                            </span>
+                            <span class="btn like-btn" title="Like" (click)="like()">
+                                <fa name="heart-o"></fa><span>{{ status.FavouritesCount}}</span>
+                            </span>
+                            <span class="btn message-btn" title="Direct Message" (click)="directMessage()">
+                                <fa name="envelope-o"></fa>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <status-form actionName="Reply" isReply="true" [inReplyToId]="status.Id"></status-form>
+                <div class="replies">
+                    Display reply to status <br />
+                    Display reply to status <br />
+                    Display reply to status <br />
+                </div>
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>

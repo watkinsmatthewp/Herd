@@ -1,0 +1,62 @@
+﻿.post-format {
+    background-color: #ffffff;
+}
+
+.post-format:hover {
+    background-color: #f8f9fa;
+    box-shadow: 2px 2px 2px #4dadf7;
+}
+
+p {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 110%;
+    color: #000000;
+}
+
+.profile-picture {
+    width:60px; 
+    height: 60px;
+}
+
+.author-name {
+    font-weight: bold;
+    font-size: 120%;
+}
+
+.username {
+    font-size: 100%;
+    font-style: italic;
+}
+
+.time-stamp {
+    color: #adb5bd;
+}
+
+.status-content {
+    width: inherit;
+}
+
+.status-body {
+    margin: 0.5em;
+}
+
+/* Buttons */
+.comments-btn:hover {
+    color: blue;
+}
+
+.retweet-btn:hover {
+    color: green;
+}
+
+.like-btn:hover {
+    color: red;
+}
+
+.message-btn {
+    color: #657786;
+}
+
+.message-btn:hover{
+    color: black;
+}
