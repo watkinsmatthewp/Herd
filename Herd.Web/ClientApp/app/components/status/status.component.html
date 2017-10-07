@@ -1,22 +1,25 @@
 ﻿<a href="{{ status.Url }}">
     <div class="well well-sm mouseOver post-format">
         <div class="row">
-            <div class="col-sm-6 col-xs-6 status-content">
-                <p>
-                    <img style="width:60px; height: 60px;" src="{{ status.Account.AvatarUrl }}" />
+            <div class="col-sm-6 status-content">
+                <div class="status-header">
+                    <img class="profile-picture" src="{{ status.Account.AvatarUrl }}" />
                     <a href="{{ status.Account.Url }}">
                         <span class="author-name">{{ status.Account.DisplayName }}</span>
                         <span class="username">@{{ status.Account.UserName }}</span>
                     </a>
                     <span class="time-stamp"> | {{ status.CreatedAt | date: 'short' }}</span>
-                </p>
-                <p [innerHTML]="status.Content"></p>
+                </div>
+                <div class="status-body">
+                    <p [innerHTML]="status.Content"></p>
+                </div>   
+                <div class="status-action-items text-center">
+                    <span class="btn" title="Reply"><fa name="comments"></fa><span>5</span></span>
+                    <span class="btn" title="Retweet"><fa name="retweet"></fa><span>3</span></span>
+                    <span class="btn" title="Like"><fa name="heart-o"></fa><span>15</span></span>
+                    <span class="btn" title="Direct Message"><fa name="envelope-o"></fa></span>
+                </div>
             </div>
-            <!--<footer>
-                <button class="btn"><fa name="camera"></fa></button>
-                <button class="btn"><fa name="exclamation-triangle"></fa></button>
-                <button class="btn"><fa name="user"></fa></button>
-            </footer>-->
         </div>
     </div>
 </a>
