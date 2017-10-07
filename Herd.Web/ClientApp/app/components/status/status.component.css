@@ -39,3 +39,24 @@ p {
 .status-body {
     margin: 0.5em;
 }
+
+/* Buttons */
+.comments-btn:hover {
+    color: blue;
+}
+
+.retweet-btn:hover {
+    color: green;
+}
+
+.like-btn:hover {
+    color: red;
+}
+
+.message-btn {
+    color: #657786;
+}
+
+.message-btn:hover{
+    color: black;
+}
