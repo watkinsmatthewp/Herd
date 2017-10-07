@@ -13,5 +13,21 @@ export class StatusComponent {
 
     constructor() { // MastodonService was here from Dana commit
     }
+
+    reply() {
+        alert("Replying");
+    }
+
+    retweet() {
+        alert("Retweeting");
+    }
+
+    like() {
+        alert("Liking");
+    }
+
+    directMessage() {
+        alert("Direct Message");
+    }
     
 }
