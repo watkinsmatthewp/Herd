@@ -13,6 +13,11 @@ p {
     color: #000000;
 }
 
+.profile-picture {
+    width:60px; 
+    height: 60px;
+}
+
 .author-name {
     font-weight: bold;
     font-size: 120%;
@@ -29,4 +34,8 @@ p {
 
 .status-content {
     width: inherit;
+}
+
+.status-body {
+    margin: 0.5em;
 }
