@@ -1,4 +1,4 @@
-﻿import { Component, Input } from '@angular/core';
+﻿import { Component, OnInit, Input } from '@angular/core';
 
 import { MastodonService } from "../../services";
 import { Status } from '../../models/mastodon';
@@ -8,26 +8,30 @@ import { Status } from '../../models/mastodon';
     templateUrl: './status.component.html',
     styleUrls: ['./status.component.css']
 })
-export class StatusComponent {
+export class StatusComponent implements OnInit {
     @Input() status: Status;
 
     constructor() { // MastodonService was here from Dana commit
     }
 
+    ngOnInit() {
+        console.info(this.status);
+    }
+
     reply() {
-        alert("Replying");
+        
     }
 
     retweet() {
-        alert("Retweeting");
+        
     }
 
     like() {
-        alert("Liking");
+        
     }
 
     directMessage() {
-        alert("Direct Message");
+        
     }
     
 }
