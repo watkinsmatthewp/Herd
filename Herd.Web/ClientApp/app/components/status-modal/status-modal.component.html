@@ -5,45 +5,17 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <div class="row">
-                    <div class="col-sm-6 status-content">
-                        <div class="status-header">
-                            <img class="profile-picture" src="{{ status.Account.AvatarUrl }}" />
-                            <a href="{{ status.Account.Url }}">
-                                <span class="author-name">{{ status.Account.DisplayName }}</span>
-                                <span class="username">@{{ status.Account.UserName }}</span>
-                            </a>
-                            <span class="time-stamp"> | {{ status.CreatedAt | date: 'short' }}</span>
-                        </div>
-                        <div class="status-body">
-                            <p [innerHTML]="status.Content"></p>
-                        </div>
-                        <div class="status-action-items text-center">
-                            <span class="btn comments-btn" title="Reply to Id={{ status.Id }}" data-toggle="modal" [attr.data-target]="'#statusModal-' + status.Id">
-                                <fa name="comments"></fa>
-                            </span>
-                            <span class="btn retweet-btn" title="Retweet" (click)="retweet()">
-                                <fa name="retweet" [ngClass]="{'retweet-color': status.Reblogged }"></fa><span>{{ status.ReblogCount }}</span>
-                            </span>
-                            <span class="btn like-btn" title="Like" (click)="like()">
-                                <fa *ngIf="!status.Favourited" name="heart-o"></fa>
-                                <fa *ngIf="status.Favourited" name="heart" class="heart-color"></fa>
-                                <span>{{ status.FavouritesCount }}</span>
-                            </span>
-                            <span class="btn message-btn" title="Direct Message" (click)="directMessage()">
-                                <fa name="envelope-o"></fa>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                <br />
+                <status [status]="status"></status>
             </div>
             <div class="modal-body">
                 <status-form actionName="Reply" isReply="true" [inReplyToId]="status.Id"></status-form>
                 <div class="replies">
-                    <status class="post" *ngFor="let status of status.replies" [status]="status"></status>
+                    Temporary Reply #1 <br />
+                    Temporary Reply #2 <br />
+                    Temporary Reply #3 <br />
                 </div>
             </div>
-            <div class="modal-footer"></div>
         </div>
     </div>
 </div>
