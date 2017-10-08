@@ -29,7 +29,11 @@
                 </button>
             </div>
             <br />
-            <status class="post" *ngFor="let status of homeFeed" [status]="status"></status>
+
+            <div *ngFor="let status of homeFeed">
+                <status [status]="status"></status>
+                <status-modal [status]="status" [modalId]="'statusModal-' + status.Id"></status-modal>
+            </div>
         </div>
         <!-- Right Column -->
         <div class="col-sm-3">
