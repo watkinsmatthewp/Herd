@@ -19,12 +19,16 @@
                             <p [innerHTML]="status.Content"></p>
                         </div>
                         <div class="status-action-items text-center">
+                            <span class="btn comments-btn" title="Reply to Id={{ status.Id }}" data-toggle="modal" [attr.data-target]="'#statusModal-' + status.Id">
+                                <fa name="comments"></fa>
+                            </span>
                             <span class="btn retweet-btn" title="Retweet" (click)="retweet()">
-                                <fa name="retweet">
-                                </fa><span>{{ status.ReblogCount }}</span>
+                                <fa name="retweet" [ngClass]="{'retweet-color': status.Reblogged }"></fa><span>{{ status.ReblogCount }}</span>
                             </span>
                             <span class="btn like-btn" title="Like" (click)="like()">
-                                <fa name="heart-o"></fa><span>{{ status.FavouritesCount}}</span>
+                                <fa *ngIf="!status.Favourited" name="heart-o"></fa>
+                                <fa *ngIf="status.Favourited" name="heart" class="heart-color"></fa>
+                                <span>{{ status.FavouritesCount }}</span>
                             </span>
                             <span class="btn message-btn" title="Direct Message" (click)="directMessage()">
                                 <fa name="envelope-o"></fa>
@@ -36,9 +40,7 @@
             <div class="modal-body">
                 <status-form actionName="Reply" isReply="true" [inReplyToId]="status.Id"></status-form>
                 <div class="replies">
-                    Display reply to status <br />
-                    Display reply to status <br />
-                    Display reply to status <br />
+                    <status class="post" *ngFor="let status of status.replies" [status]="status"></status>
                 </div>
             </div>
             <div class="modal-footer"></div>
