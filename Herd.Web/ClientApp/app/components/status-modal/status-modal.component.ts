@@ -6,7 +6,7 @@ import { Status } from '../../models/mastodon';
 @Component({
     selector: 'status-modal',
     templateUrl: './status-modal.component.html',
-    styleUrls: ['../status/status.component.css','./status-modal.component.css']
+    styleUrls: ['../status/status.component.css']
 })
 export class StatusModalComponent {
     @Input() status: Status;
