@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input } from '@angular/core';
+﻿import { Component, Input } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 
@@ -9,7 +9,7 @@ import { MastodonService } from "../../services";
     templateUrl: './status-form.component.html',
     styleUrls: ['./status-form.component.css']
 })
-export class StatusFormComponent implements OnInit {
+export class StatusFormComponent {
     @Input() actionName: string;
     @Input() isReply: boolean;
     @Input() inReplyToId: number;
@@ -22,7 +22,7 @@ export class StatusFormComponent implements OnInit {
     constructor(private mastodonService: MastodonService) {}
 
     submitStatus(form: NgForm) {
-        if (this.isReply === false) {
+        if (!this.isReply) {
             this.mastodonService.makeNewPost(this.model.status).subscribe();
             // on finish reset form models
             form.resetForm();
@@ -33,10 +33,6 @@ export class StatusFormComponent implements OnInit {
             form.resetForm();
             this.model.status = "";
         }
-        
-    }
-
-    ngOnInit() {
         
     }
 }
