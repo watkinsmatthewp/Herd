@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 
 
 import { MastodonService } from "../../services";
+import { Visibility } from '../../models/mastodon';
 
 @Component({
     selector: 'status-form',
@@ -16,7 +17,7 @@ export class StatusFormComponent {
     maxStatusLength: number = 200;
     model: any = {
         status: "",
-        visibility: 0.
+        visibility: Visibility.PUBLIC
     };
 
     constructor(private mastodonService: MastodonService) {}
