@@ -2,7 +2,7 @@
     <div class="panel-body">
         <form name="form" (ngSubmit)="f.form.valid && submitStatus(f)" #f="ngForm" novalidate>
             <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !status.valid }">
-                <label for="status">Status | <small>{{ model.status.length }}</small></label>
+                <label for="status">{{ actionName }} | <small>{{ maxStatusLength - model.status.length }}</small></label>
                 <textarea class="form-control" name="status" [(ngModel)]="model.status" #status="ngModel" required placeholder="What's happening?" maxlength="{{maxStatusLength}}" rows="3"></textarea>
                 <div *ngIf="f.submitted && !status.valid" class="help-block">Status is required</div>
             </div>
@@ -15,7 +15,7 @@
                 <div class="pull-right">
                     <fa *ngIf="loading" name="spinner" spin=true></fa>
                     <button [disabled]="loading || !f.valid" type="submit" class="btn btn-primary">
-                        <span><fa name="pencil"> Create Status</fa> Create Status</span>
+                        <span><fa name="pencil"></fa> {{ actionName }}</span>
                     </button>
                 </div>
             </div>

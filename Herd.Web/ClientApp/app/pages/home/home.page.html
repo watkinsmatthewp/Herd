@@ -21,7 +21,7 @@
         </div>
         <!-- Middle Column -->
         <div class="col-sm-6">
-            <status-form></status-form>
+            <status-form actionName="Create Status"></status-form>
             <div class="text-center">
                 <button [disabled]="loading" class="btn btn-default" (click)="getMostRecentHomeFeed()">
                     <fa *ngIf="loading" name="spinner" spin=true></fa>

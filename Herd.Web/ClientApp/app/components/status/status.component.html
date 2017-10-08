@@ -1,33 +1,35 @@
 ﻿<!--<a href="{{ status.Url }}">-->
-    <div class="well well-sm mouseOver post-format">
-        <div class="row">
-            <div class="col-sm-6 status-content">
-                <div class="status-header">
-                    <img class="profile-picture" src="{{ status.Account.AvatarUrl }}" />
-                    <a href="{{ status.Account.Url }}">
-                        <span class="author-name">{{ status.Account.DisplayName }}</span>
-                        <span class="username">@{{ status.Account.UserName }}</span>
-                    </a>
-                    <span class="time-stamp"> | {{ status.CreatedAt | date: 'short' }}</span>
-                </div>
-                <div class="status-body">
-                    <p [innerHTML]="status.Content"></p>
-                </div>   
-                <div class="status-action-items text-center">
-                    <span class="btn comments-btn" title="Reply" (click)="reply()">
-                        <fa name="comments"></fa><span>5</span>
-                    </span>
-                    <span class="btn retweet-btn" title="Retweet" (click)="retweet()"><fa name="retweet">
-                            </fa><span>3</span>
-                    </span>
-                    <span class="btn like-btn" title="Like" (click)="like()">
-                        <fa name="heart-o"></fa><span>15</span>
-                    </span>
-                    <span class="btn message-btn" title="Direct Message" (click)="directMessage()">
-                        <fa name="envelope-o"></fa>
-                    </span>
-                </div>
+<div class="well well-sm mouseOver post-format">
+    <div class="row">
+        <div class="col-sm-6 status-content">
+            <div class="status-header">
+                <img class="profile-picture" src="{{ status.Account.AvatarUrl }}" />
+                <a href="{{ status.Account.Url }}">
+                    <span class="author-name">{{ status.Account.DisplayName }}</span>
+                    <span class="username">@{{ status.Account.UserName }}</span>
+                </a>
+                <span class="time-stamp"> | {{ status.CreatedAt | date: 'short' }}</span>
+            </div>
+            <div class="status-body">
+                <p [innerHTML]="status.Content"></p>
+            </div>   
+            <div class="status-action-items text-center">
+                <span class="btn comments-btn" title="Reply to Id={{ status.Id }}" data-toggle="modal" [attr.data-target]="'#statusModal-' + status.Id">
+                    <fa name="comments"></fa>
+                </span>
+                <span class="btn retweet-btn" title="Retweet" (click)="retweet()"><fa name="retweet">
+                        </fa><span>{{ status.ReblogCount }}</span>
+                </span>
+                <span class="btn like-btn" title="Like" (click)="like()">
+                    <fa name="heart-o"></fa><span>{{ status.FavouritesCount }}</span>
+                </span>
+                <span class="btn message-btn" title="Direct Message" (click)="directMessage()">
+                    <fa name="envelope-o"></fa>
+                </span>
             </div>
         </div>
     </div>
+</div>
 <!--</a>-->
+
+<status-modal [status]="status" [modalId]="'statusModal-' + status.Id"></status-modal>
