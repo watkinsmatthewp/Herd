@@ -33,7 +33,7 @@ p {
 }
 
 .status-content {
-    width: inherit;
+    width: 100%;
 }
 
 .status-body {
@@ -46,7 +46,7 @@ p {
 }
 
 .retweet-btn:hover {
-    color: green;
+    color: limegreen;
 }
 
 .like-btn:hover {
@@ -59,4 +59,12 @@ p {
 
 .message-btn:hover{
     color: black;
+}
+
+.heart-color {
+    color: red;
+}
+
+.retweet-color {
+    color: limegreen;
 }

@@ -17,11 +17,13 @@
                 <span class="btn comments-btn" title="Reply to Id={{ status.Id }}" data-toggle="modal" [attr.data-target]="'#statusModal-' + status.Id">
                     <fa name="comments"></fa>
                 </span>
-                <span class="btn retweet-btn" title="Retweet" (click)="retweet()"><fa name="retweet">
-                        </fa><span>{{ status.ReblogCount }}</span>
+                <span class="btn retweet-btn" title="Retweet" (click)="retweet()">
+                    <fa name="retweet" [ngClass]="{'retweet-color': status.Reblogged }"></fa><span>{{ status.ReblogCount }}</span>
                 </span>
                 <span class="btn like-btn" title="Like" (click)="like()">
-                    <fa name="heart-o"></fa><span>{{ status.FavouritesCount }}</span>
+                    <fa *ngIf="!status.Favourited" name="heart-o"></fa>
+                    <fa *ngIf="status.Favourited" name="heart" class="heart-color"></fa>
+                    <span>{{ status.FavouritesCount }}</span>
                 </span>
                 <span class="btn message-btn" title="Direct Message" (click)="directMessage()">
                     <fa name="envelope-o"></fa>
