@@ -257,7 +257,11 @@ namespace Herd.Business
         {
             return ProcessCommand(result =>
             {
-                _mastodonApiWrapper.CreateNewPost(createNewPostCommand.Message).Synchronously();
+                _mastodonApiWrapper.CreateNewPost(
+                    createNewPostCommand.Message, createNewPostCommand.Visibility, 
+                    createNewPostCommand.ReplyStatusId, createNewPostCommand.MediaIds, 
+                    createNewPostCommand.Sensitive, createNewPostCommand.SpoilerText
+                ).Synchronously();
             });
         }
 

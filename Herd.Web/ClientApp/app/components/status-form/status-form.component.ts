@@ -16,23 +16,21 @@ export class StatusFormComponent {
 
     maxStatusLength: number = 200;
     model: any = {
-        status: ""
+        status: "",
+        visibility: 0.
     };
 
     constructor(private mastodonService: MastodonService) {}
 
     submitStatus(form: NgForm) {
-        if (!this.isReply) {
-            this.mastodonService.makeNewPost(this.model.status).subscribe();
-            // on finish reset form models
-            form.resetForm();
-            this.model.status = "";
-        } else {
-            this.mastodonService.makeNewReply(this.model.status, this.inReplyToId).subscribe();
-            // on finish reset form models
-            form.resetForm();
-            this.model.status = "";
+        if (this.isReply) { // its a reply
+            this.mastodonService.makeNewPost(this.model.status, this.model.visibility, this.inReplyToId).subscribe();
+        } else { // its a new status being made
+            this.mastodonService.makeNewPost(this.model.status, this.model.visibility).subscribe();
         }
+        // on finish reset form models
+        form.resetForm();
+        this.model.status = "";
         
     }
 }
