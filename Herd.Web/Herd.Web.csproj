@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <None Remove="ClientApp\app\components\index.ts" />
+    <None Remove="ClientApp\app\components\status-form\status-form-modal\status-form-modal.component.ts" />
     <None Remove="ClientApp\app\models\index.ts" />
     <None Remove="ClientApp\app\models\mastodon\Application.ts" />
     <None Remove="ClientApp\app\pages\index.ts" />
@@ -48,6 +49,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\index.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\status-form\status-form-modal\status-form-modal.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\mastodon\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\pages\index.ts" />

@@ -6,8 +6,7 @@ import { MastodonService } from "../../services";
 
 @Component({
     selector: 'status-form',
-    templateUrl: './status-form.component.html',
-    styleUrls: ['./status-form.component.css']
+    templateUrl: './status-form.component.html'
 })
 export class StatusFormComponent {
     @Input() actionName: string;
