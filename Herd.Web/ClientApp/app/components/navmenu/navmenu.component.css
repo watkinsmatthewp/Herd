@@ -2,10 +2,6 @@ navbar-brand {
     overflow: visible;
 }
 
-li .glyphicon {
-    margin-right: 10px;
-}
-
 /* Highlighting rules for nav menu items */
 li.link-active a,
 li.link-active a:hover,
@@ -18,7 +14,6 @@ li.link-active a:focus {
     .navbar {
         border-radius: 0px;
         border-width: 0px;
-        height: 100%;
         padding-right: 1em;
     }
     .navbar-header {
