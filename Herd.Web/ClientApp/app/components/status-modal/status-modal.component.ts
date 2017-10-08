@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input } from '@angular/core';
+﻿import { Component, Input } from '@angular/core';
 
 import { MastodonService } from "../../services";
 import { Status } from '../../models/mastodon';
@@ -8,14 +8,9 @@ import { Status } from '../../models/mastodon';
     templateUrl: './status-modal.component.html',
     styleUrls: ['./status-modal.component.css']
 })
-export class StatusModalComponent implements OnInit {
+export class StatusModalComponent {
     @Input() status: Status;
     @Input() modalId: string;
 
     constructor() {}
-
-    ngOnInit() {
-        console.log(this.status.Id);
-    }
-
 }
