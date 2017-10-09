@@ -10,12 +10,20 @@ import { Status } from '../../models/mastodon';
 })
 export class StatusComponent implements OnInit {
     @Input() status: Status;
+    showBlur: boolean = false;
 
     constructor() { // MastodonService was here from Dana commit
     }
 
     ngOnInit() {
-        console.info(this.status);
+        //console.info(this.status);
+        if (this.status.Sensitive === true) {
+            this.showBlur = true;
+        }
+    }
+
+    turnOffBlur(): void {
+        this.showBlur = false;
     }
 
     reply() {
