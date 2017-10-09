@@ -7,7 +7,8 @@ import { Visibility } from '../../models/mastodon';
 
 @Component({
     selector: 'status-form',
-    templateUrl: './status-form.component.html'
+    templateUrl: './status-form.component.html',
+    styleUrls: ['./status-form.component.css']
 })
 export class StatusFormComponent {
     @Input() actionName: string;
@@ -15,12 +16,41 @@ export class StatusFormComponent {
     @Input() inReplyToId: number;
 
     maxStatusLength: number = 200;
+    Visibility = Visibility;
+    visibilityOptions = [
+        {
+            "option": "Public",
+            "context": "Public timelines",
+            "value": Visibility.PUBLIC,
+            "icon": "globe"
+        },
+        {
+            "option": "Private",
+            "context": "Followers only",
+            "value": Visibility.PRIVATE,
+            "icon": "lock"
+        },
+        {
+            "option": "Direct",
+            "context": "Mentioned users only",
+            "value": Visibility.DIRECT,
+            "icon": "envelope"
+        },
+    ];
+
+    // Default model options for a status
     model: any = {
         status: "",
+        contentWarning: false,
         visibility: Visibility.PUBLIC
     };
+    
 
     constructor(private mastodonService: MastodonService) {}
+
+    toggleContentWarning(): void {
+        this.model.contentWarning = !this.model.contentWarning
+    }
 
     submitStatus(form: NgForm) {
         if (this.isReply) { // its a reply
