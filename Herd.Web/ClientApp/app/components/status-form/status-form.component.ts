@@ -42,7 +42,8 @@ export class StatusFormComponent {
     model: any = {
         status: "",
         contentWarning: false,
-        visibility: Visibility.PUBLIC
+        visibility: Visibility.PUBLIC,
+        spoilerText: ""
     };
     
 
@@ -54,13 +55,21 @@ export class StatusFormComponent {
 
     submitStatus(form: NgForm) {
         if (this.isReply) { // its a reply
-            this.mastodonService.makeNewPost(this.model.status, this.model.visibility, this.inReplyToId).subscribe();
+            this.mastodonService.makeNewPost(this.model.status, this.model.visibility, this.inReplyToId, this.model.contentWarning, this.model.spoilerText).subscribe();
         } else { // its a new status being made
-            this.mastodonService.makeNewPost(this.model.status, this.model.visibility).subscribe();
+            this.mastodonService.makeNewPost(this.model.status, this.model.visibility, undefined, this.model.contentWarning, this.model.spoilerText).subscribe();
         }
         // on finish reset form models
+        this.resetFormDefaults(form);
+        
+    }
+
+    resetFormDefaults(form: NgForm): void {
         form.resetForm();
         this.model.status = "";
-        
+        this.model.contentWarning = false;
+        this.model.visibility = Visibility.PUBLIC;
+        form.controls.visibility.setValue(0); // have to manually set the select value for some reason
+        this.model.spoilerText = "";
     }
 }

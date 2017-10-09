@@ -3,6 +3,7 @@
         <form name="form" (ngSubmit)="f.form.valid && submitStatus(f)" #f="ngForm" novalidate>
             <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !status.valid }">
                 <label for="status">{{ actionName }} | <small>{{ maxStatusLength - model.status.length }}</small></label>
+                <input *ngIf="model.contentWarning" class="form-control" name="spoilerText"  [(ngModel)]="model.spoilerText" #spoilerText="ngModel" maxlength="{{ maxStatusLength }}" placeholder="Spoiler Text" required/>
                 <textarea class="form-control" name="status" [(ngModel)]="model.status" #status="ngModel" required placeholder="What's happening?" maxlength="{{ maxStatusLength }}" rows="3"></textarea>
                 <div *ngIf="f.submitted && !status.valid" class="help-block">Status is required</div>
             </div>
@@ -10,7 +11,7 @@
                 <div class="pull-left">
                     <button type="button" class="btn" title="Upload an image"><fa name="camera"></fa></button>
                     <button type="button" class="btn" [ngClass]="{'btn-warning': model.contentWarning }" title="Content Warning" (click)="toggleContentWarning()"><fa name="exclamation-triangle"></fa></button>
-                    <select class="btn" name="visibility" [(ngModel)]="model.visibility" required>
+                    <select class="btn" name="visibility" [(ngModel)]="model.visibility" selected=0 required>
                         <option *ngFor="let visibility of visibilityOptions" [ngValue]="visibility.value" title="{{ visibility.context }}">{{ visibility.option }}</option>
                     </select>
                 </div>

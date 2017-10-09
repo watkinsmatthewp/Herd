@@ -11,7 +11,10 @@
                 <span class="time-stamp"> | {{ status.CreatedAt | date: 'short' }}</span>
             </div>
             <div class="status-body">
-                <p [innerHTML]="status.Content"></p>
+                <p *ngIf="status.Sensitive">{{ status.SpoilerText }}</p>
+                <div [ngClass]="{'status-blurred': showBlur }" (click)="turnOffBlur()">
+                    <p  [innerHTML]="status.Content"></p>
+                </div>
             </div>   
             <div class="status-action-items text-center">
                 <span class="btn comments-btn" title="Reply to Id={{ status.Id }}" data-toggle="modal" [attr.data-target]="'#statusModal-' + status.Id">
