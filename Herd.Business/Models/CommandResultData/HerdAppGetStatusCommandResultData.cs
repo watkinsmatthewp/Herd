@@ -5,8 +5,9 @@ using System.Text;
 
 namespace Herd.Business.Models.CommandResultData
 {
-    public class HerdAppGetRecentFeedItemsCommandResultData : HerdAppCommandResultData
+    public class HerdAppGetStatusCommandResultData : HerdAppCommandResultData
     {
-        public List<Status> RecentFeedItems { get; set; }
+        public Status Status { get; set; }
+        public StatusContext StatusContext { get; set; } 
     }
 }

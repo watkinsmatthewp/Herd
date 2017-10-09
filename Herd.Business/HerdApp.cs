@@ -12,6 +12,8 @@ using Herd.Core;
 using System.Collections.Generic;
 using static Herd.Business.Models.CommandResultData.HerdAppGetRecentFeedItemsCommandResultData;
 using Herd.Logging;
+using static Herd.Business.Models.CommandResultData.HerdAppGetStatusCommandResultData;
+using Herd.Business.Models.MastodonWrappers;
 
 namespace Herd.Business
 {
@@ -173,9 +175,9 @@ namespace Herd.Business
             {
                 result.Data = new HerdAppGetRecentFeedItemsCommandResultData
                 {
-                    RecentFeedItems = _mastodonApiWrapper.GetRecentStatuses(getRecentFeedItemsCommand.MaxCount).Synchronously().Select(s => new RecentFeedItem
+                    RecentFeedItems = _mastodonApiWrapper.GetRecentStatuses(getRecentFeedItemsCommand.MaxCount).Synchronously().Select(s => new Status
                     {
-                        Account = new Models.MastodonWrappers.Account {
+                        Account = new Account {
                             AccountName = s.Account.AccountName,
                             AvatarUrl = s.Account.AvatarUrl,
                             DisplayName = s.Account.DisplayName,
@@ -203,53 +205,111 @@ namespace Herd.Business
                         Visibility = s.Visibility,
                     }).ToList()
                 };
+            });
+        }
 
-                // Test data
-                if (result.Data.RecentFeedItems.Count <= 25)
+        public HerdAppCommandResult<HerdAppGetStatusCommandResultData> GetStatus(HerdAppGetStatusCommand getStatusCommand)
+        {
+            return ProcessCommand<HerdAppGetStatusCommandResultData>(result =>
+            {
+                var status = _mastodonApiWrapper.GetStatus(getStatusCommand.StatusId).Synchronously();
+                var context = _mastodonApiWrapper.GetStatusContext(getStatusCommand.StatusId).Synchronously();
+                result.Data = new HerdAppGetStatusCommandResultData
                 {
-                    result.Data.RecentFeedItems.Add(new RecentFeedItem
+                    Status = new Status
                     {
-                        Account = new Models.MastodonWrappers.Account
+                        Account = new Account
                         {
-                           DisplayName = "Thomas Ortiz",
-                           UserName = "tdortiz",
-                           AvatarUrl = "https://i.ytimg.com/vi/mRSTCUTtjWc/hqdefault.jpg",
+                            AccountName = status.Account.AccountName,
+                            AvatarUrl = status.Account.AvatarUrl,
+                            DisplayName = status.Account.DisplayName,
+                            Id = status.Account.Id,
+                            ProfileUrl = status.Account.ProfileUrl,
+                            UserName = status.Account.UserName,
                         },
-                        Content = "The best thing about a boolean is even if you are wrong, you are only off by a bit."
-                    });
-                    result.Data.RecentFeedItems.Add(new RecentFeedItem
+                        Content = status.Content,
+                        CreatedAt = status.CreatedAt,
+                        Favourited = status.Favourited,
+                        FavouritesCount = status.FavouritesCount,
+                        Id = status.Id,
+                        InReplyToAccountId = status.InReplyToAccountId,
+                        InReplyToId = status.InReplyToId,
+                        MediaAttachments = status.MediaAttachments,
+                        Mentions = status.Mentions,
+                        Reblog = status.Reblog,
+                        ReblogCount = status.ReblogCount,
+                        Reblogged = status.Reblogged,
+                        Sensitive = status.Sensitive,
+                        SpoilerText = status.SpoilerText,
+                        Tags = status.Tags,
+                        Uri = status.Uri,
+                        Url = status.Url,
+                        Visibility = status.Visibility,
+                    },
+                    StatusContext = new StatusContext
                     {
-                        Account = new Models.MastodonWrappers.Account
+                        Ancestors = context.Ancestors.Select(s => new Status
                         {
-                            DisplayName = "Matthew Watkins",
-                            UserName = "mpwatki2",
-                            AvatarUrl = "https://calculatedbravery.files.wordpress.com/2014/01/nerd.jpg",
-                        },
-                        Content = "Always code as if the person who ends up maintaining your code will be a violent psychopath who knows where you live."
-                    });
-                    result.Data.RecentFeedItems.Add(new RecentFeedItem
-                    {
-                        Account = new Models.MastodonWrappers.Account
+                            Account = new Account
+                            {
+                                AccountName = status.Account.AccountName,
+                                AvatarUrl = status.Account.AvatarUrl,
+                                DisplayName = status.Account.DisplayName,
+                                Id = status.Account.Id,
+                                ProfileUrl = status.Account.ProfileUrl,
+                                UserName = status.Account.UserName,
+                            },
+                            Content = status.Content,
+                            CreatedAt = status.CreatedAt,
+                            Favourited = status.Favourited,
+                            FavouritesCount = status.FavouritesCount,
+                            Id = status.Id,
+                            InReplyToAccountId = status.InReplyToAccountId,
+                            InReplyToId = status.InReplyToId,
+                            MediaAttachments = status.MediaAttachments,
+                            Mentions = status.Mentions,
+                            Reblog = status.Reblog,
+                            ReblogCount = status.ReblogCount,
+                            Reblogged = status.Reblogged,
+                            Sensitive = status.Sensitive,
+                            SpoilerText = status.SpoilerText,
+                            Tags = status.Tags,
+                            Uri = status.Uri,
+                            Url = status.Url,
+                            Visibility = status.Visibility,
+                        }).ToList(),
+                        Descendants = context.Descendants.Select(s => new Status
                         {
-                            DisplayName = "Jacob Stone",
-                            UserName = "jcstone3",
-                            AvatarUrl = "http://mist.motifake.com/image/demotivational-poster/1003/pity-the-fool-mister-e-t-demotivational-poster-1267758828.jpg",
-                        },
-                        Content = "Programming today is a race between software engineers striving to build bigger " +
-                                   "and better idiot-proof programs, and the universe trying to produce bigger and " +
-                                   "better idiots. So far, the universe is winning."
-                    });
-                    result.Data.RecentFeedItems.Add(new RecentFeedItem
-                    {
-                        Account = new Models.MastodonWrappers.Account
-                        {
-                            DisplayName = "Dana Christo",
-                            UserName = "dbchris3",
-                            AvatarUrl = "https://yt3.ggpht.com/-AC_X27FHo80/AAAAAAAAAAI/AAAAAAAAAAA/YfGKh9RmAC0/s900-c-k-no-mo-rj-c0xffffff/photo.jpg",
-                        },
-                        Content = "I'm out."
-                    });
-                }
+                            Account = new Account
+                            {
+                                AccountName = status.Account.AccountName,
+                                AvatarUrl = status.Account.AvatarUrl,
+                                DisplayName = status.Account.DisplayName,
+                                Id = status.Account.Id,
+                                ProfileUrl = status.Account.ProfileUrl,
+                                UserName = status.Account.UserName,
+                            },
+                            Content = status.Content,
+                            CreatedAt = status.CreatedAt,
+                            Favourited = status.Favourited,
+                            FavouritesCount = status.FavouritesCount,
+                            Id = status.Id,
+                            InReplyToAccountId = status.InReplyToAccountId,
+                            InReplyToId = status.InReplyToId,
+                            MediaAttachments = status.MediaAttachments,
+                            Mentions = status.Mentions,
+                            Reblog = status.Reblog,
+                            ReblogCount = status.ReblogCount,
+                            Reblogged = status.Reblogged,
+                            Sensitive = status.Sensitive,
+                            SpoilerText = status.SpoilerText,
+                            Tags = status.Tags,
+                            Uri = status.Uri,
+                            Url = status.Url,
+                            Visibility = status.Visibility,
+                        }).ToList(),
+                    }
+                };
             });
         }
 
