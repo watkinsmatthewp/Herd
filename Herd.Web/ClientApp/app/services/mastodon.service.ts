@@ -29,11 +29,15 @@ export class MastodonService {
      * @param sensitive
      * @param spoilerText
      */
-    makeNewPost(message: string, visibility: number, replayStatusId?: number, sensitive?: boolean, spoilerText?: string) {
+    makeNewPost(message: string, visibility: number, replyStatusId?: number, sensitive?: boolean, spoilerText?: string) {
+        if (replyStatusId && replyStatusId < 0) {
+            replyStatusId = undefined;
+        }
+
         let body = {
             'message': message,
             'visibility': visibility,
-            'replyStatusId': replayStatusId || null,
+            'replyStatusId': replyStatusId || null,
             'sensitive': sensitive || false,
             'spoilerText': spoilerText || null,
         }
