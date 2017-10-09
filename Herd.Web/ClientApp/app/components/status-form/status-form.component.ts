@@ -56,14 +56,14 @@ export class StatusFormComponent {
 
     submitStatus(form: NgForm) {
         this.mastodonService.makeNewPost(this.model.status, this.model.visibility, -1, this.model.contentWarning, this.model.spoilerText)
+            .finally(() => {
+                this.resetFormDefaults(form);
+            })
             .subscribe(response => {
                 this.alertService.success("Successfully posted an update.");
             }, error => {
                 this.alertService.error(error.error);
             });
-
-        // on finish reset form models
-        this.resetFormDefaults(form);
     }
 
     resetFormDefaults(form: NgForm): void {
