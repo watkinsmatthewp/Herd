@@ -56,6 +56,7 @@ import { SafePipe } from './pipes';
             { path: 'instance-picker', component: InstancePickerComponent, canActivate: [AuthGuard], data: { title: "Instance Picker" } },
             // TimeLines
             { path: 'home', component: HomePage, canActivate: [AuthGuard], data: { title: "Home" } },
+            { path: 'home/:id', component: HomePage, canActivate: [AuthGuard], data: { title: "Home" } },
             { path: 'localfeed', component: LocalFeedPage, canActivate: [AuthGuard], data: { title: "Local Feed" } },
             // Notification
             { path: 'notifications', component: NotificationsPage, canActivate: [AuthGuard], data: { title: "Notifications" } },
