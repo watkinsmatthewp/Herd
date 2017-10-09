@@ -16,9 +16,14 @@ export class MastodonService {
             .map(response => response.RecentFeedItems as Status[])
     }
 
+    getStatus(statusId: number) {
+        let queryString = '?statusId=' + statusId;
+        return this.httpClient.get('api/feed/get_status' + queryString);
+    }
+
     /**
      * Make a new status on the home feed
-
+     *
      * @param message
      * @param visibility
      *      Direct = 3

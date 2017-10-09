@@ -15,6 +15,13 @@ namespace Herd.Web.Controllers
         [HttpGet("new_items")]
         public IActionResult NewItems() => ApiJson(App.GetRecentFeedItems(new HerdAppGetRecentFeedItemsCommand()));
 
+
+        [HttpGet("get_status")]
+        public IActionResult GetStatus(int statusId) => ApiJson(App.GetStatus(new HerdAppGetStatusCommand
+            {
+                StatusId = statusId
+            }));
+
         [HttpPost("new_post")]
         public IActionResult NewPost([FromBody] JObject body) => ApiJson(App.CreateNewPost(new HerdAppCreateNewPostCommand
             {
