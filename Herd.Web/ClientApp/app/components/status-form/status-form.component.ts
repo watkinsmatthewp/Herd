@@ -2,8 +2,9 @@
 import { NgForm } from '@angular/forms';
 
 
-import { MastodonService } from "../../services";
+import { MastodonService, AlertService } from "../../services";
 import { Visibility } from '../../models/mastodon';
+import { Observable } from "rxjs/Observable";
 
 @Component({
     selector: 'status-form',
@@ -47,21 +48,22 @@ export class StatusFormComponent {
     };
     
 
-    constructor(private mastodonService: MastodonService) {}
+    constructor(private mastodonService: MastodonService, private alertService: AlertService) {}
 
     toggleContentWarning(): void {
         this.model.contentWarning = !this.model.contentWarning
     }
 
     submitStatus(form: NgForm) {
-        if (this.isReply) { // its a reply
-            this.mastodonService.makeNewPost(this.model.status, this.model.visibility, this.inReplyToId, this.model.contentWarning, this.model.spoilerText).subscribe();
-        } else { // its a new status being made
-            this.mastodonService.makeNewPost(this.model.status, this.model.visibility, undefined, this.model.contentWarning, this.model.spoilerText).subscribe();
-        }
+        this.mastodonService.makeNewPost(this.model.status, this.model.visibility, -1, this.model.contentWarning, this.model.spoilerText)
+            .subscribe(response => {
+                this.alertService.success("Successfully posted an update.");
+            }, error => {
+                this.alertService.error(error.error);
+            });
+
         // on finish reset form models
         this.resetFormDefaults(form);
-        
     }
 
     resetFormDefaults(form: NgForm): void {
