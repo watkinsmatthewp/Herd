@@ -39,9 +39,9 @@ export class StatusModalComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        var openButton = document.getElementById("openButton-" + this.modalId);
-        if (openButton) {
-            openButton.click();
+        var closeButton = document.getElementById("closeButton-" + this.modalId);
+        if (closeButton) {
+            closeButton.click();
         }
     }
 }
