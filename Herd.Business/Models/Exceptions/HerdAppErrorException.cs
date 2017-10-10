@@ -20,12 +20,12 @@ namespace Herd.Business.App.Exceptions
         {
         }
 
-        public abstract HerdAppError Error { get; }
+        public abstract Error Error { get; }
     }
 
-    public abstract class HerdAppErrorException<T> : HerdAppErrorException where T : HerdAppError
+    public abstract class HerdAppErrorException<T> : HerdAppErrorException where T : Error
     {
-        public override HerdAppError Error => SpecificError;
+        public override Error Error => SpecificError;
         public abstract T SpecificError { get; }
 
         protected HerdAppErrorException()

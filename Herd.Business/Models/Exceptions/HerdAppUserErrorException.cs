@@ -3,7 +3,7 @@ using System;
 
 namespace Herd.Business.App.Exceptions
 {
-    public class HerdAppUserErrorException : HerdAppErrorException<HerdAppUserError>
+    public class HerdAppUserErrorException : HerdAppErrorException<UserError>
     {
         public HerdAppUserErrorException()
         {
@@ -19,7 +19,7 @@ namespace Herd.Business.App.Exceptions
         {
         }
 
-        public override HerdAppUserError SpecificError => new HerdAppUserError
+        public override UserError SpecificError => new UserError
         {
             Message = Message
         };

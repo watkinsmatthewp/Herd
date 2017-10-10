@@ -347,7 +347,7 @@ namespace Herd.Business
             {
                 var errorID = Guid.NewGuid();
                 _logger.Error(errorID, "Error in HerdApp", null, e);
-                result.Errors.Add((e as HerdAppErrorException)?.Error ?? new HerdAppSystemError
+                result.Errors.Add((e as HerdAppErrorException)?.Error ?? new SystemError
                 {
                     Message = $"Unhandled exception: {e.Message}"
                 });

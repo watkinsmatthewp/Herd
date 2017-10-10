@@ -7,16 +7,16 @@ namespace Herd.Business.Models
 {
     public class HerdAppCommandResult
     {
-        private List<HerdAppError> _errors = new List<HerdAppError>();
+        private List<Error> _errors = new List<Error>();
 
-        public List<HerdAppError> Errors
+        public List<Error> Errors
         {
             get => _errors;
-            set => _errors = value ?? new List<HerdAppError>();
+            set => _errors = value ?? new List<Error>();
         }
 
-        public IEnumerable<HerdAppSystemError> SystemErrors => Errors.OfType<HerdAppSystemError>();
-        public IEnumerable<HerdAppUserError> UserErrors => Errors.OfType<HerdAppUserError>();
+        public IEnumerable<SystemError> SystemErrors => Errors.OfType<SystemError>();
+        public IEnumerable<UserError> UserErrors => Errors.OfType<UserError>();
         public bool HasSystemErrors => SystemErrors.Any();
         public bool HasUserErrors => SystemErrors.Any();
         public bool Success => Errors.Count == 0;
