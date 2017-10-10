@@ -38,12 +38,13 @@ namespace Herd_Web
             services.AddMvc();
             services.AddAuthentication(COOKIE_AUTH_SCHEME_NAME)
             .AddCookie(COOKIE_AUTH_SCHEME_NAME, options => {
-                options.AccessDeniedPath = "/Account/Forbidden/";
+                // options.AccessDeniedPath = "/Account/Forbidden/";
                 options.LoginPath = "/login";
                 options.Cookie.Name = "HERD_SESSION";
                 options.Cookie.HttpOnly = false;
                 options.Cookie.Expiration = TimeSpan.FromDays(15);
                 options.SlidingExpiration = true;
+                options.Cookie.Path = "/";
             });
         }
 

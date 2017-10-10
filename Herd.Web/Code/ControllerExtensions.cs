@@ -33,7 +33,10 @@ namespace Herd.Web.Code
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, userID.ToString()));
             identity.AddClaim(new Claim(ClaimTypes.Name, userID.ToString()));
             var principal = new ClaimsPrincipal(identity);
-            await controller.HttpContext.SignInAsync(Startup.COOKIE_AUTH_SCHEME_NAME, principal);
+            await controller.HttpContext.SignInAsync(Startup.COOKIE_AUTH_SCHEME_NAME, principal, new AuthenticationProperties
+            {
+                IsPersistent = true
+            });
         }
 
         public static Task ClearActiveUserFromSession(this Controller controller)
