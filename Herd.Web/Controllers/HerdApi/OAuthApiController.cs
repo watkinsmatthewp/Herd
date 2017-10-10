@@ -33,7 +33,7 @@ namespace Herd.Web.Controllers.HerdApi
         [HttpGet("url")]
         public IActionResult GetMastodonInstanceOAuthURL(long registrationID)
         {
-            _appRegistration = new Lazy<HerdAppRegistrationDataModel>(HerdWebApp.Instance.DataProvider.GetAppRegistration(registrationID));
+            _appRegistration = new Lazy<Registration>(HerdWebApp.Instance.DataProvider.GetAppRegistration(registrationID));
             _mastodonApiWrapper = new Lazy<IMastodonApiWrapper>(new MastodonApiWrapper(AppRegistration));
 
             return ApiJson(App.GetOAuthURL(new GetOAuthURLCommand
@@ -45,7 +45,7 @@ namespace Herd.Web.Controllers.HerdApi
         [HttpPost("set_tokens")]
         public IActionResult SetMastodonOAuthTokens([FromBody] JObject body)
         {
-            _appRegistration = new Lazy<HerdAppRegistrationDataModel>(HerdWebApp.Instance.DataProvider.GetAppRegistration(body["app_registration_id"].Value<long>()));
+            _appRegistration = new Lazy<Registration>(HerdWebApp.Instance.DataProvider.GetAppRegistration(body["app_registration_id"].Value<long>()));
             _mastodonApiWrapper = new Lazy<IMastodonApiWrapper>(new MastodonApiWrapper(AppRegistration));
 
             return ApiJson(App.UpdateUserMastodonConnection(new UpdateUserMastodonConnectionCommand
@@ -58,7 +58,7 @@ namespace Herd.Web.Controllers.HerdApi
 
         #region Private helpers
 
-        private HerdAppRegistrationDataModel ClearUnnecessaryOrSensitiveData(HerdAppRegistrationDataModel registration) => new HerdAppRegistrationDataModel
+        private Registration ClearUnnecessaryOrSensitiveData(Registration registration) => new Registration
         {
             ID = registration.ID
         };

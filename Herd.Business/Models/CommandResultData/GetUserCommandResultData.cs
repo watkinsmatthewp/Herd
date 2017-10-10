@@ -4,6 +4,6 @@ namespace Herd.Business.Models.CommandResultData
 {
     public class GetUserCommandResultData : CommandResultData
     {
-        public HerdUserAccountDataModel User { get; set; }
+        public UserAccount User { get; set; }
     }
 }

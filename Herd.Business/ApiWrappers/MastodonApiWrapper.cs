@@ -13,8 +13,8 @@ namespace Herd.Business
         #region Public properties
 
         public string MastodonHostInstance { get; }
-        public HerdAppRegistrationDataModel AppRegistration { get; set; }
-        public HerdUserMastodonConnectionDetails UserMastodonConnectionDetails { get; set; }
+        public Registration AppRegistration { get; set; }
+        public UserMastodonConnectionDetails UserMastodonConnectionDetails { get; set; }
         public const Scope ALL_SCOPES = Scope.Read | Scope.Write | Scope.Follow;
 
         #endregion Public properties
@@ -25,17 +25,17 @@ namespace Herd.Business
             : this(null as string) { }
 
         public MastodonApiWrapper(string mastodonHostInstance)
-            : this(null as HerdAppRegistrationDataModel)
+            : this(null as Registration)
         {
             MastodonHostInstance = mastodonHostInstance;
         }
 
-        public MastodonApiWrapper(HerdAppRegistrationDataModel registration)
+        public MastodonApiWrapper(Registration registration)
             : this(registration, null)
         {
         }
 
-        public MastodonApiWrapper(HerdAppRegistrationDataModel registration, HerdUserMastodonConnectionDetails userMastodonConnectionDetails)
+        public MastodonApiWrapper(Registration registration, UserMastodonConnectionDetails userMastodonConnectionDetails)
         {
             AppRegistration = registration;
             MastodonHostInstance = AppRegistration?.Instance;
@@ -65,13 +65,13 @@ namespace Herd.Business
 
         #region Auth - Public methods
 
-        public async Task<HerdAppRegistrationDataModel> RegisterApp() => (await BuildMastodonAuthenticationClient().CreateApp("Herd", ALL_SCOPES)).ToHerdAppRegistration();
+        public async Task<Registration> RegisterApp() => (await BuildMastodonAuthenticationClient().CreateApp("Herd", ALL_SCOPES)).ToHerdAppRegistration();
 
         public Task<Account> GetUserAccount() => BuildMastodonApiClient().GetCurrentUser();
 
         public string GetOAuthUrl(string redirectURL = null) => BuildMastodonAuthenticationClient().OAuthUrl(redirectURL);
 
-        public async Task<HerdUserMastodonConnectionDetails> Connect(string token) => (await BuildMastodonAuthenticationClient().ConnectWithCode(token)).ToHerdConnectionDetails(AppRegistration.ID);
+        public async Task<UserMastodonConnectionDetails> Connect(string token) => (await BuildMastodonAuthenticationClient().ConnectWithCode(token)).ToHerdConnectionDetails(AppRegistration.ID);
 
         #endregion Auth - Public methods
 

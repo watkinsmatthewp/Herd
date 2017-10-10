@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace Herd.Data.Providers
 {
-    public class HerdFileDataProvider : HerdKeyValuePairDataProvider
+    public class FileDataProvider : KeyValuePairDataProvider
     {
         public static string FILE_EXTENSION = ".json";
 
-        public HerdFileDataProvider()
+        public FileDataProvider()
             : base(GetOrCreateRootDataFolder(), Path.DirectorySeparatorChar.ToString())
         {
         }

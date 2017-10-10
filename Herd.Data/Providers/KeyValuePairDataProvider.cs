@@ -6,14 +6,14 @@ using System.Linq;
 
 namespace Herd.Data.Providers
 {
-    public abstract class HerdKeyValuePairDataProvider : IHerdDataProvider
+    public abstract class KeyValuePairDataProvider : IDataProvider
     {
         private static object _nexIdLock = new object();
 
         protected string KeyRoot { get; private set; }
         protected string KeyDelimiter { get; private set; }
 
-        protected HerdKeyValuePairDataProvider(string keyRoot, string keyDelimiter)
+        protected KeyValuePairDataProvider(string keyRoot, string keyDelimiter)
         {
             KeyRoot = keyRoot;
             KeyDelimiter = keyDelimiter;
@@ -21,35 +21,35 @@ namespace Herd.Data.Providers
 
         #region AppRegistration
 
-        public HerdAppRegistrationDataModel GetAppRegistration(long id) => GetEntity<HerdAppRegistrationDataModel>(id);
+        public Registration GetAppRegistration(long id) => GetEntity<Registration>(id);
 
-        public HerdAppRegistrationDataModel GetAppRegistration(string instance) => GetEntity<HerdAppRegistrationDataModel>(r => r.Instance == instance);
+        public Registration GetAppRegistration(string instance) => GetEntity<Registration>(r => r.Instance == instance);
 
-        public HerdAppRegistrationDataModel CreateAppRegistration(HerdAppRegistrationDataModel appRegistration) => CreateEntity(appRegistration);
+        public Registration CreateAppRegistration(Registration appRegistration) => CreateEntity(appRegistration);
 
-        public void UpdateAppRegistration(HerdAppRegistrationDataModel appRegistration) => UpdateEntity(appRegistration);
+        public void UpdateAppRegistration(Registration appRegistration) => UpdateEntity(appRegistration);
 
         #endregion AppRegistration
 
         #region Users
 
-        public HerdUserAccountDataModel GetUser(long id) => GetEntity<HerdUserAccountDataModel>(id);
+        public UserAccount GetUser(long id) => GetEntity<UserAccount>(id);
 
-        public HerdUserAccountDataModel GetUser(string email) => GetEntity<HerdUserAccountDataModel>(u => u.Email == email);
+        public UserAccount GetUser(string email) => GetEntity<UserAccount>(u => u.Email == email);
 
-        public HerdUserAccountDataModel CreateUser(HerdUserAccountDataModel user) => CreateEntity(user);
+        public UserAccount CreateUser(UserAccount user) => CreateEntity(user);
 
-        public void UpdateUser(HerdUserAccountDataModel user) => UpdateEntity(user);
+        public void UpdateUser(UserAccount user) => UpdateEntity(user);
 
         #endregion Users
 
         #region Profiles
 
-        public HerdUserProfileDataModel GetProfile(long id) => GetEntity<HerdUserProfileDataModel>(id);
+        public UserProfile GetProfile(long id) => GetEntity<UserProfile>(id);
 
-        public HerdUserProfileDataModel CreateProfile(HerdUserProfileDataModel profile) => CreateEntity(profile);
+        public UserProfile CreateProfile(UserProfile profile) => CreateEntity(profile);
 
-        public void UpdateProfile(HerdUserProfileDataModel profile) => UpdateEntity(profile);
+        public void UpdateProfile(UserProfile profile) => UpdateEntity(profile);
 
         #endregion Profiles
 
@@ -65,12 +65,12 @@ namespace Herd.Data.Providers
 
         #region Private helpers
 
-        private T GetEntity<T>(Func<T, bool> matches) where T : HerdDataModel
+        private T GetEntity<T>(Func<T, bool> matches) where T : DataModel
         {
             return GetAllEntities<T>().FirstOrDefault(matches);
         }
 
-        private IEnumerable<T> GetAllEntities<T>() where T : HerdDataModel
+        private IEnumerable<T> GetAllEntities<T>() where T : DataModel
         {
             var entityRootKey = BuildEntityRootKey<T>();
             return GetAllKeys(entityRootKey)
@@ -78,12 +78,12 @@ namespace Herd.Data.Providers
                 .Select(key => GetEntity<T>(key));
         }
 
-        private T GetEntity<T>(long id) where T : HerdDataModel
+        private T GetEntity<T>(long id) where T : DataModel
         {
             return GetEntity<T>(BuildEntityKey<T>(id));
         }
 
-        private T GetEntity<T>(string key) where T : HerdDataModel
+        private T GetEntity<T>(string key) where T : DataModel
         {
             try
             {
@@ -96,7 +96,7 @@ namespace Herd.Data.Providers
             }
         }
 
-        private T CreateEntity<T>(T entity) where T : HerdDataModel
+        private T CreateEntity<T>(T entity) where T : DataModel
         {
             lock (_nexIdLock)
             {
@@ -114,17 +114,17 @@ namespace Herd.Data.Providers
             return entity;
         }
 
-        private void UpdateEntity<T>(T entity) where T : HerdDataModel
+        private void UpdateEntity<T>(T entity) where T : DataModel
         {
             WriteKey(BuildEntityKey<T>(entity.ID), entity.SerializeAsJson(true));
         }
 
-        private string BuildEntityKey<T>(long id) where T : HerdDataModel
+        private string BuildEntityKey<T>(long id) where T : DataModel
         {
             return string.Join(KeyDelimiter, BuildEntityRootKey<T>(), id);
         }
 
-        private string BuildEntityRootKey<T>() where T : HerdDataModel
+        private string BuildEntityRootKey<T>() where T : DataModel
         {
             return string.Join(KeyDelimiter, KeyRoot, typeof(T).GetEntityName());
         }

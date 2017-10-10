@@ -13,13 +13,13 @@ namespace Herd.Web.Code
         private Lazy<IHerdLogger> _logger;
         public IHerdLogger Logger => _logger.Value;
 
-        private Lazy<IHerdDataProvider> _dataProvider;
-        public IHerdDataProvider DataProvider => _dataProvider.Value;
+        private Lazy<IDataProvider> _dataProvider;
+        public IDataProvider DataProvider => _dataProvider.Value;
 
         private HerdWebApp()
         {
             _logger = new Lazy<IHerdLogger>(BuildLogger);
-            _dataProvider = new Lazy<IHerdDataProvider>(BuildDataProvider);
+            _dataProvider = new Lazy<IDataProvider>(BuildDataProvider);
         }
 
         private IHerdLogger BuildLogger()
@@ -31,6 +31,6 @@ namespace Herd.Web.Code
             return logger;
         }
 
-        private IHerdDataProvider BuildDataProvider() => new HerdFileDataProvider();
+        private IDataProvider BuildDataProvider() => new FileDataProvider();
     }
 }

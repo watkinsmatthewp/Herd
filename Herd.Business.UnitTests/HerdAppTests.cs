@@ -16,13 +16,13 @@ namespace Herd.Business.UnitTests
         public void GetRegistrationTest()
         {
             // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
-            var mockData = new Mock<IHerdDataProvider>();
+            var mockData = new Mock<IDataProvider>();
             var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
             var mockLogger = new Mock<IHerdLogger>();
 
             // Tell moq that when that object's GetAppRegistration method is called for ID 3,
             // return this HerdAppRegistrationDataModel object with the following properties
-            mockData.Setup(d => d.GetAppRegistration(3)).Returns(new HerdAppRegistrationDataModel
+            mockData.Setup(d => d.GetAppRegistration(3)).Returns(new Registration
             {
                 ID = 3,
                 ClientId = "client-id",
@@ -53,12 +53,12 @@ namespace Herd.Business.UnitTests
         public void GetOAuthURLTest()
         {
             // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
-            var mockData = new Mock<IHerdDataProvider>();
+            var mockData = new Mock<IDataProvider>();
             var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
             var mockLogger = new Mock<IHerdLogger>();
 
             // Setup the mocks
-            mockData.Setup(d => d.GetAppRegistration(3)).Returns(new HerdAppRegistrationDataModel
+            mockData.Setup(d => d.GetAppRegistration(3)).Returns(new Registration
             {
                 ID = 3,
                 ClientId = "client-id",
@@ -84,11 +84,11 @@ namespace Herd.Business.UnitTests
         public void GetOrCreateRegistrationTest()
         {
             // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
-            var mockData = new Mock<IHerdDataProvider>();
+            var mockData = new Mock<IDataProvider>();
             var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
             var mockLogger = new Mock<IHerdLogger>();
 
-            mockData.Setup(d => d.GetAppRegistration("instance")).Returns(new HerdAppRegistrationDataModel
+            mockData.Setup(d => d.GetAppRegistration("instance")).Returns(new Registration
             {
                 ID = 3,
                 ClientId = "client-id",
@@ -97,7 +97,7 @@ namespace Herd.Business.UnitTests
                 MastodonAppRegistrationID = 42
             });
 
-            mockData.Setup(d => d.CreateAppRegistration(new HerdAppRegistrationDataModel())).Returns(new HerdAppRegistrationDataModel
+            mockData.Setup(d => d.CreateAppRegistration(new Registration())).Returns(new Registration
             {
                 ID = 3,
                 ClientId = "client-id",
@@ -130,7 +130,7 @@ namespace Herd.Business.UnitTests
         public void GetRecentFeedItemsTest()
         {
             // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
-            var mockData = new Mock<IHerdDataProvider>();
+            var mockData = new Mock<IDataProvider>();
             var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
             var mockLogger = new Mock<IHerdLogger>();
 

@@ -1,6 +1,6 @@
 ﻿namespace Herd.Data.Models
 {
-    public interface IHerdAppRegistrationDataModel : IHerdDataModel
+    public interface IRegistration : IDataModel
     {
         int MastodonAppRegistrationID { get; }
         string ClientId { get; }
@@ -8,7 +8,7 @@
         string Instance { get; }
     }
 
-    public class HerdAppRegistrationDataModel : HerdDataModel, IHerdAppRegistrationDataModel
+    public class Registration : DataModel, IRegistration
     {
         public int MastodonAppRegistrationID { get; set; }
         public string ClientId { get; set; }

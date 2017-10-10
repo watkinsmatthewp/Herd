@@ -13,21 +13,21 @@ namespace Herd.Web.Controllers
     public class BaseController : Controller
     {
         protected Lazy<string> _requestedURL;
-        protected Lazy<HerdUserAccountDataModel> _activeUser;
-        protected Lazy<HerdAppRegistrationDataModel> _appRegistration;
+        protected Lazy<UserAccount> _activeUser;
+        protected Lazy<Registration> _appRegistration;
         protected Lazy<IMastodonApiWrapper> _mastodonApiWrapper;
         protected Lazy<IHerdApp> _app;
 
         protected string RequestedURL => _requestedURL.Value;
-        protected HerdUserAccountDataModel ActiveUser => _activeUser.Value;
-        protected HerdAppRegistrationDataModel AppRegistration => _appRegistration.Value;
+        protected UserAccount ActiveUser => _activeUser.Value;
+        protected Registration AppRegistration => _appRegistration.Value;
         protected IHerdApp App => _app.Value;
 
         public BaseController()
         {
             _requestedURL = new Lazy<string>(LoadRequestedURL);
-            _activeUser = new Lazy<HerdUserAccountDataModel>(LoadActiveUserFromSession);
-            _appRegistration = new Lazy<HerdAppRegistrationDataModel>(LoadAppRegistrationFromActiveUser);
+            _activeUser = new Lazy<UserAccount>(LoadActiveUserFromSession);
+            _appRegistration = new Lazy<Registration>(LoadAppRegistrationFromActiveUser);
             _mastodonApiWrapper = new Lazy<IMastodonApiWrapper>(LoadMastodonApiWrapperFromAppRegistration);
             _app = new Lazy<IHerdApp>(LoadHerdApp);
         }
@@ -45,9 +45,9 @@ namespace Herd.Web.Controllers
             }
         }
 
-        protected void SetAppRegistration(HerdAppRegistrationDataModel appRegistration)
+        protected void SetAppRegistration(Registration appRegistration)
         {
-            _appRegistration = new Lazy<HerdAppRegistrationDataModel>(appRegistration);
+            _appRegistration = new Lazy<Registration>(appRegistration);
         }
 
         protected virtual IActionResult NotAuthorized()
@@ -79,13 +79,13 @@ namespace Herd.Web.Controllers
 
         private string LoadRequestedURL() => $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
 
-        private HerdUserAccountDataModel LoadActiveUserFromSession()
+        private UserAccount LoadActiveUserFromSession()
         {
             var userID = this.GetActiveUserIdFromSession();
             return userID.HasValue ? HerdWebApp.Instance.DataProvider.GetUser(userID.Value) : null;
         }
 
-        private HerdAppRegistrationDataModel LoadAppRegistrationFromActiveUser()
+        private Registration LoadAppRegistrationFromActiveUser()
         {
             if (ActiveUser?.MastodonConnection?.AppRegistrationID > 0)
             {

@@ -8,7 +8,7 @@ namespace Herd.Business
 {
     public static class Extensions
     {
-        public static bool PasswordIs(this IHerdUserAccountDataModel user, string plainTextPassword) => user.Security.SaltedPassword == plainTextPassword.Hashed(user.Security.SaltKey);
+        public static bool PasswordIs(this IUserAccount user, string plainTextPassword) => user.Security.SaltedPassword == plainTextPassword.Hashed(user.Security.SaltKey);
 
         public static string Hashed(this string passwordPlainText, long saltKey)
         {
@@ -17,7 +17,7 @@ namespace Herd.Business
             return mungedPassword.Hashed();
         }
 
-        public static HerdAppRegistrationDataModel ToHerdAppRegistration(this AppRegistration mastodonAppRegistration) => new HerdAppRegistrationDataModel
+        public static Registration ToHerdAppRegistration(this AppRegistration mastodonAppRegistration) => new Registration
         {
             ClientId = mastodonAppRegistration.ClientId,
             ClientSecret = mastodonAppRegistration.ClientSecret,
@@ -25,7 +25,7 @@ namespace Herd.Business
             Instance = mastodonAppRegistration.Instance
         };
 
-        public static AppRegistration ToMastodonAppRegistration(this HerdAppRegistrationDataModel herdAppRegistration) => new AppRegistration
+        public static AppRegistration ToMastodonAppRegistration(this Registration herdAppRegistration) => new AppRegistration
         {
             ClientId = herdAppRegistration.ClientId,
             Id = herdAppRegistration.MastodonAppRegistrationID,
@@ -34,7 +34,7 @@ namespace Herd.Business
             Scope = MastodonApiWrapper.ALL_SCOPES
         };
 
-        public static Auth ToMastodonAuth(this HerdUserMastodonConnectionDetails connectionDetails) => new Auth
+        public static Auth ToMastodonAuth(this UserMastodonConnectionDetails connectionDetails) => new Auth
         {
             AccessToken = connectionDetails.ApiAccessToken,
             CreatedAt = connectionDetails.CreatedAt,
@@ -42,7 +42,7 @@ namespace Herd.Business
             TokenType = connectionDetails.TokenType
         };
 
-        public static HerdUserMastodonConnectionDetails ToHerdConnectionDetails(this Auth auth, long appRegistrationID) => new HerdUserMastodonConnectionDetails
+        public static UserMastodonConnectionDetails ToHerdConnectionDetails(this Auth auth, long appRegistrationID) => new UserMastodonConnectionDetails
         {
             ApiAccessToken = auth.AccessToken,
             AppRegistrationID = appRegistrationID,

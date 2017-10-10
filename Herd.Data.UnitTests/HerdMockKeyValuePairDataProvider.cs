@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Herd.Data.UnitTests
 {
-    public class HerdMockKeyValuePairDataProvider : HerdKeyValuePairDataProvider
+    public class HerdMockKeyValuePairDataProvider : KeyValuePairDataProvider
     {
         private Dictionary<string, string> _data = new Dictionary<string, string>();
 

@@ -8,14 +8,14 @@ namespace Herd.Business
     public interface IMastodonApiWrapper
     {
         string MastodonHostInstance { get; }
-        HerdAppRegistrationDataModel AppRegistration { get; set; }
-        HerdUserMastodonConnectionDetails UserMastodonConnectionDetails { get; set; }
+        Registration AppRegistration { get; set; }
+        UserMastodonConnectionDetails UserMastodonConnectionDetails { get; set; }
 
-        Task<HerdAppRegistrationDataModel> RegisterApp();
+        Task<Registration> RegisterApp();
 
         string GetOAuthUrl(string redirectURL);
 
-        Task<HerdUserMastodonConnectionDetails> Connect(string token);
+        Task<UserMastodonConnectionDetails> Connect(string token);
 
         Task<Account> GetUserAccount();
 

@@ -20,7 +20,7 @@ namespace Herd.Web.Code
             return long.TryParse(claim.Value, out var userID) ? userID : null as long?;
         }
 
-        public static Task SetActiveUserInSession(this Controller controller, HerdUserAccountDataModel user)
+        public static Task SetActiveUserInSession(this Controller controller, UserAccount user)
         {
             return controller.SetActiveUserInSession(user.ID);
         }

@@ -63,7 +63,7 @@ namespace Herd.Web.Controllers.HerdApi
 
         #region Private helpers
 
-        private HerdUserAccountDataModel ClearUnnecessaryOrSensitiveData(HerdUserAccountDataModel userAccount) => new HerdUserAccountDataModel
+        private UserAccount ClearUnnecessaryOrSensitiveData(UserAccount userAccount) => new UserAccount
         {
             ID = userAccount.ID,
             ProfileID = userAccount.ProfileID,

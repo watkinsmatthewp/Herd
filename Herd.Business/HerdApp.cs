@@ -19,11 +19,11 @@ namespace Herd.Business
 
         private static Random _saltGenerator = new Random(Guid.NewGuid().GetHashCode());
 
-        private IHerdDataProvider _data;
+        private IDataProvider _data;
         private IMastodonApiWrapper _mastodonApiWrapper;
         private IHerdLogger _logger;
 
-        public HerdApp(IHerdDataProvider data, IMastodonApiWrapper mastodonApiWrapper, IHerdLogger logger)
+        public HerdApp(IDataProvider data, IMastodonApiWrapper mastodonApiWrapper, IHerdLogger logger)
         {
             _data = data ?? throw new ArgumentNullException(nameof(data));
             _mastodonApiWrapper = mastodonApiWrapper ?? throw new ArgumentNullException(nameof(mastodonApiWrapper));
@@ -96,17 +96,17 @@ namespace Herd.Business
                 var saltKey = _saltGenerator.Next();
                 result.Data = new CreateUserCommandResultData
                 {
-                    User = _data.CreateUser(new HerdUserAccountDataModel
+                    User = _data.CreateUser(new UserAccount
                     {
                         Email = createUserCommand.Email,
-                        Security = new HerdUserAccountSecurity
+                        Security = new UserAccountSecurity
                         {
                             SaltKey = saltKey,
                             SaltedPassword = createUserCommand.PasswordPlainText.Hashed(saltKey)
                         }
                     })
                 };
-                result.Data.Profile = _data.CreateProfile(new HerdUserProfileDataModel
+                result.Data.Profile = _data.CreateProfile(new UserProfile
                 {
                     FirstName = createUserCommand.FirstName,
                     LastName = createUserCommand.LastName,
