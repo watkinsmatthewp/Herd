@@ -1,6 +1,6 @@
 ﻿namespace Herd.Business.Models.Commands
 {
-    public class GetStatusCommand : HerdAppCommand
+    public class GetStatusCommand : Command
     {
         public int StatusId { get; set; }
     }

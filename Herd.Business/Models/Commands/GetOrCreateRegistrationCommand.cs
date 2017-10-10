@@ -1,6 +1,6 @@
 ﻿namespace Herd.Business.Models.Commands
 {
-    public class GetOrCreateRegistrationCommand : HerdAppCommand
+    public class GetOrCreateRegistrationCommand : Command
     {
         public string Instance { get; set; }
     }

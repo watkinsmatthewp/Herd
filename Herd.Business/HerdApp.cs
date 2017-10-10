@@ -32,7 +32,7 @@ namespace Herd.Business
 
         #region App registration
 
-        public HerdAppCommandResult<GetRegistrationCommandResultData> GetRegistration(GetRegistrationCommand getRegistrationCommand)
+        public CommandResult<GetRegistrationCommandResultData> GetRegistration(GetRegistrationCommand getRegistrationCommand)
         {
             return ProcessCommand<GetRegistrationCommandResultData>(result =>
             {
@@ -43,12 +43,12 @@ namespace Herd.Business
             });
         }
 
-        public HerdAppCommandResult<GetOAuthURLCommandResultData> GetOAuthURL(GetOAuthURLCommand getOAuthUrlCommand)
+        public CommandResult<GetOAuthURLCommandResultData> GetOAuthURL(GetOAuthURLCommand getOAuthUrlCommand)
         {
             return ProcessCommand<GetOAuthURLCommandResultData>(result =>
             {
                 var returnURL = string.IsNullOrWhiteSpace(getOAuthUrlCommand.ReturnURL) ? NON_REDIRECT_URL : getOAuthUrlCommand.ReturnURL;
-                _mastodonApiWrapper.AppRegistration = _data.GetAppRegistration(getOAuthUrlCommand.AppRegistrationID) ?? throw new HerdAppUserErrorException("No app registration with that ID");
+                _mastodonApiWrapper.AppRegistration = _data.GetAppRegistration(getOAuthUrlCommand.AppRegistrationID) ?? throw new UserErrorException("No app registration with that ID");
                 result.Data = new GetOAuthURLCommandResultData
                 {
                     URL = _mastodonApiWrapper.GetOAuthUrl(getOAuthUrlCommand.ReturnURL)
@@ -56,7 +56,7 @@ namespace Herd.Business
             });
         }
 
-        public HerdAppCommandResult<GetRegistrationCommandResultData> GetOrCreateRegistration(GetOrCreateRegistrationCommand getOrCreateRegistrationCommand)
+        public CommandResult<GetRegistrationCommandResultData> GetOrCreateRegistration(GetOrCreateRegistrationCommand getOrCreateRegistrationCommand)
         {
             return ProcessCommand<GetRegistrationCommandResultData>(result =>
             {
@@ -72,7 +72,7 @@ namespace Herd.Business
 
         #region Users
 
-        public HerdAppCommandResult<GetUserCommandResultData> GetUser(GetUserCommand getUserCommand)
+        public CommandResult<GetUserCommandResultData> GetUser(GetUserCommand getUserCommand)
         {
             return ProcessCommand<GetUserCommandResultData>(result =>
             {
@@ -83,14 +83,14 @@ namespace Herd.Business
             });
         }
 
-        public HerdAppCommandResult<CreateUserCommandResultData> CreateUser(CreateUserCommand createUserCommand)
+        public CommandResult<CreateUserCommandResultData> CreateUser(CreateUserCommand createUserCommand)
         {
             return ProcessCommand<CreateUserCommandResultData>(result =>
             {
                 var userByEmail = _data.GetUser(createUserCommand.Email);
                 if (userByEmail != null)
                 {
-                    throw new HerdAppUserErrorException("That email address has already been taken");
+                    throw new UserErrorException("That email address has already been taken");
                 }
 
                 var saltKey = _saltGenerator.Next();
@@ -117,14 +117,14 @@ namespace Herd.Business
             });
         }
 
-        public HerdAppCommandResult<LoginUserCommandResultData> LoginUser(LoginUserCommand loginUserCommand)
+        public CommandResult<LoginUserCommandResultData> LoginUser(LoginUserCommand loginUserCommand)
         {
             return ProcessCommand<LoginUserCommandResultData>(result =>
             {
                 var userByEmail = _data.GetUser(loginUserCommand.Email);
                 if (userByEmail?.PasswordIs(loginUserCommand.PasswordPlainText) != true)
                 {
-                    throw new HerdAppUserErrorException("Wrong email or password");
+                    throw new UserErrorException("Wrong email or password");
                 }
                 result.Data = new LoginUserCommandResultData
                 {
@@ -133,26 +133,26 @@ namespace Herd.Business
             });
         }
 
-        public HerdAppCommandResult UpdateUserMastodonConnection(UpdateUserMastodonConnectionCommand updateUserMastodonConnectionCommand)
+        public CommandResult UpdateUserMastodonConnection(UpdateUserMastodonConnectionCommand updateUserMastodonConnectionCommand)
         {
             return ProcessCommand(result =>
             {
                 // Check the token
                 if (string.IsNullOrWhiteSpace(updateUserMastodonConnectionCommand.Token))
                 {
-                    throw new HerdAppUserErrorException("Token cannot be empty");
+                    throw new UserErrorException("Token cannot be empty");
                 }
 
                 // Check the user ID
                 var user = _data.GetUser(updateUserMastodonConnectionCommand.UserID);
                 if (user == null)
                 {
-                    throw new HerdAppUserErrorException("Could not find a user with that ID");
+                    throw new UserErrorException("Could not find a user with that ID");
                 }
 
                 // Connect with the one-time use code to get the permanent code
                 _mastodonApiWrapper.AppRegistration = _data.GetAppRegistration(updateUserMastodonConnectionCommand.AppRegistrationID)
-                    ?? throw new HerdAppUserErrorException("Could not find a registration with that ID");
+                    ?? throw new UserErrorException("Could not find a registration with that ID");
                 _mastodonApiWrapper.UserMastodonConnectionDetails = _mastodonApiWrapper.Connect(updateUserMastodonConnectionCommand.Token).Synchronously();
 
                 // Update the user details
@@ -165,7 +165,7 @@ namespace Herd.Business
 
         #region Feed
 
-        public HerdAppCommandResult<GetRecentFeedItemsCommandResultData> GetRecentFeedItems(GetRecentFeedItemsCommand getRecentFeedItemsCommand)
+        public CommandResult<GetRecentFeedItemsCommandResultData> GetRecentFeedItems(GetRecentFeedItemsCommand getRecentFeedItemsCommand)
         {
             return ProcessCommand<GetRecentFeedItemsCommandResultData>(result =>
             {
@@ -205,7 +205,7 @@ namespace Herd.Business
             });
         }
 
-        public HerdAppCommandResult<GetStatusCommandResultData> GetStatus(GetStatusCommand getStatusCommand)
+        public CommandResult<GetStatusCommandResultData> GetStatus(GetStatusCommand getStatusCommand)
         {
             return ProcessCommand<GetStatusCommandResultData>(result =>
             {
@@ -310,7 +310,7 @@ namespace Herd.Business
             });
         }
 
-        public HerdAppCommandResult CreateNewPost(CreateNewPostCommand createNewPostCommand)
+        public CommandResult CreateNewPost(CreateNewPostCommand createNewPostCommand)
         {
             return ProcessCommand(result =>
             {
@@ -326,18 +326,18 @@ namespace Herd.Business
 
         #region Private helpers
 
-        private HerdAppCommandResult<D> ProcessCommand<D>(Action<HerdAppCommandResult<D>> doWork)
+        private CommandResult<D> ProcessCommand<D>(Action<CommandResult<D>> doWork)
             where D : CommandResultData
         {
-            return ProcessCommand(new HerdAppCommandResult<D>(), doWork);
+            return ProcessCommand(new CommandResult<D>(), doWork);
         }
 
-        private HerdAppCommandResult ProcessCommand(Action<HerdAppCommandResult> doWork)
+        private CommandResult ProcessCommand(Action<CommandResult> doWork)
         {
-            return ProcessCommand(new HerdAppCommandResult(), doWork);
+            return ProcessCommand(new CommandResult(), doWork);
         }
 
-        private R ProcessCommand<R>(R result, Action<R> doWork) where R : HerdAppCommandResult
+        private R ProcessCommand<R>(R result, Action<R> doWork) where R : CommandResult
         {
             try
             {
@@ -347,7 +347,7 @@ namespace Herd.Business
             {
                 var errorID = Guid.NewGuid();
                 _logger.Error(errorID, "Error in HerdApp", null, e);
-                result.Errors.Add((e as HerdAppErrorException)?.Error ?? new SystemError
+                result.Errors.Add((e as ErrorException)?.Error ?? new SystemError
                 {
                     Message = $"Unhandled exception: {e.Message}"
                 });
