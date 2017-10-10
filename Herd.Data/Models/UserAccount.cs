@@ -13,20 +13,12 @@ namespace Herd.Data.Models
         public string CreatedAt { get; set; }
         public string Scope { get; set; }
         public string TokenType { get; set; }
+        public int MastodonUserID { get; set; }
     }
 
-    public interface IUserAccount : IDataModel
-    {
-        string Email { get; set; }
-        long ProfileID { get; set; }
-        UserAccountSecurity Security { get; set; }
-        UserMastodonConnectionDetails MastodonConnection { get; set; }
-    }
-
-    public class UserAccount : DataModel, IUserAccount
+    public class UserAccount : DataModel
     {
         public string Email { get; set; }
-        public long ProfileID { get; set; }
         public UserAccountSecurity Security { get; set; }
         public UserMastodonConnectionDetails MastodonConnection { get; set; }
     }

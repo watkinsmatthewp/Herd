@@ -66,7 +66,6 @@ namespace Herd.Web.Controllers.HerdApi
         private UserAccount ClearUnnecessaryOrSensitiveData(UserAccount userAccount) => new UserAccount
         {
             ID = userAccount.ID,
-            ProfileID = userAccount.ProfileID,
             MastodonConnection = userAccount.MastodonConnection
         };
 

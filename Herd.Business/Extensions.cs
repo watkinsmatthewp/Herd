@@ -8,7 +8,7 @@ namespace Herd.Business
 {
     public static class Extensions
     {
-        public static bool PasswordIs(this IUserAccount user, string plainTextPassword) => user.Security.SaltedPassword == plainTextPassword.Hashed(user.Security.SaltKey);
+        public static bool PasswordIs(this UserAccount user, string plainTextPassword) => user.Security.SaltedPassword == plainTextPassword.Hashed(user.Security.SaltKey);
 
         public static string Hashed(this string passwordPlainText, long saltKey)
         {
@@ -42,13 +42,14 @@ namespace Herd.Business
             TokenType = connectionDetails.TokenType
         };
 
-        public static UserMastodonConnectionDetails ToHerdConnectionDetails(this Auth auth, long appRegistrationID) => new UserMastodonConnectionDetails
+        public static UserMastodonConnectionDetails ToHerdConnectionDetails(this Auth auth, long appRegistrationID, int mastodonUserID) => new UserMastodonConnectionDetails
         {
             ApiAccessToken = auth.AccessToken,
             AppRegistrationID = appRegistrationID,
             CreatedAt = auth.CreatedAt,
             Scope = auth.Scope,
-            TokenType = auth.TokenType
+            TokenType = auth.TokenType,
+            MastodonUserID = mastodonUserID
         };
     }
 }

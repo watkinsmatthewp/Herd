@@ -106,14 +106,6 @@ namespace Herd.Business
                         }
                     })
                 };
-                result.Data.Profile = _data.CreateProfile(new UserProfile
-                {
-                    FirstName = createUserCommand.FirstName,
-                    LastName = createUserCommand.LastName,
-                    UserID = result.Data.User.ID
-                });
-                result.Data.User.ProfileID = result.Data.Profile.ID;
-                _data.UpdateUser(result.Data.User);
             });
         }
 

@@ -67,11 +67,17 @@ namespace Herd.Business
 
         public async Task<Registration> RegisterApp() => (await BuildMastodonAuthenticationClient().CreateApp("Herd", ALL_SCOPES)).ToHerdAppRegistration();
 
+        // TODO: Replace with non-MastoNet object ASAP
         public Task<Account> GetUserAccount() => BuildMastodonApiClient().GetCurrentUser();
 
         public string GetOAuthUrl(string redirectURL = null) => BuildMastodonAuthenticationClient().OAuthUrl(redirectURL);
 
-        public async Task<UserMastodonConnectionDetails> Connect(string token) => (await BuildMastodonAuthenticationClient().ConnectWithCode(token)).ToHerdConnectionDetails(AppRegistration.ID);
+        public async Task<UserMastodonConnectionDetails> Connect(string token)
+        {
+            UserMastodonConnectionDetails = (await BuildMastodonAuthenticationClient().ConnectWithCode(token)).ToHerdConnectionDetails(AppRegistration.ID, -1);
+            UserMastodonConnectionDetails.MastodonUserID = (await BuildMastodonApiClient().GetCurrentUser()).Id;
+            return UserMastodonConnectionDetails;
+        }
 
         #endregion Auth - Public methods
 
@@ -94,12 +100,16 @@ namespace Herd.Business
 
         #region Timeline Feeds
 
+        // TODO: Replace with non-MastoNet object ASAP
         public async Task<System.Collections.Generic.IList<Status>> GetRecentStatuses(int limit = 30) => (await BuildMastodonApiClient().GetHomeTimeline(null, null, 30)).ToArray();
 
+        // TODO: Replace with non-MastoNet object ASAP
         public async Task<Status> GetStatus(int statusId) => (await BuildMastodonApiClient().GetStatus(statusId));
 
+        // TODO: Replace with non-MastoNet object ASAP
         public async Task<Context> GetStatusContext(int statusId) => (await BuildMastodonApiClient().GetStatusContext(statusId));
 
+        // TODO: Replace with non-MastoNet object ASAP
         public Task<Status> CreateNewPost(string message, Visibility visibility, int? replyStatusId = null, IEnumerable<int> mediaIds = null, bool sensitive = false, string spoilerText = null) => BuildMastodonApiClient().PostStatus(message, visibility, replyStatusId, mediaIds, sensitive, spoilerText);
 
         #endregion Timeline Feeds

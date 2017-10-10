@@ -43,16 +43,6 @@ namespace Herd.Data.Providers
 
         #endregion Users
 
-        #region Profiles
-
-        public UserProfile GetProfile(long id) => GetEntity<UserProfile>(id);
-
-        public UserProfile CreateProfile(UserProfile profile) => CreateEntity(profile);
-
-        public void UpdateProfile(UserProfile profile) => UpdateEntity(profile);
-
-        #endregion Profiles
-
         #region Abstract overrides
 
         protected abstract IEnumerable<string> GetAllKeys(string rootKey);

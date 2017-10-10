@@ -21,12 +21,5 @@ namespace Herd.Data.Providers
         UserAccount CreateUser(UserAccount user);
 
         void UpdateUser(UserAccount user);
-
-        // Profiles
-        UserProfile GetProfile(long id);
-
-        UserProfile CreateProfile(UserProfile profile);
-
-        void UpdateProfile(UserProfile profile);
     }
 }
