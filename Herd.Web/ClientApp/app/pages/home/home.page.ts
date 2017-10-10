@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 
 import { AlertService, MastodonService } from "../../services";
 import { Status } from "../../models/mastodon";
@@ -10,15 +10,20 @@ import { Status } from "../../models/mastodon";
     templateUrl: './home.page.html',
 })
 export class HomePage implements OnInit {
-    private sub: any;
-    private statusId: number;
-    specficiStatus: Status;
+    sub: any;
+    statusId: number;
+    specificStatus: Status;
+    renderSpecificModal: boolean = false;
     loading: boolean = false;
+    homeFeed: Status[]; // List of posts for the home feed
 
-    // List of posts for the home feed
-    homeFeed: Status[];
-
-    constructor(private route: ActivatedRoute, private mastodonService: MastodonService, private alertService: AlertService) {
+    constructor(private activatedRoute: ActivatedRoute, private mastodonService: MastodonService, private alertService: AlertService) {
+        // Detects changes in the url and grab new data
+        this.activatedRoute.params.subscribe(params => {
+            const statusId = params['id'];
+            this.renderSpecificModal = false;
+            this.checkForStatusId();
+        }); 
     }
 
     getMostRecentHomeFeed() {
@@ -32,22 +37,28 @@ export class HomePage implements OnInit {
             });
     }
 
-    ngOnInit() {
-        this.getMostRecentHomeFeed();
-        this.sub = this.route.params.subscribe(params => {
+    checkForStatusId() {
+        this.sub = this.activatedRoute.params.subscribe(params => {
             this.statusId = +params['id']; // (+) converts string 'id' to a number
 
+            // If a status id was passed in then show that status
             if (this.statusId) {
-                // get the status and its context
                 this.mastodonService.getStatus(this.statusId)
                     .subscribe(data => {
-                        console.log(data);
+                        this.specificStatus = data.Status;
+                        this.specificStatus.Ancestors = data.StatusContext.Ancestors;
+                        this.specificStatus.Descendants = data.StatusContext.Descendants;
+                        this.renderSpecificModal = true;
                     }, error => {
-                        console.log(error);
+                        this.alertService.error(error);
                     });
-                // TODO: open up the modal for it
             }
         });
+    }
+
+    ngOnInit() {
+        this.checkForStatusId();
+        this.getMostRecentHomeFeed();
     }
 
     ngOnDestroy() {

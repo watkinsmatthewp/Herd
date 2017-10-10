@@ -1,16 +1,40 @@
-﻿import { Component, Input } from '@angular/core';
+﻿import { AfterViewInit, Component, OnInit, Input } from '@angular/core';
 
-import { MastodonService } from "../../services";
 import { Status } from '../../models/mastodon';
+import { AlertService, MastodonService } from "../../services";
 
 @Component({
     selector: 'status-modal',
     templateUrl: './status-modal.component.html',
     styleUrls: ['../status/status.component.css']
 })
-export class StatusModalComponent {
+export class StatusModalComponent implements OnInit, AfterViewInit {
     @Input() status: Status;
+    @Input() statusId: number;
     @Input() modalId: string;
+    @Input() autoOpen: boolean; // after initalization should we auto open
 
-    constructor() {}
+    constructor(private mastodonService: MastodonService, private alertService: AlertService) { }
+
+    ngOnInit(): void {
+        if (this.statusId) {
+            this.mastodonService.getStatus(this.statusId)
+                .subscribe(data => {
+                    this.status = data.Status;
+                    this.status.Ancestors = data.StatusContext.Ancestors;
+                    this.status.Descendants = data.StatusContext.Descendants;
+                }, error => {
+                    this.alertService.error(error);
+                });
+        }
+    }
+
+    ngAfterViewInit(): void {
+        if (this.autoOpen) {
+            var openButton = document.getElementById("openButton-" + this.modalId);
+            if (openButton) {
+                openButton.click();
+            }
+        }
+    }
 }

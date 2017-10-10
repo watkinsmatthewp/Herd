@@ -2,6 +2,7 @@
 
 import { MastodonService } from "../../services";
 import { Status } from '../../models/mastodon';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'status',
@@ -12,11 +13,9 @@ export class StatusComponent implements OnInit {
     @Input() status: Status;
     showBlur: boolean = false;
 
-    constructor() { // MastodonService was here from Dana commit
-    }
+    constructor(private router: Router) {}
 
     ngOnInit() {
-        //console.info(this.status);
         if (this.status.Sensitive === true) {
             this.showBlur = true;
         }
@@ -24,6 +23,10 @@ export class StatusComponent implements OnInit {
 
     turnOffBlur(): void {
         this.showBlur = false;
+    }
+
+    goToHomeWithStatusId(): void {
+        this.router.navigateByUrl('/home/' + this.status.Id);
     }
 
     reply() {

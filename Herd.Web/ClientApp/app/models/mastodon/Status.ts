@@ -20,4 +20,6 @@ export class Status {
     Uri: string;
     Url: string;
     //Mastonet.Visibility Visibility;
+    Ancestors: Status[];
+    Descendants: Status[];
 }
