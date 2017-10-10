@@ -5,19 +5,19 @@ namespace Herd.Logging
 {
     public static class Extensions
     {
-        public static void Info(this IHerdLogger logger, Guid? id, string message, IEnumerable<KeyValuePair<string, string>> contextParameters = null, Exception e = null)
+        public static void Info(this ILogger logger, Guid? id, string message, IEnumerable<KeyValuePair<string, string>> contextParameters = null, Exception e = null)
         {
-            logger.Log(id, HerdLogLevel.Info, message, GetContextParameters(contextParameters, GetContextParameters(e)));
+            logger.Log(id, LogLevel.Info, message, GetContextParameters(contextParameters, GetContextParameters(e)));
         }
 
-        public static void Debug(this IHerdLogger logger, Guid? id, string message, IEnumerable<KeyValuePair<string, string>> contextParameters = null, Exception e = null)
+        public static void Debug(this ILogger logger, Guid? id, string message, IEnumerable<KeyValuePair<string, string>> contextParameters = null, Exception e = null)
         {
-            logger.Log(id, HerdLogLevel.Debug, message, GetContextParameters(contextParameters, GetContextParameters(e)));
+            logger.Log(id, LogLevel.Debug, message, GetContextParameters(contextParameters, GetContextParameters(e)));
         }
 
-        public static void Error(this IHerdLogger logger, Guid? id, string message, IEnumerable<KeyValuePair<string, string>> contextParameters = null, Exception e = null)
+        public static void Error(this ILogger logger, Guid? id, string message, IEnumerable<KeyValuePair<string, string>> contextParameters = null, Exception e = null)
         {
-            logger.Log(id, HerdLogLevel.Error, message, GetContextParameters(contextParameters, GetContextParameters(e)));
+            logger.Log(id, LogLevel.Error, message, GetContextParameters(contextParameters, GetContextParameters(e)));
         }
 
         #region Private helpers

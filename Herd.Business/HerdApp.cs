@@ -21,9 +21,9 @@ namespace Herd.Business
 
         private IDataProvider _data;
         private IMastodonApiWrapper _mastodonApiWrapper;
-        private IHerdLogger _logger;
+        private ILogger _logger;
 
-        public HerdApp(IDataProvider data, IMastodonApiWrapper mastodonApiWrapper, IHerdLogger logger)
+        public HerdApp(IDataProvider data, IMastodonApiWrapper mastodonApiWrapper, ILogger logger)
         {
             _data = data ?? throw new ArgumentNullException(nameof(data));
             _mastodonApiWrapper = mastodonApiWrapper ?? throw new ArgumentNullException(nameof(mastodonApiWrapper));

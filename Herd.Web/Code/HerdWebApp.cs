@@ -10,24 +10,24 @@ namespace Herd.Web.Code
         private static HerdWebApp _instance = new HerdWebApp();
         public static HerdWebApp Instance => _instance;
 
-        private Lazy<IHerdLogger> _logger;
-        public IHerdLogger Logger => _logger.Value;
+        private Lazy<ILogger> _logger;
+        public ILogger Logger => _logger.Value;
 
         private Lazy<IDataProvider> _dataProvider;
         public IDataProvider DataProvider => _dataProvider.Value;
 
         private HerdWebApp()
         {
-            _logger = new Lazy<IHerdLogger>(BuildLogger);
+            _logger = new Lazy<ILogger>(BuildLogger);
             _dataProvider = new Lazy<IDataProvider>(BuildDataProvider);
         }
 
-        private IHerdLogger BuildLogger()
+        private ILogger BuildLogger()
         {
-            var formatter = new HerdDefaultLogFormatter();
-            var logger = new HerdMultiLogger();
-            logger.Loggers.Add(new HerdConsoleLogger(formatter));
-            logger.Loggers.Add(new HerdFileLogger(Path.Combine(Path.GetTempPath(), "HerdLogs"), formatter));
+            var formatter = new DefaultLogFormatter();
+            var logger = new MultiLogger();
+            logger.Loggers.Add(new ConsoleLogger(formatter));
+            logger.Loggers.Add(new FileLogger(Path.Combine(Path.GetTempPath(), "HerdLogs"), formatter));
             return logger;
         }
 

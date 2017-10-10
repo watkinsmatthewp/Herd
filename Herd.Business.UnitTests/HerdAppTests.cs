@@ -18,7 +18,7 @@ namespace Herd.Business.UnitTests
             // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
             var mockData = new Mock<IDataProvider>();
             var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
-            var mockLogger = new Mock<IHerdLogger>();
+            var mockLogger = new Mock<ILogger>();
 
             // Tell moq that when that object's GetAppRegistration method is called for ID 3,
             // return this HerdAppRegistrationDataModel object with the following properties
@@ -55,7 +55,7 @@ namespace Herd.Business.UnitTests
             // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
             var mockData = new Mock<IDataProvider>();
             var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
-            var mockLogger = new Mock<IHerdLogger>();
+            var mockLogger = new Mock<ILogger>();
 
             // Setup the mocks
             mockData.Setup(d => d.GetAppRegistration(3)).Returns(new Registration
@@ -86,7 +86,7 @@ namespace Herd.Business.UnitTests
             // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
             var mockData = new Mock<IDataProvider>();
             var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
-            var mockLogger = new Mock<IHerdLogger>();
+            var mockLogger = new Mock<ILogger>();
 
             mockData.Setup(d => d.GetAppRegistration("instance")).Returns(new Registration
             {
@@ -132,7 +132,7 @@ namespace Herd.Business.UnitTests
             // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
             var mockData = new Mock<IDataProvider>();
             var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
-            var mockLogger = new Mock<IHerdLogger>();
+            var mockLogger = new Mock<ILogger>();
 
             Status status = new Status();
             status.Content = "Hello, World!";
