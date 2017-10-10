@@ -3,9 +3,9 @@ using Xunit;
 
 namespace Herd.Data.UnitTests
 {
-    public class HerdKeyValuePairDataProviderTests
+    public class KeyValuePairDataProviderTests
     {
-        private HerdMockKeyValuePairDataProvider _data = new HerdMockKeyValuePairDataProvider();
+        private MockKeyValuePairDataProvider _data = new MockKeyValuePairDataProvider();
 
         #region App registration
 

@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace Herd.Data.UnitTests
 {
-    public class HerdMockKeyValuePairDataProvider : KeyValuePairDataProvider
+    public class MockKeyValuePairDataProvider : KeyValuePairDataProvider
     {
         private Dictionary<string, string> _data = new Dictionary<string, string>();
 
-        public HerdMockKeyValuePairDataProvider() : base("ROOT", ".")
+        public MockKeyValuePairDataProvider() : base("ROOT", ".")
         {
         }
 
