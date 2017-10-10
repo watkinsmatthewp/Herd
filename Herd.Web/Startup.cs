@@ -42,6 +42,7 @@ namespace Herd_Web
                 options.LoginPath = "/login";
                 options.Cookie.Name = "HERD_SESSION";
                 options.Cookie.HttpOnly = false;
+                options.Cookie.Expiration = TimeSpan.FromDays(30);
             });
         }
 
