@@ -14,7 +14,8 @@ import {
 // Components
 import {
     AlertComponent, InstancePickerComponent, NavMenuComponent,
-    StatusComponent, StatusFormComponent
+    StatusComponent, StatusFormComponent, StatusFormModalComponent,
+    StatusModalComponent
 } from './components';
 
 // Guards
@@ -23,7 +24,7 @@ import { AdminAuthGuard, AuthGuard } from './guards'
 // Services
 import {
     AccountService, AlertService, AuthenticationService,
-    HttpClientService, MastodonService
+    HttpClientService, MastodonService, TimelineAlertService
 } from './services';
 
 // Pipes
@@ -36,7 +37,8 @@ import { SafePipe } from './pipes';
         LoginPage, NotificationsPage, ProfilePage, RegisterPage,
         // Components
         AlertComponent, InstancePickerComponent, NavMenuComponent,
-        StatusComponent, StatusFormComponent,
+        StatusComponent, StatusFormComponent, StatusFormModalComponent,
+        StatusModalComponent,
         // Pipes
         SafePipe
     ],
@@ -54,6 +56,7 @@ import { SafePipe } from './pipes';
             { path: 'instance-picker', component: InstancePickerComponent, canActivate: [AuthGuard], data: { title: "Instance Picker" } },
             // TimeLines
             { path: 'home', component: HomePage, canActivate: [AuthGuard], data: { title: "Home" } },
+            { path: 'home/:id', component: HomePage, canActivate: [AuthGuard], data: { title: "Home" } },
             { path: 'localfeed', component: LocalFeedPage, canActivate: [AuthGuard], data: { title: "Local Feed" } },
             // Notification
             { path: 'notifications', component: NotificationsPage, canActivate: [AuthGuard], data: { title: "Notifications" } },
@@ -63,6 +66,6 @@ import { SafePipe } from './pipes';
             { path: '**', redirectTo: 'home' }
         ])
     ],
-    providers: [AccountService, AdminAuthGuard, AlertService, AuthenticationService, AuthGuard, HttpClientService, MastodonService]
+    providers: [AccountService, AdminAuthGuard, AlertService, AuthenticationService, AuthGuard, HttpClientService, MastodonService, TimelineAlertService]
 })
 export class AppModuleShared {}

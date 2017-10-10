@@ -19,9 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Herd.Data", "Herd.Data\Herd
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Herd.Data.UnitTests", "Herd.Data.UnitTests\Herd.Data.UnitTests.csproj", "{B1C2210F-9103-4C1C-B9A7-21C50ACDFE82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Herd.Logging", "Herd.Logging\Herd.Logging.csproj", "{5C3BD1A7-E24F-44A7-8EE1-08BB5FA8CB2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Herd.Logging", "Herd.Logging\Herd.Logging.csproj", "{5C3BD1A7-E24F-44A7-8EE1-08BB5FA8CB2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Herd.Logging.UnitTests", "Herd.Logging.UnitTests\Herd.Logging.UnitTests.csproj", "{27C7655F-A6A3-4D9C-8FE4-05F99A2A152A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Herd.Logging.UnitTests", "Herd.Logging.UnitTests\Herd.Logging.UnitTests.csproj", "{27C7655F-A6A3-4D9C-8FE4-05F99A2A152A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

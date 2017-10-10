@@ -32,10 +32,10 @@ export class HttpClientService {
     }
 
     /**
- * Sets header for all requests.
- * @param key      A header key.
- * @param value    A value for the key.
- */
+     * Sets header for all requests.
+     * @param key      A header key.
+     * @param value    A value for the key.
+     */
     setHeader(key: string, value: string) {
         this.defaultHeaders.append(key, value);
     }

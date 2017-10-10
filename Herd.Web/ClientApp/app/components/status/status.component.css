@@ -13,6 +13,11 @@ p {
     color: #000000;
 }
 
+.profile-picture {
+    width:60px; 
+    height: 60px;
+}
+
 .author-name {
     font-weight: bold;
     font-size: 120%;
@@ -27,6 +32,47 @@ p {
     color: #adb5bd;
 }
 
+.status-blurred {
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -ms-filter: blur(5px);
+    -o-filter: blur(5px);
+    filter: blur(5px);
+}
+
 .status-content {
-    width: inherit;
+    width: 100%;
+}
+
+.status-body {
+    margin: 0.5em;
+}
+
+/* Buttons */
+.comments-btn:hover {
+    color: blue;
+}
+
+.retweet-btn:hover {
+    color: limegreen;
+}
+
+.like-btn:hover {
+    color: red;
+}
+
+.message-btn {
+    color: #657786;
+}
+
+.message-btn:hover{
+    color: black;
+}
+
+.heart-color {
+    color: red;
+}
+
+.retweet-color {
+    color: limegreen;
 }

@@ -1,4 +1,7 @@
-<nav class="navbar navbar-default navbar-inverse navbar-static-top">
+<!-- Create Status modal -->
+<status-form-modal modalId="navmenu-StatusFormModal"></status-form-modal>
+
+<nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -28,7 +31,7 @@
             </form>
 
             <ul class="nav navbar-nav navbar-right">
-                <li><a><fa name="pencil"></fa> Create Status</a></li>
+                <li><a class="btn" data-toggle="modal" data-target="#navmenu-StatusFormModal"> <fa name="pencil"></fa> Create Status</a></li>
                 <!-- Drop Down -->
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Options <span class="caret"></span></a>

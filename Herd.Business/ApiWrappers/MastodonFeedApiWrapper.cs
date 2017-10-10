@@ -10,6 +10,8 @@ namespace Herd.Business
     public partial class MastodonApiWrapper : IMastodonApiWrapper
     {
         public async Task<IList<Status>> GetRecentStatuses(int limit = 30) => (await BuildMastodonApiClient().GetHomeTimeline(null, null, 30)).ToArray();
-        public Task<Status> CreateNewPost(string text) => BuildMastodonApiClient().PostStatus(text, Visibility.Private);
+        public async Task<Status> GetStatus(int statusId) => (await BuildMastodonApiClient().GetStatus(statusId));
+        public async Task<Context> GetStatusContext(int statusId) => (await BuildMastodonApiClient().GetStatusContext(statusId));
+        public Task<Status> CreateNewPost(string message, Visibility visibility, int? replyStatusId = null, IEnumerable<int> mediaIds = null, bool sensitive = false, string spoilerText = null) => BuildMastodonApiClient().PostStatus(message, visibility, replyStatusId, mediaIds, sensitive, spoilerText);
     }
 }

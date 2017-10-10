@@ -1,45 +1,53 @@
-
-    <!-- Left Column -->
-    <div class="row">
-        <div class="col-sm-3">
-            <div class="panel">
-                <div class="panel-heading">
-                    <h3>Future Profile Box</h3>
-                </div>
-                <div class="panel-body">
-
-                </div>
+<!-- Left Column -->
+<div class="row">
+    <div class="col-sm-3">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3>Future Profile Box</h3>
             </div>
-            <div class="panel">
-                <div class="panel-heading">
-                    <h3>Popular Hashtags</h3>
-                </div>
-                <div class="panel-body">
-
-                </div>
+            <div class="panel-body">
+                <p>
+                    Insert user info here
+                </p>
             </div>
         </div>
-        <!-- Middle Column -->
-        <div class="col-sm-6">
-            <status-form></status-form>
-            <div class="text-center">
-                <button [disabled]="loading" class="btn btn-default" (click)="getMostRecentHomeFeed()">
-                    <fa *ngIf="loading" name="spinner" spin=true></fa>
-                    <fa *ngIf="!loading" name="refresh"></fa>
-                </button>
+        <div class="panel">
+            <div class="panel-heading">
+                <h3>Popular Hashtags</h3>
             </div>
-            <br />
-            <status class="post" *ngFor="let status of homeFeed" [status]="status"></status>
-        </div>
-        <!-- Right Column -->
-        <div class="col-sm-3">
-            <div class="panel">
-                <div class="panel-heading">
-                    <h3>Future Integrations Box</h3>
-                </div>
-                <div class="panel-body">
+            <div class="panel-body">
 
-                </div>
             </div>
         </div>
     </div>
+    <!-- Middle Column -->
+    <div class="col-sm-6">
+        <status-form actionName="Create Status"></status-form>
+        <div class="text-center">
+            <button [disabled]="loading" class="btn btn-default" (click)="getMostRecentHomeFeed()">
+                <fa *ngIf="loading" name="spinner" spin=true></fa>
+                <fa *ngIf="!loading" name="refresh"></fa>
+            </button>
+        </div>
+        <br />
+
+        <div *ngFor="let status of homeFeed">
+            <status [status]="status"></status>
+            <status-modal [status]="status" [modalId]="'statusModal-' + status.Id"></status-modal>
+        </div>
+    </div>
+    <!-- Right Column -->
+    <div class="col-sm-3">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3>Future Integrations Box</h3>
+            </div>
+            <div class="panel-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<status-modal *ngIf="renderSpecificModal" [status]="specificStatus" autoOpen="true" modalId="specificStatusModal"></status-modal>

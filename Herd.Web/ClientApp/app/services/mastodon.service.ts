@@ -16,10 +16,35 @@ export class MastodonService {
             .map(response => response.RecentFeedItems as Status[])
     }
 
-    // Make a new post on the home feed
-    makeNewPost(message: string) {
+    getStatus(statusId: number) {
+        let queryString = '?statusId=' + statusId;
+        return this.httpClient.get('api/feed/get_status' + queryString);
+    }
+
+    /**
+     * Make a new status on the home feed
+     *
+     * @param message
+     * @param visibility
+     *      Direct = 3
+     *      Private = 2
+     *      Unlisted = 1
+     *      Public = 0
+     * @param replayStatusId
+     * @param sensitive
+     * @param spoilerText
+     */
+    makeNewPost(message: string, visibility: number, replyStatusId?: number, sensitive?: boolean, spoilerText?: string) {
+        if (replyStatusId && replyStatusId < 0) {
+            replyStatusId = undefined;
+        }
+
         let body = {
-            'message': message
+            'message': message,
+            'visibility': visibility,
+            'replyStatusId': replyStatusId || null,
+            'sensitive': sensitive || false,
+            'spoilerText': spoilerText || null,
         }
         return this.httpClient.post('api/feed/new_post', body);
     }

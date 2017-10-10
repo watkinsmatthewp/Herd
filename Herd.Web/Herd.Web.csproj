@@ -31,8 +31,10 @@
 
   <ItemGroup>
     <None Remove="ClientApp\app\components\index.ts" />
+    <None Remove="ClientApp\app\components\status-form\status-form-modal\status-form-modal.component.ts" />
     <None Remove="ClientApp\app\models\index.ts" />
     <None Remove="ClientApp\app\models\mastodon\Application.ts" />
+    <None Remove="ClientApp\app\models\mastodon\Visibility.ts" />
     <None Remove="ClientApp\app\pages\index.ts" />
     <None Remove="ClientApp\app\services\authentication.service.spec.ts" />
     <None Remove="ClientApp\app\services\index.ts" />
@@ -48,8 +50,10 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\index.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\status-form\status-form-modal\status-form-modal.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\mastodon\index.ts" />
+    <TypeScriptCompile Include="ClientApp\app\models\mastodon\Visibility.ts" />
     <TypeScriptCompile Include="ClientApp\app\pages\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\pages\notifications\notifications.page.ts" />
     <TypeScriptCompile Include="ClientApp\app\pages\profile\profile.page.ts" />
@@ -65,6 +69,7 @@
     <TypeScriptCompile Include="ClientApp\app\services\account.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\mastodon.service.spec.ts" />
+    <TypeScriptCompile Include="ClientApp\app\services\timeline-alert\timeline-alert.service.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

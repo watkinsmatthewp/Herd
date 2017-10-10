@@ -1,0 +1,24 @@
+﻿<button [hidden]="true" #openButton [attr.id]="'openButton-' + modalId" data-toggle="modal" [attr.data-target]="'#' + modalId"></button>
+<div class="modal fade" [attr.id]="modalId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button [attr.id]="'closeButton-' + modalId" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="ancestors" *ngFor="let anscestorStatus of status.Ancestors">
+                    <status [status]="anscestorStatus"></status>
+                </div>
+                <div class="viewingStatus">
+                    <status [status]="status"></status>
+                </div>
+                <status-form actionName="Reply" isReply="true" [inReplyToId]="status.Id"></status-form>
+                <div class="replies" *ngFor="let descendantStatus of status.Descendants">
+                    <status [status]="descendantStatus"></status>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
