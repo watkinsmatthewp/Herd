@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
-import { AlertService, MastodonService } from "../../services";
+import { AlertService, MastodonService, TimelineAlertService } from "../../services";
 import { Status } from "../../models/mastodon";
 
 
@@ -10,21 +10,13 @@ import { Status } from "../../models/mastodon";
     templateUrl: './home.page.html',
 })
 export class HomePage implements OnInit {
-    sub: any;
     statusId: number;
     specificStatus: Status;
     renderSpecificModal: boolean = false;
     loading: boolean = false;
     homeFeed: Status[]; // List of posts for the home feed
 
-    constructor(private activatedRoute: ActivatedRoute, private mastodonService: MastodonService, private alertService: AlertService) {
-        // Detects changes in the url and grab new data
-        this.activatedRoute.params.subscribe(params => {
-            const statusId = params['id'];
-            this.renderSpecificModal = false;
-            this.checkForStatusId();
-        }); 
-    }
+    constructor(private activatedRoute: ActivatedRoute, private mastodonService: MastodonService, private alertService: AlertService, private timelineAlert: TimelineAlertService) {}
 
     getMostRecentHomeFeed() {
         this.loading = true;
@@ -37,32 +29,24 @@ export class HomePage implements OnInit {
             });
     }
 
-    checkForStatusId() {
-        this.sub = this.activatedRoute.params.subscribe(params => {
-            this.statusId = +params['id']; // (+) converts string 'id' to a number
-
-            // If a status id was passed in then show that status
-            if (this.statusId) {
-                this.mastodonService.getStatus(this.statusId)
-                    .subscribe(data => {
-                        this.specificStatus = data.Status;
-                        this.specificStatus.Ancestors = data.StatusContext.Ancestors;
-                        this.specificStatus.Descendants = data.StatusContext.Descendants;
-                        this.renderSpecificModal = true;
-                    }, error => {
-                        this.alertService.error(error);
-                    });
-            }
-        });
+    updateSpecificStatus(statusId: number): void {
+        this.renderSpecificModal = false;
+        this.mastodonService.getStatus(statusId)
+            .subscribe(data => {
+                this.specificStatus = data.Status;
+                this.specificStatus.Ancestors = data.StatusContext.Ancestors;
+                this.specificStatus.Descendants = data.StatusContext.Descendants;
+                this.renderSpecificModal = true;
+            }, error => {
+                this.alertService.error(error);
+            });
     }
 
     ngOnInit() {
-        this.checkForStatusId();
+        this.timelineAlert.getMessage().subscribe(alert => {
+            let statusId = alert.statusId;
+            this.updateSpecificStatus(statusId);
+        });
         this.getMostRecentHomeFeed();
     }
-
-    ngOnDestroy() {
-        this.sub.unsubscribe();
-    }
-
 }

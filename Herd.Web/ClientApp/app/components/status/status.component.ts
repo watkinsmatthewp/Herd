@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input } from '@angular/core';
 
-import { MastodonService } from "../../services";
+import { MastodonService, TimelineAlertService } from "../../services";
 import { Status } from '../../models/mastodon';
 import { Router } from '@angular/router';
 
@@ -13,7 +13,7 @@ export class StatusComponent implements OnInit {
     @Input() status: Status;
     showBlur: boolean = false;
 
-    constructor(private router: Router) {}
+    constructor(private router: Router, private timelineAlert: TimelineAlertService) {}
 
     ngOnInit() {
         if (this.status.Sensitive === true) {
@@ -25,12 +25,8 @@ export class StatusComponent implements OnInit {
         this.showBlur = false;
     }
 
-    goToHomeWithStatusId(): void {
-        this.router.navigateByUrl('/home/' + this.status.Id);
-    }
-
-    reply() {
-        
+    notifyTimelineCommentsClicked(): void {
+        this.timelineAlert.addMessage("Update specific status", this.status.Id);
     }
 
     retweet() {
