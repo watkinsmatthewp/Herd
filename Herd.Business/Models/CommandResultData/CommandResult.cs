@@ -1,9 +1,8 @@
-﻿using Herd.Business.Models.CommandResultData;
-using Herd.Business.Models.Errors;
+﻿using Herd.Business.Models.Errors;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Herd.Business.Models
+namespace Herd.Business.Models.CommandResultData
 {
     public class CommandResult
     {
@@ -22,7 +21,7 @@ namespace Herd.Business.Models
         public bool Success => Errors.Count == 0;
     }
 
-    public class CommandResult<T> : CommandResult where T : CommandResultData.CommandResultData
+    public class CommandResult<T> : CommandResult where T : CommandResultData
     {
         public T Data { get; set; }
     }
