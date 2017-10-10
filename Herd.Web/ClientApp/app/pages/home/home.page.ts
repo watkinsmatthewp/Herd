@@ -20,8 +20,12 @@ export class HomePage implements OnInit {
 
     getMostRecentHomeFeed() {
         this.loading = true;
+        this.alertService.info("Retrieving home timeline ...");
         this.mastodonService.getHomeFeed()
-            .finally(() => this.loading = false)
+            .finally(() => {
+                this.loading = false;
+                this.alertService.success("Finished retrieving home timeline.");
+            })
             .subscribe(feed => {
                 this.homeFeed = feed;
             }, error => {
@@ -32,8 +36,12 @@ export class HomePage implements OnInit {
     updateSpecificStatus(statusId: number): void {
         this.loading = true;
         this.renderSpecificModal = false;
+        this.alertService.info("Retreiving status info ...");
         this.mastodonService.getStatus(statusId)
-            .finally(() => this.loading = false)
+            .finally(() => {
+                this.loading = false
+                this.alertService.success("Retrieved status.")
+            })
             .subscribe(data => {
                 this.specificStatus = data.Status;
                 this.specificStatus.Ancestors = data.StatusContext.Ancestors;
