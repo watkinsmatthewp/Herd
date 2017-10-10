@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Herd_Web
+namespace Herd.Web
 {
     public class Startup
     {

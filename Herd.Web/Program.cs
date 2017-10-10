@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Herd_Web
+namespace Herd.Web
 {
     public class Program
     {
