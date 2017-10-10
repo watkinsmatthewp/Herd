@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Herd.Web.Controllers
+namespace Herd.Web.Controllers.HerdApi
 {
     public class BaseApiController : BaseController
     {

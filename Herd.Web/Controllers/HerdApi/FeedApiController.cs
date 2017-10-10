@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
-namespace Herd.Web.Controllers
+namespace Herd.Web.Controllers.HerdApi
 {
     [Route("api/feed")]
     public class FeedApiController : BaseApiController
