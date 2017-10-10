@@ -32,7 +32,7 @@ namespace Herd.Business
 
         #region App registration
 
-        public HerdAppCommandResult<GetRegistrationCommandResultData> GetRegistration(HerdAppGetRegistrationCommand getRegistrationCommand)
+        public HerdAppCommandResult<GetRegistrationCommandResultData> GetRegistration(GetRegistrationCommand getRegistrationCommand)
         {
             return ProcessCommand<GetRegistrationCommandResultData>(result =>
             {
@@ -43,7 +43,7 @@ namespace Herd.Business
             });
         }
 
-        public HerdAppCommandResult<GetOAuthURLCommandResultData> GetOAuthURL(HerdAppGetOAuthURLCommand getOAuthUrlCommand)
+        public HerdAppCommandResult<GetOAuthURLCommandResultData> GetOAuthURL(GetOAuthURLCommand getOAuthUrlCommand)
         {
             return ProcessCommand<GetOAuthURLCommandResultData>(result =>
             {
@@ -56,7 +56,7 @@ namespace Herd.Business
             });
         }
 
-        public HerdAppCommandResult<GetRegistrationCommandResultData> GetOrCreateRegistration(HerdAppGetOrCreateRegistrationCommand getOrCreateRegistrationCommand)
+        public HerdAppCommandResult<GetRegistrationCommandResultData> GetOrCreateRegistration(GetOrCreateRegistrationCommand getOrCreateRegistrationCommand)
         {
             return ProcessCommand<GetRegistrationCommandResultData>(result =>
             {
@@ -72,7 +72,7 @@ namespace Herd.Business
 
         #region Users
 
-        public HerdAppCommandResult<GetUserCommandResultData> GetUser(HerdAppGetUserCommand getUserCommand)
+        public HerdAppCommandResult<GetUserCommandResultData> GetUser(GetUserCommand getUserCommand)
         {
             return ProcessCommand<GetUserCommandResultData>(result =>
             {
@@ -83,7 +83,7 @@ namespace Herd.Business
             });
         }
 
-        public HerdAppCommandResult<CreateUserCommandResultData> CreateUser(HerdAppCreateUserCommand createUserCommand)
+        public HerdAppCommandResult<CreateUserCommandResultData> CreateUser(CreateUserCommand createUserCommand)
         {
             return ProcessCommand<CreateUserCommandResultData>(result =>
             {
@@ -117,7 +117,7 @@ namespace Herd.Business
             });
         }
 
-        public HerdAppCommandResult<LoginUserCommandResultData> LoginUser(HerdAppLoginUserCommand loginUserCommand)
+        public HerdAppCommandResult<LoginUserCommandResultData> LoginUser(LoginUserCommand loginUserCommand)
         {
             return ProcessCommand<LoginUserCommandResultData>(result =>
             {
@@ -133,7 +133,7 @@ namespace Herd.Business
             });
         }
 
-        public HerdAppCommandResult UpdateUserMastodonConnection(HerdAppUpdateUserMastodonConnectionCommand updateUserMastodonConnectionCommand)
+        public HerdAppCommandResult UpdateUserMastodonConnection(UpdateUserMastodonConnectionCommand updateUserMastodonConnectionCommand)
         {
             return ProcessCommand(result =>
             {
@@ -165,7 +165,7 @@ namespace Herd.Business
 
         #region Feed
 
-        public HerdAppCommandResult<GetRecentFeedItemsCommandResultData> GetRecentFeedItems(HerdAppGetRecentFeedItemsCommand getRecentFeedItemsCommand)
+        public HerdAppCommandResult<GetRecentFeedItemsCommandResultData> GetRecentFeedItems(GetRecentFeedItemsCommand getRecentFeedItemsCommand)
         {
             return ProcessCommand<GetRecentFeedItemsCommandResultData>(result =>
             {
@@ -205,7 +205,7 @@ namespace Herd.Business
             });
         }
 
-        public HerdAppCommandResult<GetStatusCommandResultData> GetStatus(HerdAppGetStatusCommand getStatusCommand)
+        public HerdAppCommandResult<GetStatusCommandResultData> GetStatus(GetStatusCommand getStatusCommand)
         {
             return ProcessCommand<GetStatusCommandResultData>(result =>
             {
@@ -310,7 +310,7 @@ namespace Herd.Business
             });
         }
 
-        public HerdAppCommandResult CreateNewPost(HerdAppCreateNewPostCommand createNewPostCommand)
+        public HerdAppCommandResult CreateNewPost(CreateNewPostCommand createNewPostCommand)
         {
             return ProcessCommand(result =>
             {

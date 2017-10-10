@@ -2,7 +2,7 @@
 
 namespace Herd.Business.Models.Commands
 {
-    public class HerdAppCreateNewPostCommand : HerdAppCommand
+    public class CreateNewPostCommand : HerdAppCommand
     {
         public string Message { get; set; }
         public Mastonet.Visibility Visibility { get; set; }

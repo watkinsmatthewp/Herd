@@ -7,27 +7,27 @@ namespace Herd.Business
     public interface IHerdApp
     {
         // Basic CRUD
-        HerdAppCommandResult<GetUserCommandResultData> GetUser(HerdAppGetUserCommand getUserCommand);
+        HerdAppCommandResult<GetUserCommandResultData> GetUser(GetUserCommand getUserCommand);
 
         // App registration
-        HerdAppCommandResult<GetRegistrationCommandResultData> GetRegistration(HerdAppGetRegistrationCommand getRegistrationCommand);
+        HerdAppCommandResult<GetRegistrationCommandResultData> GetRegistration(GetRegistrationCommand getRegistrationCommand);
 
-        HerdAppCommandResult<GetRegistrationCommandResultData> GetOrCreateRegistration(HerdAppGetOrCreateRegistrationCommand getOrCreateRegistrationCommand);
+        HerdAppCommandResult<GetRegistrationCommandResultData> GetOrCreateRegistration(GetOrCreateRegistrationCommand getOrCreateRegistrationCommand);
 
-        HerdAppCommandResult<GetOAuthURLCommandResultData> GetOAuthURL(HerdAppGetOAuthURLCommand getOAuthUrlCommand);
+        HerdAppCommandResult<GetOAuthURLCommandResultData> GetOAuthURL(GetOAuthURLCommand getOAuthUrlCommand);
 
         // Auth
-        HerdAppCommandResult<CreateUserCommandResultData> CreateUser(HerdAppCreateUserCommand createUserCommand);
+        HerdAppCommandResult<CreateUserCommandResultData> CreateUser(CreateUserCommand createUserCommand);
 
-        HerdAppCommandResult<LoginUserCommandResultData> LoginUser(HerdAppLoginUserCommand loginUserCommand);
+        HerdAppCommandResult<LoginUserCommandResultData> LoginUser(LoginUserCommand loginUserCommand);
 
-        HerdAppCommandResult UpdateUserMastodonConnection(HerdAppUpdateUserMastodonConnectionCommand updateUserMastodonConnectionCommand);
+        HerdAppCommandResult UpdateUserMastodonConnection(UpdateUserMastodonConnectionCommand updateUserMastodonConnectionCommand);
 
         // Feed
-        HerdAppCommandResult<GetRecentFeedItemsCommandResultData> GetRecentFeedItems(HerdAppGetRecentFeedItemsCommand getRecentFeedItemsCommand);
+        HerdAppCommandResult<GetRecentFeedItemsCommandResultData> GetRecentFeedItems(GetRecentFeedItemsCommand getRecentFeedItemsCommand);
 
-        HerdAppCommandResult<GetStatusCommandResultData> GetStatus(HerdAppGetStatusCommand getStatusCommand);
+        HerdAppCommandResult<GetStatusCommandResultData> GetStatus(GetStatusCommand getStatusCommand);
 
-        HerdAppCommandResult CreateNewPost(HerdAppCreateNewPostCommand createNewPostCommand);
+        HerdAppCommandResult CreateNewPost(CreateNewPostCommand createNewPostCommand);
     }
 }

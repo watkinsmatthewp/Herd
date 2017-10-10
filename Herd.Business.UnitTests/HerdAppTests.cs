@@ -35,7 +35,7 @@ namespace Herd.Business.UnitTests
             var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
 
             // Run the HerdApp command (should execute the mock)
-            var result = herdApp.GetRegistration(new HerdAppGetRegistrationCommand { ID = 3 });
+            var result = herdApp.GetRegistration(new GetRegistrationCommand { ID = 3 });
 
             // Make sure the GetAppRegistration was called once with id 3
             mockData.Verify(d => d.GetAppRegistration(3), Times.Once());
@@ -73,7 +73,7 @@ namespace Herd.Business.UnitTests
             var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
 
             // Perform the test
-            var result = herdApp.GetOAuthURL(new HerdAppGetOAuthURLCommand { AppRegistrationID = 3, ReturnURL = "https://SentURL" });
+            var result = herdApp.GetOAuthURL(new GetOAuthURLCommand { AppRegistrationID = 3, ReturnURL = "https://SentURL" });
 
             // Verify the result
             Assert.True(result?.Success);
@@ -110,7 +110,7 @@ namespace Herd.Business.UnitTests
             var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
 
             // Run the HerdApp command (should execute the mock)
-            var result = herdApp.GetOrCreateRegistration(new HerdAppGetOrCreateRegistrationCommand { Instance = "instance" });
+            var result = herdApp.GetOrCreateRegistration(new GetOrCreateRegistrationCommand { Instance = "instance" });
 
             // Make sure the GetAppRegistration was called once with id 3
             mockData.Verify(d => d.GetAppRegistration("instance"), Times.Once());
@@ -145,7 +145,7 @@ namespace Herd.Business.UnitTests
             var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
 
             // Run the HerdApp command (should execute the mock)
-            var result = herdApp.GetRecentFeedItems(new HerdAppGetRecentFeedItemsCommand { MaxCount = 1 });
+            var result = herdApp.GetRecentFeedItems(new GetRecentFeedItemsCommand { MaxCount = 1 });
 
             // Verify the result, should add more tests when dummy data is removed
             Assert.True(result?.Success);

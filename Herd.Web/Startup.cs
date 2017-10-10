@@ -121,7 +121,7 @@ namespace Herd.Web
 
             try
             {
-                app.CreateUser(new HerdAppCreateUserCommand
+                app.CreateUser(new CreateUserCommand
                 {
                     Email = "mpwatki2@ncsu.edu",
                     FirstName = "Matthew",
@@ -133,7 +133,7 @@ namespace Herd.Web
 
             try
             {
-                app.CreateUser(new HerdAppCreateUserCommand
+                app.CreateUser(new CreateUserCommand
                 {
                     Email = "tdortiz@ncsu.edu",
                     FirstName = "Thomas",
@@ -145,7 +145,7 @@ namespace Herd.Web
 
             try
             {
-                app.CreateUser(new HerdAppCreateUserCommand
+                app.CreateUser(new CreateUserCommand
                 {
                     Email = "dbchris3@ncsu.edu",
                     FirstName = "Dana",
@@ -157,7 +157,7 @@ namespace Herd.Web
 
             try
             {
-                app.CreateUser(new HerdAppCreateUserCommand
+                app.CreateUser(new CreateUserCommand
                 {
                     Email = "jcstone3@ncsu.edu",
                     FirstName = "Jacob",

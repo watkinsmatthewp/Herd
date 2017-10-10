@@ -8,16 +8,16 @@ namespace Herd.Web.Controllers.HerdApi
     public class FeedApiController : BaseApiController
     {
         [HttpGet("new_items")]
-        public IActionResult NewItems() => ApiJson(App.GetRecentFeedItems(new HerdAppGetRecentFeedItemsCommand()));
+        public IActionResult NewItems() => ApiJson(App.GetRecentFeedItems(new GetRecentFeedItemsCommand()));
 
         [HttpGet("get_status")]
-        public IActionResult GetStatus(int statusId) => ApiJson(App.GetStatus(new HerdAppGetStatusCommand
+        public IActionResult GetStatus(int statusId) => ApiJson(App.GetStatus(new GetStatusCommand
         {
             StatusId = statusId
         }));
 
         [HttpPost("new_post")]
-        public IActionResult NewPost([FromBody] JObject body) => ApiJson(App.CreateNewPost(new HerdAppCreateNewPostCommand
+        public IActionResult NewPost([FromBody] JObject body) => ApiJson(App.CreateNewPost(new CreateNewPostCommand
         {
             Message = body["message"].Value<string>(),
             Visibility = (Mastonet.Visibility)body["visibility"].Value<int>(), //?? Mastonet.Visibility.Unlisted,

@@ -1,6 +1,6 @@
 ﻿namespace Herd.Business.Models.Commands
 {
-    public class HerdAppUpdateUserMastodonConnectionCommand : HerdAppCommand
+    public class UpdateUserMastodonConnectionCommand : HerdAppCommand
     {
         public long UserID { get; set; }
         public long AppRegistrationID { get; set; }
