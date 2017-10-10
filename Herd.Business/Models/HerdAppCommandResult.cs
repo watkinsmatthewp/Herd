@@ -1,4 +1,5 @@
-﻿using Herd.Business.Models.Errors;
+﻿using Herd.Business.Models.CommandResultData;
+using Herd.Business.Models.Errors;
 using System.Collections.Generic;
 using System.Linq;
 
