@@ -30,8 +30,10 @@ export class HomePage implements OnInit {
     }
 
     updateSpecificStatus(statusId: number): void {
+        this.loading = true;
         this.renderSpecificModal = false;
         this.mastodonService.getStatus(statusId)
+            .finally(() => this.loading = false)
             .subscribe(data => {
                 this.specificStatus = data.Status;
                 this.specificStatus.Ancestors = data.StatusContext.Ancestors;
