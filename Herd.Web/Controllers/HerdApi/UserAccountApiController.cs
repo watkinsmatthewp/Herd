@@ -8,6 +8,11 @@ using Herd.Data.Models;
 using Newtonsoft.Json.Linq;
 using Herd.Business;
 using Herd.Business.Models.Commands;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Herd.Web.Code;
+using Herd_Web;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Herd.Web.Controllers.HerdApi
 {
@@ -35,7 +40,7 @@ namespace Herd.Web.Controllers.HerdApi
         }
 
         [HttpPost("login"), AuthenticationNotRequired]
-        public IActionResult Login([FromBody] JObject body)
+        public async Task<IActionResult> Login([FromBody] JObject body)
         {
             var result = App.LoginUser(new HerdAppLoginUserCommand
             {
@@ -45,7 +50,7 @@ namespace Herd.Web.Controllers.HerdApi
 
             if (result.Success)
             {
-                SetActiveUserCookie(result.Data.User);
+                await this.SetActiveUserInSession(result.Data.User);
             }
 
             // Visible to user. Only expose necessary fields
@@ -57,10 +62,10 @@ namespace Herd.Web.Controllers.HerdApi
             return ApiJson(result);
         }
 
-        [HttpGet("logout")]
-        public IActionResult Logout()
+        [HttpGet("logout"), AuthenticationNotRequired]
+        public async Task<IActionResult> Logout()
         {
-            ClearActiveUserCookie();
+            await this.ClearActiveUserFromSession();
             return Ok();
         }
 

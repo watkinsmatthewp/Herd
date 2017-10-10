@@ -11,13 +11,12 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Herd.Web.CustomAttributes;
 using Herd.Business.Models.Commands;
 using Herd.Data.Providers;
+using Herd.Web.Code;
 
 namespace Herd.Web.Controllers
 {
     public class BaseController : Controller
     {
-        protected const string USER_COOKIE_NAME = "HERD_USER_ID";
-
         protected Lazy<string> _requestedURL;
         protected Lazy<HerdUserAccountDataModel> _activeUser;
         protected Lazy<HerdAppRegistrationDataModel> _appRegistration;
@@ -32,7 +31,7 @@ namespace Herd.Web.Controllers
         public BaseController()
         {
             _requestedURL = new Lazy<string>(LoadRequestedURL);
-            _activeUser = new Lazy<HerdUserAccountDataModel>(LoadActiveUserFromCookie);
+            _activeUser = new Lazy<HerdUserAccountDataModel>(LoadActiveUserFromSession);
             _appRegistration = new Lazy<HerdAppRegistrationDataModel>(LoadAppRegistrationFromActiveUser);
             _mastodonApiWrapper = new Lazy<IMastodonApiWrapper>(LoadMastodonApiWrapperFromAppRegistration);
             _app = new Lazy<IHerdApp>(LoadHerdApp);
@@ -43,41 +42,17 @@ namespace Herd.Web.Controllers
             base.OnActionExecuting(context);
 
             // Authentication check
-            if (RequiresAuthentication(context) && User == null)
+            if (RequiresAuthentication(context) && ActiveUser == null)
             {
                 // Oh no you don't!
                 context.Result = NotAuthorized();
                 return;
             }
-
-            // Parrot back the auth cookie
-            SetActiveUserCookie(ActiveUser);
-
-            // Set the ViewData collection to use in views
-            ViewData["RequestedURL"] = RequestedURL;
-            ViewData["ActiveUser"] = ActiveUser;
         }
 
         protected void SetAppRegistration(HerdAppRegistrationDataModel appRegistration)
         {
             _appRegistration = new Lazy<HerdAppRegistrationDataModel>(appRegistration);
-        }
-
-        protected void SetActiveUserCookie(HerdUserAccountDataModel user)
-        {
-            if (user == null)
-            {
-                ClearActiveUserCookie();
-            }
-            else
-            {
-                Response.Cookies.Append(USER_COOKIE_NAME, $"{user.ID}|{user.ID.ToString().Hashed(user.Security.SaltKey)}");
-            }
-        }
-
-        protected void ClearActiveUserCookie()
-        {
-            Response.Cookies.Delete(USER_COOKIE_NAME);
         }
 
         protected virtual IActionResult NotAuthorized()
@@ -109,18 +84,10 @@ namespace Herd.Web.Controllers
 
         private string LoadRequestedURL() => $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
 
-        private HerdUserAccountDataModel LoadActiveUserFromCookie()
+        private HerdUserAccountDataModel LoadActiveUserFromSession()
         {
-            var userCookieComponents = Request.Cookies[USER_COOKIE_NAME]?.Split('|');
-            if (userCookieComponents?.Length == 2 && !string.IsNullOrWhiteSpace(userCookieComponents[1]) && long.TryParse(userCookieComponents[0], out long userID))
-            {
-                var userByID = HerdWebApp.Instance.DataProvider.GetUser(userID);
-                if (userByID != null && userID.ToString().Hashed(userByID.Security.SaltKey) == userCookieComponents[1])
-                {
-                    return userByID;
-                }
-            }
-            return null;
+            var userID = this.GetActiveUserIdFromSession();
+            return userID.HasValue ? HerdWebApp.Instance.DataProvider.GetUser(userID.Value) : null;
         }
 
         private HerdAppRegistrationDataModel LoadAppRegistrationFromActiveUser()

@@ -43,7 +43,12 @@ namespace Herd.Logging
 
         private static IEnumerable<KeyValuePair<string, string>> GetContextParameters(Exception e)
         {
-            yield return Kvp("EXCEPTION", e);
+            yield return Kvp("EXCEPTION", GetLowestlevelException(e));
+        }
+
+        private static Exception GetLowestlevelException(Exception e)
+        {
+            return (e as AggregateException)?.InnerExceptions?.Count == 1 ? GetLowestlevelException(e.InnerException) : e;
         }
 
         private static KeyValuePair<string, string> Kvp(string key, object value)
