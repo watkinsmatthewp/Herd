@@ -12,7 +12,9 @@ import { Status } from "../../models/mastodon";
 export class HomePage implements OnInit {
     statusId: number;
     specificStatus: Status;
+    replyStatus: Status;
     renderSpecificModal: boolean = false;
+    renderReplyModal: boolean = false;
     loading: boolean = false;
     homeFeed: Status[]; // List of posts for the home feed
 
@@ -38,9 +40,7 @@ export class HomePage implements OnInit {
         this.renderSpecificModal = false;
         this.alertService.info("Retreiving status info ...");
         this.mastodonService.getStatus(statusId)
-            .finally(() => {
-                this.loading = false
-            })
+            .finally(() =>  this.loading = false)
             .subscribe(data => {
                 this.specificStatus = data.Status;
                 this.specificStatus.Ancestors = data.StatusContext.Ancestors;
@@ -48,14 +48,33 @@ export class HomePage implements OnInit {
                 this.renderSpecificModal = true;
                 this.alertService.success("Retrieved status.")
             }, error => {
-                this.alertService.error(error);
+                this.alertService.error(error.error);
+            });
+    }
+
+    updateReplyStatusModal(statusId: number): void {
+        this.loading = true;
+        this.renderReplyModal = false;
+        this.alertService.info("Retreiving status info ...");
+        this.mastodonService.getStatus(statusId)
+            .finally(() => this.loading = false)
+            .subscribe(data => {
+                this.replyStatus = data.Status;
+                this.renderReplyModal = true;
+                this.alertService.success("Retrieved status.")
+            }, error => {
+                this.alertService.error(error.error);
             });
     }
 
     ngOnInit() {
         this.timelineAlert.getMessage().subscribe(alert => {
             let statusId = alert.statusId;
-            this.updateSpecificStatus(statusId);
+            if (alert.message === "Update specific status") {
+                this.updateSpecificStatus(statusId);
+            } else if (alert.message === "Update reply status") {
+                this.updateReplyStatusModal(statusId);
+            }
         });
         this.getMostRecentHomeFeed();
     }

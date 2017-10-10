@@ -21,12 +21,19 @@ export class StatusComponent implements OnInit {
         }
     }
 
-    turnOffBlur(): void {
+    turnOffBlur(event: any): void {
         this.showBlur = false;
+        event.stopPropagation();
     }
 
-    notifyTimelineCommentsClicked(): void {
+    notifyTimelineCommentsClicked(event: any): void {
+        this.timelineAlert.addMessage("Update reply status", this.status.Id);
+        event.stopPropagation();
+    }
+
+    notifyTimelineStatusClicked(event: any): void {
         this.timelineAlert.addMessage("Update specific status", this.status.Id);
+        event.stopPropagation();
     }
 
     retweet() {
