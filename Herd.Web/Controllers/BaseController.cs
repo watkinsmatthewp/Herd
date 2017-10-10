@@ -1,17 +1,12 @@
 ﻿using Herd.Business;
 using Herd.Data.Models;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Herd.Core;
-using Microsoft.AspNetCore.Mvc.Controllers;
-using Herd.Web.CustomAttributes;
-using Herd.Business.Models.Commands;
-using Herd.Data.Providers;
 using Herd.Web.Code;
+using Herd.Web.CustomAttributes;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.Mvc.Filters;
+using System;
+using System.Linq;
 
 namespace Herd.Web.Controllers
 {
@@ -114,6 +109,6 @@ namespace Herd.Web.Controllers
 
         private IHerdApp LoadHerdApp() => new HerdApp(HerdWebApp.Instance.DataProvider, _mastodonApiWrapper.Value, HerdWebApp.Instance.Logger);
 
-        #endregion
+        #endregion Private helper methods
     }
 }

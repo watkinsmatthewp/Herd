@@ -2,13 +2,11 @@
 using Herd.Data.Models;
 using Herd.Data.Providers;
 using Herd.Logging;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Mastonet.Entities;
-using Xunit;
+using Moq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace Herd.Business.UnitTests
 {
@@ -54,7 +52,6 @@ namespace Herd.Business.UnitTests
         [Fact]
         public void GetOAuthURLTest()
         {
-
             // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
             var mockData = new Mock<IHerdDataProvider>();
             var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
@@ -81,7 +78,6 @@ namespace Herd.Business.UnitTests
             // Verify the result
             Assert.True(result?.Success);
             Assert.Equal("https://ReturnedURL", result.Data?.URL);
-
         }
 
         [Fact]
@@ -101,7 +97,7 @@ namespace Herd.Business.UnitTests
                 MastodonAppRegistrationID = 42
             });
 
-            mockData.Setup(d => d.CreateAppRegistration(new HerdAppRegistrationDataModel() )).Returns(new HerdAppRegistrationDataModel
+            mockData.Setup(d => d.CreateAppRegistration(new HerdAppRegistrationDataModel())).Returns(new HerdAppRegistrationDataModel
             {
                 ID = 3,
                 ClientId = "client-id",
@@ -140,11 +136,10 @@ namespace Herd.Business.UnitTests
 
             Status status = new Status();
             status.Content = "Hello, World!";
-            List <Status>  list = new List<Status>();
+            List<Status> list = new List<Status>();
             list.Add(status);
 
-
-            mockMastodonApiWrapper.Setup(d => d.GetRecentStatuses(1)).Returns(Task.FromResult<IList<Status>>(new List<Status>()  ));
+            mockMastodonApiWrapper.Setup(d => d.GetRecentStatuses(1)).Returns(Task.FromResult<IList<Status>>(new List<Status>()));
 
             // Create the HerdApp using the mock objects
             var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
@@ -166,7 +161,7 @@ namespace Herd.Business.UnitTests
         //    var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
         //    var mockLogger = new Mock<IHerdLogger>();
 
-        //    // new Task<Status>( () => { return new Status(); } 
+        //    // new Task<Status>( () => { return new Status(); }
 
         //    mockMastodonApiWrapper.Setup(d => d.CreateNewPost("Hello, World.")).Returns(Task.FromResult<Status>(new Status()));
 
@@ -181,4 +176,3 @@ namespace Herd.Business.UnitTests
         //}
     }
 }
-

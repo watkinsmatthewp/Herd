@@ -1,19 +1,15 @@
-﻿﻿using Herd.Business.App.Exceptions;
+﻿using Herd.Business.App.Exceptions;
 using Herd.Business.Models;
-using Herd.Business.Models.Errors;
-using Herd.Data.Providers;
-using System;
-using System.Linq;
 using Herd.Business.Models.CommandResultData;
 using Herd.Business.Models.Commands;
-using Herd.Data.Models;
-using System.Threading.Tasks;
-using Herd.Core;
-using System.Collections.Generic;
-using static Herd.Business.Models.CommandResultData.HerdAppGetRecentFeedItemsCommandResultData;
-using Herd.Logging;
-using static Herd.Business.Models.CommandResultData.HerdAppGetStatusCommandResultData;
+using Herd.Business.Models.Errors;
 using Herd.Business.Models.MastodonWrappers;
+using Herd.Core;
+using Herd.Data.Models;
+using Herd.Data.Providers;
+using Herd.Logging;
+using System;
+using System.Linq;
 
 namespace Herd.Business
 {
@@ -72,7 +68,7 @@ namespace Herd.Business
             });
         }
 
-        #endregion
+        #endregion App registration
 
         #region Users
 
@@ -153,7 +149,7 @@ namespace Herd.Business
                 {
                     throw new HerdAppUserErrorException("Could not find a user with that ID");
                 }
-                
+
                 // Connect with the one-time use code to get the permanent code
                 _mastodonApiWrapper.AppRegistration = _data.GetAppRegistration(updateUserMastodonConnectionCommand.AppRegistrationID)
                     ?? throw new HerdAppUserErrorException("Could not find a registration with that ID");
@@ -165,7 +161,7 @@ namespace Herd.Business
             });
         }
 
-        #endregion
+        #endregion Users
 
         #region Feed
 
@@ -177,7 +173,8 @@ namespace Herd.Business
                 {
                     RecentFeedItems = _mastodonApiWrapper.GetRecentStatuses(getRecentFeedItemsCommand.MaxCount).Synchronously().Select(s => new Status
                     {
-                        Account = new Account {
+                        Account = new Account
+                        {
                             AccountName = s.Account.AccountName,
                             AvatarUrl = s.Account.AvatarUrl,
                             DisplayName = s.Account.DisplayName,
@@ -318,14 +315,14 @@ namespace Herd.Business
             return ProcessCommand(result =>
             {
                 _mastodonApiWrapper.CreateNewPost(
-                    createNewPostCommand.Message, createNewPostCommand.Visibility, 
-                    createNewPostCommand.ReplyStatusId, createNewPostCommand.MediaIds, 
+                    createNewPostCommand.Message, createNewPostCommand.Visibility,
+                    createNewPostCommand.ReplyStatusId, createNewPostCommand.MediaIds,
                     createNewPostCommand.Sensitive, createNewPostCommand.SpoilerText
                 ).Synchronously();
             });
         }
 
-        #endregion
+        #endregion Feed
 
         #region Private helpers
 

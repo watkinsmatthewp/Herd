@@ -1,7 +1,4 @@
 ﻿using Herd.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace Herd.Data.UnitTests
@@ -35,7 +32,7 @@ namespace Herd.Data.UnitTests
             Assert.Equal("mastodon.social", _data.GetAppRegistration(appRegistration.ID).Instance);
         }
 
-        #endregion
+        #endregion App registration
 
         // TODO: Write for all methods in IHerdDataProvider
     }

@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Herd.Web.CustomAttributes;
+﻿using Herd.Business.Models.Commands;
 using Herd.Data.Models;
-using Newtonsoft.Json.Linq;
-using Herd.Business;
-using Herd.Business.Models.Commands;
-using Microsoft.AspNetCore.Authentication;
-using System.Security.Claims;
 using Herd.Web.Code;
-using Herd_Web;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Herd.Web.CustomAttributes;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 namespace Herd.Web.Controllers.HerdApi
 {
@@ -78,6 +70,6 @@ namespace Herd.Web.Controllers.HerdApi
             MastodonConnection = userAccount.MastodonConnection
         };
 
-        #endregion
+        #endregion Private helpers
     }
 }

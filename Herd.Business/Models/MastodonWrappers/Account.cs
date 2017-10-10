@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Herd.Business.Models.MastodonWrappers
 {
@@ -12,8 +10,8 @@ namespace Herd.Business.Models.MastodonWrappers
         public string DisplayName { get; set; }
         public int FollowersCount { get; set; }
         public int FollowingCount { get; set; }
-        public string HeaderUrl{ get; set; }
-        public int Id  { get; set; }
+        public string HeaderUrl { get; set; }
+        public int Id { get; set; }
         public bool Locked { get; set; }
         public string Note { get; set; }
         public string ProfileUrl { get; set; }

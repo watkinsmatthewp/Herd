@@ -1,16 +1,10 @@
 ﻿using Herd.Business;
 using Herd.Business.Models.Commands;
-using Herd.Core;
 using Herd.Data.Models;
 using Herd.Web.Code;
-using Herd.Web.CustomAttributes;
-using Mastonet;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Herd.Web.Controllers.HerdApi
 {
@@ -69,6 +63,6 @@ namespace Herd.Web.Controllers.HerdApi
             ID = registration.ID
         };
 
-        #endregion
+        #endregion Private helpers
     }
 }

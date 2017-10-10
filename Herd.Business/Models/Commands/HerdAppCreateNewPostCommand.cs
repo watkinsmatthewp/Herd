@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Herd.Business.Models.Commands
 {
@@ -12,6 +10,5 @@ namespace Herd.Business.Models.Commands
         public IEnumerable<int> MediaIds { get; set; }
         public bool Sensitive { get; set; }
         public string SpoilerText { get; set; }
-
     }
 }

@@ -1,23 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.Webpack;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Herd.Business;
-using Herd.Data.Models;
 using Herd.Business.Models.Commands;
 using Herd.Data.Providers;
 using Herd.Logging;
-using Microsoft.AspNetCore.Diagnostics;
-using System.IO;
-using Microsoft.AspNetCore.Http;
-using System.Text;
-using Herd.Web;
 using Herd.Web.Code;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace Herd_Web
 {
@@ -37,7 +33,8 @@ namespace Herd_Web
         {
             services.AddMvc();
             services.AddAuthentication(COOKIE_AUTH_SCHEME_NAME)
-            .AddCookie(COOKIE_AUTH_SCHEME_NAME, options => {
+            .AddCookie(COOKIE_AUTH_SCHEME_NAME, options =>
+            {
                 // options.AccessDeniedPath = "/Account/Forbidden/";
                 options.LoginPath = "/login";
                 options.Cookie.Name = "HERD_SESSION";

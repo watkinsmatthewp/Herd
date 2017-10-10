@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace Herd.Web.UnitTests
@@ -8,7 +7,6 @@ namespace Herd.Web.UnitTests
         [Fact]
         public void Test1()
         {
-
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Herd.Core;
 using Herd.Data.Models;
-using Herd.Logging;
 using Mastonet.Entities;
 using System;
 using System.Linq;

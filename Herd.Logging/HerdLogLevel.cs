@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Herd.Logging
+﻿namespace Herd.Logging
 {
     public enum HerdLogLevel
     {

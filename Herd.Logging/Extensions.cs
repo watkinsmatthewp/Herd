@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Herd.Logging
 {
@@ -56,6 +55,7 @@ namespace Herd.Logging
             return new KeyValuePair<string, string>(key, value.ToString());
         }
 
-        #endregion        
+        #endregion Private helpers
+
     }
 }

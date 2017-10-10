@@ -22,8 +22,11 @@ namespace Herd.Data.Providers
         #region AppRegistration
 
         public HerdAppRegistrationDataModel GetAppRegistration(long id) => GetEntity<HerdAppRegistrationDataModel>(id);
+
         public HerdAppRegistrationDataModel GetAppRegistration(string instance) => GetEntity<HerdAppRegistrationDataModel>(r => r.Instance == instance);
+
         public HerdAppRegistrationDataModel CreateAppRegistration(HerdAppRegistrationDataModel appRegistration) => CreateEntity(appRegistration);
+
         public void UpdateAppRegistration(HerdAppRegistrationDataModel appRegistration) => UpdateEntity(appRegistration);
 
         #endregion AppRegistration
@@ -31,8 +34,11 @@ namespace Herd.Data.Providers
         #region Users
 
         public HerdUserAccountDataModel GetUser(long id) => GetEntity<HerdUserAccountDataModel>(id);
+
         public HerdUserAccountDataModel GetUser(string email) => GetEntity<HerdUserAccountDataModel>(u => u.Email == email);
+
         public HerdUserAccountDataModel CreateUser(HerdUserAccountDataModel user) => CreateEntity(user);
+
         public void UpdateUser(HerdUserAccountDataModel user) => UpdateEntity(user);
 
         #endregion Users
@@ -40,15 +46,19 @@ namespace Herd.Data.Providers
         #region Profiles
 
         public HerdUserProfileDataModel GetProfile(long id) => GetEntity<HerdUserProfileDataModel>(id);
+
         public HerdUserProfileDataModel CreateProfile(HerdUserProfileDataModel profile) => CreateEntity(profile);
+
         public void UpdateProfile(HerdUserProfileDataModel profile) => UpdateEntity(profile);
 
-        #endregion
+        #endregion Profiles
 
         #region Abstract overrides
 
         protected abstract IEnumerable<string> GetAllKeys(string rootKey);
+
         protected abstract string ReadKey(string key);
+
         protected abstract void WriteKey(string key, string value);
 
         #endregion Abstract overrides

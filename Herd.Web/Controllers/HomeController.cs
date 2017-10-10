@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Herd.Web.Controllers;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Herd.Web.CustomAttributes;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Herd_Web.Controllers
 {

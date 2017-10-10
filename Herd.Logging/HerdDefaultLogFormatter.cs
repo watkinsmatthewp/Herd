@@ -32,4 +32,3 @@ namespace Herd.Logging
         }
     }
 }
-

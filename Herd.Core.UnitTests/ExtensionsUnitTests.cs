@@ -65,6 +65,6 @@ namespace Herd.Core.UnitTests
             return val;
         }
 
-        #endregion
+        #endregion Private helpers
     }
 }

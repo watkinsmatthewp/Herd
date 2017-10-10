@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Herd.Logging
 {
@@ -16,7 +15,7 @@ namespace Herd.Logging
                 {
                     logger.Log(id, logLevel, message, contextParameters);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Console.WriteLine(e.ToString());
                 }
