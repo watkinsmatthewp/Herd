@@ -22,14 +22,10 @@
 
   <ItemGroup>
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
-    <Compile Remove="Code\**" />
     <Compile Remove="Models\**" />
     <Content Remove="ClientApp\**" />
-    <Content Remove="Code\**" />
     <Content Remove="Models\**" />
-    <EmbeddedResource Remove="Code\**" />
     <EmbeddedResource Remove="Models\**" />
-    <None Remove="Code\**" />
     <None Remove="Models\**" />
   </ItemGroup>
 

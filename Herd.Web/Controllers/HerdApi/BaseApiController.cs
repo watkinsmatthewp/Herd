@@ -13,7 +13,7 @@ namespace Herd.Web.Controllers
             Response.StatusCode = 401;
             return new ObjectResult(new
             {
-                message = $"The {USER_COOKIE_NAME} cookie value is not supplied"
+                message = $"The session cookie value is not supplied"
             });
         }
     }
