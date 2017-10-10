@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Herd.Business.Models.CommandResultData
 {
-    public class HerdAppGetRecentFeedItemsCommandResultData : HerdAppCommandResultData
+    public class GetRecentFeedItemsCommandResultData : CommandResultData
     {
         public List<Status> RecentFeedItems { get; set; }
     }

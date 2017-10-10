@@ -32,35 +32,35 @@ namespace Herd.Business
 
         #region App registration
 
-        public HerdAppCommandResult<HerdAppGetRegistrationCommandResultData> GetRegistration(HerdAppGetRegistrationCommand getRegistrationCommand)
+        public HerdAppCommandResult<GetRegistrationCommandResultData> GetRegistration(HerdAppGetRegistrationCommand getRegistrationCommand)
         {
-            return ProcessCommand<HerdAppGetRegistrationCommandResultData>(result =>
+            return ProcessCommand<GetRegistrationCommandResultData>(result =>
             {
-                result.Data = new HerdAppGetRegistrationCommandResultData
+                result.Data = new GetRegistrationCommandResultData
                 {
                     Registration = _data.GetAppRegistration(getRegistrationCommand.ID)
                 };
             });
         }
 
-        public HerdAppCommandResult<HerdAppGetOAuthURLCommandResultData> GetOAuthURL(HerdAppGetOAuthURLCommand getOAuthUrlCommand)
+        public HerdAppCommandResult<GetOAuthURLCommandResultData> GetOAuthURL(HerdAppGetOAuthURLCommand getOAuthUrlCommand)
         {
-            return ProcessCommand<HerdAppGetOAuthURLCommandResultData>(result =>
+            return ProcessCommand<GetOAuthURLCommandResultData>(result =>
             {
                 var returnURL = string.IsNullOrWhiteSpace(getOAuthUrlCommand.ReturnURL) ? NON_REDIRECT_URL : getOAuthUrlCommand.ReturnURL;
                 _mastodonApiWrapper.AppRegistration = _data.GetAppRegistration(getOAuthUrlCommand.AppRegistrationID) ?? throw new HerdAppUserErrorException("No app registration with that ID");
-                result.Data = new HerdAppGetOAuthURLCommandResultData
+                result.Data = new GetOAuthURLCommandResultData
                 {
                     URL = _mastodonApiWrapper.GetOAuthUrl(getOAuthUrlCommand.ReturnURL)
                 };
             });
         }
 
-        public HerdAppCommandResult<HerdAppGetRegistrationCommandResultData> GetOrCreateRegistration(HerdAppGetOrCreateRegistrationCommand getOrCreateRegistrationCommand)
+        public HerdAppCommandResult<GetRegistrationCommandResultData> GetOrCreateRegistration(HerdAppGetOrCreateRegistrationCommand getOrCreateRegistrationCommand)
         {
-            return ProcessCommand<HerdAppGetRegistrationCommandResultData>(result =>
+            return ProcessCommand<GetRegistrationCommandResultData>(result =>
             {
-                result.Data = new HerdAppGetRegistrationCommandResultData
+                result.Data = new GetRegistrationCommandResultData
                 {
                     Registration = _data.GetAppRegistration(getOrCreateRegistrationCommand.Instance)
                         ?? _data.CreateAppRegistration(new MastodonApiWrapper(getOrCreateRegistrationCommand.Instance).RegisterApp().Synchronously())
@@ -72,20 +72,20 @@ namespace Herd.Business
 
         #region Users
 
-        public HerdAppCommandResult<HerdAppGetUserCommandResultData> GetUser(HerdAppGetUserCommand getUserCommand)
+        public HerdAppCommandResult<GetUserCommandResultData> GetUser(HerdAppGetUserCommand getUserCommand)
         {
-            return ProcessCommand<HerdAppGetUserCommandResultData>(result =>
+            return ProcessCommand<GetUserCommandResultData>(result =>
             {
-                result.Data = new HerdAppGetUserCommandResultData
+                result.Data = new GetUserCommandResultData
                 {
                     User = _data.GetUser(getUserCommand.UserID)
                 };
             });
         }
 
-        public HerdAppCommandResult<HerdAppCreateUserCommandResultData> CreateUser(HerdAppCreateUserCommand createUserCommand)
+        public HerdAppCommandResult<CreateUserCommandResultData> CreateUser(HerdAppCreateUserCommand createUserCommand)
         {
-            return ProcessCommand<HerdAppCreateUserCommandResultData>(result =>
+            return ProcessCommand<CreateUserCommandResultData>(result =>
             {
                 var userByEmail = _data.GetUser(createUserCommand.Email);
                 if (userByEmail != null)
@@ -94,7 +94,7 @@ namespace Herd.Business
                 }
 
                 var saltKey = _saltGenerator.Next();
-                result.Data = new HerdAppCreateUserCommandResultData
+                result.Data = new CreateUserCommandResultData
                 {
                     User = _data.CreateUser(new HerdUserAccountDataModel
                     {
@@ -117,16 +117,16 @@ namespace Herd.Business
             });
         }
 
-        public HerdAppCommandResult<HerdAppLoginUserCommandResultData> LoginUser(HerdAppLoginUserCommand loginUserCommand)
+        public HerdAppCommandResult<LoginUserCommandResultData> LoginUser(HerdAppLoginUserCommand loginUserCommand)
         {
-            return ProcessCommand<HerdAppLoginUserCommandResultData>(result =>
+            return ProcessCommand<LoginUserCommandResultData>(result =>
             {
                 var userByEmail = _data.GetUser(loginUserCommand.Email);
                 if (userByEmail?.PasswordIs(loginUserCommand.PasswordPlainText) != true)
                 {
                     throw new HerdAppUserErrorException("Wrong email or password");
                 }
-                result.Data = new HerdAppLoginUserCommandResultData
+                result.Data = new LoginUserCommandResultData
                 {
                     User = userByEmail
                 };
@@ -165,11 +165,11 @@ namespace Herd.Business
 
         #region Feed
 
-        public HerdAppCommandResult<HerdAppGetRecentFeedItemsCommandResultData> GetRecentFeedItems(HerdAppGetRecentFeedItemsCommand getRecentFeedItemsCommand)
+        public HerdAppCommandResult<GetRecentFeedItemsCommandResultData> GetRecentFeedItems(HerdAppGetRecentFeedItemsCommand getRecentFeedItemsCommand)
         {
-            return ProcessCommand<HerdAppGetRecentFeedItemsCommandResultData>(result =>
+            return ProcessCommand<GetRecentFeedItemsCommandResultData>(result =>
             {
-                result.Data = new HerdAppGetRecentFeedItemsCommandResultData
+                result.Data = new GetRecentFeedItemsCommandResultData
                 {
                     RecentFeedItems = _mastodonApiWrapper.GetRecentStatuses(getRecentFeedItemsCommand.MaxCount).Synchronously().Select(s => new Status
                     {
@@ -205,13 +205,13 @@ namespace Herd.Business
             });
         }
 
-        public HerdAppCommandResult<HerdAppGetStatusCommandResultData> GetStatus(HerdAppGetStatusCommand getStatusCommand)
+        public HerdAppCommandResult<GetStatusCommandResultData> GetStatus(HerdAppGetStatusCommand getStatusCommand)
         {
-            return ProcessCommand<HerdAppGetStatusCommandResultData>(result =>
+            return ProcessCommand<GetStatusCommandResultData>(result =>
             {
                 var status = _mastodonApiWrapper.GetStatus(getStatusCommand.StatusId).Synchronously();
                 var context = _mastodonApiWrapper.GetStatusContext(getStatusCommand.StatusId).Synchronously();
-                result.Data = new HerdAppGetStatusCommandResultData
+                result.Data = new GetStatusCommandResultData
                 {
                     Status = new Status
                     {
@@ -327,7 +327,7 @@ namespace Herd.Business
         #region Private helpers
 
         private HerdAppCommandResult<D> ProcessCommand<D>(Action<HerdAppCommandResult<D>> doWork)
-            where D : HerdAppCommandResultData
+            where D : CommandResultData
         {
             return ProcessCommand(new HerdAppCommandResult<D>(), doWork);
         }

@@ -1,0 +1,10 @@
+﻿using Herd.Data.Models;
+
+namespace Herd.Business.Models.CommandResultData
+{
+    public class CreateUserCommandResultData : CommandResultData
+    {
+        public HerdUserAccountDataModel User { get; set; }
+        public HerdUserProfileDataModel Profile { get; set; }
+    }
+}

@@ -2,7 +2,7 @@
 
 namespace Herd.Business.Models.CommandResultData
 {
-    public class HerdAppGetStatusCommandResultData : HerdAppCommandResultData
+    public class GetStatusCommandResultData : CommandResultData
     {
         public Status Status { get; set; }
         public StatusContext StatusContext { get; set; }

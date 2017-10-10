@@ -22,7 +22,7 @@ namespace Herd.Business.Models
         public bool Success => Errors.Count == 0;
     }
 
-    public class HerdAppCommandResult<T> : HerdAppCommandResult where T : HerdAppCommandResultData
+    public class HerdAppCommandResult<T> : HerdAppCommandResult where T : CommandResultData.CommandResultData
     {
         public T Data { get; set; }
     }
