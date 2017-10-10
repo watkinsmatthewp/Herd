@@ -73,6 +73,7 @@
     <TypeScriptCompile Include="ClientApp\app\services\account.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\mastodon.service.spec.ts" />
+    <TypeScriptCompile Include="ClientApp\app\services\timeline-alert\timeline-alert.service.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
