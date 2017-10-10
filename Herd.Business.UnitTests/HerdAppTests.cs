@@ -158,27 +158,27 @@ namespace Herd.Business.UnitTests
             //Assert.Equal("Hello, World!", result.Data.RecentFeedItems[0].Content);
         }
 
-        [Fact]
-        public void CreateNewPostTest()
-        {
-            // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
-            var mockData = new Mock<IHerdDataProvider>();
-            var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
-            var mockLogger = new Mock<IHerdLogger>();
+        //[Fact]
+        //public void CreateNewPostTest()
+        //{
+        //    // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
+        //    var mockData = new Mock<IHerdDataProvider>();
+        //    var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
+        //    var mockLogger = new Mock<IHerdLogger>();
 
-            // new Task<Status>( () => { return new Status(); } 
+        //    // new Task<Status>( () => { return new Status(); } 
 
-            mockMastodonApiWrapper.Setup(d => d.CreateNewPost("Hello, World.")).Returns(Task.FromResult<Status>(new Status()));
+        //    mockMastodonApiWrapper.Setup(d => d.CreateNewPost("Hello, World.")).Returns(Task.FromResult<Status>(new Status()));
 
-            // Create the HerdApp using the mock objects
-            var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
+        //    // Create the HerdApp using the mock objects
+        //    var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
 
-            // Run the HerdApp command (should execute the mock)
-            var result = herdApp.CreateNewPost(new HerdAppCreateNewPostCommand { Message = "Hello, World." });
+        //    // Run the HerdApp command (should execute the mock)
+        //    var result = herdApp.CreateNewPost(new HerdAppCreateNewPostCommand { Message = "Hello, World." });
 
-            // Verify the result, do we need to check any more than this?
-            Assert.True(result?.Success);
-        }
+        //    // Verify the result, do we need to check any more than this?
+        //    Assert.True(result?.Success);
+        //}
     }
 }
 
