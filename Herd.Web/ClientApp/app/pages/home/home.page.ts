@@ -24,10 +24,10 @@ export class HomePage implements OnInit {
         this.mastodonService.getHomeFeed()
             .finally(() => {
                 this.loading = false;
-                this.alertService.success("Finished retrieving home timeline.");
             })
             .subscribe(feed => {
                 this.homeFeed = feed;
+                this.alertService.success("Finished retrieving home timeline.");
             }, error => {
                 this.alertService.error(error.error);
             });
@@ -40,13 +40,13 @@ export class HomePage implements OnInit {
         this.mastodonService.getStatus(statusId)
             .finally(() => {
                 this.loading = false
-                this.alertService.success("Retrieved status.")
             })
             .subscribe(data => {
                 this.specificStatus = data.Status;
                 this.specificStatus.Ancestors = data.StatusContext.Ancestors;
                 this.specificStatus.Descendants = data.StatusContext.Descendants;
                 this.renderSpecificModal = true;
+                this.alertService.success("Retrieved status.")
             }, error => {
                 this.alertService.error(error);
             });
