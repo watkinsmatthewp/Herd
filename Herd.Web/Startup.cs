@@ -17,11 +17,14 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using System.Text;
 using Herd.Web;
+using Herd.Web.Code;
 
 namespace Herd_Web
 {
     public class Startup
     {
+        public const string COOKIE_AUTH_SCHEME_NAME = "HerdCookieAuthenticationScheme";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -33,6 +36,15 @@ namespace Herd_Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddAuthentication(COOKIE_AUTH_SCHEME_NAME)
+            .AddCookie(COOKIE_AUTH_SCHEME_NAME, options => {
+                options.AccessDeniedPath = "/Account/Forbidden/";
+                options.LoginPath = "/login";
+                options.Cookie.Name = "HERD_SESSION";
+                options.Cookie.HttpOnly = false;
+                options.Cookie.Expiration = TimeSpan.FromDays(15);
+                options.SlidingExpiration = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +61,7 @@ namespace Herd_Web
             }
 
             app.UseStaticFiles();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

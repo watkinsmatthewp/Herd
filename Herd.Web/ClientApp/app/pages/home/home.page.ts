@@ -20,23 +20,33 @@ export class HomePage implements OnInit {
 
     getMostRecentHomeFeed() {
         this.loading = true;
+        this.alertService.info("Retrieving home timeline ...");
         this.mastodonService.getHomeFeed()
-            .finally(() => this.loading = false)
+            .finally(() => {
+                this.loading = false;
+            })
             .subscribe(feed => {
                 this.homeFeed = feed;
+                this.alertService.success("Finished retrieving home timeline.");
             }, error => {
                 this.alertService.error(error.error);
             });
     }
 
     updateSpecificStatus(statusId: number): void {
+        this.loading = true;
         this.renderSpecificModal = false;
+        this.alertService.info("Retreiving status info ...");
         this.mastodonService.getStatus(statusId)
+            .finally(() => {
+                this.loading = false
+            })
             .subscribe(data => {
                 this.specificStatus = data.Status;
                 this.specificStatus.Ancestors = data.StatusContext.Ancestors;
                 this.specificStatus.Descendants = data.StatusContext.Descendants;
                 this.renderSpecificModal = true;
+                this.alertService.success("Retrieved status.")
             }, error => {
                 this.alertService.error(error);
             });
