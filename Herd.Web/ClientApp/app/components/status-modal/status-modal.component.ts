@@ -1,4 +1,4 @@
-﻿import { AfterViewInit, Component, OnInit, Input } from '@angular/core';
+﻿import { AfterViewInit, Component, OnInit, Input, OnDestroy } from '@angular/core';
 
 import { Status } from '../../models/mastodon';
 import { AlertService, MastodonService } from "../../services";
@@ -8,7 +8,7 @@ import { AlertService, MastodonService } from "../../services";
     templateUrl: './status-modal.component.html',
     styleUrls: ['../status/status.component.css']
 })
-export class StatusModalComponent implements OnInit, AfterViewInit {
+export class StatusModalComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() status: Status;
     @Input() statusId: number;
     @Input() modalId: string;
@@ -35,6 +35,13 @@ export class StatusModalComponent implements OnInit, AfterViewInit {
             if (openButton) {
                 openButton.click();
             }
+        }
+    }
+
+    ngOnDestroy(): void {
+        var openButton = document.getElementById("openButton-" + this.modalId);
+        if (openButton) {
+            openButton.click();
         }
     }
 }
