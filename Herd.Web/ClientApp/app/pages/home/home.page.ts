@@ -26,7 +26,6 @@ export class HomePage implements OnInit {
         this.mastodonService.getHomeFeed()
             .finally(() => this.loading = false)
             .subscribe(feed => {
-                console.log("statusFeed", feed);
                 this.homeFeed = feed;
                 this.alertService.success("Finished retrieving home timeline.");
             }, error => {

@@ -63,7 +63,6 @@ describe('Service: Authentication Service', () => {
 
                 // Make the login request from our authentication service
                 authService.login("thomas", "password").subscribe((response) => {
-                    //console.log(JSON.stringify(response, null, 2));
                     let user = response.User;
                     expect(user.ID).toEqual(1);
                     expect(user.firstName).toEqual('Thomas');
