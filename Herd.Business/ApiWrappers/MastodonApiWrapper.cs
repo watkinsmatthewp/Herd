@@ -1,4 +1,6 @@
-﻿using Herd.Data.Models;
+﻿using Herd.Business.Models.Entities;
+using Herd.Core;
+using Herd.Data.Models;
 using Mastonet;
 using Mastonet.Entities;
 using System;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Herd.Business
 {
-    public partial class MastodonApiWrapper : IMastodonApiWrapper
+    public class MastodonApiWrapper : IMastodonApiWrapper
     {
         #region Public properties
 
@@ -67,9 +69,6 @@ namespace Herd.Business
 
         public async Task<Registration> RegisterApp() => (await BuildMastodonAuthenticationClient().CreateApp("Herd", ALL_SCOPES)).ToHerdAppRegistration();
 
-        // TODO: Replace with non-MastoNet object ASAP
-        public Task<Account> GetUserAccount() => BuildMastodonApiClient().GetCurrentUser();
-
         public string GetOAuthUrl(string redirectURL = null) => BuildMastodonAuthenticationClient().OAuthUrl(redirectURL);
 
         public async Task<UserMastodonConnectionDetails> Connect(string token)
@@ -98,20 +97,80 @@ namespace Herd.Business
 
         #endregion Auth Api
 
+        #region User
+
+        public async Task<MastodonUser> GetActiveUserMastodonAccount(bool includeFollowers = false, bool includeFollowing = false)
+        {
+            var mastodonClient = BuildMastodonApiClient();
+            var mastodonUser = (await mastodonClient.GetCurrentUser()).ToMastodonUser();
+            if (includeFollowers)
+            {
+                mastodonUser.Followers = (await mastodonClient.GetAccountFollowers(mastodonUser.MastodonUserID))
+                    .Select(u => u.ToMastodonUser().And(mu => mu.FollowsRelevantUser = true)).ToList();
+            }
+            if (includeFollowing)
+            {
+                mastodonUser.Following = (await mastodonClient.GetAccountFollowing(mastodonUser.MastodonUserID))
+                    .Select(u => u.ToMastodonUser().And(mu => mu.IsFollowedByRelevantUser = true)).ToList();
+            }
+            return mastodonUser;
+        }
+
+        #endregion User
+
         #region Timeline Feeds
 
-        // TODO: Replace with non-MastoNet object ASAP
-        public async Task<System.Collections.Generic.IList<Status>> GetRecentStatuses(int limit = 30) => (await BuildMastodonApiClient().GetHomeTimeline(null, null, 30)).ToArray();
+        public async Task<List<MastodonPost>> GetRecentPosts(bool includeInReplyToPost = false, bool includeReplyPosts = false, int? maxID = null, int? sinceID = null, int? limit = 30)
+        {
+            var posts = new List<MastodonPost>();
+            var mastodonClient = BuildMastodonApiClient();
 
-        // TODO: Replace with non-MastoNet object ASAP
-        public async Task<Status> GetStatus(int statusId) => (await BuildMastodonApiClient().GetStatus(statusId));
+            foreach (var mastodonStatus in await mastodonClient.GetHomeTimeline(maxID, sinceID, limit))
+            {
+                posts.Add(await GetContextualPost(mastodonClient, mastodonStatus, includeReplyPosts, includeInReplyToPost));
+            }
 
-        // TODO: Replace with non-MastoNet object ASAP
-        public async Task<Context> GetStatusContext(int statusId) => (await BuildMastodonApiClient().GetStatusContext(statusId));
+            return posts;
+        }
 
-        // TODO: Replace with non-MastoNet object ASAP
-        public Task<Status> CreateNewPost(string message, Visibility visibility, int? replyStatusId = null, IEnumerable<int> mediaIds = null, bool sensitive = false, string spoilerText = null) => BuildMastodonApiClient().PostStatus(message, visibility, replyStatusId, mediaIds, sensitive, spoilerText);
+        public async Task<MastodonPost> GetPost(int statusID, bool includeReplyPosts = false, bool includeReplyToPost = false)
+        {
+            var mastodonClient = BuildMastodonApiClient();
+            var status = await mastodonClient.GetStatus(statusID);
+            return await GetContextualPost(mastodonClient, status, includeReplyPosts, includeReplyToPost);
+        }
+
+        public async Task<MastodonPost> CreateNewPost(string message, MastodonPostVisibility visibility, int? replyStatusId = null, IEnumerable<int> mediaIds = null, bool sensitive = false, string spoilerText = null)
+        {
+            return (await BuildMastodonApiClient().PostStatus(message, visibility.ToVisibility(), replyStatusId, mediaIds, sensitive, spoilerText)).ToPost();
+        }
 
         #endregion Timeline Feeds
+
+        #region Private helpers
+
+        private async Task<MastodonPost> GetContextualPost(MastodonClient mastodonClient, Status mastodonStatus, bool includeReplyPosts, bool includeReplyToPost)
+        {
+            var post = mastodonStatus.ToPost();
+            var setReplyToPost = includeReplyToPost && mastodonStatus.InReplyToId.HasValue;
+            var setReplyPosts = includeReplyPosts;
+
+            if (setReplyToPost || setReplyPosts)
+            {
+                var statusContext = await mastodonClient.GetStatusContext(mastodonStatus.Id);
+                if (setReplyToPost)
+                {
+                    post.InReplyToPost = statusContext.Ancestors.FirstOrDefault()?.ToPost();
+                }
+                if (setReplyPosts)
+                {
+                    post.Replies = statusContext.Descendants.Select(s => s.ToPost()).ToList();
+                }
+            }
+
+            return post;
+        }
+
+        #endregion Private helpers
     }
 }

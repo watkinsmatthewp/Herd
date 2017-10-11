@@ -56,6 +56,5 @@ namespace Herd.Logging
         }
 
         #endregion Private helpers
-
     }
 }

@@ -24,9 +24,9 @@ namespace Herd.Business
         CommandResult UpdateUserMastodonConnection(UpdateUserMastodonConnectionCommand updateUserMastodonConnectionCommand);
 
         // Feed
-        CommandResult<GetRecentFeedItemsCommandResultData> GetRecentFeedItems(GetRecentFeedItemsCommand getRecentFeedItemsCommand);
+        CommandResult<GetRecentPostsCommandResultData> GetRecentFeedItems(GetRecentPostsCommand getRecentFeedItemsCommand);
 
-        CommandResult<GetStatusCommandResultData> GetStatus(GetStatusCommand getStatusCommand);
+        CommandResult<GetPostCommandResultData> GetStatus(GetPostCommand getStatusCommand);
 
         CommandResult CreateNewPost(CreateNewPostCommand createNewPostCommand);
 

@@ -1,5 +1,4 @@
 ﻿using Herd.Data.Models;
-using Herd_Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;

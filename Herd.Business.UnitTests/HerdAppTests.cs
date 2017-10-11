@@ -1,4 +1,5 @@
 ﻿using Herd.Business.Models.Commands;
+using Herd.Business.Models.Entities;
 using Herd.Data.Models;
 using Herd.Data.Providers;
 using Herd.Logging;
@@ -139,13 +140,13 @@ namespace Herd.Business.UnitTests
             List<Status> list = new List<Status>();
             list.Add(status);
 
-            mockMastodonApiWrapper.Setup(d => d.GetRecentStatuses(1)).Returns(Task.FromResult<IList<Status>>(new List<Status>()));
+            mockMastodonApiWrapper.Setup(d => d.GetRecentPosts(false, false, null, null, 1)).Returns(Task.FromResult<List<MastodonPost>>(new List<MastodonPost>()));
 
             // Create the HerdApp using the mock objects
             var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
 
             // Run the HerdApp command (should execute the mock)
-            var result = herdApp.GetRecentFeedItems(new GetRecentFeedItemsCommand { MaxCount = 1 });
+            var result = herdApp.GetRecentFeedItems(new GetRecentPostsCommand { MaxCount = 1 });
 
             // Verify the result, should add more tests when dummy data is removed
             Assert.True(result?.Success);

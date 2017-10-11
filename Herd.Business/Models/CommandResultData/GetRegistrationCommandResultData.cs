@@ -2,7 +2,7 @@
 
 namespace Herd.Business.Models.CommandResultData
 {
-    public class GetRegistrationCommandResultData : CommandResultData
+    public class GetRegistrationCommandResultData : CommandResultDataObject
     {
         public Registration Registration { get; set; }
     }

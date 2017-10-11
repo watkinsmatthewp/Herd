@@ -1,5 +1,5 @@
+using Herd.Business.Models.Entities;
 using Herd.Data.Models;
-using Mastonet.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,14 +17,12 @@ namespace Herd.Business
 
         Task<UserMastodonConnectionDetails> Connect(string token);
 
-        Task<Account> GetUserAccount();
+        Task<MastodonUser> GetActiveUserMastodonAccount(bool includeFollowers = false, bool includeFollowing = false);
 
-        Task<IList<Status>> GetRecentStatuses(int limit = 30);
+        Task<List<MastodonPost>> GetRecentPosts(bool includeInReplyToPost = false, bool includeReplyPosts = false, int? maxID = null, int? sinceID = null, int? limit = 30);
 
-        Task<Status> GetStatus(int statusId);
+        Task<MastodonPost> GetPost(int statusID, bool includeReplyPosts = false, bool includeReplyToPost = false);
 
-        Task<Context> GetStatusContext(int statusId);
-
-        Task<Status> CreateNewPost(string message, Mastonet.Visibility visibility, int? replyStatusId = null, IEnumerable<int> mediaIds = null, bool sensitive = false, string spoilerText = null);
+        Task<MastodonPost> CreateNewPost(string message, MastodonPostVisibility visibility, int? replyStatusId = null, IEnumerable<int> mediaIds = null, bool sensitive = false, string spoilerText = null);
     }
 }

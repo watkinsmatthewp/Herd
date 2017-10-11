@@ -6,7 +6,7 @@ namespace Herd.Data
 {
     public static class Extensions
     {
-        static ConcurrentDictionary<Type, string> _knownModelNames = new ConcurrentDictionary<Type, string>();
+        private static ConcurrentDictionary<Type, string> _knownModelNames = new ConcurrentDictionary<Type, string>();
 
         public static string GetEntityName<T>(this T objectModel) where T : DataModel
         {

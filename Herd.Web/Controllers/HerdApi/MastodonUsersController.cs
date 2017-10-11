@@ -1,8 +1,6 @@
 ﻿using Herd.Business;
-using Herd.Business.Models.CommandResultData;
 using Herd.Business.Models.Commands;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace Herd.Web.Controllers.HerdApi
@@ -16,19 +14,8 @@ namespace Herd.Web.Controllers.HerdApi
             // TODO: Temporary lookup so that we can inject ourselves into dummy data
             if (HerdApp.DUMMY_USERS.Count == 4)
             {
-                var mastodonUser = await _mastodonApiWrapper.Value.GetUserAccount();
-                var names = mastodonUser.DisplayName.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-                HerdApp.DUMMY_USERS.Add(new SearchMastodonUsersCommandResultData.UserSearchResult
-                {
-                    MastodonDisplayName = mastodonUser.DisplayName,
-                    MastodonHeaderImageURL = mastodonUser.HeaderUrl,
-                    MastodonProfileImageURL = mastodonUser.AvatarUrl,
-                    MastodonShortBio = mastodonUser.Note,
-                    MastodonUserID = mastodonUser.Id,
-                    MastodonUserName = mastodonUser.UserName
-                });
+                HerdApp.DUMMY_USERS.Add(await _mastodonApiWrapper.Value.GetActiveUserMastodonAccount());
             }
-            // END TODO
 
             return ApiJson(App.SearchUsers(new SearchMastodonUsersCommand
             {

@@ -2,16 +2,15 @@
 using Herd.Business.Models;
 using Herd.Business.Models.CommandResultData;
 using Herd.Business.Models.Commands;
+using Herd.Business.Models.Entities;
 using Herd.Business.Models.Errors;
-using Herd.Business.Models.MastodonWrappers;
 using Herd.Core;
 using Herd.Data.Models;
 using Herd.Data.Providers;
 using Herd.Logging;
 using System;
-using System.Linq;
-using static Herd.Business.Models.CommandResultData.SearchMastodonUsersCommandResultData;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Herd.Business
 {
@@ -159,147 +158,30 @@ namespace Herd.Business
 
         #region Feed
 
-        public CommandResult<GetRecentFeedItemsCommandResultData> GetRecentFeedItems(GetRecentFeedItemsCommand getRecentFeedItemsCommand)
+        public CommandResult<GetRecentPostsCommandResultData> GetRecentFeedItems(GetRecentPostsCommand getRecentFeedItemsCommand)
         {
-            return ProcessCommand<GetRecentFeedItemsCommandResultData>(result =>
+            return ProcessCommand<GetRecentPostsCommandResultData>(result =>
             {
-                result.Data = new GetRecentFeedItemsCommandResultData
+                result.Data = new GetRecentPostsCommandResultData
                 {
-                    RecentFeedItems = _mastodonApiWrapper.GetRecentStatuses(getRecentFeedItemsCommand.MaxCount).Synchronously().Select(s => new Status
-                    {
-                        Account = new Account
-                        {
-                            AccountName = s.Account.AccountName,
-                            AvatarUrl = s.Account.AvatarUrl,
-                            DisplayName = s.Account.DisplayName,
-                            Id = s.Account.Id,
-                            ProfileUrl = s.Account.ProfileUrl,
-                            UserName = s.Account.UserName,
-                        },
-                        Content = s.Content,
-                        CreatedAt = s.CreatedAt,
-                        Favourited = s.Favourited,
-                        FavouritesCount = s.FavouritesCount,
-                        Id = s.Id,
-                        InReplyToAccountId = s.InReplyToAccountId,
-                        InReplyToId = s.InReplyToId,
-                        MediaAttachments = s.MediaAttachments,
-                        Mentions = s.Mentions,
-                        Reblog = s.Reblog,
-                        ReblogCount = s.ReblogCount,
-                        Reblogged = s.Reblogged,
-                        Sensitive = s.Sensitive,
-                        SpoilerText = s.SpoilerText,
-                        Tags = s.Tags,
-                        Uri = s.Uri,
-                        Url = s.Url,
-                        Visibility = s.Visibility,
-                    }).ToList()
+                    RecentPosts = _mastodonApiWrapper.GetRecentPosts(
+                        getRecentFeedItemsCommand.IncludeInReplyToPost,
+                        getRecentFeedItemsCommand.IncludeReplyPosts,
+                        getRecentFeedItemsCommand.MaxPostID,
+                        getRecentFeedItemsCommand.SincePostID,
+                        getRecentFeedItemsCommand.MaxCount
+                    ).Synchronously()
                 };
             });
         }
 
-        public CommandResult<GetStatusCommandResultData> GetStatus(GetStatusCommand getStatusCommand)
+        public CommandResult<GetPostCommandResultData> GetStatus(GetPostCommand getStatusCommand)
         {
-            return ProcessCommand<GetStatusCommandResultData>(result =>
+            return ProcessCommand<GetPostCommandResultData>(result =>
             {
-                var status = _mastodonApiWrapper.GetStatus(getStatusCommand.StatusId).Synchronously();
-                var context = _mastodonApiWrapper.GetStatusContext(getStatusCommand.StatusId).Synchronously();
-                result.Data = new GetStatusCommandResultData
+                result.Data = new GetPostCommandResultData
                 {
-                    Status = new Status
-                    {
-                        Account = new Account
-                        {
-                            AccountName = status.Account.AccountName,
-                            AvatarUrl = status.Account.AvatarUrl,
-                            DisplayName = status.Account.DisplayName,
-                            Id = status.Account.Id,
-                            ProfileUrl = status.Account.ProfileUrl,
-                            UserName = status.Account.UserName,
-                        },
-                        Content = status.Content,
-                        CreatedAt = status.CreatedAt,
-                        Favourited = status.Favourited,
-                        FavouritesCount = status.FavouritesCount,
-                        Id = status.Id,
-                        InReplyToAccountId = status.InReplyToAccountId,
-                        InReplyToId = status.InReplyToId,
-                        MediaAttachments = status.MediaAttachments,
-                        Mentions = status.Mentions,
-                        Reblog = status.Reblog,
-                        ReblogCount = status.ReblogCount,
-                        Reblogged = status.Reblogged,
-                        Sensitive = status.Sensitive,
-                        SpoilerText = status.SpoilerText,
-                        Tags = status.Tags,
-                        Uri = status.Uri,
-                        Url = status.Url,
-                        Visibility = status.Visibility,
-                    },
-                    StatusContext = new StatusContext
-                    {
-                        Ancestors = context.Ancestors.Select(ancestor => new Status
-                        {
-                            Account = new Account
-                            {
-                                AccountName = ancestor.Account.AccountName,
-                                AvatarUrl = ancestor.Account.AvatarUrl,
-                                DisplayName = ancestor.Account.DisplayName,
-                                Id = ancestor.Account.Id,
-                                ProfileUrl = ancestor.Account.ProfileUrl,
-                                UserName = ancestor.Account.UserName,
-                            },
-                            Content = ancestor.Content,
-                            CreatedAt = ancestor.CreatedAt,
-                            Favourited = ancestor.Favourited,
-                            FavouritesCount = ancestor.FavouritesCount,
-                            Id = ancestor.Id,
-                            InReplyToAccountId = ancestor.InReplyToAccountId,
-                            InReplyToId = ancestor.InReplyToId,
-                            MediaAttachments = ancestor.MediaAttachments,
-                            Mentions = ancestor.Mentions,
-                            Reblog = ancestor.Reblog,
-                            ReblogCount = ancestor.ReblogCount,
-                            Reblogged = ancestor.Reblogged,
-                            Sensitive = ancestor.Sensitive,
-                            SpoilerText = ancestor.SpoilerText,
-                            Tags = ancestor.Tags,
-                            Uri = ancestor.Uri,
-                            Url = ancestor.Url,
-                            Visibility = ancestor.Visibility,
-                        }).ToList(),
-                        Descendants = context.Descendants.Select(descendant => new Status
-                        {
-                            Account = new Account
-                            {
-                                AccountName = descendant.Account.AccountName,
-                                AvatarUrl = descendant.Account.AvatarUrl,
-                                DisplayName = descendant.Account.DisplayName,
-                                Id = descendant.Account.Id,
-                                ProfileUrl = descendant.Account.ProfileUrl,
-                                UserName = descendant.Account.UserName,
-                            },
-                            Content = descendant.Content,
-                            CreatedAt = descendant.CreatedAt,
-                            Favourited = descendant.Favourited,
-                            FavouritesCount = descendant.FavouritesCount,
-                            Id = descendant.Id,
-                            InReplyToAccountId = descendant.InReplyToAccountId,
-                            InReplyToId = descendant.InReplyToId,
-                            MediaAttachments = descendant.MediaAttachments,
-                            Mentions = descendant.Mentions,
-                            Reblog = descendant.Reblog,
-                            ReblogCount = descendant.ReblogCount,
-                            Reblogged = descendant.Reblogged,
-                            Sensitive = descendant.Sensitive,
-                            SpoilerText = descendant.SpoilerText,
-                            Tags = descendant.Tags,
-                            Uri = descendant.Uri,
-                            Url = descendant.Url,
-                            Visibility = descendant.Visibility,
-                        }).ToList(),
-                    }
+                    MastodonPost = _mastodonApiWrapper.GetPost(getStatusCommand.PostID, true, true).Synchronously()
                 };
             });
         }
@@ -336,7 +218,7 @@ namespace Herd.Business
             });
         }
 
-        public static List<UserSearchResult> DUMMY_USERS { get; private set; } = new List<UserSearchResult>()
+        public static List<MastodonUser> DUMMY_USERS { get; private set; } = new List<MastodonUser>()
         {
             CreateDummyUser(1, "John", "Smith", true, false),
             CreateDummyUser(2, "Jane", "Doe", false, true),
@@ -344,12 +226,12 @@ namespace Herd.Business
             CreateDummyUser(4, "Topanga", "Lawrence", false, false)
         };
 
-        public static UserSearchResult CreateDummyUser(int mastodonUserID, string firstName, string lastName, bool followsCurrentUser, bool currentUserIsFollowing)
+        public static MastodonUser CreateDummyUser(int mastodonUserID, string firstName, string lastName, bool followsRelevantUser, bool isFollowedByRelevantUser)
         {
-            return new UserSearchResult
+            return new MastodonUser
             {
-                CurrentUserIsFollowing = currentUserIsFollowing,
-                FollowsCurrentUser = followsCurrentUser,
+                IsFollowedByRelevantUser = isFollowedByRelevantUser,
+                FollowsRelevantUser = followsRelevantUser,
                 MastodonDisplayName = $"{firstName} {lastName}",
                 MastodonProfileImageURL = $"http://www.example.com/img-profile-{mastodonUserID}.jpg",
                 MastodonHeaderImageURL = $"http://www.example.com/img-header-{mastodonUserID}.jpg",
@@ -359,25 +241,25 @@ namespace Herd.Business
             };
         }
 
-        bool DummyMatches(SearchMastodonUsersCommand filter, UserSearchResult u)
+        private bool DummyMatches(SearchMastodonUsersCommand filter, MastodonUser user)
         {
-            return (!filter.UserID.HasValue || filter.UserID == u.MastodonUserID)
-                && (!filter.FollowedByUserID.HasValue || u.CurrentUserIsFollowing)
-                && (!filter.FollowsUserID.HasValue || u.FollowsCurrentUser)
-                && (string.IsNullOrWhiteSpace(filter.Name) || DummyNamesMatch(filter.Name, u.MastodonDisplayName) || DummyNamesMatch(filter.Name, u.MastodonUserName));
+            return (!filter.UserID.HasValue || filter.UserID == user.MastodonUserID)
+                && (!filter.FollowedByUserID.HasValue || user.IsFollowedByRelevantUser == true)
+                && (!filter.FollowsUserID.HasValue || user.FollowsRelevantUser == true)
+                && (string.IsNullOrWhiteSpace(filter.Name) || DummyNamesMatch(filter.Name, user.MastodonDisplayName) || DummyNamesMatch(filter.Name, user.MastodonUserName));
         }
 
-        bool DummyNamesMatch(string nameToFind, string text)
+        private bool DummyNamesMatch(string nameToFind, string text)
         {
             return text.Contains(nameToFind.Trim(), StringComparison.OrdinalIgnoreCase);
         }
 
-        #endregion
+        #endregion Mastodon Users
 
         #region Private helpers
 
         private CommandResult<D> ProcessCommand<D>(Action<CommandResult<D>> doWork)
-            where D : CommandResultData
+            where D : CommandResultDataObject
         {
             return ProcessCommand(new CommandResult<D>(), doWork);
         }

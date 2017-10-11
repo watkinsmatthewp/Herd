@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Herd.Business.Models.CommandResultData
+namespace Herd.Business.Models
 {
     public class CommandResult
     {
@@ -21,7 +21,7 @@ namespace Herd.Business.Models.CommandResultData
         public bool Success => Errors.Count == 0;
     }
 
-    public class CommandResult<T> : CommandResult where T : CommandResultData
+    public class CommandResult<T> : CommandResult where T : CommandResultDataObject
     {
         public T Data { get; set; }
     }
