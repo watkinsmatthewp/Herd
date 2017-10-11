@@ -1,4 +1,4 @@
-﻿namespace Herd.Business.Models
+﻿namespace Herd.Business.Models.Commands
 {
     public abstract class Command
     {
