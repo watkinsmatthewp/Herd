@@ -181,7 +181,7 @@ namespace Herd.Business
             {
                 result.Data = new GetPostCommandResultData
                 {
-                    MastodonPost = _mastodonApiWrapper.GetPost(getStatusCommand.PostID, true, true).Synchronously()
+                    MastodonPost = _mastodonApiWrapper.GetPost(getStatusCommand.PostID, getStatusCommand.IncludeAncestors, getStatusCommand.IncludeDescendants).Synchronously()
                 };
             });
         }
@@ -236,14 +236,14 @@ namespace Herd.Business
                 MastodonProfileImageURL = $"http://www.example.com/img-profile-{mastodonUserID}.jpg",
                 MastodonHeaderImageURL = $"http://www.example.com/img-header-{mastodonUserID}.jpg",
                 MastodonShortBio = $"What can I say except my name is {firstName}? Hello!",
-                MastodonUserID = mastodonUserID,
+                MastodonUserId = mastodonUserID,
                 MastodonUserName = $"{firstName}{lastName[0]}"
             };
         }
 
         private bool DummyMatches(SearchMastodonUsersCommand filter, MastodonUser user)
         {
-            return (!filter.UserID.HasValue || filter.UserID == user.MastodonUserID)
+            return (!filter.UserID.HasValue || filter.UserID == user.MastodonUserId)
                 && (!filter.FollowedByUserID.HasValue || user.IsFollowedByRelevantUser == true)
                 && (!filter.FollowsUserID.HasValue || user.FollowsRelevantUser == true)
                 && (string.IsNullOrWhiteSpace(filter.Name) || DummyNamesMatch(filter.Name, user.MastodonDisplayName) || DummyNamesMatch(filter.Name, user.MastodonUserName));

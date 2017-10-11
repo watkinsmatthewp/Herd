@@ -16,7 +16,7 @@ export class StatusComponent implements OnInit {
     constructor(private router: Router, private timelineAlert: TimelineAlertService) {}
 
     ngOnInit() {
-        if (this.status.Sensitive === true) {
+        if (this.status.IsSensitive === true) {
             this.showBlur = true;
         }
     }

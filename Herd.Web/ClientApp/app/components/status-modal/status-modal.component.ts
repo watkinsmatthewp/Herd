@@ -18,11 +18,11 @@ export class StatusModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit(): void {
         if (this.statusId) {
-            this.mastodonService.getStatus(this.statusId)
+            this.mastodonService.getStatus(this.statusId, true, true)
                 .subscribe(data => {
-                    this.status = data.Status;
-                    this.status.Ancestors = data.StatusContext.Ancestors;
-                    this.status.Descendants = data.StatusContext.Descendants;
+                    this.status = data;
+                    this.status.Ancestors = data.Ancestors;
+                    this.status.Descendants = data.Descendants;
                 }, error => {
                     this.alertService.error(error);
                 });

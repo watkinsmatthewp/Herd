@@ -52,13 +52,10 @@ describe('Service: Mastodon Service', () => {
                 mastodonService.getHomeFeed().subscribe((response) => {
                     expect(response[0].Content).toBe("Content1");
                     expect(response[0].Id).toBe(1);
-                    expect(response[0].Url).toBe('example.com/1');
                     expect(response[1].Content).toBe("Content2");
                     expect(response[1].Id).toBe(2);
-                    expect(response[1].Url).toBe('example.com/2');
                     expect(response[2].Content).toBe("Content3");
                     expect(response[2].Id).toBe(3);
-                    expect(response[2].Url).toBe('example.com/3');
                 });
             })
         );

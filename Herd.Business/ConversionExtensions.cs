@@ -54,9 +54,9 @@ namespace Herd.Business
         {
             MastodonDisplayName = account.DisplayName,
             MastodonHeaderImageURL = account.HeaderUrl,
-            MastodonProfileImageURL = account.ProfileUrl,
+            MastodonProfileImageURL = account.AvatarUrl,
             MastodonShortBio = account.Note,
-            MastodonUserID = account.Id,
+            MastodonUserId = account.Id,
             MastodonUserName = account.UserName
         };
 
@@ -64,28 +64,23 @@ namespace Herd.Business
 
         #region Posts
 
-        public static MastodonPost ToPost(this Status status, Status inReplyToStatus = null, IEnumerable<Status> replyStatuses = null)
+        public static MastodonPost ToPost(this Status status)
         {
             var post = new MastodonPost
             {
                 Author = status.Account.ToMastodonUser(),
                 Content = status.Content,
-                CreatedOnUTC = status.CreatedAt, // TODO: UTC already?
-                ID = status.Id,
-                InReplyToPostID = status.InReplyToId,
+                CreatedOnUTC = status.CreatedAt,
+                FavouritesCount = status.FavouritesCount,
+                Id = status.Id,
+                InReplyToPostId = status.InReplyToId,
+                IsFavourited = status.Favourited,
+                IsReblogged = status.Reblogged,
+                IsSensitive = status.Sensitive,
+                ReblogCount = status.ReblogCount,
                 SpoilerText = status.SpoilerText,
                 Visibility = status.Visibility.ToMastodonPostVisibility(),
-                IsSensitive = status.Sensitive
             };
-
-            if (inReplyToStatus != null)
-            {
-                post.InReplyToPost = inReplyToStatus.ToPost();
-            }
-            if (replyStatuses != null)
-            {
-                post.Replies = replyStatuses.Select(s => s.ToPost(status)).ToList();
-            }
 
             return post;
         }

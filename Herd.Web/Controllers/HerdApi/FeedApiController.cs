@@ -12,9 +12,11 @@ namespace Herd.Web.Controllers.HerdApi
         public IActionResult NewItems() => ApiJson(App.GetRecentFeedItems(new GetRecentPostsCommand()));
 
         [HttpGet("get_status")]
-        public IActionResult GetStatus(int statusId) => ApiJson(App.GetStatus(new GetPostCommand
+        public IActionResult GetStatus(int statusId, bool includeAncestors, bool includeDescendants) => ApiJson(App.GetStatus(new GetPostCommand
         {
-            PostID = statusId
+            PostID = statusId,
+            IncludeAncestors = includeAncestors,
+            IncludeDescendants = includeDescendants,
         }));
 
         [HttpPost("new_post")]

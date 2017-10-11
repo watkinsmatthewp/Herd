@@ -24,10 +24,9 @@ export class HomePage implements OnInit {
         this.loading = true;
         this.alertService.info("Retrieving home timeline ...");
         this.mastodonService.getHomeFeed()
-            .finally(() => {
-                this.loading = false;
-            })
+            .finally(() => this.loading = false)
             .subscribe(feed => {
+                console.log("statusFeed", feed);
                 this.homeFeed = feed;
                 this.alertService.success("Finished retrieving home timeline.");
             }, error => {
@@ -39,12 +38,12 @@ export class HomePage implements OnInit {
         this.loading = true;
         this.renderSpecificModal = false;
         this.alertService.info("Retreiving status info ...");
-        this.mastodonService.getStatus(statusId)
+        this.mastodonService.getStatus(statusId, true, true)
             .finally(() =>  this.loading = false)
             .subscribe(data => {
-                this.specificStatus = data.Status;
-                this.specificStatus.Ancestors = data.StatusContext.Ancestors;
-                this.specificStatus.Descendants = data.StatusContext.Descendants;
+                this.specificStatus = data;
+                this.specificStatus.Ancestors = data.Ancestors;
+                this.specificStatus.Descendants = data.Descendants;
                 this.renderSpecificModal = true;
                 this.alertService.success("Retrieved status.")
             }, error => {
@@ -56,10 +55,10 @@ export class HomePage implements OnInit {
         this.loading = true;
         this.renderReplyModal = false;
         this.alertService.info("Retreiving status info ...");
-        this.mastodonService.getStatus(statusId)
+        this.mastodonService.getStatus(statusId, false, false)
             .finally(() => this.loading = false)
             .subscribe(data => {
-                this.replyStatus = data.Status;
+                this.replyStatus = data;
                 this.renderReplyModal = true;
                 this.alertService.success("Retrieved status.")
             }, error => {

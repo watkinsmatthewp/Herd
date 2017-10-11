@@ -1,25 +1,21 @@
 ﻿import { Account } from './Account';
+import { Visibility } from './Visibility';
 
 export class Status {
-    Account: Account;
+    Author: Account;
     Content: string;
-    CreatedAt: Date;
-    Favourited: boolean;
+    CreatedOnUTC: Date;
     FavouritesCount: number;
     Id: number;
-    InReplyToAccountId: number;
-    InReplyToId: number;
-    //IEnumerable < Attachment > MediaAttachments ;
-    //IEnumerable < Mention > Mentions;
-    Reblog: Status;
+    InReplyToPostId: number;
+    IsFavourited: boolean;
+    IsReblogged: boolean;
+    IsSensitive: boolean;
     ReblogCount: number;
-    Reblogged: boolean;
-    Sensitive: boolean;
     SpoilerText: string;
-    //IEnumerable < Tag > Tags;
-    Uri: string;
-    Url: string;
-    //Mastonet.Visibility Visibility;
+    Visibility: Visibility;
+
+    // Context
     Ancestors: Status[];
     Descendants: Status[];
 }

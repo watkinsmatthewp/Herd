@@ -105,12 +105,12 @@ namespace Herd.Business
             var mastodonUser = (await mastodonClient.GetCurrentUser()).ToMastodonUser();
             if (includeFollowers)
             {
-                mastodonUser.Followers = (await mastodonClient.GetAccountFollowers(mastodonUser.MastodonUserID))
+                mastodonUser.Followers = (await mastodonClient.GetAccountFollowers(mastodonUser.MastodonUserId))
                     .Select(u => u.ToMastodonUser().And(mu => mu.FollowsRelevantUser = true)).ToList();
             }
             if (includeFollowing)
             {
-                mastodonUser.Following = (await mastodonClient.GetAccountFollowing(mastodonUser.MastodonUserID))
+                mastodonUser.Following = (await mastodonClient.GetAccountFollowing(mastodonUser.MastodonUserId))
                     .Select(u => u.ToMastodonUser().And(mu => mu.IsFollowedByRelevantUser = true)).ToList();
             }
             return mastodonUser;
@@ -133,11 +133,11 @@ namespace Herd.Business
             return posts;
         }
 
-        public async Task<MastodonPost> GetPost(int statusID, bool includeReplyPosts = false, bool includeReplyToPost = false)
+        public async Task<MastodonPost> GetPost(int statusID, bool includeAncestors = false, bool includeDescendants = false)
         {
             var mastodonClient = BuildMastodonApiClient();
             var status = await mastodonClient.GetStatus(statusID);
-            return await GetContextualPost(mastodonClient, status, includeReplyPosts, includeReplyToPost);
+            return await GetContextualPost(mastodonClient, status, includeAncestors, includeDescendants);
         }
 
         public async Task<MastodonPost> CreateNewPost(string message, MastodonPostVisibility visibility, int? replyStatusId = null, IEnumerable<int> mediaIds = null, bool sensitive = false, string spoilerText = null)
@@ -149,22 +149,22 @@ namespace Herd.Business
 
         #region Private helpers
 
-        private async Task<MastodonPost> GetContextualPost(MastodonClient mastodonClient, Status mastodonStatus, bool includeReplyPosts, bool includeReplyToPost)
+        private async Task<MastodonPost> GetContextualPost(MastodonClient mastodonClient, Status mastodonStatus, bool includeAncestors, bool includeDescendants)
         {
             var post = mastodonStatus.ToPost();
-            var setReplyToPost = includeReplyToPost && mastodonStatus.InReplyToId.HasValue;
-            var setReplyPosts = includeReplyPosts;
+            var setAncestors = includeAncestors && mastodonStatus.InReplyToId.HasValue;
+            var setDescendants = includeDescendants;
 
-            if (setReplyToPost || setReplyPosts)
+            if (setAncestors || setDescendants)
             {
                 var statusContext = await mastodonClient.GetStatusContext(mastodonStatus.Id);
-                if (setReplyToPost)
+                if (setAncestors)
                 {
-                    post.InReplyToPost = statusContext.Ancestors.FirstOrDefault()?.ToPost();
+                    post.Ancestors = statusContext.Ancestors.Select(s => s.ToPost()).ToList();
                 }
-                if (setReplyPosts)
+                if (setDescendants)
                 {
-                    post.Replies = statusContext.Descendants.Select(s => s.ToPost()).ToList();
+                    post.Descendants = statusContext.Descendants.Select(s => s.ToPost()).ToList();
                 }
             }
 

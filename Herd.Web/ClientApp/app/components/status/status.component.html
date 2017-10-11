@@ -3,15 +3,15 @@
         <div class="row">
             <div class="col-sm-6 status-content">
                 <div class="status-header">
-                    <img class="profile-picture" src="{{ status.Account.AvatarUrl }}" />
-                    <a href="{{ status.Account.Url }}">
-                        <span class="author-name">{{ status.Account.DisplayName }}</span>
-                        <span class="username">@{{ status.Account.UserName }}</span>
+                    <img class="profile-picture" src="{{ status.Author.MastodonProfileImageURL }}" />
+                    <a href="/todo">
+                        <span class="author-name">{{ status.Author.MastodonDisplayName }}</span>
+                        <span class="username">@{{ status.Author.MastodonUserName }}</span>
                     </a>
-                    <span class="time-stamp"> | {{ status.CreatedAt | date: 'short' }}</span>
+                    <span class="time-stamp"> | {{ status.CreatedOnUTC | date: 'short' }}</span>
                 </div>
                 <div class="status-body">
-                    <p *ngIf="status.Sensitive">{{ status.SpoilerText }}</p>
+                    <p *ngIf="status.IsSensitive">{{ status.SpoilerText }}</p>
                     <div [ngClass]="{'status-blurred': showBlur }" (click)="turnOffBlur($event)">
                         <p  [innerHTML]="status.Content"></p>
                     </div>
@@ -21,11 +21,11 @@
                         <fa name="comments"></fa>
                     </span>
                     <span class="btn retweet-btn" title="Retweet" (click)="retweet()">
-                        <fa name="retweet" [ngClass]="{'retweet-color': status.Reblogged }"></fa><span>{{ status.ReblogCount }}</span>
+                        <fa name="retweet" [ngClass]="{'retweet-color': status.IsReblogged }"></fa><span>{{ status.ReblogCount }}</span>
                     </span>
                     <span class="btn like-btn" title="Like" (click)="like()">
-                        <fa *ngIf="!status.Favourited" name="heart-o"></fa>
-                        <fa *ngIf="status.Favourited" name="heart" class="heart-color"></fa>
+                        <fa *ngIf="!status.IsFavourited" name="heart-o"></fa>
+                        <fa *ngIf="status.IsFavourited" name="heart" class="heart-color"></fa>
                         <span>{{ status.FavouritesCount }}</span>
                     </span>
                     <span class="btn message-btn" title="Direct Message" (click)="directMessage()">

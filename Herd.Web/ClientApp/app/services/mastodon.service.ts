@@ -4,6 +4,7 @@ import 'rxjs/Rx';
 
 import { HttpClientService } from './http-client.service';
 import { Status } from '../models/mastodon';
+import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class MastodonService {
@@ -11,14 +12,17 @@ export class MastodonService {
     constructor(private http: Http, private httpClient: HttpClientService) {}
 
     // Get a list of posts for the home feed
-    getHomeFeed() {
+    getHomeFeed(): Observable<Status[]> {
         return this.httpClient.get('api/feed/new_items')
-            .map(response => response.RecentFeedItems as Status[])
+            .map(response => response.RecentPosts as Status[]);
     }
 
-    getStatus(statusId: number) {
-        let queryString = '?statusId=' + statusId;
-        return this.httpClient.get('api/feed/get_status' + queryString);
+    getStatus(statusId: number, includeAncestors: boolean, includeDescendants: boolean): Observable<Status> {
+        let queryString = '?statusId=' + statusId
+                        + '&includeAncestors=' + includeAncestors
+                        + '&includeDescendants=' + includeDescendants;
+        return this.httpClient.get('api/feed/get_status' + queryString)
+            .map(response => response.MastodonPost as Status);
     }
 
     /**
