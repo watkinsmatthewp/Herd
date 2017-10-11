@@ -2,9 +2,10 @@
 import { NgForm } from '@angular/forms';
 
 
-import { MastodonService, AlertService } from "../../services";
+import { MastodonService } from "../../services";
 import { Visibility } from '../../models/mastodon';
 import { Observable } from "rxjs/Observable";
+import { NotificationsService } from "angular2-notifications";
 
 @Component({
     selector: 'status-form',
@@ -48,7 +49,7 @@ export class StatusFormComponent {
     };
     
 
-    constructor(private mastodonService: MastodonService, private alertService: AlertService) {}
+    constructor(private mastodonService: MastodonService, private alertService: NotificationsService) {}
 
     toggleContentWarning(): void {
         this.model.contentWarning = !this.model.contentWarning
@@ -60,7 +61,7 @@ export class StatusFormComponent {
                 this.resetFormDefaults(form);
             })
             .subscribe(response => {
-                this.alertService.success("Successfully posted an update.");
+                this.alertService.success("Successfully", "posted a status.");
             }, error => {
                 this.alertService.error(error.error);
             });

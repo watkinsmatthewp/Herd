@@ -5,4 +5,11 @@ import { Component } from '@angular/core';
     templateUrl: './app.page.html',
     styleUrls: ['./app.page.css']
 })
-export class AppPage {}
+export class AppPage {
+    public options = {
+        position: ["bottom", "right"],
+        timeOut: 5000,
+        lastOnBottom: true,
+        animate: "fromLeft"
+    }
+}

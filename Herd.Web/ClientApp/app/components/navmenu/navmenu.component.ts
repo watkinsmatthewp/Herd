@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { AuthenticationService } from '../../services';
+import { NotificationsService } from "angular2-notifications";
 
 @Component({
     selector: 'nav-menu',
@@ -10,7 +11,7 @@ import { AuthenticationService } from '../../services';
 export class NavMenuComponent {
     model: any = {};
 
-    constructor(private authService: AuthenticationService) { }
+    constructor(private authService: AuthenticationService, private alertService: NotificationsService) { }
 
     isAuthenticated(): boolean {
         return this.authService.isAuthenticated();
@@ -22,5 +23,10 @@ export class NavMenuComponent {
 
     search() {
         alert(this.model.searchItem);
+    }
+
+    logout() {
+        this.alertService.remove();
+        this.alertService.success("Successfully", "logged out.")
     }
 }

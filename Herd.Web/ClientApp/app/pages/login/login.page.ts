@@ -1,9 +1,11 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NotificationsService } from "angular2-notifications";
 
-import { AlertService, AuthenticationService } from '../../services';
+import { AuthenticationService } from '../../services';
 import { Storage } from '../../models';
+
 
 @Component({
     selector: 'login',
@@ -19,7 +21,7 @@ export class LoginPage implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
-        private alertService: AlertService,
+        private alertService: NotificationsService,
         private localStorage: Storage) { }
 
     ngOnInit() {
@@ -41,7 +43,7 @@ export class LoginPage implements OnInit {
             .subscribe(response => {
                 let user = response.User;
                 this.localStorage.setItem('currentUser', JSON.stringify(user));
-                this.alertService.success("Successfully Logged In", true);
+                this.alertService.success("Successfully", "Logged In.", { showProgressBar: false, pauseOnHover: false });
 
                 // Reroute user depending on if they picked a mastodon instance yet.
                 if (user && user.ID && !user.MastodonConnection) {

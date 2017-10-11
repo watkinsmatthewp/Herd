@@ -38,7 +38,7 @@
                     <ul class="dropdown-menu">
                         <li [routerLinkActive]="['link-active']"><a [routerLink]="['/profile']"><fa name="user"></fa> Profile</a></li>
                         <li role="separator" class="divider"></li>
-                        <li [routerLinkActive]="['link-active']"><a [routerLink]="['/login']"><fa name="sign-out"></fa> Logout</a></li>
+                        <li><a [routerLink]="['/login']" (click)="logout()"><fa name="sign-out"></fa> Logout</a></li>
                     </ul>
                 </li>
             </ul>

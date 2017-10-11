@@ -2,8 +2,9 @@
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { AlertService, AuthenticationService } from '../../services';
+import { AuthenticationService } from '../../services';
 import { Storage } from '../../models';
+import { NotificationsService } from "angular2-notifications";
 
 @Component({
     selector: 'instance-picker',
@@ -18,7 +19,7 @@ export class InstancePickerComponent {
     constructor(
         private router: Router,
         private authenticationService: AuthenticationService,
-        private alertService: AlertService,
+        private alertService: NotificationsService,
         private localStorage: Storage) { }
 
     getOAuthToken() {
@@ -45,7 +46,7 @@ export class InstancePickerComponent {
         this.authenticationService.submitOAuthToken(this.model.oAuthToken, this.registrationID)
             .finally(() => this.loading = false)
             .subscribe(data => {
-                this.alertService.success("Successfully linked with " + this.model.instance, true);
+                this.alertService.success("Successfully", "linked with " + this.model.instance);
                 this.localStorage.setItem('connectedToMastodon', true);
                 this.router.navigateByUrl('/home');
             }, error => {

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { Routes, RouterModule, CanActivate } from '@angular/router';
+import { SimpleNotificationsModule } from 'angular2-notifications'
 
 // Pages
 import {
@@ -44,7 +45,7 @@ import { SafePipe } from './pipes';
     ],
     imports: [
         Angular2FontawesomeModule, CommonModule,
-        HttpModule, FormsModule,
+        HttpModule, FormsModule, SimpleNotificationsModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             // Admin Page 
