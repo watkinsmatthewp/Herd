@@ -10,6 +10,8 @@ using Herd.Data.Providers;
 using Herd.Logging;
 using System;
 using System.Linq;
+using static Herd.Business.Models.CommandResultData.SearchMastodonUsersCommandResultData;
+using System.Collections.Generic;
 
 namespace Herd.Business
 {
@@ -315,6 +317,62 @@ namespace Herd.Business
         }
 
         #endregion Feed
+
+        #region Mastodon Users
+
+        public CommandResult<SearchMastodonUsersCommandResultData> SearchUsers(SearchMastodonUsersCommand searchMastodonUsersCommand)
+        {
+            return ProcessCommand<SearchMastodonUsersCommandResultData>(result =>
+            {
+                if (searchMastodonUsersCommand.IsGlobalSearch)
+                {
+                    throw new UserErrorException("Please specify at least one search criterion");
+                }
+
+                result.Data = new SearchMastodonUsersCommandResultData
+                {
+                    Users = DUMMY_USERS.Where(u => DummyMatches(searchMastodonUsersCommand, u)).ToList()
+                };
+            });
+        }
+
+        public static List<UserSearchResult> DUMMY_USERS { get; private set; } = new List<UserSearchResult>()
+        {
+            CreateDummyUser(1, "John", "Smith", true, false),
+            CreateDummyUser(2, "Jane", "Doe", false, true),
+            CreateDummyUser(3, "Cory", "Matthews", true, true),
+            CreateDummyUser(4, "Topanga", "Lawrence", false, false)
+        };
+
+        public static UserSearchResult CreateDummyUser(int mastodonUserID, string firstName, string lastName, bool followsCurrentUser, bool currentUserIsFollowing)
+        {
+            return new UserSearchResult
+            {
+                CurrentUserIsFollowing = currentUserIsFollowing,
+                FollowsCurrentUser = followsCurrentUser,
+                MastodonDisplayName = $"{firstName} {lastName}",
+                MastodonProfileImageURL = $"http://www.example.com/img-profile-{mastodonUserID}.jpg",
+                MastodonHeaderImageURL = $"http://www.example.com/img-header-{mastodonUserID}.jpg",
+                MastodonShortBio = $"What can I say except my name is {firstName}? Hello!",
+                MastodonUserID = mastodonUserID,
+                MastodonUserName = $"{firstName}{lastName[0]}"
+            };
+        }
+
+        bool DummyMatches(SearchMastodonUsersCommand filter, UserSearchResult u)
+        {
+            return (!filter.UserID.HasValue || filter.UserID == u.MastodonUserID)
+                && (!filter.FollowedByUserID.HasValue || u.CurrentUserIsFollowing)
+                && (!filter.FollowsUserID.HasValue || u.FollowsCurrentUser)
+                && (string.IsNullOrWhiteSpace(filter.Name) || DummyNamesMatch(filter.Name, u.MastodonDisplayName) || DummyNamesMatch(filter.Name, u.MastodonUserName));
+        }
+
+        bool DummyNamesMatch(string nameToFind, string text)
+        {
+            return text.Contains(nameToFind.Trim(), StringComparison.OrdinalIgnoreCase);
+        }
+
+        #endregion
 
         #region Private helpers
 

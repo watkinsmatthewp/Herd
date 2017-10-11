@@ -29,5 +29,8 @@ namespace Herd.Business
         CommandResult<GetStatusCommandResultData> GetStatus(GetStatusCommand getStatusCommand);
 
         CommandResult CreateNewPost(CreateNewPostCommand createNewPostCommand);
+
+        // Mastodon users
+        CommandResult<SearchMastodonUsersCommandResultData> SearchUsers(SearchMastodonUsersCommand searchMastodonUsersCommand);
     }
 }

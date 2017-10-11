@@ -36,5 +36,10 @@ namespace Herd.Core
         {
             return SHA256.Create().ComputeHash(originalValue);
         }
+
+        public static bool Contains(this string containingText, string searchString, StringComparison stringComparison)
+        {
+            return containingText.IndexOf(searchString, stringComparison) >= 0;
+        }
     }
 }
