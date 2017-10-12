@@ -1,4 +1,5 @@
-﻿using Herd.Business.Models.Commands;
+﻿using Herd.Business.ApiWrappers;
+using Herd.Business.Models.Commands;
 using Herd.Business.Models.Entities;
 using Herd.Data.Models;
 using Herd.Data.Providers;
