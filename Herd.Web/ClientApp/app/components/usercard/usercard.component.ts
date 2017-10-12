@@ -1,6 +1,6 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, Input } from '@angular/core';
 
-import { MastodonService } from "../../services";
+import { MastodonService, TimelineAlertService } from "../../services";
 import { UserCard } from '../../models/mastodon';
 
 
@@ -10,13 +10,18 @@ import { UserCard } from '../../models/mastodon';
     styleUrls: ['./usercard.component.css']
 })
 export class UserCardComponent implements OnInit {
+    @Input() userCard: UserCard;
+    isFollowing: boolean = false;
 
-    userCard: UserCard;
-    isFollowing: boolean;
-
-    constructor() { }
+    constructor(private timelineAlert: TimelineAlertService) {  }
 
     ngOnInit() {
+        if (this.userCard.FollowsCurrentUser === true) {
+            this.isFollowing = true;
+        }
+    }
+
+    follow() {
 
     }
 

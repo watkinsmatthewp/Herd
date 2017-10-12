@@ -2,6 +2,12 @@
 import { Relationship } from './Relationship';
 
 export class UserCard {
-    account: Account;
-    relationship: Relationship;
+    MastodonUserId: number;
+    MastodonUserName: string;
+    MastodonDisplayName: string;
+    MastodonProfileImageURL: string;
+    MastodonHeaderImageUrl: string;
+    MastodonShortBio: string;
+    FollowsCurrentUser: boolean;
+    CurrentUserIsFollowing: boolean;
 }
