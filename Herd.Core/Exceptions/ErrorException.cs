@@ -38,13 +38,10 @@ namespace Herd.Core.Exceptions
             _error = BuildError(error);
         }
 
-        protected abstract string ErrorType { get; }
-
         T BuildError(T error)
         {
             error.Id = ERROR_ID_GENERATOR.Next();
             error.Message = Message;
-            error.Type = ErrorType;
             return error;
         }
     }
