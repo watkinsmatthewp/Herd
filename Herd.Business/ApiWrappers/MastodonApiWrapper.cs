@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Herd.Business
+namespace Herd.Business.ApiWrappers
 {
     public class MastodonApiWrapper : IMastodonApiWrapper
     {

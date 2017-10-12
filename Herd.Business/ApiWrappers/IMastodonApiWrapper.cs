@@ -3,7 +3,7 @@ using Herd.Data.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Herd.Business
+namespace Herd.Business.ApiWrappers
 {
     public interface IMastodonApiWrapper
     {

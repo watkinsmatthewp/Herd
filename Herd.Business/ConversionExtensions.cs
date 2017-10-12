@@ -1,4 +1,5 @@
 ﻿using Herd.Business.Models.Entities;
+using Herd.Business.ApiWrappers;
 using Herd.Data.Models;
 using Mastonet;
 using Mastonet.Entities;

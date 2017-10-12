@@ -1,7 +1,7 @@
 ﻿using Herd.Business.Models.Errors;
 using System;
 
-namespace Herd.Business.App.Exceptions
+namespace Herd.Business.Models.Exceptions
 {
     public class SystemErrorException : ErrorException<SystemError>
     {
