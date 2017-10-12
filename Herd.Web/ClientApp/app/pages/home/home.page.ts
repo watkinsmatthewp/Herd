@@ -31,7 +31,7 @@ export class HomePage implements OnInit {
                 this.homeFeed = feed;
                 this.alertService.success("Finished",  "retrieving home timeline.");
             }, error => {
-                this.alertService.error(error.error);
+                this.alertService.error("Error", error.error);
             });
     }
 
@@ -49,7 +49,7 @@ export class HomePage implements OnInit {
                 this.renderSpecificModal = true;
                 this.alertService.success("Finished", "retrieving status.")
             }, error => {
-                this.alertService.error(error.error);
+                this.alertService.error("Error", error.error);
             });
     }
 
@@ -65,7 +65,7 @@ export class HomePage implements OnInit {
                 this.renderReplyModal = true;
                 this.alertService.success("Finished", "retrieving status.")
             }, error => {
-                this.alertService.error(error.error);
+                this.alertService.error("Error", error.error);
             });
     }
 

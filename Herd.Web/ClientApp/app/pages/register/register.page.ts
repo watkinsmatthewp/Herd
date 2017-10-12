@@ -26,7 +26,7 @@ export class RegisterPage {
                 this.alertService.success('Successful',  'registration');
                 this.router.navigate(['/login'], { queryParams: { email: this.model.email } });
             }, error => {
-                this.alertService.error(error.error);
+                this.alertService.error("Error", error.error);
             });
     }
 }
