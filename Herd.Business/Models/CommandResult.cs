@@ -1,4 +1,4 @@
-﻿using Herd.Business.Models.Errors;
+﻿using Herd.Core.Errors;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,7 +17,7 @@ namespace Herd.Business.Models
         public IEnumerable<SystemError> SystemErrors => Errors.OfType<SystemError>();
         public IEnumerable<UserError> UserErrors => Errors.OfType<UserError>();
         public bool HasSystemErrors => SystemErrors.Any();
-        public bool HasUserErrors => SystemErrors.Any();
+        public bool HasUserErrors => UserErrors.Any();
         public bool Success => Errors.Count == 0;
     }
 

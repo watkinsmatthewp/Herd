@@ -1,10 +1,8 @@
-﻿using Herd.Business.Models.Exceptions;
-using Herd.Business.Models;
+﻿using Herd.Business.Models;
 using Herd.Business.ApiWrappers;
 using Herd.Business.Models.CommandResultData;
 using Herd.Business.Models.Commands;
 using Herd.Business.Models.Entities;
-using Herd.Business.Models.Errors;
 using Herd.Core;
 using Herd.Data.Models;
 using Herd.Data.Providers;
@@ -12,6 +10,8 @@ using Herd.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Herd.Core.Exceptions;
+using Herd.Core.Errors;
 
 namespace Herd.Business
 {
