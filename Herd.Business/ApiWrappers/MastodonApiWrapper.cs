@@ -106,12 +106,12 @@ namespace Herd.Business.ApiWrappers
             if (includeFollowers)
             {
                 mastodonUser.Followers = (await mastodonClient.GetAccountFollowers(mastodonUser.MastodonUserId))
-                    .Select(u => u.ToMastodonUser().And(mu => mu.FollowsRelevantUser = true)).ToList();
+                    .Select(u => u.ToMastodonUser().Then(mu => mu.FollowsRelevantUser = true)).ToList();
             }
             if (includeFollowing)
             {
                 mastodonUser.Following = (await mastodonClient.GetAccountFollowing(mastodonUser.MastodonUserId))
-                    .Select(u => u.ToMastodonUser().And(mu => mu.IsFollowedByRelevantUser = true)).ToList();
+                    .Select(u => u.ToMastodonUser().Then(mu => mu.IsFollowedByRelevantUser = true)).ToList();
             }
             return mastodonUser;
         }

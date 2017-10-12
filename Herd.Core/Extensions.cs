@@ -42,7 +42,7 @@ namespace Herd.Core
             return containingText.IndexOf(searchString, stringComparison) >= 0;
         }
 
-        public static T And<T>(this T obj, Action<T> doWork)
+        public static T Then<T>(this T obj, Action<T> doWork)
         {
             doWork(obj);
             return obj;
