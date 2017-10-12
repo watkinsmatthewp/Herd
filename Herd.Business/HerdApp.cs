@@ -1,5 +1,6 @@
-﻿using Herd.Business.App.Exceptions;
+﻿using Herd.Business.Models.Exceptions;
 using Herd.Business.Models;
+using Herd.Business.ApiWrappers;
 using Herd.Business.Models.CommandResultData;
 using Herd.Business.Models.Commands;
 using Herd.Business.Models.Entities;

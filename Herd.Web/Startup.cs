@@ -1,4 +1,5 @@
 using Herd.Business;
+using Herd.Business.ApiWrappers;
 using Herd.Business.Models.Commands;
 using Herd.Data.Providers;
 using Herd.Logging;
