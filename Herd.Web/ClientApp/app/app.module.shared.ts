@@ -1,10 +1,12 @@
-import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { Routes, RouterModule, CanActivate } from '@angular/router';
-import { SimpleNotificationsModule } from 'angular2-notifications'
+
+// External Dependencies
+import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
+import { SimpleNotificationsModule } from 'angular2-notifications';
 
 // Pages
 import {
