@@ -1,2 +1,27 @@
-﻿body {
+﻿.usercard-content {
+    width: 100%;
+}
+
+.profile-header-picture {
+    width: 120px;
+    height: 120px;
+}
+
+.profile-picture {
+    width: 60px;
+    height: 60px;
+}
+
+.display-name {
+    font-weight: bold;
+    font-size: 120%;
+}
+
+.username {
+    font-size: 100%;
+    font-style: italic;
+}
+
+.user-bio {
+    margin: 0.5em;
 }

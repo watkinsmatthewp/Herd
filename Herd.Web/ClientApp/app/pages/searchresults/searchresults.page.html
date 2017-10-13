@@ -1,4 +1,11 @@
-﻿<hr />
-<div class="text-center">
-    <h3>Search Results</h3>
+﻿<!-- Middle Column -->
+
+<div class="row">
+    <p>Are you even loading?</p>
+    <div class="col-sm-4">
+        <div *ngFor="let userCard of userCards">
+            <usercard [userCard]="userCard"></usercard>
+        </div>
+    </div>
+
 </div>

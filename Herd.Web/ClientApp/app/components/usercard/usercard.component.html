@@ -1,3 +1,21 @@
-﻿<div class="text-center">
-    <h3>User Card</h3>
+﻿<div class="row">
+    <div class="usercard-content">
+        <div class="usercard-header">
+            <img class="profile-header-picture" src="{{ userCard.MastodonHeaderImageUrl }}" />
+            <img class="profile-picture" src="{{ usercard.MastodonProfileImageURL }}" />
+            <button type="submit" class="btn btn-primary">
+
+            </button>
+       </div>
+        <div>
+        <a href="/todo">
+            <span class="display-name">{{ userCard.MastodonDisplayName }}</span>
+            <span class="username">@{{ userCard.MastodonUserName }}</span>
+        </a>
+        </div>
+        <div class="user-bio">
+            <p>{{usercard.MastodonShortBio}}</p>
+        </div>
+
+    </div>
 </div>

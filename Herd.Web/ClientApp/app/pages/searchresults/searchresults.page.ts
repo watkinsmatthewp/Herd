@@ -9,14 +9,19 @@ import { UserCard } from "../../models/mastodon";
 })
 export class SearchResultsPage implements OnInit {
 
-    @Input() search: string;
+    search: string;
     userCards: UserCard[]; // List of users that the search found
 
-    // Keeping simple for now
+    // Keeping  it simple for now
     constructor(private mastodonService: MastodonService) { }
 
     ngOnInit(): void {
-        //this.mastodonService.searchUser(search)
-            //.subscribe
+        // hard coding string here for testing
+        this.mastodonService.searchUser("Thomas Ortiz")
+            .subscribe(users => {
+                this.userCards = users;
+            });
     }
+
+    
 }
