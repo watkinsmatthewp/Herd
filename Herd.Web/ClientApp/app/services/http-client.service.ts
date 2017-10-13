@@ -97,10 +97,29 @@ export class HttpClientService {
         let json = res.text() ? res.json() : {};
         if (json.Success == false) {
             let errors: string = "";
-            let arr = json.Errors;
-            // aggregate the errors if multiple
-            for (var i = 0, len = arr.length; i < len; i++) {
-                errors += arr[i].Message;
+            let systemErrors = json.SystemErrors;
+            let userErrors = json.UserErrors;
+            // aggregate User Errors
+            if (userErrors.length > 0) {
+                errors += "User Errors: "
+                for (var i = 0, len = userErrors.length; i < len; i++) {
+                    errors += userErrors[i].Message
+                    if (i < systemErrors.length - 1) {
+                        errors += ",\n";
+                    }
+                }
+            }
+
+            // aggregate System Errors
+            if (systemErrors.length > 0) {
+                errors += "System Error Codes: [";
+                for (var i = 0, len = systemErrors.length; i < len; i++) {
+                    errors += systemErrors[i].Id
+                    if (i < systemErrors.length-1) {
+                        errors += ", ";
+                    }
+                }
+                errors += "]\n";
             }
             throw Observable.throw(errors);
         } else {

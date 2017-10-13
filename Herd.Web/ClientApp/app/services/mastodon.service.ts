@@ -4,6 +4,7 @@ import 'rxjs/Rx';
 
 import { HttpClientService } from './http-client.service';
 import { Status } from '../models/mastodon';
+import { UserCard } from '../models/mastodon';
 import { Observable } from "rxjs/Observable";
 
 @Injectable()
@@ -23,6 +24,13 @@ export class MastodonService {
                         + '&includeDescendants=' + includeDescendants;
         return this.httpClient.get('api/feed/get_status' + queryString)
             .map(response => response.MastodonPost as Status);
+    }
+
+    // Calls Api to search for users
+    searchUser(name: string) {
+        let queryString = "?name=" + name;
+        return this.httpClient.get('api/mastodon-users/search' + queryString)
+            .map(response => response as UserCard[]);
     }
 
     /**

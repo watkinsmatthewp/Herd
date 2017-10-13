@@ -1,22 +1,24 @@
-import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { Routes, RouterModule, CanActivate } from '@angular/router';
-import { SimpleNotificationsModule } from 'angular2-notifications'
+
+// External Dependencies
+import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
+import { SimpleNotificationsModule } from 'angular2-notifications';
 
 // Pages
 import {
     AdminPage, AppPage, HomePage, LocalFeedPage,
-    LoginPage, NotificationsPage, ProfilePage, RegisterPage
+    LoginPage, NotificationsPage, ProfilePage, RegisterPage, SearchResultsPage
 } from './pages';
 
 // Components
 import {
     AlertComponent, InstancePickerComponent, NavMenuComponent,
     StatusComponent, StatusFormComponent, StatusFormModalComponent,
-    StatusModalComponent, StatusReplyModalComponent
+    StatusModalComponent, StatusReplyModalComponent, UserCardComponent
 } from './components';
 
 // Guards
@@ -35,11 +37,11 @@ import { SafePipe } from './pipes';
     declarations: [
         // Page
         AdminPage, AppPage, HomePage, LocalFeedPage,
-        LoginPage, NotificationsPage, ProfilePage, RegisterPage,
+        LoginPage, NotificationsPage, ProfilePage, RegisterPage, SearchResultsPage,
         // Components
         AlertComponent, InstancePickerComponent, NavMenuComponent,
         StatusComponent, StatusFormComponent, StatusFormModalComponent,
-        StatusModalComponent, StatusReplyModalComponent,
+        StatusModalComponent, StatusReplyModalComponent, UserCardComponent,
         // Pipes
         SafePipe
     ],
@@ -63,6 +65,8 @@ import { SafePipe } from './pipes';
             { path: 'notifications', component: NotificationsPage, canActivate: [AuthGuard], data: { title: "Notifications" } },
             // Profile
             { path: 'profile', component: ProfilePage, canActivate: [AuthGuard], data: { title: "Profile" } },
+            // Search Results (am I doing this right?)
+            { path: 'searchresults', component: SearchResultsPage, canActivate: [AuthGuard], data: { title: "Search Results" } },
             // Etc Pages
             { path: '**', redirectTo: 'home' }
         ])

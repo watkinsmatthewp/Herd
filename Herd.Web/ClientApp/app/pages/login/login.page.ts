@@ -53,7 +53,7 @@ export class LoginPage implements OnInit {
                     this.router.navigateByUrl('/home');
                 }
             }, error => {
-                this.alertService.error(error.error);
+                this.alertService.error("Error", error.error);
             });
     }
 }
