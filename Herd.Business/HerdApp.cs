@@ -246,7 +246,14 @@ namespace Herd.Business
             users = null;
             for (var i = 0; i < usersList.Count; i++)
             {
-                usersList[i] = await _mastodonApiWrapper.AddContextToMastodonUser(usersList[i], searchMastodonUsersCommand.IncludeFollowers, searchMastodonUsersCommand.IncludeFollowing);
+                usersList[i] = await _mastodonApiWrapper.AddContextToMastodonUser
+                (
+                    usersList[i],
+                    searchMastodonUsersCommand.IncludeFollowers,
+                    searchMastodonUsersCommand.IncludeFollowing,
+                    searchMastodonUsersCommand.IncludeFollowedByActiveUser,
+                    searchMastodonUsersCommand.IncludeFollowsActiveUser
+                );
             }
 
             return usersList;
@@ -269,7 +276,7 @@ namespace Herd.Business
             {
                 return new Dictionary<int, MastodonUser>();
             }
-            return Filter(userSet1, await _mastodonApiWrapper.GetUsersByName(name, false, false, limit));
+            return Filter(userSet1, await _mastodonApiWrapper.GetUsersByName(name, false, false, false, false, limit));
         }
 
         private async Task<Dictionary<int, MastodonUser>> FilterByFollowedByUserID(Dictionary<int, MastodonUser> userSet1, int followedByUserID, int limit)
@@ -278,7 +285,7 @@ namespace Herd.Business
             {
                 return new Dictionary<int, MastodonUser>();
             }
-            return Filter(userSet1, await _mastodonApiWrapper.GetFollowing(followedByUserID, false, false, limit));
+            return Filter(userSet1, await _mastodonApiWrapper.GetFollowing(followedByUserID, false, false, false, false, limit));
         }
 
         private async Task<Dictionary<int, MastodonUser>> FilterByFollowsByUserID(Dictionary<int, MastodonUser> userSet1, int followedUserID, int limit)
@@ -287,7 +294,7 @@ namespace Herd.Business
             {
                 return new Dictionary<int, MastodonUser>();
             }
-            return Filter(userSet1, await _mastodonApiWrapper.GetFollowers(followedUserID, false, false, limit));
+            return Filter(userSet1, await _mastodonApiWrapper.GetFollowers(followedUserID, false, false, false, false, limit));
         }
 
         private Dictionary<int, MastodonUser> Filter(Dictionary<int, MastodonUser> userSet1, IList<MastodonUser> userSet2)

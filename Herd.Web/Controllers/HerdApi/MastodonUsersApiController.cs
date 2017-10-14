@@ -9,7 +9,18 @@ namespace Herd.Web.Controllers.HerdApi
     public class MastodonUsersApiController : BaseApiController
     {
         [HttpGet("search")]
-        public IActionResult Search(int? mastodonUserID = null, string name = null, int? followsMastodonUserID = null, int? followedByMastodonUserID = null, int max = 30)
+        public IActionResult Search
+        (
+            int? mastodonUserID = null,
+            string name = null,
+            int? followsMastodonUserID = null,
+            int? followedByMastodonUserID = null,
+            bool includeFollowers = false,
+            bool includeFollowing = false,
+            bool includeFollowsActiveUser = false,
+            bool includeFollowedByActiveUser = false,
+            int max = 30
+        )
         {
             return ApiJson(App.SearchUsers(new SearchMastodonUsersCommand
             {
@@ -17,6 +28,10 @@ namespace Herd.Web.Controllers.HerdApi
                 Name = name,
                 FollowedByUserID = followedByMastodonUserID,
                 FollowsUserID = followsMastodonUserID,
+                IncludeFollowers = includeFollowers,
+                IncludeFollowing = includeFollowing,
+                IncludeFollowedByActiveUser = includeFollowedByActiveUser,
+                IncludeFollowsActiveUser = includeFollowsActiveUser,
                 MaxCount = max
             }));
         }

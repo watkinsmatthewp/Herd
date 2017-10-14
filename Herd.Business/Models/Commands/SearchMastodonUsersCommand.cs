@@ -10,6 +10,8 @@
 
         public bool IncludeFollowers { get; set; }
         public bool IncludeFollowing { get; set; }
+        public bool IncludeFollowsActiveUser { get; set; }
+        public bool IncludeFollowedByActiveUser { get; set; }
 
         public bool IsGlobalSearch => !UserID.HasValue
             && string.IsNullOrWhiteSpace(Name)

@@ -18,8 +18,10 @@ namespace Herd.Business.Models.Entities
 
         // Extra "context" properties
         public bool? FollowsRelevantUser { get; set; }
-
         public bool? IsFollowedByRelevantUser { get; set; }
+        public bool? FollowsActiveUser { get; set; }
+        public bool? IsFollowedByActiveUser { get; set; }
+
         public List<MastodonUser> Followers { get; set; }
         public List<MastodonUser> Following { get; set; }
     }
