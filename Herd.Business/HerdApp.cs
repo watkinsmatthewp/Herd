@@ -214,45 +214,14 @@ namespace Herd.Business
 
                 result.Data = new SearchMastodonUsersCommandResultData
                 {
-                    Users = DUMMY_USERS.Where(u => DummyMatches(searchMastodonUsersCommand, u)).ToList()
+                    Users = GetUsers(searchMastodonUsersCommand)
                 };
             });
         }
 
-        public static List<MastodonUser> DUMMY_USERS { get; private set; } = new List<MastodonUser>()
+        private List<MastodonUser> GetUsers(SearchMastodonUsersCommand searchMastodonUsersCommand)
         {
-            CreateDummyUser(1, "John", "Smith", true, false),
-            CreateDummyUser(2, "Jane", "Doe", false, true),
-            CreateDummyUser(3, "Cory", "Matthews", true, true),
-            CreateDummyUser(4, "Topanga", "Lawrence", false, false)
-        };
-
-        public static MastodonUser CreateDummyUser(int mastodonUserID, string firstName, string lastName, bool followsRelevantUser, bool isFollowedByRelevantUser)
-        {
-            return new MastodonUser
-            {
-                IsFollowedByRelevantUser = isFollowedByRelevantUser,
-                FollowsRelevantUser = followsRelevantUser,
-                MastodonDisplayName = $"{firstName} {lastName}",
-                MastodonProfileImageURL = $"http://www.example.com/img-profile-{mastodonUserID}.jpg",
-                MastodonHeaderImageURL = $"http://www.example.com/img-header-{mastodonUserID}.jpg",
-                MastodonShortBio = $"What can I say except my name is {firstName}? Hello!",
-                MastodonUserId = mastodonUserID,
-                MastodonUserName = $"{firstName}{lastName[0]}"
-            };
-        }
-
-        private bool DummyMatches(SearchMastodonUsersCommand filter, MastodonUser user)
-        {
-            return (!filter.UserID.HasValue || filter.UserID == user.MastodonUserId)
-                && (!filter.FollowedByUserID.HasValue || user.IsFollowedByRelevantUser == true)
-                && (!filter.FollowsUserID.HasValue || user.FollowsRelevantUser == true)
-                && (string.IsNullOrWhiteSpace(filter.Name) || DummyNamesMatch(filter.Name, user.MastodonDisplayName) || DummyNamesMatch(filter.Name, user.MastodonUserName));
-        }
-
-        private bool DummyNamesMatch(string nameToFind, string text)
-        {
-            return text.Contains(nameToFind.Trim(), StringComparison.OrdinalIgnoreCase);
+            throw new NotImplementedException();
         }
 
         #endregion Mastodon Users
