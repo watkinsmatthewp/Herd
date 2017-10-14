@@ -229,10 +229,6 @@ namespace Herd.Business
             {
                 users = await FilterByUserID(users, searchMastodonUsersCommand.UserID.Value);
             }
-            if (!string.IsNullOrWhiteSpace(searchMastodonUsersCommand.Name))
-            {
-                users = await FilterByName(users, searchMastodonUsersCommand.Name, searchMastodonUsersCommand.MaxCount);
-            }
             if (searchMastodonUsersCommand.FollowedByUserID.HasValue)
             {
                 users = await FilterByFollowedByUserID(users, searchMastodonUsersCommand.FollowedByUserID.Value, searchMastodonUsersCommand.MaxCount);
@@ -240,6 +236,10 @@ namespace Herd.Business
             if (searchMastodonUsersCommand.FollowsUserID.HasValue)
             {
                 users = await FilterByFollowsByUserID(users, searchMastodonUsersCommand.FollowsUserID.Value, searchMastodonUsersCommand.MaxCount);
+            }
+            if (!string.IsNullOrWhiteSpace(searchMastodonUsersCommand.Name))
+            {
+                users = await FilterByName(users, searchMastodonUsersCommand.Name, searchMastodonUsersCommand.MaxCount);
             }
 
             var usersList = users.Values.ToList();
@@ -292,15 +292,15 @@ namespace Herd.Business
 
         private Dictionary<int, MastodonUser> Filter(Dictionary<int, MastodonUser> userSet1, IList<MastodonUser> userSet2)
         {
-            if (userSet1?.Count == 0)
-            {
-                return new Dictionary<int, MastodonUser>();
-            }
             if (userSet1 == null)
             {
                 return ToDictionary(userSet2);
             }
-            var idsToPreserve = new HashSet<int>(userSet1.Keys.Union(userSet2.Select(u => u.MastodonUserId)));
+            if (userSet1.Count == 0)
+            {
+                return new Dictionary<int, MastodonUser>();
+            }
+            var idsToPreserve = new HashSet<int>(userSet1.Keys.Intersect(userSet2.Select(u => u.MastodonUserId)));
             return ToDictionary(userSet2.Where(u => idsToPreserve.Contains(u.MastodonUserId)));
         }
 
