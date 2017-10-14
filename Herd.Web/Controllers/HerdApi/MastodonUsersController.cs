@@ -9,14 +9,8 @@ namespace Herd.Web.Controllers.HerdApi
     public class MastodonUsersController : BaseApiController
     {
         [HttpGet("search")]
-        public async Task<IActionResult> Search(int? userID = null, string name = null, int? followsUserID = null, int? followedByUserID = null, int max = 30)
+        public IActionResult Search(int? userID = null, string name = null, int? followsUserID = null, int? followedByUserID = null, int max = 30)
         {
-            // TODO: Temporary lookup so that we can inject ourselves into dummy data
-            if (HerdApp.DUMMY_USERS.Count == 4)
-            {
-                HerdApp.DUMMY_USERS.Add(await _mastodonApiWrapper.Value.GetActiveUserMastodonAccount());
-            }
-
             return ApiJson(App.SearchUsers(new SearchMastodonUsersCommand
             {
                 UserID = userID,
