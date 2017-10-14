@@ -151,30 +151,28 @@ namespace Herd.Business.ApiWrappers
         public async Task<MastodonUser> AddContextToMastodonUser(MastodonUser mastodonUser, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false)
         {
             var mastodonClient = BuildMastodonApiClient();
-            var userRelationships = null as Relationship[];
 
             if (includeFollowers)
             {
+                // Get the follower of this user
                 mastodonUser.Followers = (await mastodonClient.GetAccountFollowers(mastodonUser.MastodonUserId))
                     .Select(u => u.ToMastodonUser().Then(mu => mu.FollowsRelevantUser = true)).ToList();
                 mastodonUser.IsFollowedByActiveUser = mastodonUser.Followers.Any(f => f.MastodonUserId == UserMastodonConnectionDetails.MastodonUserID);
             }
-            else if (includeIsFollowedByActiveUser)
-            {
-                userRelationships = userRelationships ?? (await mastodonClient.GetAccountRelationships(mastodonUser.MastodonUserId)).ToArray();
-                mastodonUser.IsFollowedByActiveUser = userRelationships.Any(r => r.Following);
-            }
-
             if (includeFollowing)
             {
+                // Get the users this user us following
                 mastodonUser.Following = (await mastodonClient.GetAccountFollowing(mastodonUser.MastodonUserId))
                     .Select(u => u.ToMastodonUser().Then(mu => mu.IsFollowedByRelevantUser = true)).ToList();
                 mastodonUser.FollowsActiveUser = mastodonUser.Following.Any(f => f.MastodonUserId == UserMastodonConnectionDetails.MastodonUserID);
             }
-            else if (includeFollowsActiveUser)
+
+            if ((includeIsFollowedByActiveUser || includeFollowsActiveUser) && (!mastodonUser.IsFollowedByActiveUser.HasValue || !mastodonUser.FollowsActiveUser.HasValue))
             {
-                userRelationships = userRelationships ?? (await mastodonClient.GetAccountRelationships(mastodonUser.MastodonUserId)).ToArray();
+                // We haven't gotten any follow data, but we still need to know if this user has a relationship with the active user
+                var userRelationships = (await mastodonClient.GetAccountRelationships(mastodonUser.MastodonUserId)).ToArray();
                 mastodonUser.FollowsActiveUser = userRelationships.Any(r => r.FollowedBy);
+                mastodonUser.IsFollowedByActiveUser = userRelationships.Any(r => r.Following);
             }
 
             return mastodonUser;
