@@ -8,6 +8,9 @@
         public int? FollowsUserID { get; set; }
         public int? FollowedByUserID { get; set; }
 
+        public bool IncludeFollowers { get; set; }
+        public bool IncludeFollowing { get; set; }
+
         public bool IsGlobalSearch => !UserID.HasValue
             && string.IsNullOrWhiteSpace(Name)
             && !FollowsUserID.HasValue

@@ -103,6 +103,54 @@ namespace Herd.Business.ApiWrappers
         {
             var mastodonClient = BuildMastodonApiClient();
             var mastodonUser = (await mastodonClient.GetCurrentUser()).ToMastodonUser();
+            mastodonUser = await AddContextToMastodonUser(mastodonUser, includeFollowers, includeFollowing);
+            return mastodonUser;
+        }
+
+        public async Task<MastodonUser> GetMastodonAccount(int id, bool includeFollowers = false, bool includeFollowing = false)
+        {
+            var mastodonClient = BuildMastodonApiClient();
+            var mastodonUser = (await mastodonClient.GetAccount(id)).ToMastodonUser();
+            mastodonUser = await AddContextToMastodonUser(mastodonUser, includeFollowers, includeFollowing);
+            return mastodonUser;
+        }
+
+        public async Task<IList<MastodonUser>> GetUsersByName(string name, bool includeFollowers = false, bool includeFollowing = false, int? limit = 30)
+        {
+            var mastodonClient = BuildMastodonApiClient();
+            var mastodonUsers = (await mastodonClient.SearchAccounts(name, null, null, limit)).Select(u => u.ToMastodonUser()).ToList();
+            for (var i = 0; i < mastodonUsers.Count; i++)
+            {
+                mastodonUsers[i] = await AddContextToMastodonUser(mastodonUsers[i], includeFollowers, includeFollowing);
+            }
+            return mastodonUsers;
+        }
+
+        public async Task<IList<MastodonUser>> GetFollowing(int followerUserID, bool includeFollowers = false, bool includeFollowing = false, int? limit = 30)
+        {
+            var mastodonClient = BuildMastodonApiClient();
+            var mastodonUsers = (await mastodonClient.GetAccountFollowing(followerUserID, null, null, limit)).Select(u => u.ToMastodonUser()).ToList();
+            for (var i = 0; i < mastodonUsers.Count; i++)
+            {
+                mastodonUsers[i] = await AddContextToMastodonUser(mastodonUsers[i], includeFollowers, includeFollowing);
+            }
+            return mastodonUsers;
+        }
+
+        public async Task<IList<MastodonUser>> GetFollowers(int followingUserID, bool includeFollowers = false, bool includeFollowing = false, int? limit = 30)
+        {
+            var mastodonClient = BuildMastodonApiClient();
+            var mastodonUsers = (await mastodonClient.GetAccountFollowers(followingUserID, null, null, limit)).Select(u => u.ToMastodonUser()).ToList();
+            for (var i = 0; i < mastodonUsers.Count; i++)
+            {
+                mastodonUsers[i] = await AddContextToMastodonUser(mastodonUsers[i], includeFollowers, includeFollowing);
+            }
+            return mastodonUsers;
+        }
+
+        public async Task<MastodonUser> AddContextToMastodonUser(MastodonUser mastodonUser, bool includeFollowers = false, bool includeFollowing = false)
+        {
+            var mastodonClient = BuildMastodonApiClient();
             if (includeFollowers)
             {
                 mastodonUser.Followers = (await mastodonClient.GetAccountFollowers(mastodonUser.MastodonUserId))
