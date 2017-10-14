@@ -25,7 +25,6 @@ const nonTreeShakableModules = [
     'font-awesome/css/font-awesome.css',
     'jquery',
     'angular2-notifications',
-    'ngx-smart-modal',
     'ng2-bs3-modal',
 ];
 const allModules = treeShakableModules.concat(nonTreeShakableModules);
