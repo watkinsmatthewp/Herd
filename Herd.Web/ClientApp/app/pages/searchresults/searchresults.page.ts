@@ -5,7 +5,7 @@ import { UserCard } from "../../models/mastodon";
 
 @Component({
     selector: 'searchresults',
-    templateUrl: './searchresults.page.html'
+    templateUrl: './searchResults.page.html'
 })
 export class SearchResultsPage implements OnInit {
 

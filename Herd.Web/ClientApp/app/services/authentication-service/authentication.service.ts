@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 
-import { HttpClientService } from './http-client.service';
-import { Storage, User } from '../models';
+import { HttpClientService } from '../http-client-service/http-client.service';
+import { Storage, User } from '../../models';
 
 @Injectable()
 export class AuthenticationService {

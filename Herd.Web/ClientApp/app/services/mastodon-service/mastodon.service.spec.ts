@@ -4,8 +4,8 @@ import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Observable } from "rxjs/Observable";
 
 import { MastodonService } from './mastodon.service';
-import { HttpClientService } from './http-client.service';
-import { Status } from '../models/mastodon';
+import { HttpClientService } from '../http-client-service/http-client.service';
+import { Status } from '../../models/mastodon';
 
 describe('Service: Mastodon Service', () => {
     let mastodonService: MastodonService;

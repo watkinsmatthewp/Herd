@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
-import { AlertService, MastodonService, TimelineAlertService } from "../../services";
+import { MastodonService, TimelineAlertService } from "../../services";
 import { Status } from "../../models/mastodon";
 import { NotificationsService } from "angular2-notifications";
 
@@ -19,53 +19,54 @@ export class HomePage implements OnInit {
     loading: boolean = false;
     homeFeed: Status[]; // List of posts for the home feed
 
-    constructor(private activatedRoute: ActivatedRoute, private mastodonService: MastodonService, private timelineAlert: TimelineAlertService, private alertService: NotificationsService) {}
+    constructor(private activatedRoute: ActivatedRoute, private toastService: NotificationsService,
+                private mastodonService: MastodonService, private timelineAlert: TimelineAlertService) { }
 
     getMostRecentHomeFeed() {
         this.loading = true;
-        let progress = this.alertService.info("Retrieving", "home timeline ...")
+        let progress = this.toastService.info("Retrieving", "home timeline ...")
         this.mastodonService.getHomeFeed()
             .finally(() => this.loading = false)
             .subscribe(feed => {
-                this.alertService.remove(progress.id);
+                this.toastService.remove(progress.id);
                 this.homeFeed = feed;
-                this.alertService.success("Finished",  "retrieving home timeline.");
+                this.toastService.success("Finished",  "retrieving home timeline.");
             }, error => {
-                this.alertService.error("Error", error.error);
+                this.toastService.error("Error", error.error);
             });
     }
 
     updateSpecificStatus(statusId: number): void {
         this.loading = true;
         this.renderSpecificModal = false;
-        let progress = this.alertService.info("Retrieving" , "status info ...");
+        let progress = this.toastService.info("Retrieving" , "status info ...");
         this.mastodonService.getStatus(statusId, true, true)
             .finally(() =>  this.loading = false)
             .subscribe(data => {
-                this.alertService.remove(progress.id);
+                this.toastService.remove(progress.id);
                 this.specificStatus = data;
                 this.specificStatus.Ancestors = data.Ancestors;
                 this.specificStatus.Descendants = data.Descendants;
                 this.renderSpecificModal = true;
-                this.alertService.success("Finished", "retrieving status.")
+                this.toastService.success("Finished", "retrieving status.")
             }, error => {
-                this.alertService.error("Error", error.error);
+                this.toastService.error("Error", error.error);
             });
     }
 
     updateReplyStatusModal(statusId: number): void {
         this.loading = true;
         this.renderReplyModal = false;
-        let progress = this.alertService.info("Retrieving",  "status info ...");
+        let progress = this.toastService.info("Retrieving",  "status info ...");
         this.mastodonService.getStatus(statusId, false, false)
             .finally(() => this.loading = false)
             .subscribe(data => {
-                this.alertService.remove(progress.id);
+                this.toastService.remove(progress.id);
                 this.replyStatus = data;
                 this.renderReplyModal = true;
-                this.alertService.success("Finished", "retrieving status.")
+                this.toastService.success("Finished", "retrieving status.")
             }, error => {
-                this.alertService.error("Error", error.error);
+                this.toastService.error("Error", error.error);
             });
     }
 

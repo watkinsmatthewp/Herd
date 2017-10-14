@@ -1,11 +1,10 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptionsArgs, RequestOptions, RequestMethod } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
 
-import { HttpClientService } from './http-client.service';
-import { Status } from '../models/mastodon';
-import { UserCard } from '../models/mastodon';
-import { Observable } from "rxjs/Observable";
+import { HttpClientService } from '../http-client-service/http-client.service';
+import { Status, UserCard } from '../../models/mastodon';
 
 @Injectable()
 export class MastodonService {

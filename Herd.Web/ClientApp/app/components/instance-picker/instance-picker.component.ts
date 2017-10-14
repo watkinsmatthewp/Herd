@@ -19,7 +19,7 @@ export class InstancePickerComponent {
     constructor(
         private router: Router,
         private authenticationService: AuthenticationService,
-        private alertService: NotificationsService,
+        private toastService: NotificationsService,
         private localStorage: Storage) { }
 
     getOAuthToken() {
@@ -34,10 +34,10 @@ export class InstancePickerComponent {
                         this.oAuthUrl = body.URL
                         window.open(this.oAuthUrl, '_blank').focus();
                     }, error => {
-                        this.alertService.error(error.error);
+                        this.toastService.error(error.error);
                     });
             }, error => {
-                this.alertService.error(error.error);
+                this.toastService.error(error.error);
             });
     }
 
@@ -46,11 +46,11 @@ export class InstancePickerComponent {
         this.authenticationService.submitOAuthToken(this.model.oAuthToken, this.registrationID)
             .finally(() => this.loading = false)
             .subscribe(data => {
-                this.alertService.success("Successfully", "linked with " + this.model.instance);
+                this.toastService.success("Successfully", "linked with " + this.model.instance);
                 this.localStorage.setItem('connectedToMastodon', true);
                 this.router.navigateByUrl('/home');
             }, error => {
-                this.alertService.error(error.error);
+                this.toastService.error(error.error);
             });
     }
 }

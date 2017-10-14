@@ -3,9 +3,9 @@ import { HttpModule, Http, Response, ResponseOptions, XHRBackend } from '@angula
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Observable } from "rxjs/Observable";
 
-import { AuthenticationService } from './authentication.service';
-import { HttpClientService } from './http-client.service';
-import { Storage, BrowserStorage, User } from '../models';
+import { AuthenticationService } from '../authentication-service/authentication.service';
+import { HttpClientService } from '../http-client-service/http-client.service';
+import { Storage, BrowserStorage, User } from '../../models';
 
 describe('Service: Authentication Service', () => {
     let authService: AuthenticationService;

@@ -1,11 +1,10 @@
 ﻿import { Component, Input } from '@angular/core';
 import { NgForm } from '@angular/forms';
-
+import { Observable } from "rxjs/Observable";
 
 import { MastodonService } from "../../services";
-import { Visibility } from '../../models/mastodon';
-import { Observable } from "rxjs/Observable";
 import { NotificationsService } from "angular2-notifications";
+import { Visibility } from '../../models/mastodon';
 
 @Component({
     selector: 'status-form',
@@ -49,7 +48,7 @@ export class StatusFormComponent {
     };
     
 
-    constructor(private mastodonService: MastodonService, private alertService: NotificationsService) {}
+    constructor(private mastodonService: MastodonService, private toastService: NotificationsService) {}
 
     toggleContentWarning(): void {
         this.model.contentWarning = !this.model.contentWarning
@@ -61,9 +60,9 @@ export class StatusFormComponent {
                 this.resetFormDefaults(form);
             })
             .subscribe(response => {
-                this.alertService.success("Successfully", "posted a status.");
+                this.toastService.success("Successfully", "posted a status.");
             }, error => {
-                this.alertService.error(error.error);
+                this.toastService.error(error.error);
             });
     }
 

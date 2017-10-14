@@ -5,6 +5,5 @@
     templateUrl: './profile.page.html',
 })
 export class ProfilePage {
-    constructor() {
-    }
+    constructor() { }
 }
