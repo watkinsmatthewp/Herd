@@ -1,9 +1,9 @@
-﻿<hr />
-<div class="text-center">
-    <h3>Profile</h3>
-</div>
-
-<div>
-    <p class="text-center">If you want to change your instance you can here.</p>
-    <instance-picker></instance-picker>
+﻿
+<div *ngIf="account" class="row">
+    <img class="header-img" style="width: 60px; height: 60px;" src="{{ account.MastodonHeaderImageURL }}" />
+    <img class="header-img" style="width: 60px; height: 60px;" src="{{ account.MastodonProfileImageURL }}" />
+    <div class="col-lg-12">
+        <a href="{{ account.MastodonHeaderImageURL }}">Test</a>
+        MastodonUserId = {{ account.MastodonUserId }}
+    </div>
 </div>
