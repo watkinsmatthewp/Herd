@@ -5,6 +5,5 @@
     templateUrl: './notifications.page.html',
 })
 export class NotificationsPage {
-    constructor() {
-    }
+    constructor() {}
 }

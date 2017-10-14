@@ -11,7 +11,7 @@ import { NotificationsService } from "angular2-notifications";
 export class NavMenuComponent {
     model: any = {};
 
-    constructor(private authService: AuthenticationService, private alertService: NotificationsService) { }
+    constructor(private authService: AuthenticationService, private toastService: NotificationsService) { }
 
     isAuthenticated(): boolean {
         return this.authService.isAuthenticated();
@@ -26,7 +26,7 @@ export class NavMenuComponent {
     }
 
     logout() {
-        this.alertService.remove();
-        this.alertService.success("Successfully", "logged out.")
+        this.toastService.remove();
+        this.toastService.success("Successfully", "logged out.", { showProgressBar: false, pauseOnHover: false })
     }
 }

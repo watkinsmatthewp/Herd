@@ -3,7 +3,6 @@
 import { MastodonService, TimelineAlertService } from "../../services";
 import { UserCard } from '../../models/mastodon';
 
-
 @Component({
     selector: 'usercard',
     templateUrl: './usercard.component.html',

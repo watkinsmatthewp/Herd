@@ -1,7 +1,7 @@
 ﻿import { AfterViewInit, Component, OnInit, Input, OnDestroy } from '@angular/core';
 
 import { Status } from '../../models/mastodon';
-import { AlertService, MastodonService } from "../../services";
+import { MastodonService } from "../../services";
 import { NotificationsService } from "angular2-notifications";
 
 @Component({
@@ -15,7 +15,7 @@ export class StatusModalComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() modalId: string;
     @Input() autoOpen: boolean; // after initalization should we auto open
 
-    constructor(private mastodonService: MastodonService, private alertService: NotificationsService) { }
+    constructor(private mastodonService: MastodonService, private toastService: NotificationsService) { }
 
     ngOnInit(): void {
         if (this.statusId) {
@@ -25,7 +25,7 @@ export class StatusModalComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.status.Ancestors = data.Ancestors;
                     this.status.Descendants = data.Descendants;
                 }, error => {
-                    this.alertService.error(error);
+                    this.toastService.error(error);
                 });
         }
     }

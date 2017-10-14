@@ -112,7 +112,7 @@ export class HttpClientService {
 
             // aggregate System Errors
             if (systemErrors.length > 0) {
-                errors += "System Errors: [";
+                errors += "System Error Codes: [";
                 for (var i = 0, len = systemErrors.length; i < len; i++) {
                     errors += systemErrors[i].Id
                     if (i < systemErrors.length-1) {

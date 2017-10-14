@@ -2,9 +2,9 @@
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { AlertService, AuthenticationService } from '../../services';
-import { User } from '../../models';
+import { AuthenticationService } from '../../services';
 import { NotificationsService } from "angular2-notifications";
+import { User } from '../../models';
 
 @Component({
     selector: 'register',
@@ -14,7 +14,7 @@ export class RegisterPage {
     model: any = {};
     loading = false;
 
-    constructor(private router: Router, private authenticationService: AuthenticationService, private alertService: NotificationsService) { }
+    constructor(private router: Router, private authenticationService: AuthenticationService, private toastService: NotificationsService) { }
 
     register() {
         this.loading = true;
@@ -23,10 +23,10 @@ export class RegisterPage {
         this.authenticationService.register(user)
             .finally(() => this.loading = false)
             .subscribe(response => {
-                this.alertService.success('Successful',  'registration');
+                this.toastService.success('Successful',  'registration');
                 this.router.navigate(['/login'], { queryParams: { email: this.model.email } });
             }, error => {
-                this.alertService.error("Error", error.error);
+                this.toastService.error("Error", error.error);
             });
     }
 }
