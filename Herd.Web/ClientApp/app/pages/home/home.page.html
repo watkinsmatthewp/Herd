@@ -7,6 +7,7 @@
             </div>
             <div class="panel-body">
                 <p>
+                    <button type="button" class="btn btn-default" (click)="specificStatusModal.open()">Open me!</button>
                 </p>
             </div>
         </div>
@@ -48,6 +49,40 @@
     </div>
 </div>
 
+<bs-modal #specificStatusModal>
+    <bs-modal-header [showDismiss]="true"></bs-modal-header>
+    <bs-modal-body>
+        <div *ngIf="specificStatus">
+            <div class="ancestors" *ngFor="let anscestorStatus of specificStatus.Ancestors">
+                <status [status]="anscestorStatus"></status>
+            </div>
+            <div class="viewingStatus">
+                <status [status]="specificStatus"></status>
+            </div>
+            <status-form actionName="Reply" isReply="true" [inReplyToId]="specificStatus.Id"></status-form>
+            <div class="replies" *ngFor="let descendantStatus of specificStatus.Descendants">
+                <status [status]="descendantStatus"></status>
+            </div>
+        </div>
+    </bs-modal-body>
+    <bs-modal-footer [showDefaultButtons]="true"></bs-modal-footer>
+</bs-modal>
 
-<status-modal *ngIf="renderSpecificModal" [status]="specificStatus" autoOpen="true" modalId="specificStatusModal"></status-modal>
-<status-reply-modal *ngIf="renderReplyModal" [status]="replyStatus" autoOpen="true" modalId="replyStatusModal"></status-reply-modal>
+
+<bs-modal #replyStatusModal>
+    <bs-modal-header [showDismiss]="true"></bs-modal-header>
+    <bs-modal-body>
+        <div *ngIf="replyStatus">
+            <div class="viewingStatus">
+                <status [status]="replyStatus"></status>
+            </div>
+            <status-form actionName="Reply" isReply="true" [inReplyToId]="replyStatus.Id"></status-form>
+        </div>
+</bs-modal-body>
+    <bs-modal-footer [showDefaultButtons]="true"></bs-modal-footer>
+</bs-modal>
+
+
+
+<!--<status-modal *ngIf="renderSpecificModal" [status]="specificStatus" autoOpen="true" modalId="specificStatusModal"></status-modal>
+<status-reply-modal *ngIf="renderReplyModal" [status]="replyStatus" autoOpen="true" modalId="replyStatusModal"></status-reply-modal>-->

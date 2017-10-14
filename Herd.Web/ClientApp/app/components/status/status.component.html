@@ -1,4 +1,5 @@
-﻿<a (click)="notifyTimelineStatusClicked($event)">
+﻿
+<a *ngIf="status" (click)="notifyTimelineStatusClicked($event)">
     <div class="well well-sm mouseOver post-format">
         <div class="row">
             <div class="col-sm-6 status-content">

@@ -1,26 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
 import { MastodonService, TimelineAlertService } from "../../services";
 import { Status } from "../../models/mastodon";
 import { NotificationsService } from "angular2-notifications";
-
+import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 
 @Component({
     selector: 'home',
     templateUrl: './home.page.html',
 })
 export class HomePage implements OnInit {
+    @ViewChild('specificStatusModal') 
+    specificStatusModal: BsModalComponent;
+
+    @ViewChild('replyStatusModal')
+    replyStatusModal: BsModalComponent;
+
     statusId: number;
     specificStatus: Status;
     replyStatus: Status;
-    renderSpecificModal: boolean = false;
-    renderReplyModal: boolean = false;
     loading: boolean = false;
-    homeFeed: Status[]; // List of posts for the home feed
+    homeFeed: Status[] = []; // List of posts for the home feed
 
     constructor(private activatedRoute: ActivatedRoute, private toastService: NotificationsService,
-                private mastodonService: MastodonService, private timelineAlert: TimelineAlertService) { }
+        private mastodonService: MastodonService, private timelineAlert: TimelineAlertService) { }
 
     getMostRecentHomeFeed() {
         this.loading = true;
@@ -38,7 +42,6 @@ export class HomePage implements OnInit {
 
     updateSpecificStatus(statusId: number): void {
         this.loading = true;
-        this.renderSpecificModal = false;
         let progress = this.toastService.info("Retrieving" , "status info ...");
         this.mastodonService.getStatus(statusId, true, true)
             .finally(() =>  this.loading = false)
@@ -47,7 +50,7 @@ export class HomePage implements OnInit {
                 this.specificStatus = data;
                 this.specificStatus.Ancestors = data.Ancestors;
                 this.specificStatus.Descendants = data.Descendants;
-                this.renderSpecificModal = true;
+                this.specificStatusModal.open();
                 this.toastService.success("Finished", "retrieving status.")
             }, error => {
                 this.toastService.error("Error", error.error);
@@ -56,14 +59,13 @@ export class HomePage implements OnInit {
 
     updateReplyStatusModal(statusId: number): void {
         this.loading = true;
-        this.renderReplyModal = false;
         let progress = this.toastService.info("Retrieving",  "status info ...");
         this.mastodonService.getStatus(statusId, false, false)
             .finally(() => this.loading = false)
             .subscribe(data => {
                 this.toastService.remove(progress.id);
                 this.replyStatus = data;
-                this.renderReplyModal = true;
+                this.replyStatusModal.open();
                 this.toastService.success("Finished", "retrieving status.")
             }, error => {
                 this.toastService.error("Error", error.error);

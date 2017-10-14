@@ -1,3 +1,5 @@
+// ANY time this is modified run: webpack --config .\webpack.config.vendor.js
+
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -23,6 +25,8 @@ const nonTreeShakableModules = [
     'font-awesome/css/font-awesome.css',
     'jquery',
     'angular2-notifications',
+    'ngx-smart-modal',
+    'ng2-bs3-modal',
 ];
 const allModules = treeShakableModules.concat(nonTreeShakableModules);
 

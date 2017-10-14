@@ -6,6 +6,7 @@ import { Routes, RouterModule, CanActivate } from '@angular/router';
 
 // External Dependencies
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
+import { BsModalModule } from 'ng2-bs3-modal';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 
 // Pages
@@ -46,7 +47,7 @@ import { SafePipe } from './pipes';
         SafePipe
     ],
     imports: [
-        Angular2FontawesomeModule, CommonModule,
+        Angular2FontawesomeModule, BsModalModule, CommonModule,
         HttpModule, FormsModule, SimpleNotificationsModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -71,6 +72,7 @@ import { SafePipe } from './pipes';
             { path: '**', redirectTo: 'home' }
         ])
     ],
-    providers: [AccountService, AdminAuthGuard, AlertService, AuthenticationService, AuthGuard, HttpClientService, MastodonService, TimelineAlertService]
+    providers: [AccountService, AdminAuthGuard, AlertService, AuthenticationService, AuthGuard,
+        HttpClientService, MastodonService, TimelineAlertService]
 })
 export class AppModuleShared {}
