@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Herd.Core.Exceptions;
 using Herd.Core.Errors;
+using System.Threading.Tasks;
+using Herd.Business.Extensions;
 
 namespace Herd.Business
 {
@@ -214,45 +216,104 @@ namespace Herd.Business
 
                 result.Data = new SearchMastodonUsersCommandResultData
                 {
-                    Users = DUMMY_USERS.Where(u => DummyMatches(searchMastodonUsersCommand, u)).ToList()
+                    Users = GetUsers(searchMastodonUsersCommand).Synchronously()
                 };
             });
         }
 
-        public static List<MastodonUser> DUMMY_USERS { get; private set; } = new List<MastodonUser>()
+        private async Task<List<MastodonUser>> GetUsers(SearchMastodonUsersCommand searchMastodonUsersCommand)
         {
-            CreateDummyUser(1, "John", "Smith", true, false),
-            CreateDummyUser(2, "Jane", "Doe", false, true),
-            CreateDummyUser(3, "Cory", "Matthews", true, true),
-            CreateDummyUser(4, "Topanga", "Lawrence", false, false)
-        };
+            var users = null as Dictionary<int, MastodonUser>;
 
-        public static MastodonUser CreateDummyUser(int mastodonUserID, string firstName, string lastName, bool followsRelevantUser, bool isFollowedByRelevantUser)
-        {
-            return new MastodonUser
+            if (searchMastodonUsersCommand.UserID.HasValue)
             {
-                IsFollowedByRelevantUser = isFollowedByRelevantUser,
-                FollowsRelevantUser = followsRelevantUser,
-                MastodonDisplayName = $"{firstName} {lastName}",
-                MastodonProfileImageURL = $"http://www.example.com/img-profile-{mastodonUserID}.jpg",
-                MastodonHeaderImageURL = $"http://www.example.com/img-header-{mastodonUserID}.jpg",
-                MastodonShortBio = $"What can I say except my name is {firstName}? Hello!",
-                MastodonUserId = mastodonUserID,
-                MastodonUserName = $"{firstName}{lastName[0]}"
-            };
+                users = await FilterByUserID(users, searchMastodonUsersCommand.UserID.Value);
+            }
+            if (searchMastodonUsersCommand.FollowedByUserID.HasValue)
+            {
+                users = await FilterByFollowedByUserID(users, searchMastodonUsersCommand.FollowedByUserID.Value, searchMastodonUsersCommand.MaxCount);
+            }
+            if (searchMastodonUsersCommand.FollowsUserID.HasValue)
+            {
+                users = await FilterByFollowsByUserID(users, searchMastodonUsersCommand.FollowsUserID.Value, searchMastodonUsersCommand.MaxCount);
+            }
+            if (!string.IsNullOrWhiteSpace(searchMastodonUsersCommand.Name))
+            {
+                users = await FilterByName(users, searchMastodonUsersCommand.Name, searchMastodonUsersCommand.MaxCount);
+            }
+
+            var usersList = users.Values.ToList();
+            users = null;
+            for (var i = 0; i < usersList.Count; i++)
+            {
+                usersList[i] = await _mastodonApiWrapper.AddContextToMastodonUser
+                (
+                    usersList[i],
+                    searchMastodonUsersCommand.IncludeFollowers,
+                    searchMastodonUsersCommand.IncludeFollowing,
+                    searchMastodonUsersCommand.IncludeFollowedByActiveUser,
+                    searchMastodonUsersCommand.IncludeFollowsActiveUser
+                );
+            }
+
+            return usersList;
         }
 
-        private bool DummyMatches(SearchMastodonUsersCommand filter, MastodonUser user)
+        private async Task<Dictionary<int, MastodonUser>> FilterByUserID(Dictionary<int, MastodonUser> userSet1, int mastodonUserID)
         {
-            return (!filter.UserID.HasValue || filter.UserID == user.MastodonUserId)
-                && (!filter.FollowedByUserID.HasValue || user.IsFollowedByRelevantUser == true)
-                && (!filter.FollowsUserID.HasValue || user.FollowsRelevantUser == true)
-                && (string.IsNullOrWhiteSpace(filter.Name) || DummyNamesMatch(filter.Name, user.MastodonDisplayName) || DummyNamesMatch(filter.Name, user.MastodonUserName));
+            if (userSet1?.Count == 0)
+            {
+                return new Dictionary<int, MastodonUser>();
+            }
+            var mastodonAccount = await _mastodonApiWrapper.GetMastodonAccount(mastodonUserID);
+            var newUserSet = mastodonAccount == null ? new MastodonUser[0] : new[] { mastodonAccount };
+            return Filter(userSet1, newUserSet);
         }
 
-        private bool DummyNamesMatch(string nameToFind, string text)
+        private async Task<Dictionary<int, MastodonUser>> FilterByName(Dictionary<int, MastodonUser> userSet1, string name, int limit)
         {
-            return text.Contains(nameToFind.Trim(), StringComparison.OrdinalIgnoreCase);
+            if (userSet1?.Count == 0)
+            {
+                return new Dictionary<int, MastodonUser>();
+            }
+            return Filter(userSet1, await _mastodonApiWrapper.GetUsersByName(name, false, false, false, false, limit));
+        }
+
+        private async Task<Dictionary<int, MastodonUser>> FilterByFollowedByUserID(Dictionary<int, MastodonUser> userSet1, int followedByUserID, int limit)
+        {
+            if (userSet1?.Count == 0)
+            {
+                return new Dictionary<int, MastodonUser>();
+            }
+            return Filter(userSet1, await _mastodonApiWrapper.GetFollowing(followedByUserID, false, false, false, false, limit));
+        }
+
+        private async Task<Dictionary<int, MastodonUser>> FilterByFollowsByUserID(Dictionary<int, MastodonUser> userSet1, int followedUserID, int limit)
+        {
+            if (userSet1?.Count == 0)
+            {
+                return new Dictionary<int, MastodonUser>();
+            }
+            return Filter(userSet1, await _mastodonApiWrapper.GetFollowers(followedUserID, false, false, false, false, limit));
+        }
+
+        private Dictionary<int, MastodonUser> Filter(Dictionary<int, MastodonUser> userSet1, IList<MastodonUser> userSet2)
+        {
+            if (userSet1 == null)
+            {
+                return ToDictionary(userSet2);
+            }
+            if (userSet1.Count == 0)
+            {
+                return new Dictionary<int, MastodonUser>();
+            }
+            var idsToPreserve = new HashSet<int>(userSet1.Keys.Intersect(userSet2.Select(u => u.MastodonUserId)));
+            return ToDictionary(userSet2.Where(u => idsToPreserve.Contains(u.MastodonUserId)));
+        }
+
+        private Dictionary<int, MastodonUser> ToDictionary(IEnumerable<MastodonUser> userSet)
+        {
+            return userSet.ToDictionary(u => u.MastodonUserId, u => u);
         }
 
         #endregion Mastodon Users

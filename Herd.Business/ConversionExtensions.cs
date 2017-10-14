@@ -58,7 +58,9 @@ namespace Herd.Business
             MastodonProfileImageURL = account.AvatarUrl,
             MastodonShortBio = account.Note,
             MastodonUserId = account.Id,
-            MastodonUserName = account.UserName
+            MastodonUserName = account.UserName,
+            FollowersCount = account.FollowersCount,
+            FollowingCount = account.FollowingCount
         };
 
         #endregion User

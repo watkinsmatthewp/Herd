@@ -99,20 +99,82 @@ namespace Herd.Business.ApiWrappers
 
         #region User
 
-        public async Task<MastodonUser> GetActiveUserMastodonAccount(bool includeFollowers = false, bool includeFollowing = false)
+        public async Task<MastodonUser> GetActiveUserMastodonAccount(bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false)
         {
             var mastodonClient = BuildMastodonApiClient();
             var mastodonUser = (await mastodonClient.GetCurrentUser()).ToMastodonUser();
+            mastodonUser = await AddContextToMastodonUser(mastodonUser, includeFollowers, includeFollowing, includeIsFollowedByActiveUser, includeFollowsActiveUser);
+            return mastodonUser;
+        }
+
+        public async Task<MastodonUser> GetMastodonAccount(int id, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false)
+        {
+            var mastodonClient = BuildMastodonApiClient();
+            var mastodonUser = (await mastodonClient.GetAccount(id)).ToMastodonUser();
+            mastodonUser = await AddContextToMastodonUser(mastodonUser, includeFollowers, includeFollowing, includeIsFollowedByActiveUser, includeFollowsActiveUser);
+            return mastodonUser;
+        }
+
+        public async Task<IList<MastodonUser>> GetUsersByName(string name, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false, int? limit = 30)
+        {
+            var mastodonClient = BuildMastodonApiClient();
+            var mastodonUsers = (await mastodonClient.SearchAccounts(name, null, null, limit)).Select(u => u.ToMastodonUser()).ToList();
+            for (var i = 0; i < mastodonUsers.Count; i++)
+            {
+                mastodonUsers[i] = await AddContextToMastodonUser(mastodonUsers[i], includeFollowers, includeFollowing, includeIsFollowedByActiveUser, includeFollowsActiveUser);
+            }
+            return mastodonUsers;
+        }
+
+        public async Task<IList<MastodonUser>> GetFollowing(int followerUserID, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false, int? limit = 30)
+        {
+            var mastodonClient = BuildMastodonApiClient();
+            var mastodonUsers = (await mastodonClient.GetAccountFollowing(followerUserID, null, null, limit)).Select(u => u.ToMastodonUser()).ToList();
+            for (var i = 0; i < mastodonUsers.Count; i++)
+            {
+                mastodonUsers[i] = await AddContextToMastodonUser(mastodonUsers[i], includeFollowers, includeFollowing, includeIsFollowedByActiveUser, includeFollowsActiveUser);
+            }
+            return mastodonUsers;
+        }
+
+        public async Task<IList<MastodonUser>> GetFollowers(int followingUserID, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false, int? limit = 30)
+        {
+            var mastodonClient = BuildMastodonApiClient();
+            var mastodonUsers = (await mastodonClient.GetAccountFollowers(followingUserID, null, null, limit)).Select(u => u.ToMastodonUser()).ToList();
+            for (var i = 0; i < mastodonUsers.Count; i++)
+            {
+                mastodonUsers[i] = await AddContextToMastodonUser(mastodonUsers[i], includeFollowers, includeFollowing, includeIsFollowedByActiveUser, includeFollowsActiveUser);
+            }
+            return mastodonUsers;
+        }
+
+        public async Task<MastodonUser> AddContextToMastodonUser(MastodonUser mastodonUser, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false)
+        {
+            var mastodonClient = BuildMastodonApiClient();
+
             if (includeFollowers)
             {
+                // Get the follower of this user
                 mastodonUser.Followers = (await mastodonClient.GetAccountFollowers(mastodonUser.MastodonUserId))
                     .Select(u => u.ToMastodonUser().Then(mu => mu.FollowsRelevantUser = true)).ToList();
+                mastodonUser.IsFollowedByActiveUser = mastodonUser.Followers.Any(f => f.MastodonUserId == UserMastodonConnectionDetails.MastodonUserID);
             }
             if (includeFollowing)
             {
+                // Get the users this user us following
                 mastodonUser.Following = (await mastodonClient.GetAccountFollowing(mastodonUser.MastodonUserId))
                     .Select(u => u.ToMastodonUser().Then(mu => mu.IsFollowedByRelevantUser = true)).ToList();
+                mastodonUser.FollowsActiveUser = mastodonUser.Following.Any(f => f.MastodonUserId == UserMastodonConnectionDetails.MastodonUserID);
             }
+
+            if ((includeIsFollowedByActiveUser || includeFollowsActiveUser) && (!mastodonUser.IsFollowedByActiveUser.HasValue || !mastodonUser.FollowsActiveUser.HasValue))
+            {
+                // We haven't gotten any follow data, but we still need to know if this user has a relationship with the active user
+                var userRelationships = (await mastodonClient.GetAccountRelationships(mastodonUser.MastodonUserId)).ToArray();
+                mastodonUser.FollowsActiveUser = userRelationships.Any(r => r.FollowedBy);
+                mastodonUser.IsFollowedByActiveUser = userRelationships.Any(r => r.Following);
+            }
+
             return mastodonUser;
         }
 
