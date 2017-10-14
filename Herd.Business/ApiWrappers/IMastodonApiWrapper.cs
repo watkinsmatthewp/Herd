@@ -17,7 +17,17 @@ namespace Herd.Business.ApiWrappers
 
         Task<UserMastodonConnectionDetails> Connect(string token);
 
+        Task<MastodonUser> AddContextToMastodonUser(MastodonUser mastodonUser, bool includeFollowers = false, bool includeFollowing = false);
+
+        Task<IList<MastodonUser>> GetUsersByName(string name, bool includeFollowers = false, bool includeFollowing = false, int? limit = 30);
+
         Task<MastodonUser> GetActiveUserMastodonAccount(bool includeFollowers = false, bool includeFollowing = false);
+
+        Task<MastodonUser> GetMastodonAccount(int id, bool includeFollowers = false, bool includeFollowing = false);
+
+        Task<IList<MastodonUser>> GetFollowing(int followerUserID, bool includeFollowers = false, bool includeFollowing = false, int? limit = 30);
+
+        Task<IList<MastodonUser>> GetFollowers(int followingUserID, bool includeFollowers = false, bool includeFollowing = false, int? limit = 30);
 
         Task<List<MastodonPost>> GetRecentPosts(bool includeInReplyToPost = false, bool includeReplyPosts = false, int? maxID = null, int? sinceID = null, int? limit = 30);
 
