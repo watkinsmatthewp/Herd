@@ -13,7 +13,7 @@ export class AccountService {
 
     // Calls Api to get a user by username 
     getUserById(userId: string) {
-        let queryString = "?mastodonuserid=" + userId;
+        let queryString = "?mastodonUserID=" + userId;
         return this.httpClient.get('api/mastodon-users/search' + queryString)
             .map((response) => response.Users[0] as Account );
     }
