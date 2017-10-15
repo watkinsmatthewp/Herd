@@ -56,7 +56,7 @@
   "devDependencies": {
     "@types/chai": "4.0.1",
     "@types/jasmine": "2.5.53",
-    "babel-polyfill": "https://registry.npmjs.org/babel-polyfill/-/babel-polyfill-6.26.0.tgz",
+    "babel-polyfill": "^6.26.0",
     "chai": "4.0.2",
     "jasmine-core": "2.6.4",
     "karma": "1.7.0",
