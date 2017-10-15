@@ -242,21 +242,14 @@ namespace Herd.Business
                 users = await FilterByName(users, searchMastodonUsersCommand.Name, searchMastodonUsersCommand.MaxCount);
             }
 
-            var usersList = users.Values.ToList();
-            users = null;
-            for (var i = 0; i < usersList.Count; i++)
-            {
-                usersList[i] = await _mastodonApiWrapper.AddContextToMastodonUser
-                (
-                    usersList[i],
-                    searchMastodonUsersCommand.IncludeFollowers,
-                    searchMastodonUsersCommand.IncludeFollowing,
-                    searchMastodonUsersCommand.IncludeFollowedByActiveUser,
-                    searchMastodonUsersCommand.IncludeFollowsActiveUser
-                );
-            }
-
-            return usersList;
+            return await _mastodonApiWrapper.AddContextToMastodonUsers
+            (
+                users.Values.ToList(),
+                searchMastodonUsersCommand.IncludeFollowers,
+                searchMastodonUsersCommand.IncludeFollowing,
+                searchMastodonUsersCommand.IncludeFollowedByActiveUser,
+                searchMastodonUsersCommand.IncludeFollowsActiveUser
+            );
         }
 
         private async Task<Dictionary<int, MastodonUser>> FilterByUserID(Dictionary<int, MastodonUser> userSet1, int mastodonUserID)
