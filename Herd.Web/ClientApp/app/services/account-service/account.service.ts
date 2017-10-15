@@ -12,13 +12,10 @@ export class AccountService {
     constructor(private httpClient: HttpClientService) { }
 
     // Calls Api to get a user by username 
-    getUser(userId: string) {
-        let queryString = "?userID=" + userId;
+    getUserById(userId: string) {
+        let queryString = "?mastodonuserid=" + userId;
         return this.httpClient.get('api/mastodon-users/search' + queryString)
-            .map((response) => {
-                console.log("Response", response);
-                return response.Users[0] as Account;
-            });
+            .map((response) => response.Users[0] as Account );
     }
 
 }
