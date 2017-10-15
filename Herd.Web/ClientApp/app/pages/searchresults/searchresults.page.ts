@@ -17,7 +17,7 @@ export class SearchResultsPage implements OnInit {
 
     ngOnInit(): void {
         // hard coding string here for testing
-        this.mastodonService.searchUser("Thomas Ortiz")
+        this.mastodonService.searchUser("John")
             .subscribe(users => {
                 this.userCards = users;
             });

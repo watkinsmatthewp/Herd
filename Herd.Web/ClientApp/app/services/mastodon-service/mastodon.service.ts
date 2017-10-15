@@ -29,7 +29,7 @@ export class MastodonService {
     searchUser(name: string) {
         let queryString = "?name=" + name;
         return this.httpClient.get('api/mastodon-users/search' + queryString)
-            .map(response => response as UserCard[]);
+            .map(response => response.Users as UserCard[]);
     }
 
     /**
