@@ -1,12 +1,11 @@
-﻿<div class="well well-sm user-well-width">
-    <div class="row">
-        <div class="col-sm-6 usercard-content">
+﻿<div class="row col-sm-12">
 
+    <card>
+        <card-content>
             <div>
                 <span>
                     <img class="profile-picture" src="{{ userCard.MastodonProfileImageURL }}" />
                 </span>
-
                 <span>
                     <button type="button" class="btn btn-primary pull-right">
                         Follow
@@ -20,15 +19,15 @@
                 </a>
                 <br />
                 <a href="/todo">
-                    @{{userCard. MastodonUserName}}
+                    @{{userCard.MastodonUserName}}
                 </a>
             </div>
 
-            <div>
-                <br />
-                <p>Bio Text Goes Here</p>
-            </div>
+            <br />
 
-        </div>
-    </div>
+            <div [innerHTML]="userCard.MastodonShortBio"></div>
+
+        </card-content>
+    </card>
+
 </div>
