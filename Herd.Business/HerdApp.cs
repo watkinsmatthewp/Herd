@@ -129,9 +129,9 @@ namespace Herd.Business
             });
         }
 
-        public CommandResult UpdateUserMastodonConnection(UpdateUserMastodonConnectionCommand updateUserMastodonConnectionCommand)
+        public CommandResult<UpdateUserMastodonConnectionCommandResultData> UpdateUserMastodonConnection(UpdateUserMastodonConnectionCommand updateUserMastodonConnectionCommand)
         {
-            return ProcessCommand(result =>
+            return ProcessCommand<UpdateUserMastodonConnectionCommandResultData>(result =>
             {
                 // Check the token
                 if (string.IsNullOrWhiteSpace(updateUserMastodonConnectionCommand.Token))
@@ -154,6 +154,11 @@ namespace Herd.Business
                 // Update the user details
                 user.MastodonConnection = _mastodonApiWrapper.UserMastodonConnectionDetails;
                 _data.UpdateUser(user);
+
+                result.Data = new UpdateUserMastodonConnectionCommandResultData
+                {
+                    User = _data.GetUser(user.ID)
+                };
             });
         }
 

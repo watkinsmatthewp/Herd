@@ -81,6 +81,7 @@ export class AuthenticationService {
             'token': token,
             'app_registration_id': registrationID,
         }
-        return this.httpClient.post('api/oauth/set_tokens', body);
+        return this.httpClient.post('api/oauth/set_tokens', body)
+            .map(response => response.User);
     }
 }
