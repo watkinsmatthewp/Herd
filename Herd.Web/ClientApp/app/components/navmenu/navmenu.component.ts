@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { AuthenticationService } from '../../services';
 import { NotificationsService } from "angular2-notifications";
 
+import { ActivatedRoute, Router } from '@angular/router';
+
 @Component({
     selector: 'nav-menu',
     templateUrl: './navmenu.component.html',
@@ -11,7 +13,8 @@ import { NotificationsService } from "angular2-notifications";
 export class NavMenuComponent {
     model: any = {};
 
-    constructor(private authService: AuthenticationService, private toastService: NotificationsService) { }
+    constructor(private authService: AuthenticationService, private toastService: NotificationsService,
+        private route: ActivatedRoute, private router: Router) { }
 
     isAuthenticated(): boolean {
         return this.authService.isAuthenticated();
@@ -22,7 +25,8 @@ export class NavMenuComponent {
     }
 
     search() {
-        alert(this.model.searchItem);
+        this.router.navigate(['/searchresults'], { queryParams: { searchString: this.model.searchItem } });
+        //alert(this.model.searchItem);
     }
 
     logout() {
