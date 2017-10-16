@@ -3,7 +3,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { TabsetComponent } from 'ngx-bootstrap';
 
 
-import { MastodonService, TimelineAlertService } from "../../services";
+import { MastodonService, TimelineAlertService, AccountService } from "../../services";
 import { Status } from "../../models/mastodon";
 import { NotificationsService } from "angular2-notifications";
 import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
@@ -26,7 +26,8 @@ export class HomePage implements OnInit {
     homeFeed: Status[] = []; // List of posts for the home feed
 
     constructor(private activatedRoute: ActivatedRoute, private toastService: NotificationsService,
-                private mastodonService: MastodonService, private timelineAlert: TimelineAlertService) { }
+        private mastodonService: MastodonService, private timelineAlert: TimelineAlertService,
+    private accountService: AccountService) { }
 
     getMostRecentHomeFeed() {
         this.loading = true;
