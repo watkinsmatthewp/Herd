@@ -11,10 +11,10 @@ namespace Herd.Web.Controllers.HerdApi
         [HttpGet("search")]
         public IActionResult Search
         (
-            int? mastodonUserID = null,
+            long? mastodonUserID = null,
             string name = null,
-            int? followsMastodonUserID = null,
-            int? followedByMastodonUserID = null,
+            long? followsMastodonUserID = null,
+            long? followedByMastodonUserID = null,
             bool includeFollowers = false,
             bool includeFollowing = false,
             bool includeFollowsActiveUser = false,

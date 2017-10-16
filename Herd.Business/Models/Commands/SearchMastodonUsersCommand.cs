@@ -3,10 +3,10 @@
     public class SearchMastodonUsersCommand : Command
     {
         public int MaxCount { get; set; } = 30;
-        public int? UserID { get; set; }
+        public long? UserID { get; set; }
         public string Name { get; set; }
-        public int? FollowsUserID { get; set; }
-        public int? FollowedByUserID { get; set; }
+        public long? FollowsUserID { get; set; }
+        public long? FollowedByUserID { get; set; }
 
         public bool IncludeFollowers { get; set; }
         public bool IncludeFollowing { get; set; }
