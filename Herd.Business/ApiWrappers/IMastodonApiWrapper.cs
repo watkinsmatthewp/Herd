@@ -31,6 +31,8 @@ namespace Herd.Business.ApiWrappers
 
         Task<IList<MastodonUser>> GetFollowers(long followingUserID, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false, int? limit = 30);
 
+        Task<List<MastodonPost>> GetUserPosts(bool includeInReplyToPost = false, bool includeReplyPosts = false, long? maxID = null, long? sinceID = null, int? limit = 30);
+
         Task<List<MastodonPost>> GetRecentPosts(bool includeInReplyToPost = false, bool includeReplyPosts = false, long? maxID = null, long? sinceID = null, int? limit = 30);
 
         Task<MastodonPost> GetPost(long statusID, bool includeReplyPosts = false, bool includeReplyToPost = false);

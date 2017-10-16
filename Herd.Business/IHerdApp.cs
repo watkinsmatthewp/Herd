@@ -1,6 +1,7 @@
 ﻿using Herd.Business.Models;
 using Herd.Business.Models.CommandResultData;
 using Herd.Business.Models.Commands;
+using Herd.Business.Models.Entities;
 
 namespace Herd.Business
 {
@@ -30,7 +31,7 @@ namespace Herd.Business
 
         CommandResult CreateNewPost(CreateNewPostCommand createNewPostCommand);
 
-        CommandResult<GetRecentPostsCommandResultData> GetRecentUserFeedItems(GetRecentPostsCommand getRecentPostsCommand);
+        CommandResult<GetRecentPostsCommandResultData> GetRecentUserFeedItems(GetRecentPostsCommand getRecentPostsCommand, MastodonUser account);
 
         // Mastodon users
         CommandResult<SearchMastodonUsersCommandResultData> SearchUsers(SearchMastodonUsersCommand searchMastodonUsersCommand);

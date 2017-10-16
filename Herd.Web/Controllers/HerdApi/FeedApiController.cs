@@ -13,7 +13,7 @@ namespace Herd.Web.Controllers.HerdApi
 
 
         [HttpGet("users_items")]
-        public IActionResult UserItems() => ApiJson(App.GetRecentUserFeedItems(new GetRecentPostsCommand()));
+        public IActionResult UserItems(MastodonUser account) => ApiJson(App.GetRecentUserFeedItems(new GetRecentPostsCommand(), account));
 
         [HttpGet("get_status")]
         public IActionResult GetStatus(int statusId, bool includeAncestors, bool includeDescendants) => ApiJson(App.GetStatus(new GetPostCommand

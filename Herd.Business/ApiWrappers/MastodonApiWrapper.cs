@@ -215,6 +215,19 @@ namespace Herd.Business.ApiWrappers
             return mastodonUser;
         }
 
+        public async Task<List<MastodonPost>> GetUserPosts(bool includeInReplyToPost = false, bool includeReplyPosts = false, long? maxID = null, long? sinceID = null, int? limit = 30)
+        {
+            var posts = new List<MastodonPost>();
+            var mastodonClient = BuildMastodonApiClient();
+
+            foreach (var mastodonStatus in await mastodonClient.GetHomeTimeline(maxID, sinceID, limit))
+            {
+                posts.Add(await GetContextualPost(mastodonClient, mastodonStatus, includeReplyPosts, includeInReplyToPost));
+            }
+
+            return posts;
+        }
+
         #endregion User
 
         #region Timeline Feeds

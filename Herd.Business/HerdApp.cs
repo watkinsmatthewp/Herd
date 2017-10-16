@@ -183,6 +183,23 @@ namespace Herd.Business
             });
         }
 
+        public CommandResult<GetRecentPostsCommandResultData> GetRecentUserFeedItems(GetRecentPostsCommand getRecentFeedItemsCommand, MastodonUser user)
+        {
+            return ProcessCommand<GetRecentPostsCommandResultData>(result =>
+            {
+                result.Data = new GetRecentPostsCommandResultData
+                {
+                    RecentPosts = _mastodonApiWrapper.GetUserPosts(
+                        getRecentFeedItemsCommand.IncludeInReplyToPost,
+                        getRecentFeedItemsCommand.IncludeReplyPosts,
+                        getRecentFeedItemsCommand.MaxPostID,
+                        getRecentFeedItemsCommand.SincePostID,
+                        getRecentFeedItemsCommand.MaxCount
+                    ).Synchronously()
+                };
+            });
+        }
+
         public CommandResult<GetPostCommandResultData> GetStatus(GetPostCommand getStatusCommand)
         {
             return ProcessCommand<GetPostCommandResultData>(result =>
