@@ -1,29 +1,40 @@
 ﻿<div class="row">
-    <img class="header-img" style="width: 60px; height: 60px;" src="{{ account.MastodonHeaderImageURL }}" />
+    <img class="header-pic" src="{{ account.MastodonHeaderImageURL }}" />
 </div>
 <div class="row">
     <!-- Left Column -->
     <div class="col-sm-3">
         <div *ngIf="account" class="row">
-            <img class="header-img" style="width: 60px; height: 60px;" src="{{ account.MastodonProfileImageURL }}" />
+            <img class="profile-pic" src="{{ account.MastodonProfileImageURL }}" />
             <div class="col-lg-12">
-                <a href="{{ account.MastodonHeaderImageURL }}">Test</a>
-                MastodonUserId = {{ account.MastodonUserId }}
+                <h4>
+                    <strong>{{ account.MastodonDisplayName }}</strong>
+                    <br />
+                    @{{ account.MastodonUserName }}
+                </h4>
             </div>
         </div>
     </div>
     <!-- Middle Column -->
     <div class="col-sm-6">
+        <div class="info-bar">
+            <br />
+            <p [innerHTML]="account.MastodonShortBio"></p>
+            <br />
+        </div>
         <div>
             <tabset>
-                <tab heading="Static title">
-                    Static content
+                <tab heading="Posts">
+                    <div *ngFor="let status of userPosts">
+                        <status [status]="status"></status>
+                        <status-modal [status]="status" [modalId]="'statusModal-' + status.Id"></status-modal>
+                    </div>
                 </tab>
-                <tab heading="Static Title 1">
-                    Static content 1
+                <tab heading="Following">
+                    Following: {{ account.FollowingCount }}
                 </tab>
-                <tab heading="Static Title 2">
-                    Static content 2
+                <tab heading="Followers">
+                    Followers: {{ account.FollowersCount }}
                 </tab>
             </tabset>
         </div>

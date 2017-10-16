@@ -1,0 +1,15 @@
+﻿.header-pic {
+    width: 700px;
+    display: block;
+    margin: 0 auto;
+}
+
+.profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+}
+
+.info-bar {
+    
+}

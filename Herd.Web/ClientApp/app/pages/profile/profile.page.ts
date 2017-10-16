@@ -3,15 +3,19 @@ import { NotificationsService } from "angular2-notifications";
 
 import { AccountService } from "../../services";
 import { Account } from '../../models/mastodon';
+import { Status } from "../../models/mastodon";
 import { Storage } from '../../models';
 
 @Component({
     selector: 'profile',
     templateUrl: './profile.page.html',
+    styleUrls: ['./profile.page.css']
 })
 export class ProfilePage implements OnInit {
     account: Account;
     loading: boolean = false;
+    userPosts: Status[] = []; // List of posts from this user
+
     constructor(private accountService: AccountService,
         private localStorage: Storage,
         private alertService: NotificationsService) {
