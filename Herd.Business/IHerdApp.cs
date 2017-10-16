@@ -13,7 +13,7 @@ namespace Herd.Business
         CommandResult<GetRegistrationCommandResultData> GetRegistration(GetRegistrationCommand getRegistrationCommand);
 
         CommandResult<GetRegistrationCommandResultData> GetOrCreateRegistration(GetOrCreateRegistrationCommand getOrCreateRegistrationCommand);
-
+        
         CommandResult<GetOAuthURLCommandResultData> GetOAuthURL(GetOAuthURLCommand getOAuthUrlCommand);
 
         // Auth
@@ -29,6 +29,8 @@ namespace Herd.Business
         CommandResult<GetPostCommandResultData> GetStatus(GetPostCommand getStatusCommand);
 
         CommandResult CreateNewPost(CreateNewPostCommand createNewPostCommand);
+
+        CommandResult<GetRecentPostsCommandResultData> GetRecentUserFeedItems(GetRecentPostsCommand getRecentPostsCommand);
 
         // Mastodon users
         CommandResult<SearchMastodonUsersCommandResultData> SearchUsers(SearchMastodonUsersCommand searchMastodonUsersCommand);
