@@ -1,6 +1,7 @@
 ﻿using Herd.Business;
 using Herd.Business.Models.Commands;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 
 namespace Herd.Web.Controllers.HerdApi
@@ -11,10 +12,10 @@ namespace Herd.Web.Controllers.HerdApi
         [HttpGet("search")]
         public IActionResult Search
         (
-            int? mastodonUserID = null,
+            long? mastodonUserID = null,
             string name = null,
-            int? followsMastodonUserID = null,
-            int? followedByMastodonUserID = null,
+            long? followsMastodonUserID = null,
+            long? followedByMastodonUserID = null,
             bool includeFollowers = false,
             bool includeFollowing = false,
             bool includeFollowsActiveUser = false,
@@ -33,6 +34,16 @@ namespace Herd.Web.Controllers.HerdApi
                 IncludeFollowedByActiveUser = includeFollowedByActiveUser,
                 IncludeFollowsActiveUser = includeFollowsActiveUser,
                 MaxCount = max
+            }));
+        }
+
+        [HttpPost("follow")]
+        public IActionResult Follow([FromBody] JObject body)
+        {
+            return ApiJson(App.FollowUser(new FollowUserCommand
+            {
+                UserID = body["mastodonUserID"].Value<long>(),
+                FollowUser = body["followUser"].Value<bool>(),
             }));
         }
     }

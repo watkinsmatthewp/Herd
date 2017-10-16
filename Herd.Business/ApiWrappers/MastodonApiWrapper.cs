@@ -63,7 +63,7 @@ namespace Herd.Business.ApiWrappers
 
         #endregion Private helper
 
-        #region Auth Api
+        #region Auth
 
         #region Auth - Public methods
 
@@ -80,7 +80,7 @@ namespace Herd.Business.ApiWrappers
 
         #endregion Auth - Public methods
 
-        #region Auth - Private mehtods
+        #region Auth - Private methods
 
         private AuthenticationClient BuildMastodonAuthenticationClient()
         {
@@ -226,6 +226,18 @@ namespace Herd.Business.ApiWrappers
             }
 
             return posts;
+        }
+
+        public async Task<MastodonRelationship> Follow(long userID, bool followUser)
+        {
+            if(followUser)
+            {
+                return (await BuildMastodonApiClient().Follow(userID)).ToMastodonRelationship();
+            } else
+            {
+                return (await BuildMastodonApiClient().Unfollow(userID)).ToMastodonRelationship();
+            }
+            
         }
 
         #endregion User

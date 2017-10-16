@@ -342,6 +342,14 @@ namespace Herd.Business
             return userSet.ToDictionary(u => u.MastodonUserId, u => u);
         }
 
+        public CommandResult FollowUser(FollowUserCommand followUserCommand)
+        {
+            return ProcessCommand(result =>
+            {
+                _mastodonApiWrapper.Follow(followUserCommand.UserID, followUserCommand.FollowUser);
+            });
+        }
+
         #endregion Mastodon Users
 
         #region Private helpers

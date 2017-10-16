@@ -63,6 +63,28 @@ namespace Herd.Business
             FollowingCount = account.FollowingCount
         };
 
+        public static MastodonRelationship ToMastodonRelationship(this Relationship relationship) => new MastodonRelationship
+        {
+            ID = relationship.Id,
+            Following = relationship.Following,
+            FollowedBy = relationship.FollowedBy,
+            Blocking = relationship.Blocking,
+            Muting = relationship.Muting,
+            Requested = relationship.Requested,
+            DomainBlocking = relationship.DomainBlocking,
+        };
+
+        public static Relationship ToRelationship(this MastodonRelationship relationship) => new Relationship
+        {
+            Id = relationship.ID,
+            Following = relationship.Following,
+            FollowedBy = relationship.FollowedBy,
+            Blocking = relationship.Blocking,
+            Muting = relationship.Muting,
+            Requested = relationship.Requested,
+            DomainBlocking = relationship.DomainBlocking,
+        };
+
         #endregion User
 
         #region Posts

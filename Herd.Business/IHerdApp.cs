@@ -35,5 +35,6 @@ namespace Herd.Business
 
         // Mastodon users
         CommandResult<SearchMastodonUsersCommandResultData> SearchUsers(SearchMastodonUsersCommand searchMastodonUsersCommand);
+        CommandResult FollowUser(FollowUserCommand followUserCommand);
     }
 }
