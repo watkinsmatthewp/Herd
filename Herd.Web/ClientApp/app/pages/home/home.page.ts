@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
+import { TabsetComponent } from 'ngx-bootstrap';
+
 
 import { MastodonService, TimelineAlertService } from "../../services";
 import { Status } from "../../models/mastodon";
@@ -24,7 +26,7 @@ export class HomePage implements OnInit {
     homeFeed: Status[] = []; // List of posts for the home feed
 
     constructor(private activatedRoute: ActivatedRoute, private toastService: NotificationsService,
-        private mastodonService: MastodonService, private timelineAlert: TimelineAlertService) { }
+                private mastodonService: MastodonService, private timelineAlert: TimelineAlertService) { }
 
     getMostRecentHomeFeed() {
         this.loading = true;

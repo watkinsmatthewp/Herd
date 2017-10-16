@@ -13,7 +13,7 @@ namespace Herd.Data.Models
         public string CreatedAt { get; set; }
         public string Scope { get; set; }
         public string TokenType { get; set; }
-        public int MastodonUserID { get; set; }
+        public long MastodonUserID { get; set; }
     }
 
     public class UserAccount : DataModel

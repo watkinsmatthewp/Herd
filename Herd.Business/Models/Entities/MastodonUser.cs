@@ -5,7 +5,7 @@ namespace Herd.Business.Models.Entities
     public class MastodonUser
     {
         // Core properties
-        public int MastodonUserId { get; set; }
+        public long MastodonUserId { get; set; }
 
         public string MastodonUserName { get; set; }
         public string MastodonDisplayName { get; set; }

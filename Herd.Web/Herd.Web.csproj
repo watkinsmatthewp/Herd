@@ -33,6 +33,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\components\card\card-content.component.ts" />
+    <None Remove="ClientApp\app\components\card\card-title.component.ts" />
+    <None Remove="ClientApp\app\components\card\card.component.ts" />
+    <None Remove="ClientApp\app\components\card\card.module.ts" />
+    <None Remove="ClientApp\app\components\card\index.ts" />
     <None Remove="ClientApp\app\components\index.ts" />
     <None Remove="ClientApp\app\components\status-form\status-form-modal\status-form-modal.component.ts" />
     <None Remove="ClientApp\app\components\status-reply-modal.ts" />
@@ -57,6 +62,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\components\card\card-actions.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\card\card-content.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\card\card-title.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\card\card.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\card\card.module.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\card\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\status-form\status-form-modal\status-form-modal.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\status-reply-modal\status-reply-modal.component.ts" />

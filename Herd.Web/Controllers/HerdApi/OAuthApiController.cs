@@ -49,12 +49,20 @@ namespace Herd.Web.Controllers.HerdApi
             _appRegistration = new Lazy<Registration>(HerdWebApp.Instance.DataProvider.GetAppRegistration(body["app_registration_id"].Value<long>()));
             _mastodonApiWrapper = new Lazy<IMastodonApiWrapper>(new MastodonApiWrapper(AppRegistration));
 
-            return ApiJson(App.UpdateUserMastodonConnection(new UpdateUserMastodonConnectionCommand
+            var result = App.UpdateUserMastodonConnection(new UpdateUserMastodonConnectionCommand
             {
                 AppRegistrationID = body["app_registration_id"].Value<long>(),
                 Token = body["token"].Value<string>(),
                 UserID = ActiveUser.ID
-            }));
+            });
+
+            // Visible to user. Only expose necessary fields
+            if (result.Data != null)
+            {
+                result.Data.User = ClearUnnecessaryOrSensitiveData(result.Data.User);
+            }
+
+            return ApiJson(result);
         }
 
         #region Private helpers
@@ -62,6 +70,15 @@ namespace Herd.Web.Controllers.HerdApi
         private Registration ClearUnnecessaryOrSensitiveData(Registration registration) => new Registration
         {
             ID = registration.ID
+        };
+
+        private UserAccount ClearUnnecessaryOrSensitiveData(UserAccount userAccount) => new UserAccount
+        {
+            ID = userAccount.ID,
+            MastodonConnection = new UserMastodonConnectionDetails
+            {
+                MastodonUserID = userAccount.MastodonConnection.MastodonUserID
+            }
         };
 
         #endregion Private helpers

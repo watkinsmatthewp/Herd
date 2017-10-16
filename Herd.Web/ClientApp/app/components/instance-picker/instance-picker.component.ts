@@ -45,7 +45,8 @@ export class InstancePickerComponent {
         this.loading = true;
         this.authenticationService.submitOAuthToken(this.model.oAuthToken, this.registrationID)
             .finally(() => this.loading = false)
-            .subscribe(data => {
+            .subscribe(user => {
+                this.localStorage.setItem('currentUser', JSON.stringify(user));
                 this.toastService.success("Successfully", "linked with " + this.model.instance);
                 this.localStorage.setItem('connectedToMastodon', true);
                 this.router.navigateByUrl('/home');

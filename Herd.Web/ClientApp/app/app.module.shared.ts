@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { Routes, RouterModule, CanActivate } from '@angular/router';
+import { CardModule } from './components/card'
 
 // External Dependencies
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 import { BsModalModule } from 'ng2-bs3-modal';
+import { TabsModule } from 'ngx-bootstrap';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 
 // Pages
@@ -47,8 +49,8 @@ import { SafePipe } from './pipes';
         SafePipe
     ],
     imports: [
-        Angular2FontawesomeModule, BsModalModule, CommonModule,
-        HttpModule, FormsModule, SimpleNotificationsModule.forRoot(),
+        Angular2FontawesomeModule, BsModalModule, CardModule, CommonModule, 
+        HttpModule, FormsModule, TabsModule.forRoot(), SimpleNotificationsModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             // Admin Page 

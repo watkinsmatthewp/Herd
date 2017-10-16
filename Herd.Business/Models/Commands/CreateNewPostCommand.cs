@@ -7,8 +7,8 @@ namespace Herd.Business.Models.Commands
     {
         public string Message { get; set; }
         public MastodonPostVisibility Visibility { get; set; }
-        public int? ReplyStatusId { get; set; }
-        public IEnumerable<int> MediaIds { get; set; }
+        public long? ReplyStatusId { get; set; }
+        public IEnumerable<long> MediaIds { get; set; }
         public bool Sensitive { get; set; }
         public string SpoilerText { get; set; }
     }

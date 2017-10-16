@@ -107,7 +107,7 @@ namespace Herd.Business.ApiWrappers
             return mastodonUser;
         }
 
-        public async Task<MastodonUser> GetMastodonAccount(int id, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false)
+        public async Task<MastodonUser> GetMastodonAccount(long id, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false)
         {
             var mastodonClient = BuildMastodonApiClient();
             var mastodonUser = (await mastodonClient.GetAccount(id)).ToMastodonUser();
@@ -123,7 +123,7 @@ namespace Herd.Business.ApiWrappers
             return mastodonUsers;
         }
 
-        public async Task<IList<MastodonUser>> GetFollowing(int followerUserID, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false, int? limit = 30)
+        public async Task<IList<MastodonUser>> GetFollowing(long followerUserID, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false, int? limit = 30)
         {
             var mastodonClient = BuildMastodonApiClient();
             var mastodonUsers = (await mastodonClient.GetAccountFollowing(followerUserID, null, null, limit)).Select(u => u.ToMastodonUser()).ToList();
@@ -131,7 +131,7 @@ namespace Herd.Business.ApiWrappers
             return mastodonUsers;
         }
 
-        public async Task<IList<MastodonUser>> GetFollowers(int followingUserID, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false, int? limit = 30)
+        public async Task<IList<MastodonUser>> GetFollowers(long followingUserID, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false, int? limit = 30)
         {
             var mastodonClient = BuildMastodonApiClient();
             var mastodonUsers = (await mastodonClient.GetAccountFollowers(followingUserID, null, null, limit)).Select(u => u.ToMastodonUser()).ToList();
@@ -219,7 +219,7 @@ namespace Herd.Business.ApiWrappers
 
         #region Timeline Feeds
 
-        public async Task<List<MastodonPost>> GetRecentPosts(bool includeInReplyToPost = false, bool includeReplyPosts = false, int? maxID = null, int? sinceID = null, int? limit = 30)
+        public async Task<List<MastodonPost>> GetRecentPosts(bool includeInReplyToPost = false, bool includeReplyPosts = false, long? maxID = null, long? sinceID = null, int? limit = 30)
         {
             var posts = new List<MastodonPost>();
             var mastodonClient = BuildMastodonApiClient();
@@ -232,14 +232,14 @@ namespace Herd.Business.ApiWrappers
             return posts;
         }
 
-        public async Task<MastodonPost> GetPost(int statusID, bool includeAncestors = false, bool includeDescendants = false)
+        public async Task<MastodonPost> GetPost(long statusID, bool includeAncestors = false, bool includeDescendants = false)
         {
             var mastodonClient = BuildMastodonApiClient();
             var status = await mastodonClient.GetStatus(statusID);
             return await GetContextualPost(mastodonClient, status, includeAncestors, includeDescendants);
         }
 
-        public async Task<MastodonPost> CreateNewPost(string message, MastodonPostVisibility visibility, int? replyStatusId = null, IEnumerable<int> mediaIds = null, bool sensitive = false, string spoilerText = null)
+        public async Task<MastodonPost> CreateNewPost(string message, MastodonPostVisibility visibility, long? replyStatusId = null, IEnumerable<long> mediaIds = null, bool sensitive = false, string spoilerText = null)
         {
             return (await BuildMastodonApiClient().PostStatus(message, visibility.ToVisibility(), replyStatusId, mediaIds, sensitive, spoilerText)).ToPost();
         }

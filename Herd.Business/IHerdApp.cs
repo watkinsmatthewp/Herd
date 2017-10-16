@@ -21,7 +21,7 @@ namespace Herd.Business
 
         CommandResult<LoginUserCommandResultData> LoginUser(LoginUserCommand loginUserCommand);
 
-        CommandResult UpdateUserMastodonConnection(UpdateUserMastodonConnectionCommand updateUserMastodonConnectionCommand);
+        CommandResult<UpdateUserMastodonConnectionCommandResultData> UpdateUserMastodonConnection(UpdateUserMastodonConnectionCommand updateUserMastodonConnectionCommand);
 
         // Feed
         CommandResult<GetRecentPostsCommandResultData> GetRecentFeedItems(GetRecentPostsCommand getRecentFeedItemsCommand);

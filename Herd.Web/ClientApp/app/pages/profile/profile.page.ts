@@ -21,11 +21,9 @@ export class ProfilePage implements OnInit {
         this.loading = true;
         let currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
         let userId = currentUser.MastodonConnection.MastodonUserID;
-        console.log("mastodonUserID", userId);
-        this.accountService.getUser(userId)
+        this.accountService.getUserById(userId)
             .finally(() => this.loading = false)
             .subscribe(account => {
-                console.log("account", account);
                 this.account = account;
             }, error => {
                 this.alertService.error("Error", error.error);
