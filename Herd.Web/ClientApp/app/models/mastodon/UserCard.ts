@@ -8,6 +8,6 @@ export class UserCard {
     MastodonProfileImageURL: string;
     MastodonHeaderImageUrl: string;
     MastodonShortBio: string;
-    FollowsCurrentUser: boolean;
-    CurrentUserIsFollowing: boolean;
+    FollowsActiveUser: boolean;
+    IsFollowedByActiveUser: boolean;
 }

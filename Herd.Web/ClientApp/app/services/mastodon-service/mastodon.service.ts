@@ -27,7 +27,7 @@ export class MastodonService {
 
     // Calls Api to search for users
     searchUser(name: string) {
-        let queryString = "?name=" + name;
+        let queryString = "?name=" + name + "&includefollowedbyactiveuser=true&includefollowsactiveuser=true";
         return this.httpClient.get('api/mastodon-users/search' + queryString)
             .map(response => response.Users as UserCard[]);
     }
