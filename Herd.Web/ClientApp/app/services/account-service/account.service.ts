@@ -19,7 +19,12 @@ export class AccountService {
     }
 
     getUserFeed(): Observable<Status[]> {
-        return this.httpClient.get('api/feed/user_items')
+        return this.httpClient.get('api/account/user_items')
+            .map(response => response.RecentPosts as Status[]);
+    }
+
+    getFollowers(): Observable<Status[]> {
+        return this.httpClient.get('api/account/user_items')
             .map(response => response.RecentPosts as Status[]);
     }
 

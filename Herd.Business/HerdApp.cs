@@ -162,6 +162,17 @@ namespace Herd.Business
             });
         }
 
+        public CommandResult<GetUserCommandResultData> GetFollowing(GetUserCommand getUserCommand)
+        {
+            return ProcessCommand<GetUserCommandResultData>(result =>
+            {
+                var Following = _mastodonApiWrapper.GetFollowing(
+                    getUserCommand.UserID
+                ).Synchronously();
+            }
+            );
+        }
+
         #endregion Users
 
         #region Feed

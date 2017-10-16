@@ -1,4 +1,5 @@
 ﻿using Herd.Business.Models.Commands;
+using Herd.Business.Models.Entities;
 using Herd.Data.Models;
 using Herd.Web.Code;
 using Herd.Web.CustomAttributes;
@@ -60,6 +61,12 @@ namespace Herd.Web.Controllers.HerdApi
             await this.ClearActiveUserFromSession();
             return Ok();
         }
+        
+        [HttpGet("users_items")]
+        public IActionResult UserItems(MastodonUser account) => ApiJson(App.GetRecentUserFeedItems(new GetRecentPostsCommand(), account));
+
+        [HttpGet("following")]
+        public IActionResult GetFollowing(MastodonUser account) => ApiJson(App.getF)
 
         #region Private helpers
 
