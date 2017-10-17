@@ -151,8 +151,6 @@ namespace Herd.Business.UnitTests
 
             // Verify the result, should add more tests when dummy data is removed
             Assert.True(result?.Success);
-            //result.Data.RecentFeedItems[0].Content;
-            //Assert.Equal("Hello, World!", result.Data.RecentFeedItems[0].Content);
         }
 
         //[Fact]
@@ -200,9 +198,6 @@ namespace Herd.Business.UnitTests
 
             // Verify the result
             Assert.True(result?.Success);
-            // TODO DO more checks, should the function return more than just a CommandResult?
-            //Assert.True(result.Data.Following);
-
 
             // Run the HerdApp command (should execute the mock)
             result = herdApp.FollowUser(new FollowUserCommand { UserID = "1", FollowUser = false });
