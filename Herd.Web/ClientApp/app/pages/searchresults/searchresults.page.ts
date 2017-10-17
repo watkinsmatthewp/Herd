@@ -41,9 +41,8 @@ export class SearchResultsPage implements OnInit {
             .queryParams
             .subscribe(params => {
                 this.search = params['searchString'] || "John";
+                this.performSearch();
             });
-
-            this.performSearch();
     }
     
 }

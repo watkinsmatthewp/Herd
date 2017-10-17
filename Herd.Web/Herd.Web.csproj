@@ -64,6 +64,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\card\card-actions.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\card\card-content.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\card\card-image-header.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\card\card-title.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\card\card.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\card\card.module.ts" />

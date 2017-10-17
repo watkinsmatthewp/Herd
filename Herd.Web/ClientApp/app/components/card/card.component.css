@@ -47,6 +47,17 @@
     overflow: hidden;
 }
 
+.header-image-box {
+    width: 100%;
+    height: 100px;
+    overflow: hidden;
+}
+
+.header-pic {
+    min-width: 100%;
+    object-fit: cover;
+}
+
 .card-title {
     color: #282b31;
     font-weight: 300;
