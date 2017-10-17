@@ -9,7 +9,7 @@ export class TimelineAlertService {
 
     constructor() {}
 
-    addMessage(message: string, statusId: number) {
+    addMessage(message: string, statusId: string) {
         this.subject.next({ message: message, statusId: statusId });
     }
 

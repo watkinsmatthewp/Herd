@@ -14,7 +14,7 @@
                 <div class="viewingStatus">
                     <status [status]="status"></status>
                 </div>
-                <status-form actionName="Reply" isReply="true" [inReplyToId]="status.Id"></status-form>
+                <status-form actionName="Reply" isReply="true" [inReplyToId]="status.IdString"></status-form>
                 <div class="replies" *ngFor="let descendantStatus of status.Descendants">
                     <status [status]="descendantStatus"></status>
                 </div>

@@ -16,14 +16,14 @@ namespace Herd.Business
         {
             ClientId = mastodonAppRegistration.ClientId,
             ClientSecret = mastodonAppRegistration.ClientSecret,
-            MastodonAppRegistrationID = mastodonAppRegistration.Id,
+            MastodonAppRegistrationID = mastodonAppRegistration.Id.ToString(),
             Instance = mastodonAppRegistration.Instance
         };
 
         public static AppRegistration ToMastodonAppRegistration(this Registration herdAppRegistration) => new AppRegistration
         {
             ClientId = herdAppRegistration.ClientId,
-            Id = herdAppRegistration.MastodonAppRegistrationID,
+            Id = herdAppRegistration.MastodonAppRegistrationID.ToLong(),
             ClientSecret = herdAppRegistration.ClientSecret,
             Instance = herdAppRegistration.Instance,
             Scope = MastodonApiWrapper.ALL_SCOPES
@@ -37,10 +37,10 @@ namespace Herd.Business
             TokenType = connectionDetails.TokenType
         };
 
-        public static UserMastodonConnectionDetails ToHerdConnectionDetails(this Auth auth, long appRegistrationID, int mastodonUserID) => new UserMastodonConnectionDetails
+        public static UserMastodonConnectionDetails ToHerdConnectionDetails(this Auth auth, long appRegistrationID, string mastodonUserID) => new UserMastodonConnectionDetails
         {
             ApiAccessToken = auth.AccessToken,
-            AppRegistrationID = appRegistrationID,
+            AppRegistrationID = appRegistrationID.ToString(),
             CreatedAt = auth.CreatedAt,
             Scope = auth.Scope,
             TokenType = auth.TokenType,
@@ -57,7 +57,7 @@ namespace Herd.Business
             MastodonHeaderImageURL = account.HeaderUrl,
             MastodonProfileImageURL = account.AvatarUrl,
             MastodonShortBio = account.Note,
-            MastodonUserId = account.Id,
+            MastodonUserId = account.Id.ToString(),
             MastodonUserName = account.UserName,
             FollowersCount = account.FollowersCount,
             FollowingCount = account.FollowingCount
@@ -65,7 +65,7 @@ namespace Herd.Business
 
         public static MastodonRelationship ToMastodonRelationship(this Relationship relationship) => new MastodonRelationship
         {
-            ID = relationship.Id,
+            ID = relationship.Id.ToString(),
             Following = relationship.Following,
             FollowedBy = relationship.FollowedBy,
             Blocking = relationship.Blocking,
@@ -76,7 +76,7 @@ namespace Herd.Business
 
         public static Relationship ToRelationship(this MastodonRelationship relationship) => new Relationship
         {
-            Id = relationship.ID,
+            Id = relationship.ID.ToLong(),
             Following = relationship.Following,
             FollowedBy = relationship.FollowedBy,
             Blocking = relationship.Blocking,
@@ -97,8 +97,8 @@ namespace Herd.Business
                 Content = status.Content,
                 CreatedOnUTC = status.CreatedAt,
                 FavouritesCount = status.FavouritesCount,
-                Id = status.Id,
-                InReplyToPostId = status.InReplyToId,
+                Id = status.Id.ToString(),
+                InReplyToPostId = status.InReplyToId.ToString(),
                 IsFavourited = status.Favourited,
                 IsReblogged = status.Reblogged,
                 IsSensitive = status.Sensitive,
@@ -121,5 +121,17 @@ namespace Herd.Business
         }
 
         #endregion Posts
+
+        #region General
+
+        public static IEnumerable<long> ToLongs(this IEnumerable<string> sCollection) => sCollection.Select(s => s.ToLong());
+
+        public static IEnumerable<long?> ToNullableLongs(this IEnumerable<string> sCollection) => sCollection.Select(s => s.ToNullableLong());
+
+        public static long ToLong(this string s) => long.Parse(s);
+
+        public static long? ToNullableLong(this string s) => string.IsNullOrWhiteSpace(s) ? null as long? : s.ToLong();
+
+        #endregion
     }
 }

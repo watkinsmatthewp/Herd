@@ -6,7 +6,7 @@ namespace Herd.Business.Models.Entities
 {
     public class MastodonRelationship
     {
-        public long ID { get; set; }
+        public string ID { get; set; }
         public bool Following { get; set; }
         public bool FollowedBy { get; set; }
         public bool Blocking { get; set; }

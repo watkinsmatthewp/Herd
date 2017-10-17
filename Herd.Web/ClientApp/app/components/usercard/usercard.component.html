@@ -1,34 +1,49 @@
-﻿<div class="row col-sm-12">
+﻿<card size="large" [headerImgSrc]="userCard.MastodonHeaderImageURL">
+    <card-image-header>
+            <div class="header-pic" [ngStyle]="{'background-image': 'url(' + userCard.MastodonHeaderImageURL + ')' }"></div>
+    </card-image-header>
 
-    <card>
-        <card-content>
+    <card-title>
+        <div>
+            <span>
+                <img class="profile-picture" src="{{ userCard.MastodonProfileImageURL }}" align="middle" />
+            </span>
+        </div>
+        <div class="user-names">
+            <h3 class="display-name" href="/todo">{{userCard.MastodonDisplayName}}</h3>
+            <a class="username" href="/todo">@{{userCard.MastodonUserName}}</a>
+        </div>
+    </card-title>
+    
+    <card-content>
+        <div *ngIf="userCard.MastodonShortBio" class="user-bio" [innerHTML]="userCard.MastodonShortBio"></div>
+    </card-content>
 
-            <div>
-                <span>
-                    <img class="profile-picture" src="{{ userCard.MastodonProfileImageURL }}" />
-                </span>
-                <span>
-                    <button type="button" class="btn btn-primary pull-right">
-                        Follow
-                    </button>
-                </span>
-            </div>
-
-            <div>
-                <a href="/todo">
-                    {{userCard.MastodonDisplayName}}
-                </a>
-                <br />
-                <a href="/todo">
-                    @{{userCard.MastodonUserName}}
-                </a>
-            </div>
-
-            <br />
-
-            <div [innerHTML]="userCard.MastodonShortBio"></div>
-
-        </card-content>
-    </card>
-
-</div>
+    <card-actions>
+        <!--
+        <div class="container-fluid quick-info">
+            <span class="quick-info-section">
+                <span class="title"> Posts</span>
+                <strong class="count"><span>{{userCard.PostCount}}</span></strong>
+            </span>
+            <span class="quick-info-section">
+                <span class="title"> Followers</span>
+                <strong class="count"><span>{{userCard.FollowersCount}}</span></strong>
+            </span>
+            <span class="quick-info-section">
+                <span class="title"> Following</span>
+                <strong class="count"><span>{{userCard.FollowingCount}}</span></strong>
+            </span>
+        </div>
+        -->
+        <div class="text-center">
+            <button *ngIf="isFollowing" class="btn btn-primary follow-btn" (mouseenter)="followUnfollowText = 'Unfollow';" (mouseleave)="followUnfollowText = 'Following';" (click)="togglefollow()">
+                {{followUnfollowText}}
+            </button>
+            <button *ngIf="!isFollowing" class="btn btn-secondary not-following-btn" (click)="togglefollow()">
+                Follow
+            </button>
+        </div>
+        
+    </card-actions>
+</card>

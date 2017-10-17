@@ -1,6 +1,7 @@
-﻿import { Component, OnInit, Input } from '@angular/core';
+﻿import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 
-import { MastodonService, TimelineAlertService } from "../../services";
+import { MastodonService, TimelineAlertService, AccountService } from "../../services";
+import { NotificationsService } from "angular2-notifications";
 import { UserCard } from '../../models/mastodon';
 
 @Component({
@@ -11,17 +12,33 @@ import { UserCard } from '../../models/mastodon';
 export class UserCardComponent implements OnInit {
     @Input() userCard: UserCard;
     isFollowing: boolean = false;
+    followUnfollowText: string = "Following";
 
-    constructor(private timelineAlert: TimelineAlertService) {  }
+    constructor(private timelineAlert: TimelineAlertService, private mastodonService: MastodonService,
+        private accountService: AccountService, private toastService: NotificationsService) { }
 
     ngOnInit() {
-        if (this.userCard.FollowsCurrentUser === true) {
+        if (this.userCard.IsFollowedByActiveUser === true) {
             this.isFollowing = true;
         }
     }
 
-    follow() {
+    togglefollow(): void {
+        this.accountService.followUser(String(this.userCard.MastodonUserId), !this.isFollowing)
+            .subscribe(response => {
+                this.isFollowing = !this.isFollowing;
+                this.toastService.success("Successfully", "changed relationship.");
+            }, error => {
+                this.toastService.error(error.error);
+            });
+    }
 
+    mouseEnter(div: string) {
+        console.log("mouse enter : " + div);
+    }
+
+    mouseLeave(div: string) {
+        console.log('mouse leave :' + div);
     }
 
 }

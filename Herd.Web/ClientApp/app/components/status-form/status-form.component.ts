@@ -14,7 +14,7 @@ import { Visibility } from '../../models/mastodon';
 export class StatusFormComponent {
     @Input() actionName: string;
     @Input() isReply: boolean;
-    @Input() inReplyToId: number;
+    @Input() inReplyToId: string;
 
     maxStatusLength: number = 200;
     Visibility = Visibility;
@@ -55,7 +55,7 @@ export class StatusFormComponent {
     }
 
     submitStatus(form: NgForm) {
-        this.mastodonService.makeNewPost(this.model.status, this.model.visibility, (this.inReplyToId ? this.inReplyToId: -1), this.model.contentWarning, this.model.spoilerText)
+        this.mastodonService.makeNewPost(this.model.status, this.model.visibility, this.inReplyToId, this.model.contentWarning, this.model.spoilerText)
             .finally(() => {
                 this.resetFormDefaults(form);
             })

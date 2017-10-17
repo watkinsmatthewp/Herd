@@ -30,14 +30,14 @@ namespace Herd.Business.UnitTests
                 ClientId = "client-id",
                 ClientSecret = "client-secret",
                 Instance = "mastodon.instance",
-                MastodonAppRegistrationID = 42
+                MastodonAppRegistrationID = "42"
             });
 
             // Create the HerdApp using the mock objects
             var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
 
             // Run the HerdApp command (should execute the mock)
-            var result = herdApp.GetRegistration(new GetRegistrationCommand { ID = 3 });
+            var result = herdApp.GetRegistration(new GetRegistrationCommand { ID = "3" });
 
             // Make sure the GetAppRegistration was called once with id 3
             mockData.Verify(d => d.GetAppRegistration(3), Times.Once());
@@ -48,7 +48,7 @@ namespace Herd.Business.UnitTests
             Assert.Equal("client-id", result.Data?.Registration?.ClientId);
             Assert.Equal("client-secret", result.Data?.Registration?.ClientSecret);
             Assert.Equal("mastodon.instance", result.Data?.Registration?.Instance);
-            Assert.Equal(42, result.Data?.Registration?.MastodonAppRegistrationID);
+            Assert.Equal("42", result.Data?.Registration?.MastodonAppRegistrationID);
         }
 
         [Fact]
@@ -66,7 +66,7 @@ namespace Herd.Business.UnitTests
                 ClientId = "client-id",
                 ClientSecret = "client-secret",
                 Instance = "mastodon.instance",
-                MastodonAppRegistrationID = 42
+                MastodonAppRegistrationID = "42"
             });
 
             mockMastodonApiWrapper.Setup(p => p.GetOAuthUrl("https://SentURL")).Returns("https://ReturnedURL");
@@ -75,7 +75,7 @@ namespace Herd.Business.UnitTests
             var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
 
             // Perform the test
-            var result = herdApp.GetOAuthURL(new GetOAuthURLCommand { AppRegistrationID = 3, ReturnURL = "https://SentURL" });
+            var result = herdApp.GetOAuthURL(new GetOAuthURLCommand { AppRegistrationID = "3", ReturnURL = "https://SentURL" });
 
             // Verify the result
             Assert.True(result?.Success);
@@ -96,7 +96,7 @@ namespace Herd.Business.UnitTests
                 ClientId = "client-id",
                 ClientSecret = "client-secret",
                 Instance = "mastodon.instance",
-                MastodonAppRegistrationID = 42
+                MastodonAppRegistrationID = "42"
             });
 
             mockData.Setup(d => d.CreateAppRegistration(new Registration())).Returns(new Registration
@@ -105,7 +105,7 @@ namespace Herd.Business.UnitTests
                 ClientId = "client-id",
                 ClientSecret = "client-secret",
                 Instance = "mastodon.instance",
-                MastodonAppRegistrationID = 42
+                MastodonAppRegistrationID = "42"
             });
 
             // Create the HerdApp using the mock objects
@@ -123,7 +123,7 @@ namespace Herd.Business.UnitTests
             Assert.Equal("client-id", result.Data?.Registration?.ClientId);
             Assert.Equal("client-secret", result.Data?.Registration?.ClientSecret);
             Assert.Equal("mastodon.instance", result.Data?.Registration?.Instance);
-            Assert.Equal(42, result.Data?.Registration?.MastodonAppRegistrationID);
+            Assert.Equal("42", result.Data?.Registration?.MastodonAppRegistrationID);
 
             //TODO need to check if GetAppRegistration is null?
         }
@@ -151,8 +151,6 @@ namespace Herd.Business.UnitTests
 
             // Verify the result, should add more tests when dummy data is removed
             Assert.True(result?.Success);
-            //result.Data.RecentFeedItems[0].Content;
-            //Assert.Equal("Hello, World!", result.Data.RecentFeedItems[0].Content);
         }
 
         //[Fact]
@@ -176,6 +174,37 @@ namespace Herd.Business.UnitTests
         //    // Verify the result, do we need to check any more than this?
         //    Assert.True(result?.Success);
         //}
+
+        [Fact]
+        public void HerdAppFollowUserTest()
+        {
+            // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
+            var mockData = new Mock<IDataProvider>();
+            var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
+            var mockLogger = new Mock<ILogger>();
+
+            // Mock the Task
+            TaskCompletionSource<MastodonRelationship> taskCompletion = new TaskCompletionSource<MastodonRelationship>();
+            taskCompletion.SetResult(new MastodonRelationship { ID = "1", Following = true });
+            
+            // Mock the Follow function
+            mockMastodonApiWrapper.Setup(d => d.Follow("1", true)).Returns(taskCompletion.Task);
+            mockMastodonApiWrapper.Setup(d => d.Follow("1", false)).Returns(taskCompletion.Task);
+
+            var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
+
+            // Run the HerdApp command (should execute the mock)
+            var result = herdApp.FollowUser(new FollowUserCommand { UserID = "1", FollowUser = true });
+
+            // Verify the result
+            Assert.True(result?.Success);
+
+            // Run the HerdApp command (should execute the mock)
+            result = herdApp.FollowUser(new FollowUserCommand { UserID = "1", FollowUser = false });
+
+            // Verify the result
+            Assert.True(result?.Success);
+        }
 
         
     }

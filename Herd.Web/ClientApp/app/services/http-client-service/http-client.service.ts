@@ -18,12 +18,23 @@ export class HttpClientService {
 
     constructor(private http: Http) { }
 
+    /**
+     * Create a Get request
+     * @param url to send request
+     * @param options request options
+     */
     get<T>(url: string, options?: RequestOptionsArgs): Observable<any> {
         let request = options != null ? this.http.get(url, this.generateOptions(options)) :
                                         this.http.get(url, new RequestOptions({ headers: this.defaultHeaders }));
         return request.map(this.mapRequest)
     }
 
+    /**
+     * Create a Post request
+     * @param url to send request
+     * @param data request body
+     * @param options request options
+     */
     post<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<any> {
         const newData = this.prepareData(data);
         let request = options != null ? this.http.post(url, newData, this.generateOptions(options)) :

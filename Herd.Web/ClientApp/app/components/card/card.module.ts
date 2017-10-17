@@ -7,13 +7,15 @@ import { CardActionsComponent } from './card-actions.component';
 import { CardContentComponent } from './card-content.component';
 import { CardTitleComponent } from './card-title.component';
 import { CardComponent } from './card.component';
+import { CardImageHeaderComponent } from './card-image-header.component';
 
 @NgModule({
     declarations: [
         CardActionsComponent,
         CardComponent,
         CardContentComponent,
-        CardTitleComponent
+        CardTitleComponent,
+        CardImageHeaderComponent,
     ],
     imports: [
         CommonModule,
@@ -23,7 +25,8 @@ import { CardComponent } from './card.component';
         CardActionsComponent,
         CardComponent,
         CardContentComponent,
-        CardTitleComponent
+        CardTitleComponent,
+        CardImageHeaderComponent,
     ]
 })
 export class CardModule { }
