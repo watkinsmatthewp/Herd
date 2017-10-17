@@ -1,10 +1,13 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { NotificationsService } from "angular2-notifications";
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Observable } from "rxjs/Observable";
 
-import { AccountService } from "../../services";
-import { Account } from '../../models/mastodon';
-import { Status } from "../../models/mastodon";
+import { AccountService, TimelineAlertService } from "../../services";
+import { Account, Status } from '../../models/mastodon';
 import { Storage } from '../../models';
+import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
+
 
 @Component({
     selector: 'profile',
@@ -12,14 +15,38 @@ import { Storage } from '../../models';
     styleUrls: ['./profile.page.css']
 })
 export class ProfilePage implements OnInit {
+    @ViewChild('specificStatusModal')
+    specificStatusModal: BsModalComponent;
+
+    @ViewChild('replyStatusModal')
+    replyStatusModal: BsModalComponent;
+
     account: Account;
     loading: boolean = false;
     userPosts: Status[] = []; // List of posts from this user
     isFollowing: boolean = false;
 
-    constructor(private accountService: AccountService,
+    constructor(
+        private accountService: AccountService,
         private localStorage: Storage,
-        private alertService: NotificationsService) {
+        private alertService: NotificationsService,
+        private route: ActivatedRoute,
+        private timelineAlert: TimelineAlertService) {
+    }
+
+    /**
+     * Given a userID, get that Users account
+     * @param userId
+     */
+    getUserAccount(userId: string) {
+        this.loading = true;
+        this.accountService.getUserById(userId)
+            .finally(() => this.loading = false)
+            .subscribe(account => {
+                this.account = account;
+            }, error => {
+                this.alertService.error("Error", error.error);
+            });
     }
 
     // Get the posts from this user *STILL NEEDS SOME AUTHOR CHECK SOMEWHERE*
@@ -38,20 +65,21 @@ export class ProfilePage implements OnInit {
     }
 
     ngOnInit() {
-        this.loading = true;
-
-        // Load the current user to see the profile
-        let currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
-        let userId = currentUser.MastodonConnection.MastodonUserID;
-        this.accountService.getUserById(userId)
-            .finally(() => this.loading = false)
-            .subscribe(account => {
-                this.account = account;
-            }, error => {
-                this.alertService.error("Error", error.error);
+        // Monitor Param map 
+        this.route.paramMap
+            .switchMap((params: ParamMap) => Observable.of(params.get('id') || "-1"))
+            .subscribe(userID => {
+                this.getUserAccount(userID);
             });
 
-        // Get the posts from this user
-        //this.getMostRecentUserPosts();
+        // Setup subscription to update modals on status click
+        this.timelineAlert.getMessage().subscribe(alert => {
+            let statusId: string = alert.statusId;
+            if (alert.message === "Update specific status") {
+                
+            } else if (alert.message === "Update reply status") {
+                
+            }
+        });
     }
 }

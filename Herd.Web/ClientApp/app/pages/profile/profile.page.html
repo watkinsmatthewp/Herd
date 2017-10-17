@@ -2,8 +2,10 @@
     <div class="header-image-box">
         <img class="header-pic" src="{{ account.MastodonHeaderImageURL }}" />
     </div>
-    <!-- Left Column -->
-    <div *ngIf="account" class="row profile-content">
+
+    
+    <div class="row profile-content">
+        <!-- Left Column -->
         <div class="col-sm-3">
             <div class="col-lg-12">
                 <img class="profile-pic" src="{{ account.MastodonProfileImageURL }}" />
@@ -14,6 +16,7 @@
                 </h4>
             </div>
         </div>
+        
         <!-- Middle Column -->
         <div class="col-sm-6">
             <div class="info-bar">
@@ -25,7 +28,6 @@
                         <tab heading="Posts">
                             <div *ngFor="let status of userPosts">
                                 <status [status]="status"></status>
-                                <status-modal [status]="status" [modalId]="'statusModal-' + status.Id"></status-modal>
                             </div>
                         </tab>
                         <tab heading="Following">
@@ -38,9 +40,46 @@
                 </div>
             </div>
         </div>
+        
         <!-- Right Column -->
         <div class="col-sm-3">
 
         </div>
     </div>
 </div>
+
+
+
+<!-- Modals -->
+
+<bs-modal #specificStatusModal>
+    <bs-modal-header [showDismiss]="true"></bs-modal-header>
+    <bs-modal-body>
+        <div *ngIf="specificStatus">
+            <div class="ancestors" *ngFor="let anscestorStatus of specificStatus.Ancestors">
+                <status [status]="anscestorStatus"></status>
+            </div>
+            <div class="viewingStatus">
+                <status [status]="specificStatus"></status>
+            </div>
+            <status-form actionName="Reply" isReply="true" [inReplyToId]="specificStatus.IdString"></status-form>
+            <div class="replies" *ngFor="let descendantStatus of specificStatus.Descendants">
+                <status [status]="descendantStatus"></status>
+            </div>
+        </div>
+    </bs-modal-body>
+    <bs-modal-footer [showDefaultButtons]="false"></bs-modal-footer>
+</bs-modal>
+
+<bs-modal #replyStatusModal>
+    <bs-modal-header [showDismiss]="true"></bs-modal-header>
+    <bs-modal-body>
+        <div *ngIf="replyStatus">
+            <div class="viewingStatus">
+                <status [status]="replyStatus"></status>
+            </div>
+            <status-form actionName="Reply" isReply="true" [inReplyToId]="replyStatus.IdString"></status-form>
+        </div>
+    </bs-modal-body>
+    <bs-modal-footer [showDefaultButtons]="false"></bs-modal-footer>
+</bs-modal>

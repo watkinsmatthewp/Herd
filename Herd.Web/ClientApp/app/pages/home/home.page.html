@@ -30,7 +30,6 @@
 
         <div *ngFor="let status of homeFeed">
             <status [status]="status"></status>
-            <!--<status-modal [status]="status" [modalId]="'statusModal-' + status.Id"></status-modal>-->
         </div>
     </div>
     <!-- Right Column -->
@@ -45,6 +44,10 @@
         </div>
     </div>
 </div>
+
+
+
+<!-- Modals -->
 
 <bs-modal #specificStatusModal>
     <bs-modal-header [showDismiss]="true"></bs-modal-header>

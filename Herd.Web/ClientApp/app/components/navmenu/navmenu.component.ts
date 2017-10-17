@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 
 import { AuthenticationService } from '../../services';
 import { NotificationsService } from "angular2-notifications";
+import { Storage } from '../../models';
 
 @Component({
     selector: 'nav-menu',
@@ -12,16 +13,26 @@ import { NotificationsService } from "angular2-notifications";
 })
 export class NavMenuComponent {
     model: any = {};
+    userID: string = "";
 
     constructor(private authService: AuthenticationService, private toastService: NotificationsService,
-        private route: ActivatedRoute, private router: Router) { }
+        private route: ActivatedRoute, private router: Router, private localStorage: Storage) { }
 
     isAuthenticated(): boolean {
         return this.authService.isAuthenticated();
     }
 
     isConnectedToMastodon(): boolean {
-        return this.authService.checkIfConnectedToMastodon();
+        if (this.authService.checkIfConnectedToMastodon()) {
+            let currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+            this.userID = currentUser.MastodonConnection.MastodonUserID; 
+            return true;
+        }
+        return false;
+    }
+
+    gotoUserProfile(): void {
+        this.router.navigate(['/profile', 1]);
     }
 
     search(form: NgForm) {
