@@ -70,7 +70,6 @@
     <TypeScriptCompile Include="ClientApp\app\components\card\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\status-form\status-form-modal\status-form-modal.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\components\status-reply-modal\status-reply-modal.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\usercard\usercard.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\mastodon\index.ts" />

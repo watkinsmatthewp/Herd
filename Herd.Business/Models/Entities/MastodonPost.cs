@@ -22,5 +22,9 @@ namespace Herd.Business.Models.Entities
         // Extra "context" properties
         public List<MastodonPost> Ancestors { get; set; }
         public List<MastodonPost> Descendants { get; set; }
+
+        // String versions of ids
+        public string IdString { get; set; }
+        public string InReplyToPostIdString { get; set; }
     }
 }

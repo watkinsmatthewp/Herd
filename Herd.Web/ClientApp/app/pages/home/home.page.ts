@@ -43,7 +43,7 @@ export class HomePage implements OnInit {
             });
     }
 
-    updateSpecificStatus(statusId: number): void {
+    updateSpecificStatus(statusId: string): void {
         this.loading = true;
         let progress = this.toastService.info("Retrieving" , "status info ...");
         this.mastodonService.getStatus(statusId, true, true)
@@ -60,7 +60,7 @@ export class HomePage implements OnInit {
             });
     }
 
-    updateReplyStatusModal(statusId: number): void {
+    updateReplyStatusModal(statusId: string): void {
         this.loading = true;
         let progress = this.toastService.info("Retrieving",  "status info ...");
         this.mastodonService.getStatus(statusId, false, false)
@@ -77,7 +77,7 @@ export class HomePage implements OnInit {
 
     ngOnInit() {
         this.timelineAlert.getMessage().subscribe(alert => {
-            let statusId = alert.statusId;
+            let statusId: string = alert.statusId;
             if (alert.message === "Update specific status") {
                 this.updateSpecificStatus(statusId);
             } else if (alert.message === "Update reply status") {
