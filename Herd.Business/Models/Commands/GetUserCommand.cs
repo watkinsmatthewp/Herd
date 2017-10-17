@@ -2,6 +2,6 @@
 {
     public class GetUserCommand : Command
     {
-        public string UserID { get; set; }
+        public long UserID { get; set; }
     }
 }

@@ -12,10 +12,10 @@ namespace Herd.Web.Controllers.HerdApi
         [HttpGet("search")]
         public IActionResult Search
         (
-            string mastodonUserID = null,
+            long? mastodonUserID = null,
             string name = null,
-            string followsMastodonUserID = null,
-            string followedByMastodonUserID = null,
+            long? followsMastodonUserID = null,
+            long? followedByMastodonUserID = null,
             bool includeFollowers = false,
             bool includeFollowing = false,
             bool includeFollowsActiveUser = false,
@@ -42,7 +42,7 @@ namespace Herd.Web.Controllers.HerdApi
         {
             return ApiJson(App.FollowUser(new FollowUserCommand
             {
-                UserID = body["mastodonUserID"].Value<string>(),
+                UserID = body["mastodonUserID"].Value<long>(),
                 FollowUser = body["followUser"].Value<bool>(),
             }));
         }

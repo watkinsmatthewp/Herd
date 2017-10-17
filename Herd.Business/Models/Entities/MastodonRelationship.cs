@@ -6,12 +6,15 @@ namespace Herd.Business.Models.Entities
 {
     public class MastodonRelationship
     {
-        public string ID { get; set; }
+        public long ID { get; set; }
         public bool Following { get; set; }
         public bool FollowedBy { get; set; }
         public bool Blocking { get; set; }
         public bool Muting { get; set; }
         public bool Requested { get; set; }
         public bool DomainBlocking { get; set; }
+
+        // String versions of ids
+        public string IdString { get; set; }
     }
 }

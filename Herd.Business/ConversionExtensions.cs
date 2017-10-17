@@ -16,14 +16,14 @@ namespace Herd.Business
         {
             ClientId = mastodonAppRegistration.ClientId,
             ClientSecret = mastodonAppRegistration.ClientSecret,
-            MastodonAppRegistrationID = mastodonAppRegistration.Id.ToString(),
+            MastodonAppRegistrationID = mastodonAppRegistration.Id,
             Instance = mastodonAppRegistration.Instance
         };
 
         public static AppRegistration ToMastodonAppRegistration(this Registration herdAppRegistration) => new AppRegistration
         {
             ClientId = herdAppRegistration.ClientId,
-            Id = herdAppRegistration.MastodonAppRegistrationID.ToLong(),
+            Id = herdAppRegistration.MastodonAppRegistrationID,
             ClientSecret = herdAppRegistration.ClientSecret,
             Instance = herdAppRegistration.Instance,
             Scope = MastodonApiWrapper.ALL_SCOPES
@@ -37,10 +37,10 @@ namespace Herd.Business
             TokenType = connectionDetails.TokenType
         };
 
-        public static UserMastodonConnectionDetails ToHerdConnectionDetails(this Auth auth, long appRegistrationID, string mastodonUserID) => new UserMastodonConnectionDetails
+        public static UserMastodonConnectionDetails ToHerdConnectionDetails(this Auth auth, long appRegistrationID, int mastodonUserID) => new UserMastodonConnectionDetails
         {
             ApiAccessToken = auth.AccessToken,
-            AppRegistrationID = appRegistrationID.ToString(),
+            AppRegistrationID = appRegistrationID,
             CreatedAt = auth.CreatedAt,
             Scope = auth.Scope,
             TokenType = auth.TokenType,
@@ -57,7 +57,8 @@ namespace Herd.Business
             MastodonHeaderImageURL = account.HeaderUrl,
             MastodonProfileImageURL = account.AvatarUrl,
             MastodonShortBio = account.Note,
-            MastodonUserId = account.Id.ToString(),
+            MastodonUserId = account.Id,
+            MastodonUserIdString = account.Id.ToString(),
             MastodonUserName = account.UserName,
             FollowersCount = account.FollowersCount,
             FollowingCount = account.FollowingCount
@@ -65,7 +66,8 @@ namespace Herd.Business
 
         public static MastodonRelationship ToMastodonRelationship(this Relationship relationship) => new MastodonRelationship
         {
-            ID = relationship.Id.ToString(),
+            ID = relationship.Id,
+            IdString = relationship.Id.ToString(),
             Following = relationship.Following,
             FollowedBy = relationship.FollowedBy,
             Blocking = relationship.Blocking,
@@ -76,7 +78,7 @@ namespace Herd.Business
 
         public static Relationship ToRelationship(this MastodonRelationship relationship) => new Relationship
         {
-            Id = relationship.ID.ToLong(),
+            Id = relationship.ID,
             Following = relationship.Following,
             FollowedBy = relationship.FollowedBy,
             Blocking = relationship.Blocking,
@@ -97,8 +99,10 @@ namespace Herd.Business
                 Content = status.Content,
                 CreatedOnUTC = status.CreatedAt,
                 FavouritesCount = status.FavouritesCount,
-                Id = status.Id.ToString(),
-                InReplyToPostId = status.InReplyToId.ToString(),
+                Id = status.Id,
+                IdString = status.Id.ToString(),
+                InReplyToPostId = status.InReplyToId,
+                InReplyToPostIdString = status.InReplyToId.ToString(),
                 IsFavourited = status.Favourited,
                 IsReblogged = status.Reblogged,
                 IsSensitive = status.Sensitive,
@@ -121,17 +125,5 @@ namespace Herd.Business
         }
 
         #endregion Posts
-
-        #region General
-
-        public static IEnumerable<long> ToLongs(this IEnumerable<string> sCollection) => sCollection.Select(s => s.ToLong());
-
-        public static IEnumerable<long?> ToNullableLongs(this IEnumerable<string> sCollection) => sCollection.Select(s => s.ToNullableLong());
-
-        public static long ToLong(this string s) => long.Parse(s);
-
-        public static long? ToNullableLong(this string s) => string.IsNullOrWhiteSpace(s) ? null as long? : s.ToLong();
-
-        #endregion
     }
 }

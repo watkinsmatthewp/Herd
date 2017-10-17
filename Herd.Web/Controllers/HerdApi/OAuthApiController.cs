@@ -32,7 +32,7 @@ namespace Herd.Web.Controllers.HerdApi
         }
 
         [HttpGet("url")]
-        public IActionResult GetMastodonInstanceOAuthURL(string registrationID)
+        public IActionResult GetMastodonInstanceOAuthURL(long registrationID)
         {
             _appRegistration = new Lazy<Registration>(HerdWebApp.Instance.DataProvider.GetAppRegistration(registrationID));
             _mastodonApiWrapper = new Lazy<IMastodonApiWrapper>(new MastodonApiWrapper(AppRegistration));
@@ -51,7 +51,7 @@ namespace Herd.Web.Controllers.HerdApi
 
             var result = App.UpdateUserMastodonConnection(new UpdateUserMastodonConnectionCommand
             {
-                AppRegistrationID = body["app_registration_id"].Value<string>(),
+                AppRegistrationID = body["app_registration_id"].Value<long>(),
                 Token = body["token"].Value<string>(),
                 UserID = ActiveUser.ID
             });
