@@ -12,6 +12,13 @@
     vertical-align: top;
     width: 350px;
     box-shadow: 0px 0px 5px 0 rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+}
+
+.imageOverlay {
+    background: rgba(49,53,67,.6);
+    height: 100%;
+    width: 100%;
 }
 
 .card-small {

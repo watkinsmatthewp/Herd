@@ -1,22 +1,20 @@
-﻿<card>
+﻿<card [headerImgSrc]="userCard.MastodonHeaderImageURL">
     <card-image-header>
-            <img class="header-pic" src="{{ userCard.MastodonHeaderImageURL }}" />
+            <div class="header-pic" [ngStyle]="{'background-image': 'url(' + userCard.MastodonHeaderImageURL + ')' }"></div>
     </card-image-header>
     <card-title>
-        <!-- <img class=".profile-header-picture" src="{{ userCard.MastodonHeaderImageURL }}" /> -->
         <div>
             <span>
                 <img class="profile-picture" src="{{ userCard.MastodonProfileImageURL }}" align="middle" />
             </span>
         </div>
         <div class="user-names">
-            <a class="display-name" href="/todo">{{userCard.MastodonDisplayName}}</a>
+            <h3 class="display-name" href="/todo">{{userCard.MastodonDisplayName}}</h3>
             <a class="username" href="/todo">@{{userCard.MastodonUserName}}</a>
         </div>
     </card-title>
     <card-content>
         <div *ngIf="userCard.MastodonShortBio" class="user-bio" [innerHTML]="userCard.MastodonShortBio"></div>
-        <div *ngIf="!userCard.MastodonShortBio.length" class="user-bio"> No bio</div>
     </card-content>
 
     <card-actions>

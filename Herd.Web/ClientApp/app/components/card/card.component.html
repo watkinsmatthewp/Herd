@@ -1,23 +1,26 @@
-﻿<section class="card" [ngClass]="{'card-small': size === 'small' }">
-    <header>
-        <div class="card-header" *ngIf="showTitle">
-            <div class="card-heading-middle">
-                <div class="header-image-box">
-                    <ng-content class="header-pic" select="card-image-header"></ng-content>
+﻿<section class="card" [ngClass]="{'card-small': size === 'small' }"
+                      [ngStyle]="{
+                                    'background-image': 'url(' + headerImgSrc + ')', 
+                                    'background-size': 'cover', 
+                                    'background-position': '50%'
+                                }">
+    <div class="imageOverlay">
+        <header>
+            <div class="card-header" *ngIf="showTitle">
+                <div class="card-heading-middle">
+                    <h1 class="card-title" *ngIf="showTitle">
+                        <ng-content select="card-title"></ng-content>
+                    </h1>
                 </div>
-
-                <h1 class="card-title" *ngIf="showTitle">
-                    <ng-content select="card-title"></ng-content>
-                </h1>
             </div>
+        </header>
+
+        <div class="card-content">
+            <ng-content select="card-content"></ng-content>
         </div>
-    </header>
 
-    <div class="card-content">
-        <ng-content select="card-content"></ng-content>
-    </div>
-
-    <div class="card-actions" [hidden]="actionsEl.children.length === 0" #actionsEl>
-        <ng-content select="card-actions"></ng-content>
+        <div class="card-actions" [hidden]="actionsEl.children.length === 0" #actionsEl>
+            <ng-content select="card-actions"></ng-content>
+        </div>
     </div>
 </section>

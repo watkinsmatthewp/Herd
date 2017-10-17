@@ -27,11 +27,14 @@
     .display-name {
         font-weight: bold;
         font-size: 100%;
+        color: #ffffff;
     }
 
     .username {
         font-size: 80%;
         font-style: italic;
+        font-weight: bold;
+        color: #007ca6;
     }
 
 .user-bio {
