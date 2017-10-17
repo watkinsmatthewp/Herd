@@ -68,13 +68,13 @@
 }
 
 .not-following-btn {
-
+    color: black;
 }
 
     .not-following-btn:hover {
         background-color: #337ab7;
         border-color: #337ab7;
         box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #1DA1F2;
-        color: #fff;
+        color: #ffffff;
     }
 
