@@ -37,10 +37,10 @@ namespace Herd.Business
             TokenType = connectionDetails.TokenType
         };
 
-        public static UserMastodonConnectionDetails ToHerdConnectionDetails(this Auth auth, long appRegistrationID, string mastodonUserID) => new UserMastodonConnectionDetails
+        public static UserMastodonConnectionDetails ToHerdConnectionDetails(this Auth auth, int appRegistrationID, string mastodonUserID) => new UserMastodonConnectionDetails
         {
             ApiAccessToken = auth.AccessToken,
-            AppRegistrationID = appRegistrationID.ToString(),
+            AppRegistrationID = appRegistrationID,
             CreatedAt = auth.CreatedAt,
             Scope = auth.Scope,
             TokenType = auth.TokenType,

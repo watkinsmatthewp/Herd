@@ -8,7 +8,7 @@ namespace Herd.Data.Models
 
     public class UserMastodonConnectionDetails
     {
-        public string AppRegistrationID { get; set; }
+        public int AppRegistrationID { get; set; }
         public string ApiAccessToken { get; set; }
         public string CreatedAt { get; set; }
         public string Scope { get; set; }
