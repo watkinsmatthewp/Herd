@@ -51,7 +51,7 @@ namespace Herd.Web.Controllers.HerdApi
 
             var result = App.UpdateUserMastodonConnection(new UpdateUserMastodonConnectionCommand
             {
-                AppRegistrationID = body["app_registration_id"].Value<string>(),
+                AppRegistrationID = body["app_registration_id"].Value<int>(),
                 Token = body["token"].Value<string>(),
                 UserID = ActiveUser.ID
             });
