@@ -3,18 +3,16 @@
     <card>
         <card-content>
 
+            <!-- <img class=".profile-header-picture" src="{{ userCard.MastodonHeaderImageURL }}" /> -->
+
             <div>
                 <span>
-                    <img class="profile-picture" src="{{ userCard.MastodonProfileImageURL }}" />
-                </span>
-                <span>
-                    <button type="button" class="btn btn-primary pull-right" (click)="togglefollow()">
-                        <span> {{isFollowing === true ? 'Unfollow' : 'Follow' }} </span>
-                    </button>
+                    <img class="profile-picture" src="{{ userCard.MastodonProfileImageURL }}"  align="middle"/>
                 </span>
             </div>
 
-            <div>
+            <div class="user-names">
+                <br />
                 <a href="/todo">
                     {{userCard.MastodonDisplayName}}
                 </a>
@@ -25,10 +23,20 @@
             </div>
 
             <br />
+            <br />
 
             <div [innerHTML]="userCard.MastodonShortBio"></div>
 
+ 
+
         </card-content>
+
+        <card-actions>
+            <button type="button" class="btn btn-primary" (click)="togglefollow()">
+                <span> {{isFollowing === true ? 'Unfollow' : 'Follow' }} </span>
+            </button>
+        </card-actions>
+
     </card>
 
 </div>

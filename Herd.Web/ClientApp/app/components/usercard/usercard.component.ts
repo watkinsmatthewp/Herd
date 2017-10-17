@@ -23,10 +23,6 @@ export class UserCardComponent implements OnInit {
     }
 
     togglefollow(): void {
-        //var action = this.isFollowing;
-        //if (this.userCard.IsFollowedByActiveUser === false)
-            //action = true;
-
         this.accountService.followUser(String(this.userCard.MastodonUserId), !this.isFollowing)
             .subscribe(response => {
                 this.isFollowing = !this.isFollowing;

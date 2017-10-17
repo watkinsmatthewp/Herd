@@ -2,7 +2,7 @@
 import { Observable } from "rxjs/Observable";
 
 import { User } from '../../models';
-import { Account, Status } from '../../models/mastodon';
+import { Account, Status, UserCard } from '../../models/mastodon';
 import { HttpClientService } from '../http-client-service/http-client.service';
 
 
@@ -43,6 +43,13 @@ export class AccountService {
             'followUser': followUser,
         }
         return this.httpClient.post('api/mastodon-users/follow', body);
+    }
+
+    // Calls Api to search for users
+    searchUser(name: string) {
+        let queryString = "?name=" + name + "&includefollowedbyactiveuser=true&includefollowsactiveuser=true";
+        return this.httpClient.get('api/mastodon-users/search' + queryString)
+            .map(response => response.Users as UserCard[]);
     }
 
 }
