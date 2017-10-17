@@ -1,23 +1,9 @@
 ﻿<div class="row">
     <h2 *ngIf="!haveSearchResults && finishedSearching" class="text-center">No results, try again.</h2>
 
-<<<<<<< HEAD
-<div class="row">
-
-
-
-        <div>
-            <div *ngFor="let userCard of userCards" class= "col-md-4 col-sm-6 col-12">
-                <usercard [userCard]="userCard"></usercard>
-            </div>
-        </div>
-
-
-=======
-    <div *ngFor="let userCard of userCards">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4" >
+    <div *ngFor="let userCard of userCards" class="text-center">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
             <usercard [userCard]="userCard"></usercard>
         </div>
     </div>
->>>>>>> 73_Profiles
 </div>
