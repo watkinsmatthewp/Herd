@@ -88,11 +88,11 @@ namespace Herd.Web.Controllers
 
         private Registration LoadAppRegistrationFromActiveUser()
         {
-            if (ActiveUser?.MastodonConnection?.AppRegistrationID > 0)
+            if (string.IsNullOrWhiteSpace(ActiveUser?.MastodonConnection?.AppRegistrationID))
             {
-                return HerdWebApp.Instance.DataProvider.GetAppRegistration(ActiveUser.MastodonConnection.AppRegistrationID);
+                return null;
             }
-            return null;
+            return HerdWebApp.Instance.DataProvider.GetAppRegistration(ActiveUser.MastodonConnection.AppRegistrationID);
         }
 
         private IMastodonApiWrapper LoadMastodonApiWrapperFromAppRegistration()
