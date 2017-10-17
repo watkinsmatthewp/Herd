@@ -38,10 +38,10 @@
         -->
         <div class="text-center">
             <button *ngIf="isFollowing" class="btn btn-primary follow-btn" (mouseenter)="followUnfollowText = 'Unfollow';" (mouseleave)="followUnfollowText = 'Following';" (click)="togglefollow()">
-                <p>{{followUnfollowText}}</p>
+                {{followUnfollowText}}
             </button>
             <button *ngIf="!isFollowing" class="btn btn-secondary not-following-btn" (click)="togglefollow()">
-                <p>Follow</p>
+                Follow
             </button>
         </div>
         
