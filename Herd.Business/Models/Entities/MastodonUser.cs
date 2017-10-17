@@ -5,8 +5,7 @@ namespace Herd.Business.Models.Entities
     public class MastodonUser
     {
         // Core properties
-        public long MastodonUserId { get; set; }
-
+        public string MastodonUserId { get; set; }
         public string MastodonUserName { get; set; }
         public string MastodonDisplayName { get; set; }
         public string MastodonProfileImageURL { get; set; }
@@ -24,8 +23,5 @@ namespace Herd.Business.Models.Entities
 
         public List<MastodonUser> Followers { get; set; }
         public List<MastodonUser> Following { get; set; }
-
-        // String versions of ids
-        public string MastodonUserIdString { get; set; }
     }
 }

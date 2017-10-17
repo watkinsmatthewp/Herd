@@ -11,7 +11,7 @@ namespace Herd.Business.Extensions
     {
         public static bool PasswordIs(this UserAccount user, string plainTextPassword) => user.Security.SaltedPassword == plainTextPassword.Hashed(user.Security.SaltKey);
 
-        public static bool Follows(this MastodonUser mastodonUser, int mastodonUserID)
+        public static bool Follows(this MastodonUser mastodonUser, string mastodonUserID)
         {
             if (mastodonUser.Following == null)
             {
@@ -20,7 +20,7 @@ namespace Herd.Business.Extensions
             return mastodonUser.Following.Any(f => f.MastodonUserId == mastodonUserID);
         }
 
-        public static bool IsFollowedBy(this MastodonUser mastodonUser, int mastodonUserID)
+        public static bool IsFollowedBy(this MastodonUser mastodonUser, string mastodonUserID)
         {
             if (mastodonUser.Followers == null)
             {
