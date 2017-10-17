@@ -177,6 +177,40 @@ namespace Herd.Business.UnitTests
         //    Assert.True(result?.Success);
         //}
 
+        [Fact]
+        public void HerdAppFollowUserTest()
+        {
+            // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
+            var mockData = new Mock<IDataProvider>();
+            var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
+            var mockLogger = new Mock<ILogger>();
+
+            // Mock the Task
+            TaskCompletionSource<MastodonRelationship> taskCompletion = new TaskCompletionSource<MastodonRelationship>();
+            taskCompletion.SetResult(new MastodonRelationship { ID = 1, Following = true });
+            
+            // Mock the Follow function
+            mockMastodonApiWrapper.Setup(d => d.Follow(1, true)).Returns(taskCompletion.Task);
+            mockMastodonApiWrapper.Setup(d => d.Follow(1, false)).Returns(taskCompletion.Task);
+
+            var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
+
+            // Run the HerdApp command (should execute the mock)
+            var result = herdApp.FollowUser(new FollowUserCommand { UserID = 1, FollowUser = true });
+
+            // Verify the result
+            Assert.True(result?.Success);
+            // TODO DO more checks, should the function return more than just a CommandResult?
+            //Assert.True(result.Data.Following);
+
+
+            // Run the HerdApp command (should execute the mock)
+            result = herdApp.FollowUser(new FollowUserCommand { UserID = 1, FollowUser = false });
+
+            // Verify the result
+            Assert.True(result?.Success);
+        }
+
         
     }
 }
