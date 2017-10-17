@@ -23,7 +23,7 @@
                 <li [routerLinkActive]="['link-active']"><a [routerLink]="['/notifications']"><fa name="bell"></fa> Notifications</a></li>
             </ul>
 
-            <form class="navbar-form navbar-left" (ngSubmit)="f.form.valid && search()" #f="ngForm" novalidate role="search">
+            <form class="navbar-form navbar-left" (ngSubmit)="f.form.valid && search(f)" #f="ngForm" novalidate role="search">
                 <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !searchItem.valid }">
                     <input type="text" class="form-control" name="searchItem" [(ngModel)]="model.searchItem" #searchItem="ngModel" required placeholder="Search">
                     <button [disabled]="!f.valid" class="btn btn-default" type="submit"><fa name="search"></fa></button>

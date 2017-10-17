@@ -1,4 +1,6 @@
 ﻿<div class="row">
+    <h2 *ngIf="!haveSearchResults && finishedSearching" class="text-center">No results, try again.</h2>
+
     <div *ngFor="let userCard of userCards">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4" >
             <usercard [userCard]="userCard"></usercard>

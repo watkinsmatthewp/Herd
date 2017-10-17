@@ -13,5 +13,4 @@ export class UserCard {
     MastodonHeaderImageUrl: string;
     MastodonShortBio: string;
     PostCount: number;
-    
 }
