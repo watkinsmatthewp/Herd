@@ -12,7 +12,7 @@ namespace Herd.Web.Controllers.HerdApi
         public IActionResult NewItems() => ApiJson(App.GetRecentFeedItems(new GetRecentPostsCommand()));
 
         [HttpGet("get_status")]
-        public IActionResult GetStatus(long statusId, bool includeAncestors, bool includeDescendants) => ApiJson(App.GetStatus(new GetPostCommand
+        public IActionResult GetStatus(string statusId, bool includeAncestors, bool includeDescendants) => ApiJson(App.GetStatus(new GetPostCommand
         {
             PostID = statusId,
             IncludeAncestors = includeAncestors,
@@ -24,8 +24,8 @@ namespace Herd.Web.Controllers.HerdApi
         {
             Message = body["message"].Value<string>(),
             Visibility = (MastodonPostVisibility)body["visibility"].Value<int>(),
-            ReplyStatusId = body["replyStatusId"].Value<long?>(),
-            //MediaIds = body["mediaIds"].Value<IEnumerable<long>>(),
+            ReplyStatusId = body["replyStatusId"].Value<string>(),
+            // MediaIds = body["mediaIds"].Value<IEnumerable<long>>(),
             Sensitive = body["sensitive"].Value<bool>(),
             SpoilerText = body["spoilerText"].Value<string>(),
         }));
