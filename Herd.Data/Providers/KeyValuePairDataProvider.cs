@@ -21,7 +21,7 @@ namespace Herd.Data.Providers
 
         #region AppRegistration
 
-        public Registration GetAppRegistration(long id) => GetEntity<Registration>(id);
+        public Registration GetAppRegistration(int id) => GetEntity<Registration>(id);
 
         public Registration GetAppRegistration(string instance) => GetEntity<Registration>(r => r.Instance == instance);
 
@@ -33,7 +33,7 @@ namespace Herd.Data.Providers
 
         #region Users
 
-        public UserAccount GetUser(long id) => GetEntity<UserAccount>(id);
+        public UserAccount GetUser(int id) => GetEntity<UserAccount>(id);
 
         public UserAccount GetUser(string email) => GetEntity<UserAccount>(u => u.Email == email);
 
@@ -64,11 +64,11 @@ namespace Herd.Data.Providers
         {
             var entityRootKey = BuildEntityRootKey<T>();
             return GetAllKeys(entityRootKey)
-                .Where(key => long.TryParse(key.Split(KeyDelimiter).Last(), out _))
+                .Where(key => int.TryParse(key.Split(KeyDelimiter).Last(), out _))
                 .Select(key => GetEntity<T>(key));
         }
 
-        private T GetEntity<T>(long id) where T : DataModel
+        private T GetEntity<T>(int id) where T : DataModel
         {
             return GetEntity<T>(BuildEntityKey<T>(id));
         }
@@ -95,9 +95,9 @@ namespace Herd.Data.Providers
                 try { nextIdVal = ReadKey(nextIdKey); } catch { }
                 if (string.IsNullOrWhiteSpace(nextIdVal))
                 {
-                    nextIdVal = ((long)1).SerializeAsJson(true);
+                    nextIdVal = ((int)1).SerializeAsJson(true);
                 }
-                entity.ID = nextIdVal.ParseJson<long>();
+                entity.ID = nextIdVal.ParseJson<int>();
                 WriteKey(nextIdKey, (entity.ID + 1).SerializeAsJson(true));
             }
             UpdateEntity(entity);
@@ -109,7 +109,7 @@ namespace Herd.Data.Providers
             WriteKey(BuildEntityKey<T>(entity.ID), entity.SerializeAsJson(true));
         }
 
-        private string BuildEntityKey<T>(long id) where T : DataModel
+        private string BuildEntityKey<T>(int id) where T : DataModel
         {
             return string.Join(KeyDelimiter, BuildEntityRootKey<T>(), id);
         }

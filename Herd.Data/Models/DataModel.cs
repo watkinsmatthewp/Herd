@@ -2,6 +2,6 @@
 {
     public abstract class DataModel
     {
-        public long ID { get; set; }
+        public int ID { get; set; }
     }
 }

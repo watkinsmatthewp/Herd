@@ -9,14 +9,14 @@ namespace Herd.Web.Code
 {
     public static class ControllerExtensions
     {
-        public static long? GetActiveUserIdFromSession(this Controller controller)
+        public static int? GetActiveUserIdFromSession(this Controller controller)
         {
             var claim = controller.User?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
             if (claim == null)
             {
                 return null;
             }
-            return long.TryParse(claim.Value, out var userID) ? userID : null as long?;
+            return int.TryParse(claim.Value, out var userID) ? userID : null as int?;
         }
 
         public static Task SetActiveUserInSession(this Controller controller, UserAccount user)

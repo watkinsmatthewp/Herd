@@ -2,7 +2,7 @@ namespace Herd.Data.Models
 {
     public class UserAccountSecurity
     {
-        public long SaltKey { get; set; }
+        public int SaltKey { get; set; }
         public string SaltedPassword { get; set; }
     }
 

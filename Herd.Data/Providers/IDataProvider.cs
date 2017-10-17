@@ -5,7 +5,7 @@ namespace Herd.Data.Providers
     public interface IDataProvider
     {
         // App registration
-        Registration GetAppRegistration(long id);
+        Registration GetAppRegistration(int id);
 
         Registration GetAppRegistration(string instance);
 
@@ -14,7 +14,7 @@ namespace Herd.Data.Providers
         void UpdateAppRegistration(Registration appRegistration);
 
         // Users
-        UserAccount GetUser(long id);
+        UserAccount GetUser(int id);
 
         UserAccount GetUser(string email);
 
