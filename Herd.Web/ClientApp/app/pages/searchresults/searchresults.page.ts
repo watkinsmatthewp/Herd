@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input } from '@angular/core';
 
-import { MastodonService } from '../../services';
+import { AccountService } from '../../services';
 import { UserCard } from "../../models/mastodon";
 
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,7 +15,7 @@ export class SearchResultsPage implements OnInit {
     userCards: UserCard[]; // List of users that the search found
 
     // Keeping  it simple for now
-    constructor(private mastodonService: MastodonService, private route: ActivatedRoute, private router: Router) { }
+    constructor(private accountService: AccountService, private route: ActivatedRoute, private router: Router) { }
 
     ngOnInit(): void {
         this.route
@@ -26,7 +26,7 @@ export class SearchResultsPage implements OnInit {
 
 
         // hard coding string here for testing
-        this.mastodonService.searchUser(this.search)
+        this.accountService.searchUser(this.search)
             .subscribe(users => {
                 this.userCards = users;
             });

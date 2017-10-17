@@ -25,13 +25,6 @@ export class MastodonService {
             .map(response => response.MastodonPost as Status);
     }
 
-    // Calls Api to search for users
-    searchUser(name: string) {
-        let queryString = "?name=" + name + "&includefollowedbyactiveuser=true&includefollowsactiveuser=true";
-        return this.httpClient.get('api/mastodon-users/search' + queryString)
-            .map(response => response.Users as UserCard[]);
-    }
-
     /**
      * Make a new status on the home feed
      *
