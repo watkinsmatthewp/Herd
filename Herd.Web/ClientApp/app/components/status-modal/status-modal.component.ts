@@ -11,7 +11,7 @@ import { NotificationsService } from "angular2-notifications";
 })
 export class StatusModalComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() status: Status;
-    @Input() statusId: number;
+    @Input() statusId: string;
     @Input() modalId: string;
     @Input() autoOpen: boolean; // after initalization should we auto open
 

@@ -37,7 +37,7 @@ namespace Herd.Business.UnitTests
             var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
 
             // Run the HerdApp command (should execute the mock)
-            var result = herdApp.GetRegistration(new GetRegistrationCommand { ID = 3 });
+            var result = herdApp.GetRegistration(new GetRegistrationCommand { ID = "3" });
 
             // Make sure the GetAppRegistration was called once with id 3
             mockData.Verify(d => d.GetAppRegistration(3), Times.Once());
@@ -75,7 +75,7 @@ namespace Herd.Business.UnitTests
             var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
 
             // Perform the test
-            var result = herdApp.GetOAuthURL(new GetOAuthURLCommand { AppRegistrationID = 3, ReturnURL = "https://SentURL" });
+            var result = herdApp.GetOAuthURL(new GetOAuthURLCommand { AppRegistrationID = "3", ReturnURL = "https://SentURL" });
 
             // Verify the result
             Assert.True(result?.Success);
@@ -151,8 +151,6 @@ namespace Herd.Business.UnitTests
 
             // Verify the result, should add more tests when dummy data is removed
             Assert.True(result?.Success);
-            //result.Data.RecentFeedItems[0].Content;
-            //Assert.Equal("Hello, World!", result.Data.RecentFeedItems[0].Content);
         }
 
         //[Fact]

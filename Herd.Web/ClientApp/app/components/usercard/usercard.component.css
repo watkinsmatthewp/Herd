@@ -7,25 +7,74 @@
 }
 
 .profile-header-picture {
-    width: inherit;
-    height: 120px;
+    width: 100px;
+    height: 50px;
+
 }
 
 .profile-picture {
-    width: 125px;
-    height: 125px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto;
 }
 
-.display-name {
-    font-weight: bold;
-    font-size: 120%;
+.user-names {
+    text-align: center;
 }
 
-.username {
-    font-size: 100%;
-    font-style: italic;
-}
+    .display-name {
+        font-weight: bold;
+        font-size: 100%;
+        color: #ffffff;
+    }
+
+    .username {
+        font-size: 80%;
+        font-style: italic;
+        font-weight: bold;
+        color: #007ca6;
+    }
 
 .user-bio {
-    margin: 0.5em;
+    display: block;
+    text-align: center;
+    overflow: hidden;
 }
+
+.quick-info {
+    padding-bottom: .50em;
+}
+    .quick-info > .quick-info-section {
+        
+    }
+
+    .quick-info > .title {
+        text-transform: uppercase;
+        color: #9baec8;
+    }
+
+    .quick-info > .count {
+        font-weight: 500;
+        color: #fff;
+    }
+
+.follow-btn:hover {
+    background-color: #ac002b;
+    border-color: #ac002b;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #e0245e;
+    color: #fff;
+}
+
+.not-following-btn {
+    color: black;
+}
+
+    .not-following-btn:hover {
+        background-color: #337ab7;
+        border-color: #337ab7;
+        box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #1DA1F2;
+        color: #ffffff;
+    }
+

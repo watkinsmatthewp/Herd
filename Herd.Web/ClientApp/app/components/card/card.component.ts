@@ -13,6 +13,11 @@ export class CardComponent implements AfterContentInit {
     @Input()
     public size: string;
 
+    @Input()
+    public headerImgSrc: string;
+
+    public headerNotMissing: boolean;
+
     @ContentChildren(CardTitleComponent)
     public titleComponent: QueryList<CardTitleComponent>;
 
@@ -20,5 +25,6 @@ export class CardComponent implements AfterContentInit {
 
     public ngAfterContentInit() {
         this.showTitle = this.titleComponent.length > 0;
+        this.headerNotMissing = this.headerImgSrc !== "https://mastodon.social/headers/original/missing.png";
     }
 }

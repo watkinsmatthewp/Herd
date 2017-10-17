@@ -12,6 +12,17 @@
     vertical-align: top;
     width: 350px;
     box-shadow: 0px 0px 5px 0 rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+}
+
+.imageOverlay {
+    background: rgba(49,53,67,.6);
+    height: 100%;
+    width: 100%;
+}
+
+.card-large {
+    height: 450px;
 }
 
 .card-small {
@@ -47,6 +58,17 @@
     overflow: hidden;
 }
 
+.header-image-box {
+    width: 100%;
+    height: 100px;
+    overflow: hidden;
+}
+
+.header-pic {
+    min-width: 100%;
+    object-fit: cover;
+}
+
 .card-title {
     color: #282b31;
     font-weight: 300;
@@ -64,6 +86,9 @@
 }
 
 .card-actions {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     border-top: 1px solid #e2e3e4;
     bottom: 0;
     flex-shrink: 0;

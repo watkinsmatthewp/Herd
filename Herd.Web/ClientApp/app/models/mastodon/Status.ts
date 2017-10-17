@@ -7,6 +7,7 @@ export class Status {
     CreatedOnUTC: Date;
     FavouritesCount: number;
     Id: number;
+    IdString: string;
     InReplyToPostId: number;
     IsFavourited: boolean;
     IsReblogged: boolean;

@@ -15,6 +15,7 @@ export class ProfilePage implements OnInit {
     account: Account;
     loading: boolean = false;
     userPosts: Status[] = []; // List of posts from this user
+    isFollowing: boolean = false;
 
     constructor(private accountService: AccountService,
         private localStorage: Storage,
@@ -51,6 +52,6 @@ export class ProfilePage implements OnInit {
             });
 
         // Get the posts from this user
-        this.getMostRecentUserPosts();
+        //this.getMostRecentUserPosts();
     }
 }
