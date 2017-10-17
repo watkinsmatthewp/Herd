@@ -1,15 +1,13 @@
 ﻿.header-image-box {
     width: 100%;
     height: 280px;
+    top: 0px;
     overflow: hidden;
+    position: absolute;
+    padding-bottom: 200px;
 }
 
 .header-pic {
-    /*width: 700px;
-    height: 335px;
-    display: block;
-    margin: 0 auto;
-    background-size: cover;*/
     min-width: 100%;
     object-fit: cover;
 }
@@ -18,10 +16,20 @@
     width: 120px;
     height: 120px;
     border-radius: 50%;
+    border: 5px solid white;
+}
+
+.profile-content {
+    top: 220px;
+    position: relative;
+    z-index: 1;
 }
 
 .info-bar {
-    font-size: 12px;
+    top: 50px;
+    position: relative;
+    font-size: 100%;
+    z-index: 1;
 }
 
 
