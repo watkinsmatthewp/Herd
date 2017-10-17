@@ -2,6 +2,6 @@
 {
     public class GetRegistrationCommand : Command
     {
-        public long ID { get; set; }
+        public string ID { get; set; }
     }
 }

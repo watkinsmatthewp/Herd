@@ -10,8 +10,8 @@ namespace Herd.Business.Models.Entities
         public string Content { get; set; }
         public DateTime CreatedOnUTC { get; set; }
         public int FavouritesCount { get; set; }
-        public long Id { get; set; }
-        public long? InReplyToPostId { get; set; }
+        public string Id { get; set; }
+        public string InReplyToPostId { get; set; }
         public bool? IsFavourited { get; set; }
         public bool? IsReblogged { get; set; }
         public bool? IsSensitive { get; set; }
