@@ -16,48 +16,6 @@
         <div *ngIf="!userCard.MastodonShortBio.length" class="user-bio"> No bio</div>
     </card-content>
 
-<<<<<<< HEAD
-    <card>
-        <card-content>
-
-            <!-- <img class=".profile-header-picture" src="{{ userCard.MastodonHeaderImageURL }}" /> -->
-
-            <div>
-                <span>
-                    <img class="profile-picture" src="{{ userCard.MastodonProfileImageURL }}"  align="middle"/>
-                </span>
-            </div>
-
-            <div class="user-names">
-                <br />
-                <a href="/todo">
-                    {{userCard.MastodonDisplayName}}
-                </a>
-                <br />
-                <a href="/todo">
-                    @{{userCard.MastodonUserName}}
-                </a>
-            </div>
-
-            <br />
-            <br />
-
-            <div clss="user-bio" [innerHTML]="userCard.MastodonShortBio"></div>
-
- 
-
-        </card-content>
-
-        <card-actions>
-            <button type="button" class="btn btn-primary" (click)="togglefollow()">
-                <span> {{isFollowing === true ? 'Unfollow' : 'Follow' }} </span>
-            </button>
-        </card-actions>
-
-    </card>
-
-</div>
-=======
     <card-actions>
         <!--
         <div class="container-fluid quick-info">
@@ -83,4 +41,3 @@
         </button>
     </card-actions>
 </card>
->>>>>>> 73_Profiles
