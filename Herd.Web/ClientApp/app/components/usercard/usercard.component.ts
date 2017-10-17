@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input } from '@angular/core';
+﻿import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 
 import { MastodonService, TimelineAlertService, AccountService } from "../../services";
 import { NotificationsService } from "angular2-notifications";

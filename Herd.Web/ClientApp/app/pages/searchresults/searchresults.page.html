@@ -3,16 +3,12 @@
 <div class="row">
 
 
-    <div class="col-sm-3">
-    </div>
 
-        <div class="col-sm-6">
-            <div *ngFor="let userCard of userCards">
+        <div>
+            <div *ngFor="let userCard of userCards" class= "col-md-4 col-sm-6 col-12">
                 <usercard [userCard]="userCard"></usercard>
             </div>
         </div>
 
-    <div class="col-sm-3">
-    </div>
 
 </div>
