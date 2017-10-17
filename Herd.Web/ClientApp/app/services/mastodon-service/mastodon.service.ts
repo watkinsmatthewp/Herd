@@ -17,7 +17,7 @@ export class MastodonService {
             .map(response => response.RecentPosts as Status[]);
     }
 
-    getStatus(statusId: number, includeAncestors: boolean, includeDescendants: boolean): Observable<Status> {
+    getStatus(statusId: string, includeAncestors: boolean, includeDescendants: boolean): Observable<Status> {
         let queryString = '?statusId=' + statusId
                         + '&includeAncestors=' + includeAncestors
                         + '&includeDescendants=' + includeDescendants;
@@ -38,11 +38,7 @@ export class MastodonService {
      * @param sensitive
      * @param spoilerText
      */
-    makeNewPost(message: string, visibility: number, replyStatusId?: number, sensitive?: boolean, spoilerText?: string) {
-        if (replyStatusId && replyStatusId < 0) {
-            replyStatusId = undefined;
-        }
-
+    makeNewPost(message: string, visibility: number, replyStatusId?: string, sensitive?: boolean, spoilerText?: string) {
         let body = {
             'message': message,
             'visibility': visibility,

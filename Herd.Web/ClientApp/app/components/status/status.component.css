@@ -49,24 +49,28 @@ p {
 }
 
 /* Buttons */
-.comments-btn:hover {
+.status-btn {
+    background: inherit;
+}
+
+.comments-btn:not([disabled]):hover {
     color: blue;
 }
 
-.retweet-btn:hover {
+.retweet-btn:not([disabled]):hover {
     color: limegreen;
 }
 
-.like-btn:hover {
+.like-btn:not([disabled]):hover {
     color: red;
+}
+
+.message-btn:not([disabled]):hover {
+    color: black;
 }
 
 .message-btn {
     color: #657786;
-}
-
-.message-btn:hover{
-    color: black;
 }
 
 .heart-color {

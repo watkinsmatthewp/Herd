@@ -58,6 +58,7 @@ namespace Herd.Business
             MastodonProfileImageURL = account.AvatarUrl,
             MastodonShortBio = account.Note,
             MastodonUserId = account.Id,
+            MastodonUserIdString = account.Id.ToString(),
             MastodonUserName = account.UserName,
             FollowersCount = account.FollowersCount,
             FollowingCount = account.FollowingCount
@@ -66,6 +67,7 @@ namespace Herd.Business
         public static MastodonRelationship ToMastodonRelationship(this Relationship relationship) => new MastodonRelationship
         {
             ID = relationship.Id,
+            IdString = relationship.Id.ToString(),
             Following = relationship.Following,
             FollowedBy = relationship.FollowedBy,
             Blocking = relationship.Blocking,
@@ -98,7 +100,9 @@ namespace Herd.Business
                 CreatedOnUTC = status.CreatedAt,
                 FavouritesCount = status.FavouritesCount,
                 Id = status.Id,
+                IdString = status.Id.ToString(),
                 InReplyToPostId = status.InReplyToId,
+                InReplyToPostIdString = status.InReplyToId.ToString(),
                 IsFavourited = status.Favourited,
                 IsReblogged = status.Reblogged,
                 IsSensitive = status.Sensitive,

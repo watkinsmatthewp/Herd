@@ -1,9 +1,9 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 import { AuthenticationService } from '../../services';
 import { NotificationsService } from "angular2-notifications";
-
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'nav-menu',
@@ -24,9 +24,10 @@ export class NavMenuComponent {
         return this.authService.checkIfConnectedToMastodon();
     }
 
-    search() {
+    search(form: NgForm) {
         this.router.navigate(['/searchresults'], { queryParams: { searchString: this.model.searchItem } });
-        //alert(this.model.searchItem);
+        this.model.searchItem = "";
+        form.resetForm();
     }
 
     logout() {

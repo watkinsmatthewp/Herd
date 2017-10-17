@@ -13,5 +13,8 @@ namespace Herd.Business.Models.Entities
         public bool Muting { get; set; }
         public bool Requested { get; set; }
         public bool DomainBlocking { get; set; }
+
+        // String versions of ids
+        public string IdString { get; set; }
     }
 }

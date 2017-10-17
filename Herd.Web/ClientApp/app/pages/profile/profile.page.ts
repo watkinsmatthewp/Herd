@@ -52,6 +52,6 @@ export class ProfilePage implements OnInit {
             });
 
         // Get the posts from this user
-        this.getMostRecentUserPosts();
+        //this.getMostRecentUserPosts();
     }
 }
