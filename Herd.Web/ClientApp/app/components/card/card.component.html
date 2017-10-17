@@ -1,8 +1,9 @@
-﻿<section class="card" [ngClass]="{'card-small': size === 'small' }"
+﻿<section class="card" [ngClass]="{'card-small': size === 'small', 'card-large': size === 'large' }"
                       [ngStyle]="{
                                     'background-image': 'url(' + headerImgSrc + ')', 
                                     'background-size': 'cover', 
-                                    'background-position': '50%'
+                                    'background-position': '50%',
+                                    'position': 'relative'
                                 }">
     <div class="imageOverlay">
         <header>

@@ -1,7 +1,8 @@
-﻿<card [headerImgSrc]="userCard.MastodonHeaderImageURL">
+﻿<card size="large" [headerImgSrc]="userCard.MastodonHeaderImageURL">
     <card-image-header>
             <div class="header-pic" [ngStyle]="{'background-image': 'url(' + userCard.MastodonHeaderImageURL + ')' }"></div>
     </card-image-header>
+
     <card-title>
         <div>
             <span>
@@ -13,6 +14,7 @@
             <a class="username" href="/todo">@{{userCard.MastodonUserName}}</a>
         </div>
     </card-title>
+    
     <card-content>
         <div *ngIf="userCard.MastodonShortBio" class="user-bio" [innerHTML]="userCard.MastodonShortBio"></div>
     </card-content>
@@ -34,11 +36,14 @@
             </span>
         </div>
         -->
-        <button *ngIf="isFollowing" class="btn btn-primary follow-btn" (mouseenter)="followUnfollowText = 'Unfollow';" (mouseleave)="followUnfollowText = 'Following';" (click)="togglefollow()">
-            <p>{{followUnfollowText}}</p>
-        </button>
-        <button *ngIf="!isFollowing" class="btn btn-secondary not-following-btn" (click)="togglefollow()">
-            <p>Follow</p>
-        </button>
+        <div class="text-center">
+            <button *ngIf="isFollowing" class="btn btn-primary follow-btn" (mouseenter)="followUnfollowText = 'Unfollow';" (mouseleave)="followUnfollowText = 'Following';" (click)="togglefollow()">
+                <p>{{followUnfollowText}}</p>
+            </button>
+            <button *ngIf="!isFollowing" class="btn btn-secondary not-following-btn" (click)="togglefollow()">
+                <p>Follow</p>
+            </button>
+        </div>
+        
     </card-actions>
 </card>
