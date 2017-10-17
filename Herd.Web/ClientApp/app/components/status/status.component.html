@@ -1,39 +1,39 @@
 ﻿
-<a *ngIf="status" (click)="notifyTimelineStatusClicked($event)">
-    <div class="well well-sm mouseOver post-format">
-        <div class="row">
-            <div class="col-sm-6 status-content">
-                <div class="status-header">
-                    <img class="profile-picture" src="{{ status.Author.MastodonProfileImageURL }}" />
-                    <a href="/todo">
-                        <span class="author-name">{{ status.Author.MastodonDisplayName }}</span>
-                        <span class="username">@{{ status.Author.MastodonUserName }}</span>
-                    </a>
-                    <span class="time-stamp"> | {{ status.CreatedOnUTC | date: 'short' }}</span>
+<div *ngIf="status" class="well well-sm mouseOver post-format" (click)="notifyTimelineStatusClicked($event)">
+    <div class="row">
+        <div class="col-sm-6 status-content">
+            <div class="status-header">
+                <img class="profile-picture" src="{{ status.Author.MastodonProfileImageURL }}" />
+                <a href="/todo">
+                    <span class="author-name">{{ status.Author.MastodonDisplayName }}</span>
+                    <span class="username">@{{ status.Author.MastodonUserName }}</span>
+                </a>
+                <span class="time-stamp"> | {{ status.CreatedOnUTC | date: 'short' }}</span>
+            </div>
+            <div class="status-body">
+                <p *ngIf="status.IsSensitive">{{ status.SpoilerText }}</p>
+                <div [ngClass]="{'status-blurred': showBlur }" (click)="turnOffBlur($event)">
+                    <p  [innerHTML]="status.Content"></p>
                 </div>
-                <div class="status-body">
-                    <p *ngIf="status.IsSensitive">{{ status.SpoilerText }}</p>
-                    <div [ngClass]="{'status-blurred': showBlur }" (click)="turnOffBlur($event)">
-                        <p  [innerHTML]="status.Content"></p>
-                    </div>
-                </div>   
-                <div class="status-action-items text-center">
-                    <span class="btn comments-btn" title="Reply to Id={{ status.Id }}" (click)="notifyTimelineCommentsClicked($event)">
+            </div>   
+            <div class="text-center">
+                <div class="btn-group-lg" role="group">
+                    <button class="btn btn-secondary comments-btn status-btn" type="button" title="Reply to Id={{ status.IdString }}" (click)="notifyTimelineCommentsClicked($event)">
                         <fa name="comments"></fa>
-                    </span>
-                    <span class="btn retweet-btn" title="Retweet" (click)="retweet()">
+                    </button>
+                    <button [disabled]="true" class="btn btn-secondary retweet-btn status-btn" type="button" title="Retweet" (click)="retweet()">
                         <fa name="retweet" [ngClass]="{'retweet-color': status.IsReblogged }"></fa><span>{{ status.ReblogCount }}</span>
-                    </span>
-                    <span class="btn like-btn" title="Like" (click)="like()">
+                    </button>
+                    <button [disabled]="true" class="btn btn-secondary like-btn status-btn" type="button" title="Like" (click)="like()">
                         <fa *ngIf="!status.IsFavourited" name="heart-o"></fa>
                         <fa *ngIf="status.IsFavourited" name="heart" class="heart-color"></fa>
                         <span>{{ status.FavouritesCount }}</span>
-                    </span>
-                    <span class="btn message-btn" title="Direct Message" (click)="directMessage()">
+                    </button>
+                    <button [disabled]="true" class="btn btn-secondary message-btn status-btn" type="button" title="Direct Message" (click)="directMessage()">
                         <fa name="envelope-o"></fa>
-                    </span>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-</a>
+</div>
