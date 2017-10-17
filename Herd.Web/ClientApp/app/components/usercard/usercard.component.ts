@@ -12,6 +12,7 @@ import { UserCard } from '../../models/mastodon';
 export class UserCardComponent implements OnInit {
     @Input() userCard: UserCard;
     isFollowing: boolean = false;
+    followUnfollowText: string = "Following";
 
     constructor(private timelineAlert: TimelineAlertService, private mastodonService: MastodonService,
         private accountService: AccountService, private toastService: NotificationsService) { }
@@ -26,10 +27,18 @@ export class UserCardComponent implements OnInit {
         this.accountService.followUser(String(this.userCard.MastodonUserId), !this.isFollowing)
             .subscribe(response => {
                 this.isFollowing = !this.isFollowing;
-                this.toastService.success("Successfully", "changed following relationship.");
+                this.toastService.success("Successfully", "changed relationship.");
             }, error => {
                 this.toastService.error(error.error);
             });
+    }
+
+    mouseEnter(div: string) {
+        console.log("mouse enter : " + div);
+    }
+
+    mouseLeave(div: string) {
+        console.log('mouse leave :' + div);
     }
 
 }
