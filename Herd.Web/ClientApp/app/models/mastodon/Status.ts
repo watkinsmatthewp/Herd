@@ -6,9 +6,8 @@ export class Status {
     Content: string;
     CreatedOnUTC: Date;
     FavouritesCount: number;
-    Id: number;
-    IdString: string;
-    InReplyToPostId: number;
+    Id: string;
+    InReplyToPostId: string;
     IsFavourited: boolean;
     IsReblogged: boolean;
     IsSensitive: boolean;

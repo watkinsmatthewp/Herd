@@ -9,7 +9,7 @@ export class Account {
     MastodonHeaderImageUrl: string;
     MastodonProfileImageURL: string;
     MastodonShortBio: string;
-    MastodonUserId: number;
+    MastodonUserId: string;
     MastodonUserName: string;
     PostCount: number;
 }

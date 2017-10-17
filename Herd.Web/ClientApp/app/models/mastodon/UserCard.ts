@@ -6,7 +6,7 @@ export class UserCard {
     FollowingCount: number;
     FollowsActiveUser: boolean;
     IsFollowedByActiveUser: boolean;
-    MastodonUserId: number;
+    MastodonUserId: string;
     MastodonUserName: string;
     MastodonDisplayName: string;
     MastodonProfileImageURL: string;

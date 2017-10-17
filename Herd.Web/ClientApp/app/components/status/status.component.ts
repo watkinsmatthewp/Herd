@@ -27,12 +27,12 @@ export class StatusComponent implements OnInit {
     }
 
     notifyTimelineCommentsClicked(event: any): void {
-        this.timelineAlert.addMessage("Update reply status", this.status.IdString);
+        this.timelineAlert.addMessage("Update reply status", this.status.Id);
         event.stopPropagation();
     }
 
     notifyTimelineStatusClicked(event: any): void {
-        this.timelineAlert.addMessage("Update specific status", this.status.IdString);
+        this.timelineAlert.addMessage("Update specific status", this.status.Id);
         event.stopPropagation();
     }
 
