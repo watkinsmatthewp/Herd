@@ -23,11 +23,13 @@ export class UserCardComponent implements OnInit {
     }
 
     togglefollow(): void {
-        var action = false;
-        if (this.userCard.IsFollowedByActiveUser === false)
-            action = true;
-        this.accountService.followUser(String(this.userCard.MastodonUserId), action)
+        //var action = this.isFollowing;
+        //if (this.userCard.IsFollowedByActiveUser === false)
+            //action = true;
+
+        this.accountService.followUser(String(this.userCard.MastodonUserId), !this.isFollowing)
             .subscribe(response => {
+                this.isFollowing = !this.isFollowing;
                 this.toastService.success("Successfully", "changed following relationship.");
             }, error => {
                 this.toastService.error(error.error);
