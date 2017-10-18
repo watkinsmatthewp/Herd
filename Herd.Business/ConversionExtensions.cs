@@ -124,7 +124,7 @@ namespace Herd.Business
 
         #region General
 
-        public static IEnumerable<long> ToLongs(this IEnumerable<string> sCollection) => sCollection.Select(s => s.ToLong());
+        public static IEnumerable<long> ToLongs(this IEnumerable<string> sCollection) => sCollection?.Select(s => s.ToLong());
 
         public static IEnumerable<long?> ToNullableLongs(this IEnumerable<string> sCollection) => sCollection.Select(s => s.ToNullableLong());
 
