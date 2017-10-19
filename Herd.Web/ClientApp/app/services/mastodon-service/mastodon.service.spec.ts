@@ -33,10 +33,10 @@ describe('Service: Mastodon Service', () => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {
-                        RecentFeedItems: [
-                            { Content: 'Content1', Id: 1, Url: 'example.com/1' },
-                            { Content: 'Content2', Id: 2, Url: 'example.com/2' },
-                            { Content: 'Content3', Id: 3, Url: 'example.com/3' },
+                        RecentPosts: [
+                            { Content: 'Content1', Id: "1", Url: 'example.com/1' },
+                            { Content: 'Content2', Id: "2", Url: 'example.com/2' },
+                            { Content: 'Content3', Id: "3", Url: 'example.com/3' },
                         ]  
                     }
                 };
@@ -65,7 +65,7 @@ describe('Service: Mastodon Service', () => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {
-                        RecentFeedItems: []
+                        RecentPosts: []
                     }
                 };
 

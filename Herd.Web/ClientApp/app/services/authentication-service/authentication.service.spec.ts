@@ -204,7 +204,12 @@ describe('Service: Authentication Service', () => {
             const mockResponse = {
                 Success: true,
                 Data: {
-                    assignedToken: true
+                    User: {
+                        ID: 1,
+                        MastodonConnection: {
+                            MastodonUserID: "100100100"
+                        }
+                    }
                 }
             };
 
@@ -217,7 +222,8 @@ describe('Service: Authentication Service', () => {
 
             // Make the login request from our authentication service
             authService.submitOAuthToken('abc123', 1).subscribe((response) => {
-                expect(response.assignedToken).toBe(true);
+                expect(response.ID).toBe(1);
+                expect(response.MastodonConnection.MastodonUserID).toBe("100100100");
             });
         }));
     });
