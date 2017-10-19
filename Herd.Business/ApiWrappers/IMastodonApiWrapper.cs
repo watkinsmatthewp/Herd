@@ -34,16 +34,18 @@ namespace Herd.Business.ApiWrappers
         Task<IList<MastodonUser>> GetFollowers(string followingUserID, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false, int? limit = 30);
         Task<MastodonRelationship> Follow(string userID, bool followUser);
 
-        Task<List<MastodonPost>> GetUserPosts(bool includeInReplyToPost = false, bool includeReplyPosts = false, string maxID = null, string sinceID = null, int? limit = 30);
-
         #endregion User
 
-        #region Timeline Feeds
+        #region Posts
 
-        Task<List<MastodonPost>> GetRecentPosts(bool includeInReplyToPost = false, bool includeReplyPosts = false, string maxID = null, string sinceID = null, int? limit = 30);
-        Task<MastodonPost> GetPost(string statusID, bool includeReplyPosts = false, bool includeReplyToPost = false);
+        Task<List<MastodonPost>> AddContextToMastodonPosts(List<MastodonPost> mastodonPosts, bool includeAncestors = false, bool includeDescendants = false);
+        Task<MastodonPost> AddContextToMastodonPost(MastodonPost mastodonPost, bool includeAncestors = false, bool includeDescendants = false);
+        Task<MastodonPost> GetPost(string postID, bool includeAncestors = false, bool includeDescendants = false);
+        Task<List<MastodonPost>> GetPostsByAuthorUserID(string authorMastodonUserID, bool includeAncestors = false, bool includeDescendants = false, int? limit = 30);
+        Task<List<MastodonPost>> GetPostsByHashTag(string hashTag, bool includeAncestors = false, bool includeDescendants = false, int? limit = 30);
+        Task<List<MastodonPost>> GetPostsOnTimeline(bool includeAncestors = false, bool includeDescendants = false, int? limit = 30);
         Task<MastodonPost> CreateNewPost(string message, MastodonPostVisibility visibility, string replyStatusId = null, IEnumerable<string> mediaIds = null, bool sensitive = false, string spoilerText = null);
-        
+
         #endregion Timeline Feeds
     }
 }

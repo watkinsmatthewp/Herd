@@ -128,30 +128,30 @@ namespace Herd.Business.UnitTests
             //TODO need to check if GetAppRegistration is null?
         }
 
-        [Fact]
-        public void GetRecentFeedItemsTest()
-        {
-            // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
-            var mockData = new Mock<IDataProvider>();
-            var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
-            var mockLogger = new Mock<ILogger>();
+        //[Fact]
+        //public void GetRecentFeedItemsTest()
+        //{
+        //    // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
+        //    var mockData = new Mock<IDataProvider>();
+        //    var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
+        //    var mockLogger = new Mock<ILogger>();
 
-            Status status = new Status();
-            status.Content = "Hello, World!";
-            List<Status> list = new List<Status>();
-            list.Add(status);
+        //    Status status = new Status();
+        //    status.Content = "Hello, World!";
+        //    List<Status> list = new List<Status>();
+        //    list.Add(status);
 
-            mockMastodonApiWrapper.Setup(d => d.GetRecentPosts(false, false, null, null, 1)).Returns(Task.FromResult<List<MastodonPost>>(new List<MastodonPost>()));
+        //    mockMastodonApiWrapper.Setup(d => d.GetRecentPosts(false, false, null, null, 1)).Returns(Task.FromResult<List<MastodonPost>>(new List<MastodonPost>()));
 
-            // Create the HerdApp using the mock objects
-            var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
+        //    // Create the HerdApp using the mock objects
+        //    var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
 
-            // Run the HerdApp command (should execute the mock)
-            var result = herdApp.GetRecentFeedItems(new GetRecentPostsCommand { MaxCount = 1 });
+        //    // Run the HerdApp command (should execute the mock)
+        //    var result = herdApp.GetRecentFeedItems(new GetRecentPostsCommand { MaxCount = 1 });
 
-            // Verify the result, should add more tests when dummy data is removed
-            Assert.True(result?.Success);
-        }
+        //    // Verify the result, should add more tests when dummy data is removed
+        //    Assert.True(result?.Success);
+        //}
 
         //[Fact]
         //public void CreateNewPostTest()

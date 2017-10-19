@@ -24,17 +24,12 @@ namespace Herd.Business
 
         CommandResult<UpdateUserMastodonConnectionCommandResultData> UpdateUserMastodonConnection(UpdateUserMastodonConnectionCommand updateUserMastodonConnectionCommand);
 
-        // Feed
-        CommandResult<GetRecentPostsCommandResultData> GetRecentFeedItems(GetRecentPostsCommand getRecentFeedItemsCommand);
-
-        CommandResult<GetPostCommandResultData> GetStatus(GetPostCommand getStatusCommand);
-
-        CommandResult CreateNewPost(CreateNewPostCommand createNewPostCommand);
-
-        CommandResult<GetRecentPostsCommandResultData> GetRecentUserFeedItems(GetRecentPostsCommand getRecentPostsCommand, MastodonUser account);
-
         // Mastodon users
         CommandResult<SearchMastodonUsersCommandResultData> SearchUsers(SearchMastodonUsersCommand searchMastodonUsersCommand);
         CommandResult FollowUser(FollowUserCommand followUserCommand);
+
+        // Mastodon posts
+        CommandResult<SearchMastodonPostsCommandResultData> SearchPosts(SearchMastodonPostsCommand searchMastodonPostsCommand);
+        CommandResult CreateNewPost(CreateNewPostCommand createNewPostCommand);
     }
 }
