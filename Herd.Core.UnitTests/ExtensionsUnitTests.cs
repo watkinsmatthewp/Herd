@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -57,7 +58,43 @@ namespace Herd.Core.UnitTests
             Assert.Equal("ZOyIygCyaOW6GjVnihtTFtIS9PNmskdyMlNKiuyjfzw=", Convert.ToBase64String(outputBytes));
         }
 
+        [Fact]
+        public void ContainsTest()
+        {
+            Assert.True("hello world".Contains("HELLO", StringComparison.InvariantCultureIgnoreCase));
+            Assert.False("hello world".Contains("HELLO", StringComparison.InvariantCulture));
+        }
+
+        [Fact]
+        public void NoneTest()
+        {
+            Assert.True(new List<long>().None());
+            Assert.False(new List<long> { 1, 2, 3 }.None());
+
+            Assert.True(new List<Object>().None());
+            Assert.False(new List<Object> { new Object(), new Object(), new Object() }.None());
+        }
+
+        [Fact]
+        public void NoneWithPredicateTest()
+        {
+            Assert.True(new List<long>().None(i => i < 20));
+            Assert.False(new List<long> { 1, 2, 3 }.None(i => i < 20));
+        }
+
+        [Fact]
+        public void ThenTest()
+        {
+            MockObject mockObject = new MockObject { ID = 1, Touched = false };
+            Assert.True(mockObject.Then(mo => mo.Touched = true).Touched);
+        }
+
         #region Private helpers
+        public class MockObject
+        {
+            public int ID { get; set; }
+            public Boolean Touched { get; set; }
+        }
 
         private async Task<int> DelayReturn(int val)
         {
