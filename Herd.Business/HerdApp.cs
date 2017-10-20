@@ -230,9 +230,13 @@ namespace Herd.Business
             {
                 return new Dictionary<string, MastodonUser>();
             }
+            return await Filter(userSet1, () => GetMastodonUserOrEmptySet(mastodonUserID), u => u.MastodonUserId);
+        }
+
+        private async Task<IList<MastodonUser>> GetMastodonUserOrEmptySet(string mastodonUserID)
+        {
             var mastodonAccount = await _mastodonApiWrapper.GetMastodonAccount(mastodonUserID);
-            var newUserSet = mastodonAccount == null ? new MastodonUser[0] : new[] { mastodonAccount };
-            return Filter(userSet1, newUserSet, u => u.MastodonUserId);
+            return mastodonAccount == null ? new MastodonUser[0] : new[] { mastodonAccount };
         }
 
         private async Task<Dictionary<string, MastodonUser>> FilterByName(Dictionary<string, MastodonUser> userSet1, string name, int limit)
@@ -241,7 +245,7 @@ namespace Herd.Business
             {
                 return new Dictionary<string, MastodonUser>();
             }
-            return Filter(userSet1, await _mastodonApiWrapper.GetUsersByName(name, false, false, false, false, limit), u => u.MastodonUserId);
+            return await Filter(userSet1, () => _mastodonApiWrapper.GetUsersByName(name, false, false, false, false, limit), u => u.MastodonUserId);
         }
 
         private async Task<Dictionary<string, MastodonUser>> FilterByFollowedByUserID(Dictionary<string, MastodonUser> userSet1, string followedByUserID, int limit)
@@ -250,7 +254,7 @@ namespace Herd.Business
             {
                 return new Dictionary<string, MastodonUser>();
             }
-            return Filter(userSet1, await _mastodonApiWrapper.GetFollowing(followedByUserID, false, false, false, false, limit), u => u.MastodonUserId);
+            return await Filter(userSet1, () => _mastodonApiWrapper.GetFollowing(followedByUserID, false, false, false, false, limit), u => u.MastodonUserId);
         }
 
         private async Task<Dictionary<string, MastodonUser>> FilterByFollowsByUserID(Dictionary<string, MastodonUser> userSet1, string followedUserID, int limit)
@@ -259,7 +263,7 @@ namespace Herd.Business
             {
                 return new Dictionary<string, MastodonUser>();
             }
-            return Filter(userSet1, await _mastodonApiWrapper.GetFollowers(followedUserID, false, false, false, false, limit), u => u.MastodonUserId);
+            return await Filter(userSet1, () => _mastodonApiWrapper.GetFollowers(followedUserID, false, false, false, false, limit), u => u.MastodonUserId);
         }
 
         public CommandResult FollowUser(FollowUserCommand followUserCommand)
@@ -382,16 +386,17 @@ namespace Herd.Business
             return result;
         }
 
-        private Dictionary<string, T> Filter<T>(Dictionary<string, T> set1, IList<T> set2, Func<T, string> getID)
+        private async Task<Dictionary<string, T>> Filter<T>(Dictionary<string, T> set1, Func<Task<IList<T>>> getSet2, Func<T, string> getID)
         {
             if (set1 == null)
             {
-                return ToDictionary(set2, getID);
+                return ToDictionary(await getSet2(), getID);
             }
             if (set1.Count == 0)
             {
                 return new Dictionary<string, T>();
             }
+            var set2 = await getSet2();
             var idsToPreserve = new HashSet<string>(set1.Keys.Intersect(set2.Select(getID)));
             return ToDictionary(set2.Where(u => idsToPreserve.Contains(getID(u))), getID);
         }
