@@ -14,6 +14,7 @@ namespace Herd.Business.UnitTests
 {
     public class HerdAppTests
     {
+        #region App Registration
         [Fact]
         public void GetRegistrationTest()
         {
@@ -127,6 +128,36 @@ namespace Herd.Business.UnitTests
 
             //TODO need to check if GetAppRegistration is null?
         }
+        #endregion
+
+        #region Users
+        [Fact]
+        public void GetUserTest()
+        {
+        }
+
+        [Fact]
+        public void CreateUserTest()
+        {
+        }
+
+        [Fact]
+        public void LoginUserTest()
+        {
+        }
+
+        [Fact]
+        public void UpdateUserMastodonConnectionTest()
+        {
+        }
+
+        public void GetFollowingTest()
+        {
+
+        }
+        #endregion
+
+        #region Feed
 
         [Fact]
         public void GetRecentFeedItemsTest()
@@ -154,6 +185,11 @@ namespace Herd.Business.UnitTests
         }
 
         [Fact]
+        public void GetStatusTest()
+        {
+        }
+
+        [Fact]
         public void CreateNewPostTest()
         {
             // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
@@ -168,7 +204,7 @@ namespace Herd.Business.UnitTests
             var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
 
             // Run the HerdApp command (should execute the mock)
-            //var result = herdApp.CreateNewPost(new HerdAppCreateNewPostCommand { Message = "Hello, World." });
+            var result = herdApp.CreateNewPost(new CreateNewPostCommand { Message = "Hello World!" });
 
             // Verify the result, do we need to check any more than this?
             //Assert.True(result?.Success);
@@ -208,6 +244,7 @@ namespace Herd.Business.UnitTests
             Assert.True(result?.Success);
         }
 
-        
+        [Fact]
+
     }
 }
