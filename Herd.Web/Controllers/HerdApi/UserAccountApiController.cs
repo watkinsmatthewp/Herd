@@ -62,9 +62,6 @@ namespace Herd.Web.Controllers.HerdApi
             return Ok();
         }
         
-        [HttpGet("following")]
-        public IActionResult GetFollowing(MastodonUser account) => ApiJson(App.SearchUsers(new SearchMastodonUsersCommand()));
-
         #region Private helpers
 
         private UserAccount ClearUnnecessaryOrSensitiveData(UserAccount userAccount) => new UserAccount
