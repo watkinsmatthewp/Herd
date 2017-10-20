@@ -26,7 +26,6 @@ namespace Herd.Logging.UnitTests
                 consoleLogger.Log(Guid.NewGuid(), LogLevel.Info, "console-messageText", new Dictionary<string, string>());
                 Assert.Contains("console-messageText", outputHandler.ConsoleOutput);
             }, consoleLoggerShim);
-            
         }
 
         #region Private

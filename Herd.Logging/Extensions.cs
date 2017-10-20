@@ -52,7 +52,7 @@ namespace Herd.Logging
 
         private static KeyValuePair<string, string> Kvp(string key, object value)
         {
-            return new KeyValuePair<string, string>(key, value.ToString());
+            return new KeyValuePair<string, string>(key, value?.ToString());
         }
 
         #endregion Private helpers
