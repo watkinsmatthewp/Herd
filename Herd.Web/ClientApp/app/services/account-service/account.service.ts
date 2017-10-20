@@ -22,14 +22,45 @@ export class AccountService {
             .map((response) => response.Users[0] as Account );
     }
 
+    /**
+     * Searches for a user
+     * @param name
+     */
+    searchForUser(name: string) {
+        let queryString = "?name=" + name
+                        + "&includeFollowedByActiveUser=" + true
+                        + "&includeFollowsActiveUser=" + true;
+        return this.httpClient.get('api/mastodon-users/search' + queryString)
+            .map(response => response.Users as UserCard[]);
+    }
+
+    /**
+     * Get the posts that the active user has made
+     */
     getUserFeed(): Observable<Status[]> {
-        return this.httpClient.get('api/account/user_items')
+        let queryString = "?onlyOnActiveUserTimeline=" + true;
+        return this.httpClient.get('api/mastodon-posts/search' + queryString)
             .map(response => response.RecentPosts as Status[]);
     }
 
-    getFollowers(): Observable<Status[]> {
-        return this.httpClient.get('api/account/user_items')
-            .map(response => response.RecentPosts as Status[]);
+    /**
+     * Get the followers of a userID
+     * @param userID
+     */
+    getFollowers(userID: string): Observable<Account[]> {
+        let queryString = "?followsMastodonUserID=" + userID;
+        return this.httpClient.get('api/mastodon-users/search' + queryString)
+            .map(response => response.Users as Account[]);
+    }
+
+    /**
+     * Get who the userID is following
+     * @param userID
+     */
+    getFollowing(userID: string): Observable<Account[]> {
+        let queryString = "?followedByMastodonUserID=" + userID;
+        return this.httpClient.get('api/mastodon-users/search' + queryString)
+            .map(response => response.Users as Account[]);
     }
 
     /**
@@ -43,13 +74,6 @@ export class AccountService {
             'followUser': followUser,
         }
         return this.httpClient.post('api/mastodon-users/follow', body);
-    }
-
-    // Calls Api to search for users
-    searchUser(name: string) {
-        let queryString = "?name=" + name + "&includefollowedbyactiveuser=true&includefollowsactiveuser=true";
-        return this.httpClient.get('api/mastodon-users/search' + queryString)
-            .map(response => response.Users as UserCard[]);
     }
 
 }

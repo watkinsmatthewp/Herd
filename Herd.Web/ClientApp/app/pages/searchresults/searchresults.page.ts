@@ -24,7 +24,7 @@ export class SearchResultsPage implements OnInit {
         this.haveSearchResults = false;
         this.finishedSearching = false;
         let progress = this.toastService.info("Searching for", this.search + " ...")
-        this.accountService.searchUser(this.search)
+        this.accountService.searchForUser(this.search)
             .subscribe(users => {
                 if (users.length > 0) {
                     this.haveSearchResults = true;
