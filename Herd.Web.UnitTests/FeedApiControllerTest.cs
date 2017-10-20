@@ -78,6 +78,7 @@ namespace Herd.Web.UnitTests
 
         }
 
+        [Fact]
         public void NewPostTest() {
 
             var mockApp = new Mock<IHerdApp>();
@@ -86,7 +87,7 @@ namespace Herd.Web.UnitTests
 
             FeedApiController controller = new FeedApiController();
 
-            string json = "{ message: '1', visibility: '1', replyStatusID: '0', sensitive: 'false', spoilerTest: 'Starfield' }";
+            string json = "{ message: '1', visibility: '1', replyStatusId: '0', sensitive: 'false', spoilerText: 'Starfield' }";
             JObject body = JObject.Parse(json);
 
             // Run the mock
@@ -94,7 +95,6 @@ namespace Herd.Web.UnitTests
 
             // Not sure how to test controller beyond this, will researh
             Assert.True(result != null);
-
         }
 
     }
