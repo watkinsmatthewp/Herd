@@ -19,7 +19,10 @@ namespace Herd.Web.Controllers.HerdApi
             bool onlyOnActiveUserTimeline = false,
             string authorMastodonUserID = null,
             string postID = null,
-            string hashtag = null
+            string hashtag = null,
+            bool includeAncestors = false,
+            bool includeDescendants = false,
+            int max = 30
         )
         {
             return ApiJson(App.SearchPosts(new SearchMastodonPostsCommand
@@ -27,7 +30,10 @@ namespace Herd.Web.Controllers.HerdApi
                 OnlyOnlyOnActiveUserTimeline = onlyOnActiveUserTimeline,
                 ByAuthorMastodonUserID = authorMastodonUserID,
                 PostID = postID,
-                HavingHashTag = hashtag
+                HavingHashTag = hashtag,
+                IncludeAncestors = includeAncestors,
+                IncludeDescendants = includeDescendants,
+                MaxCount = max
             }));
         }
 

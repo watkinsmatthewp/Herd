@@ -214,14 +214,16 @@ namespace Herd.Business
                 users = await FilterByName(users, searchMastodonUsersCommand.Name, searchMastodonUsersCommand.MaxCount);
             }
 
-            return await _mastodonApiWrapper.AddContextToMastodonUsers
+            await _mastodonApiWrapper.AddContextToMastodonUsers
             (
-                users.Values.ToList(),
+                users.Values,
                 searchMastodonUsersCommand.IncludeFollowers,
                 searchMastodonUsersCommand.IncludeFollowing,
                 searchMastodonUsersCommand.IncludeFollowedByActiveUser,
                 searchMastodonUsersCommand.IncludeFollowsActiveUser
             );
+
+            return users.Values.ToArray();
         }
 
         private Task<Dictionary<string, MastodonUser>> FilterByUserID(Dictionary<string, MastodonUser> userSet1, string mastodonUserID)
@@ -299,7 +301,14 @@ namespace Herd.Business
                 posts = await FilterByHashTag(posts, searchMastodonPostsCommand.HavingHashTag);
             }
 
-            return posts.Values.ToList();
+            await _mastodonApiWrapper.AddContextToMastodonPosts
+            (
+                posts.Values,
+                searchMastodonPostsCommand.IncludeAncestors,
+                searchMastodonPostsCommand.IncludeDescendants
+            );
+
+            return posts.Values.ToArray();
         }
 
         private Task<Dictionary<string, MastodonPost>> FilterByPostID(Dictionary<string, MastodonPost> postSet1, string postID)

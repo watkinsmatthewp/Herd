@@ -13,6 +13,9 @@ namespace Herd.Business.Models.Commands
         public string PostID { get; set; }
         public string HavingHashTag { get; set; }
 
+        public bool IncludeAncestors { get; set; }
+        public bool IncludeDescendants { get; set; }
+
         public bool IsGlobalSearch => !OnlyOnlyOnActiveUserTimeline
             && string.IsNullOrWhiteSpace(ByAuthorMastodonUserID)
             && string.IsNullOrWhiteSpace(PostID)

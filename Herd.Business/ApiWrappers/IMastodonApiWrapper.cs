@@ -25,8 +25,8 @@ namespace Herd.Business.ApiWrappers
 
         #region User
 
-        Task<IList<MastodonUser>> AddContextToMastodonUsers(IList<MastodonUser> mastodonUsers, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false);
-        Task<MastodonUser> AddContextToMastodonUser(MastodonUser mastodonUser, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false);
+        Task AddContextToMastodonUsers(IEnumerable<MastodonUser> mastodonUsers, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false);
+        Task AddContextToMastodonUser(MastodonUser mastodonUser, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false);
         Task<IList<MastodonUser>> GetUsersByName(string name, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false, int? limit = 30);
         Task<MastodonUser> GetActiveUserMastodonAccount(bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false);
         Task<MastodonUser> GetMastodonAccount(string id, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false);
@@ -38,8 +38,8 @@ namespace Herd.Business.ApiWrappers
 
         #region Posts
 
-        Task<IList<MastodonPost>> AddContextToMastodonPosts(IList<MastodonPost> mastodonPosts, bool includeAncestors = false, bool includeDescendants = false);
-        Task<MastodonPost> AddContextToMastodonPost(MastodonPost mastodonPost, bool includeAncestors = false, bool includeDescendants = false);
+        Task AddContextToMastodonPosts(IEnumerable<MastodonPost> mastodonPosts, bool includeAncestors = false, bool includeDescendants = false);
+        Task AddContextToMastodonPost(MastodonPost mastodonPost, bool includeAncestors = false, bool includeDescendants = false);
         Task<MastodonPost> GetPost(string postID, bool includeAncestors = false, bool includeDescendants = false);
         Task<IList<MastodonPost>> GetPostsByAuthorUserID(string authorMastodonUserID, bool includeAncestors = false, bool includeDescendants = false, int? limit = 30);
         Task<IList<MastodonPost>> GetPostsByHashTag(string hashTag, bool includeAncestors = false, bool includeDescendants = false, int? limit = 30);
