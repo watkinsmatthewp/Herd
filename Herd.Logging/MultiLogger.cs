@@ -5,7 +5,7 @@ namespace Herd.Logging
 {
     public class MultiLogger : ILogger
     {
-        public List<ILogger> Loggers { get; private set; } = new List<ILogger>();
+        public List<ILogger> Loggers { get; } = new List<ILogger>();
 
         public void Log(Guid? id, LogLevel logLevel, string message, IEnumerable<KeyValuePair<string, string>> contextParameters = null)
         {
