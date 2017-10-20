@@ -12,7 +12,7 @@ using Herd.Business.Models.Entities;
 
 namespace Herd.Web.UnitTests
 {
-    class FeedApiControllerTest
+    public class FeedApiControllerTest
     {
 
 
