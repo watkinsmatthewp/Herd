@@ -139,7 +139,7 @@ namespace Herd.Business.ApiWrappers
             return mastodonUsers;
         }
 
-        public async Task<List<MastodonUser>> AddContextToMastodonUsers(List<MastodonUser> mastodonUsers, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false)
+        public async Task<IList<MastodonUser>> AddContextToMastodonUsers(IList<MastodonUser> mastodonUsers, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false)
         {
             var mastodonClient = BuildMastodonApiClient();
 
@@ -223,7 +223,7 @@ namespace Herd.Business.ApiWrappers
 
         #region Posts
 
-        public async Task<List<MastodonPost>> AddContextToMastodonPosts(List<MastodonPost> mastodonPosts, bool includeAncestors = false, bool includeDescendants = false)
+        public async Task<IList<MastodonPost>> AddContextToMastodonPosts(IList<MastodonPost> mastodonPosts, bool includeAncestors = false, bool includeDescendants = false)
         {
             for (var i = 0; i < mastodonPosts.Count; i++)
             {
@@ -257,21 +257,21 @@ namespace Herd.Business.ApiWrappers
             return await AddContextToMastodonPost(post, includeAncestors, includeDescendants);
         }
 
-        public async Task<List<MastodonPost>> GetPostsByAuthorUserID(string authorMastodonUserID, bool includeAncestors = false, bool includeDescendants = false, int? limit = 30)
+        public async Task<IList<MastodonPost>> GetPostsByAuthorUserID(string authorMastodonUserID, bool includeAncestors = false, bool includeDescendants = false, int? limit = 30)
         {
             var mastodonClient = BuildMastodonApiClient();
             var posts = (await mastodonClient.GetAccountStatuses(authorMastodonUserID.ToLong(), null, null, limit, false, false)).Select(s => s.ToPost()).ToList();
             return await AddContextToMastodonPosts(posts, includeAncestors, includeDescendants);
         }
 
-        public async Task<List<MastodonPost>> GetPostsByHashTag(string hashTag, bool includeAncestors = false, bool includeDescendants = false, int? limit = 30)
+        public async Task<IList<MastodonPost>> GetPostsByHashTag(string hashTag, bool includeAncestors = false, bool includeDescendants = false, int? limit = 30)
         {
             var mastodonClient = BuildMastodonApiClient();
             var posts = (await mastodonClient.GetTagTimeline(hashTag, null, null, limit)).Select(s => s.ToPost()).ToList();
             return await AddContextToMastodonPosts(posts, includeAncestors, includeDescendants);
         }
 
-        public async Task<List<MastodonPost>> GetPostsOnTimeline(bool includeAncestors = false, bool includeDescendants = false, int? limit = 30)
+        public async Task<IList<MastodonPost>> GetPostsOnTimeline(bool includeAncestors = false, bool includeDescendants = false, int? limit = 30)
         {
             var mastodonClient = BuildMastodonApiClient();
             var posts = (await mastodonClient.GetHomeTimeline(null, null, limit)).Select(s => s.ToPost()).ToList();

@@ -193,7 +193,7 @@ namespace Herd.Business
             });
         }
 
-        private async Task<List<MastodonUser>> GetUsers(SearchMastodonUsersCommand searchMastodonUsersCommand)
+        private async Task<IList<MastodonUser>> GetUsers(SearchMastodonUsersCommand searchMastodonUsersCommand)
         {
             var users = null as Dictionary<string, MastodonUser>;
 
@@ -278,7 +278,7 @@ namespace Herd.Business
             });
         }
 
-        private async Task<List<MastodonPost>> GetPosts(SearchMastodonPostsCommand searchMastodonPostsCommand)
+        private async Task<IList<MastodonPost>> GetPosts(SearchMastodonPostsCommand searchMastodonPostsCommand)
         {
             var posts = null as Dictionary<string, MastodonPost>;
 
@@ -302,24 +302,30 @@ namespace Herd.Business
             return posts.Values.ToList();
         }
 
-        private Task<Dictionary<string, MastodonPost>> FilterByPostID(Dictionary<string, MastodonPost> posts, string postID)
+        private Task<Dictionary<string, MastodonPost>> FilterByPostID(Dictionary<string, MastodonPost> postSet1, string postID)
         {
-            throw new NotImplementedException();
+            return Filter(postSet1, () => GetMastodonPostOrEmptySet(postID), p => p.Id);
         }
 
-        private Task<Dictionary<string, MastodonPost>> FilterByAuthorUserID(Dictionary<string, MastodonPost> posts, string byAuthorMastodonUserID)
+        private async Task<IList<MastodonPost>> GetMastodonPostOrEmptySet(string postID)
         {
-            throw new NotImplementedException();
+            var post = await _mastodonApiWrapper.GetPost(postID);
+            return post == null ? new MastodonPost[0] : new[] { post };
         }
 
-        private Task<Dictionary<string, MastodonPost>> FilterByOnActiveUserTimeline(Dictionary<string, MastodonPost> posts)
+        private Task<Dictionary<string, MastodonPost>> FilterByAuthorUserID(Dictionary<string, MastodonPost> postSet1, string byAuthorMastodonUserID)
         {
-            throw new NotImplementedException();
+            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsByAuthorUserID(byAuthorMastodonUserID), p => p.Id);
         }
 
-        private Task<Dictionary<string, MastodonPost>> FilterByHashTag(Dictionary<string, MastodonPost> posts, string havingHashTag)
+        private Task<Dictionary<string, MastodonPost>> FilterByOnActiveUserTimeline(Dictionary<string, MastodonPost> postSet1)
         {
-            throw new NotImplementedException();
+            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsOnTimeline(), p => p.Id);
+        }
+
+        private Task<Dictionary<string, MastodonPost>> FilterByHashTag(Dictionary<string, MastodonPost> postSet1, string hashTag)
+        {
+            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsByHashTag(hashTag), p => p.Id);
         }
 
         public CommandResult CreateNewPost(CreateNewPostCommand createNewPostCommand)
