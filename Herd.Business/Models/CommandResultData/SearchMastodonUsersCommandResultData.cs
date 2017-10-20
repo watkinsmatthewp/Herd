@@ -5,6 +5,6 @@ namespace Herd.Business.Models.CommandResultData
 {
     public class SearchMastodonUsersCommandResultData : CommandResultDataObject
     {
-        public List<MastodonUser> Users { get; set; }
+        public IList<MastodonUser> Users { get; set; }
     }
 }

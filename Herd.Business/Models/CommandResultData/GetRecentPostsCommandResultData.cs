@@ -5,6 +5,6 @@ namespace Herd.Business.Models.CommandResultData
 {
     public class GetRecentPostsCommandResultData : CommandResultDataObject
     {
-        public List<MastodonPost> RecentPosts { get; set; }
+        public IList<MastodonPost> RecentPosts { get; set; }
     }
 }

@@ -62,12 +62,6 @@ namespace Herd.Web.Controllers.HerdApi
             return Ok();
         }
         
-        [HttpGet("users_items")]
-        public IActionResult UserItems(MastodonUser account) => ApiJson(App.GetRecentUserFeedItems(new GetRecentPostsCommand(), account));
-
-        [HttpGet("following")]
-        public IActionResult GetFollowing(MastodonUser account) => ApiJson(App.SearchUsers(new SearchMastodonUsersCommand()));
-
         #region Private helpers
 
         private UserAccount ClearUnnecessaryOrSensitiveData(UserAccount userAccount) => new UserAccount

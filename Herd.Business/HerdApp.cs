@@ -175,70 +175,6 @@ namespace Herd.Business
 
         #endregion Users
 
-        #region Feed
-
-        public CommandResult<GetRecentPostsCommandResultData> GetRecentFeedItems(GetRecentPostsCommand getRecentFeedItemsCommand)
-        {
-            return ProcessCommand<GetRecentPostsCommandResultData>(result =>
-            {
-                result.Data = new GetRecentPostsCommandResultData
-                {
-                    RecentPosts = _mastodonApiWrapper.GetRecentPosts(
-                        getRecentFeedItemsCommand.IncludeInReplyToPost,
-                        getRecentFeedItemsCommand.IncludeReplyPosts,
-                        getRecentFeedItemsCommand.MaxPostID,
-                        getRecentFeedItemsCommand.SincePostID,
-                        getRecentFeedItemsCommand.MaxCount
-                    ).Synchronously()
-                };
-            });
-        }
-
-        public CommandResult<GetRecentPostsCommandResultData> GetRecentUserFeedItems(GetRecentPostsCommand getRecentFeedItemsCommand, MastodonUser user)
-        {
-            return ProcessCommand<GetRecentPostsCommandResultData>(result =>
-            {
-                result.Data = new GetRecentPostsCommandResultData
-                {
-                    RecentPosts = _mastodonApiWrapper.GetUserPosts(
-                        getRecentFeedItemsCommand.IncludeInReplyToPost,
-                        getRecentFeedItemsCommand.IncludeReplyPosts,
-                        getRecentFeedItemsCommand.MaxPostID,
-                        getRecentFeedItemsCommand.SincePostID,
-                        getRecentFeedItemsCommand.MaxCount
-                    ).Synchronously()
-                };
-            });
-        }
-
-        public CommandResult<GetPostCommandResultData> GetStatus(GetPostCommand getStatusCommand)
-        {
-            return ProcessCommand<GetPostCommandResultData>(result =>
-            {
-                result.Data = new GetPostCommandResultData
-                {
-                    MastodonPost = _mastodonApiWrapper.GetPost(getStatusCommand.PostID, getStatusCommand.IncludeAncestors, getStatusCommand.IncludeDescendants).Synchronously()
-                };
-            });
-        }
-
-        public CommandResult CreateNewPost(CreateNewPostCommand createNewPostCommand)
-        {
-            return ProcessCommand(result =>
-            {
-                _mastodonApiWrapper.CreateNewPost(
-                    createNewPostCommand.Message,
-                    createNewPostCommand.Visibility,
-                    createNewPostCommand.ReplyStatusId,
-                    createNewPostCommand.MediaIds,
-                    createNewPostCommand.Sensitive,
-                    createNewPostCommand.SpoilerText
-                ).Synchronously();
-            });
-        }
-
-        #endregion Feed
-
         #region Mastodon Users
 
         public CommandResult<SearchMastodonUsersCommandResultData> SearchUsers(SearchMastodonUsersCommand searchMastodonUsersCommand)
@@ -257,7 +193,7 @@ namespace Herd.Business
             });
         }
 
-        private async Task<List<MastodonUser>> GetUsers(SearchMastodonUsersCommand searchMastodonUsersCommand)
+        private async Task<IList<MastodonUser>> GetUsers(SearchMastodonUsersCommand searchMastodonUsersCommand)
         {
             var users = null as Dictionary<string, MastodonUser>;
 
@@ -278,71 +214,42 @@ namespace Herd.Business
                 users = await FilterByName(users, searchMastodonUsersCommand.Name, searchMastodonUsersCommand.MaxCount);
             }
 
-            return await _mastodonApiWrapper.AddContextToMastodonUsers
+            await _mastodonApiWrapper.AddContextToMastodonUsers
             (
-                users.Values.ToList(),
+                users.Values,
                 searchMastodonUsersCommand.IncludeFollowers,
                 searchMastodonUsersCommand.IncludeFollowing,
                 searchMastodonUsersCommand.IncludeFollowedByActiveUser,
                 searchMastodonUsersCommand.IncludeFollowsActiveUser
             );
+
+            return users.Values.ToArray();
         }
 
-        private async Task<Dictionary<string, MastodonUser>> FilterByUserID(Dictionary<string, MastodonUser> userSet1, string mastodonUserID)
+        private Task<Dictionary<string, MastodonUser>> FilterByUserID(Dictionary<string, MastodonUser> userSet1, string mastodonUserID)
         {
-            if (userSet1?.Count == 0)
-            {
-                return new Dictionary<string, MastodonUser>();
-            }
+            return Filter(userSet1, () => GetMastodonUserOrEmptySet(mastodonUserID), u => u.MastodonUserId);
+        }
+
+        private async Task<IList<MastodonUser>> GetMastodonUserOrEmptySet(string mastodonUserID)
+        {
             var mastodonAccount = await _mastodonApiWrapper.GetMastodonAccount(mastodonUserID);
-            var newUserSet = mastodonAccount == null ? new MastodonUser[0] : new[] { mastodonAccount };
-            return Filter(userSet1, newUserSet);
+            return mastodonAccount == null ? new MastodonUser[0] : new[] { mastodonAccount };
         }
 
-        private async Task<Dictionary<string, MastodonUser>> FilterByName(Dictionary<string, MastodonUser> userSet1, string name, int limit)
+        private Task<Dictionary<string, MastodonUser>> FilterByName(Dictionary<string, MastodonUser> userSet1, string name, int limit)
         {
-            if (userSet1?.Count == 0)
-            {
-                return new Dictionary<string, MastodonUser>();
-            }
-            return Filter(userSet1, await _mastodonApiWrapper.GetUsersByName(name, false, false, false, false, limit));
+            return Filter(userSet1, () => _mastodonApiWrapper.GetUsersByName(name, false, false, false, false, limit), u => u.MastodonUserId);
         }
 
-        private async Task<Dictionary<string, MastodonUser>> FilterByFollowedByUserID(Dictionary<string, MastodonUser> userSet1, string followedByUserID, int limit)
+        private Task<Dictionary<string, MastodonUser>> FilterByFollowedByUserID(Dictionary<string, MastodonUser> userSet1, string followedByUserID, int limit)
         {
-            if (userSet1?.Count == 0)
-            {
-                return new Dictionary<string, MastodonUser>();
-            }
-            return Filter(userSet1, await _mastodonApiWrapper.GetFollowing(followedByUserID, false, false, false, false, limit));
+            return Filter(userSet1, () => _mastodonApiWrapper.GetFollowing(followedByUserID, false, false, false, false, limit), u => u.MastodonUserId);
         }
 
-        private async Task<Dictionary<string, MastodonUser>> FilterByFollowsByUserID(Dictionary<string, MastodonUser> userSet1, string followedUserID, int limit)
+        private Task<Dictionary<string, MastodonUser>> FilterByFollowsByUserID(Dictionary<string, MastodonUser> userSet1, string followedUserID, int limit)
         {
-            if (userSet1?.Count == 0)
-            {
-                return new Dictionary<string, MastodonUser>();
-            }
-            return Filter(userSet1, await _mastodonApiWrapper.GetFollowers(followedUserID, false, false, false, false, limit));
-        }
-
-        private Dictionary<string, MastodonUser> Filter(Dictionary<string, MastodonUser> userSet1, IList<MastodonUser> userSet2)
-        {
-            if (userSet1 == null)
-            {
-                return ToDictionary(userSet2);
-            }
-            if (userSet1.Count == 0)
-            {
-                return new Dictionary<string, MastodonUser>();
-            }
-            var idsToPreserve = new HashSet<string>(userSet1.Keys.Intersect(userSet2.Select(u => u.MastodonUserId)));
-            return ToDictionary(userSet2.Where(u => idsToPreserve.Contains(u.MastodonUserId)));
-        }
-
-        private Dictionary<string, MastodonUser> ToDictionary(IEnumerable<MastodonUser> userSet)
-        {
-            return userSet.ToDictionary(u => u.MastodonUserId, u => u);
+            return Filter(userSet1, () => _mastodonApiWrapper.GetFollowers(followedUserID, false, false, false, false, limit), u => u.MastodonUserId);
         }
 
         public CommandResult FollowUser(FollowUserCommand followUserCommand)
@@ -354,6 +261,98 @@ namespace Herd.Business
         }
 
         #endregion Mastodon Users
+
+        #region Mastodon Posts
+
+        public CommandResult<SearchMastodonPostsCommandResultData> SearchPosts(SearchMastodonPostsCommand searchMastodonPostsCommand)
+        {
+            return ProcessCommand<SearchMastodonPostsCommandResultData>(result =>
+            {
+                if (searchMastodonPostsCommand.IsGlobalSearch)
+                {
+                    throw new UserErrorException("Please specify at least one search criterion");
+                }
+
+                result.Data = new SearchMastodonPostsCommandResultData
+                {
+                    Posts = GetPosts(searchMastodonPostsCommand).Synchronously()
+                };
+            });
+        }
+
+        private async Task<IList<MastodonPost>> GetPosts(SearchMastodonPostsCommand searchMastodonPostsCommand)
+        {
+            var posts = null as Dictionary<string, MastodonPost>;
+
+            if (!string.IsNullOrWhiteSpace(searchMastodonPostsCommand.PostID))
+            {
+                posts = await FilterByPostID(posts, searchMastodonPostsCommand.PostID);
+            }
+            if (!string.IsNullOrWhiteSpace(searchMastodonPostsCommand.ByAuthorMastodonUserID))
+            {
+                posts = await FilterByAuthorUserID(posts, searchMastodonPostsCommand.ByAuthorMastodonUserID);
+            }
+            if (searchMastodonPostsCommand.OnlyOnlyOnActiveUserTimeline)
+            {
+                posts = await FilterByOnActiveUserTimeline(posts);
+            }
+            if (!string.IsNullOrWhiteSpace(searchMastodonPostsCommand.HavingHashTag))
+            {
+                posts = await FilterByHashTag(posts, searchMastodonPostsCommand.HavingHashTag);
+            }
+
+            await _mastodonApiWrapper.AddContextToMastodonPosts
+            (
+                posts.Values,
+                searchMastodonPostsCommand.IncludeAncestors,
+                searchMastodonPostsCommand.IncludeDescendants
+            );
+
+            return posts.Values.ToArray();
+        }
+
+        private Task<Dictionary<string, MastodonPost>> FilterByPostID(Dictionary<string, MastodonPost> postSet1, string postID)
+        {
+            return Filter(postSet1, () => GetMastodonPostOrEmptySet(postID), p => p.Id);
+        }
+
+        private async Task<IList<MastodonPost>> GetMastodonPostOrEmptySet(string postID)
+        {
+            var post = await _mastodonApiWrapper.GetPost(postID);
+            return post == null ? new MastodonPost[0] : new[] { post };
+        }
+
+        private Task<Dictionary<string, MastodonPost>> FilterByAuthorUserID(Dictionary<string, MastodonPost> postSet1, string byAuthorMastodonUserID)
+        {
+            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsByAuthorUserID(byAuthorMastodonUserID), p => p.Id);
+        }
+
+        private Task<Dictionary<string, MastodonPost>> FilterByOnActiveUserTimeline(Dictionary<string, MastodonPost> postSet1)
+        {
+            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsOnTimeline(), p => p.Id);
+        }
+
+        private Task<Dictionary<string, MastodonPost>> FilterByHashTag(Dictionary<string, MastodonPost> postSet1, string hashTag)
+        {
+            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsByHashTag(hashTag), p => p.Id);
+        }
+
+        public CommandResult CreateNewPost(CreateNewPostCommand createNewPostCommand)
+        {
+            return ProcessCommand(result =>
+            {
+                _mastodonApiWrapper.CreateNewPost(
+                    createNewPostCommand.Message,
+                    createNewPostCommand.Visibility,
+                    createNewPostCommand.ReplyStatusId,
+                    createNewPostCommand.MediaIds,
+                    createNewPostCommand.Sensitive,
+                    createNewPostCommand.SpoilerText
+                ).Synchronously();
+            });
+        }
+
+        #endregion
 
         #region Private helpers
 
@@ -384,6 +383,26 @@ namespace Herd.Business
                 });
             }
             return result;
+        }
+
+        private async Task<Dictionary<string, T>> Filter<T>(Dictionary<string, T> set1, Func<Task<IList<T>>> getSet2, Func<T, string> getID)
+        {
+            if (set1 == null)
+            {
+                return ToDictionary(await getSet2(), getID);
+            }
+            if (set1.Count == 0)
+            {
+                return new Dictionary<string, T>();
+            }
+            var set2 = await getSet2();
+            var idsToPreserve = new HashSet<string>(set1.Keys.Intersect(set2.Select(getID)));
+            return ToDictionary(set2.Where(u => idsToPreserve.Contains(getID(u))), getID);
+        }
+
+        private Dictionary<string, T> ToDictionary<T>(IEnumerable<T> set, Func<T, string> getID)
+        {
+            return set.ToDictionary(getID, u => u);
         }
 
         #endregion Private helpers

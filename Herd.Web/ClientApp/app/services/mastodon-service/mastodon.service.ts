@@ -13,16 +13,17 @@ export class MastodonService {
 
     // Get a list of posts for the home feed
     getHomeFeed(): Observable<Status[]> {
-        return this.httpClient.get('api/feed/new_items')
-            .map(response => response.RecentPosts as Status[]);
+        let queryString = '?onlyOnActiveUserTimeline=true' 
+        return this.httpClient.get('api/mastodon-posts/search' + queryString)
+            .map(response => response.Posts as Status[]);
     }
 
     getStatus(statusId: string, includeAncestors: boolean, includeDescendants: boolean): Observable<Status> {
-        let queryString = '?statusId=' + statusId
+        let queryString = '?postID=' + statusId
                         + '&includeAncestors=' + includeAncestors
                         + '&includeDescendants=' + includeDescendants;
-        return this.httpClient.get('api/feed/get_status' + queryString)
-            .map(response => response.MastodonPost as Status);
+        return this.httpClient.get('api/mastodon-posts/search' + queryString)
+            .map(response => response.Posts[0] as Status);
     }
 
     /**
@@ -46,7 +47,7 @@ export class MastodonService {
             'sensitive': sensitive || false,
             'spoilerText': spoilerText || null,
         }
-        return this.httpClient.post('api/feed/new_post', body);
+        return this.httpClient.post('api/mastodon-posts/new', body);
     }
 
 }
