@@ -1,17 +1,13 @@
-﻿<card size="large" [headerImgSrc]="userCard.MastodonHeaderImageURL">
-    <card-image-header>
-            <div class="header-pic" [ngStyle]="{'background-image': 'url(' + userCard.MastodonHeaderImageURL + ')' }"></div>
-    </card-image-header>
-
+﻿<card [headerImgSrc]="userCard.MastodonHeaderImageURL">
+    
     <card-title>
-        <div>
-            <span>
-                <img class="profile-picture" src="{{ userCard.MastodonProfileImageURL }}" align="middle" />
-            </span>
+        <div *ngIf="userCard.MastodonProfileImageURL">
+            <img class="profile-picture" src="{{ userCard.MastodonProfileImageURL }}" align="middle" />
         </div>
         <div class="user-names">
-            <h3 class="display-name" href="/todo">{{userCard.MastodonDisplayName}}</h3>
-            <a class="username" href="/todo">@{{userCard.MastodonUserName}}</a>
+            <a class="display-name" [routerLink]="['/profile', userCard.MastodonUserId]">{{userCard.MastodonDisplayName}}</a>
+            <br />
+            <a class="username" [routerLink]="['/profile', userCard.MastodonUserId]">@{{userCard.MastodonUserName}}</a>
         </div>
     </card-title>
     
@@ -20,22 +16,6 @@
     </card-content>
 
     <card-actions>
-        <!--
-        <div class="container-fluid quick-info">
-            <span class="quick-info-section">
-                <span class="title"> Posts</span>
-                <strong class="count"><span>{{userCard.PostCount}}</span></strong>
-            </span>
-            <span class="quick-info-section">
-                <span class="title"> Followers</span>
-                <strong class="count"><span>{{userCard.FollowersCount}}</span></strong>
-            </span>
-            <span class="quick-info-section">
-                <span class="title"> Following</span>
-                <strong class="count"><span>{{userCard.FollowingCount}}</span></strong>
-            </span>
-        </div>
-        -->
         <div class="text-center">
             <button *ngIf="isFollowing" class="btn btn-primary follow-btn" (mouseenter)="followUnfollowText = 'Unfollow';" (mouseleave)="followUnfollowText = 'Following';" (click)="togglefollow()">
                 {{followUnfollowText}}
@@ -44,6 +24,6 @@
                 Follow
             </button>
         </div>
-        
     </card-actions>
+
 </card>

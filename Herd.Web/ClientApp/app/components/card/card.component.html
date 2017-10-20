@@ -1,27 +1,38 @@
-﻿<section class="card" [ngClass]="{'card-small': size === 'small', 'card-large': size === 'large' }"
-                      [ngStyle]="{
-                                    'background-image': 'url(' + headerImgSrc + ')', 
-                                    'background-size': 'cover', 
-                                    'background-position': '50%',
-                                    'position': 'relative'
-                                }">
-    <div class="imageOverlay">
-        <header>
-            <div class="card-header" *ngIf="showTitle">
-                <div class="card-heading-middle">
-                    <h1 class="card-title" *ngIf="showTitle">
-                        <ng-content select="card-title"></ng-content>
-                    </h1>
+﻿<section class="card" [ngClass]="{'card-small': size === 'small', 'card-large': size === 'large' }">
+
+    <!-- Header Image -->
+    <header *ngIf="headerImgSrc" 
+            [ngStyle]="{
+                    'background-image': 'url(' + headerImgSrc + ')',
+                    'background-size': 'cover',
+                    'background-position': '50%',
+                    'position': 'relative' }">
+        <div class="card-header imageOverlay" *ngIf="showTitle">
+            <div class="card-heading-middle">
+                <div class="card-title" *ngIf="showTitle">
+                    <ng-content select="card-title"></ng-content>
                 </div>
             </div>
-        </header>
-
-        <div class="card-content">
-            <ng-content select="card-content"></ng-content>
         </div>
+    </header>
 
-        <div class="card-actions" [hidden]="actionsEl.children.length === 0" #actionsEl>
-            <ng-content select="card-actions"></ng-content>
+    <!-- No header image -->
+    <header *ngIf="!headerImgSrc">
+        <div class="card-header imageOverlay" *ngIf="showTitle">
+            <div class="card-heading-middle">
+                <h1 class="card-title" *ngIf="showTitle">
+                    <ng-content select="card-title"></ng-content>
+                </h1>
+            </div>
         </div>
+    </header>
+
+    <div class="card-content">
+        <ng-content select="card-content"></ng-content>
     </div>
+
+    <div class="card-actions" [hidden]="actionsEl.children.length === 0" #actionsEl>
+        <ng-content select="card-actions"></ng-content>
+    </div>
+
 </section>

@@ -1,20 +1,6 @@
-﻿.usercard-content {
-    width: 100%;
-}
-
-.user-well-width {
-    width: 75%;
-}
-
-.profile-header-picture {
-    width: 100px;
-    height: 50px;
-
-}
-
-.profile-picture {
-    width: 120px;
-    height: 120px;
+﻿.profile-picture {
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     display: block;
     margin: 0 auto;
@@ -25,22 +11,27 @@
 }
 
     .display-name {
-        font-weight: bold;
         font-size: 100%;
+        font-weight: bold;
+        margin: 0;
         color: #ffffff;
+        text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
     }
 
     .username {
         font-size: 80%;
         font-style: italic;
         font-weight: bold;
-        color: #007ca6;
+        color: #00b6f2;
     }
 
 .user-bio {
-    display: block;
-    text-align: center;
+    margin: 0 auto 0 auto;
+    width: 300px;
+    max-height: 55px;
     overflow: hidden;
+    display: block;
+    color: #282b31;
 }
 
 .quick-info {
