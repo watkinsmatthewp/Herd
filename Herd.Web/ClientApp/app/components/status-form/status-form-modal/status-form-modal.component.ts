@@ -1,6 +1,6 @@
 ﻿import { Component, Input } from '@angular/core';
 
-import { MastodonService } from "../../../services";
+import { StatusService } from "../../../services";
 import { Status } from '../../../models/mastodon';
 
 @Component({

@@ -30,7 +30,7 @@ import { AdminAuthGuard, AuthGuard } from './guards'
 // Services
 import {
     AccountService, AlertService, AuthenticationService,
-    HttpClientService, MastodonService, TimelineAlertService
+    HttpClientService, StatusService, TimelineAlertService
 } from './services';
 
 // Pipes
@@ -74,6 +74,6 @@ import { SafePipe } from './pipes';
         ])
     ],
     providers: [AccountService, AdminAuthGuard, AlertService, AuthenticationService, AuthGuard,
-        HttpClientService, MastodonService, TimelineAlertService]
+        HttpClientService, StatusService, TimelineAlertService]
 })
 export class AppModuleShared {}

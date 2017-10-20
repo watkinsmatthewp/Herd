@@ -2,7 +2,7 @@
 import { NgForm } from '@angular/forms';
 import { Observable } from "rxjs/Observable";
 
-import { MastodonService } from "../../services";
+import { StatusService } from "../../services";
 import { NotificationsService } from "angular2-notifications";
 import { Visibility } from '../../models/mastodon';
 
@@ -48,14 +48,14 @@ export class StatusFormComponent {
     };
     
 
-    constructor(private mastodonService: MastodonService, private toastService: NotificationsService) {}
+    constructor(private statusService: StatusService, private toastService: NotificationsService) {}
 
     toggleContentWarning(): void {
         this.model.contentWarning = !this.model.contentWarning
     }
 
     submitStatus(form: NgForm) {
-        this.mastodonService.makeNewPost(this.model.status, this.model.visibility, this.inReplyToId, this.model.contentWarning, this.model.spoilerText)
+        this.statusService.makeNewStatus(this.model.status, this.model.visibility, this.inReplyToId, this.model.contentWarning, this.model.spoilerText)
             .finally(() => {
                 this.resetFormDefaults(form);
             })

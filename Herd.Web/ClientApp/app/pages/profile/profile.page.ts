@@ -3,8 +3,8 @@ import { NotificationsService } from "angular2-notifications";
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from "rxjs/Observable";
 
-import { AccountService, TimelineAlertService } from "../../services";
-import { Account, Status } from '../../models/mastodon';
+import { AccountService, StatusService, TimelineAlertService } from "../../services";
+import { Account, Status, UserCard } from '../../models/mastodon';
 import { Storage } from '../../models';
 import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 
@@ -24,10 +24,13 @@ export class ProfilePage implements OnInit {
     account: Account;
     loading: boolean = false;
     userPosts: Status[] = []; // List of posts from this user
+    following: UserCard[] = [];
+    followers: UserCard[] = [];
     isFollowing: boolean = false;
 
     constructor(
         private accountService: AccountService,
+        private statusService: StatusService,
         private localStorage: Storage,
         private alertService: NotificationsService,
         private route: ActivatedRoute,
@@ -38,9 +41,9 @@ export class ProfilePage implements OnInit {
      * Given a userID, get that Users account
      * @param userId
      */
-    getUserAccount(userId: string) {
+    getUserAccount(userID: string) {
         this.loading = true;
-        this.accountService.getUserById(userId)
+        this.accountService.getUserByID(userID)
             .finally(() => this.loading = false)
             .subscribe(account => {
                 this.account = account;
@@ -50,17 +53,26 @@ export class ProfilePage implements OnInit {
     }
 
     // Get the posts from this user *STILL NEEDS SOME AUTHOR CHECK SOMEWHERE*
-    getMostRecentUserPosts() {
-        this.loading = true;
-        let progress = this.alertService.info("Retrieving", "user timeline ...")
-        this.accountService.getUserFeed()
-            .finally(() => this.loading = false)
+    getMostRecentUserPosts(userID: string) {
+        this.statusService.getUserFeed(userID)
             .subscribe(feed => {
-                this.alertService.remove(progress.id);
                 this.userPosts = feed;
-                this.alertService.success("Finished", "retrieving user timeline.");
             }, error => {
                 this.alertService.error("Error", error.error);
+            });
+    }
+
+    getFollowers(userID: string) {
+        this.accountService.getFollowers(userID)
+            .subscribe(users => {
+                this.followers = users;
+            });
+    }
+
+    getFollowing(userID: string) {
+        this.accountService.getFollowing(userID)
+            .subscribe(users => {
+                this.following = users;
             });
     }
 
@@ -70,6 +82,9 @@ export class ProfilePage implements OnInit {
             .switchMap((params: ParamMap) => Observable.of(params.get('id') || "-1"))
             .subscribe(userID => {
                 this.getUserAccount(userID);
+                this.getFollowing(userID);
+                this.getFollowers(userID);
+                this.getMostRecentUserPosts(userID);
             });
 
         // Setup subscription to update modals on status click
