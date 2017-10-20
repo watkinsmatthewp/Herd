@@ -243,8 +243,7 @@ namespace Herd.Business.UnitTests
             // Verify the result
             Assert.True(result?.Success);
         }
-
-        [Fact]
+#endregion
 
     }
 }
