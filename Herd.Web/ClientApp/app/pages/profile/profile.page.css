@@ -25,8 +25,15 @@
     z-index: 1;
 }
 
+.pushTop {
+    top: 70px;
+    position: relative;
+    font-size: 100%;
+    z-index: 1;
+}
+
 .info-bar {
-    top: 50px;
+    top: 70px;
     position: relative;
     font-size: 100%;
     z-index: 1;

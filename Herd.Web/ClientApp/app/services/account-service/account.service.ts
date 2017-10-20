@@ -39,7 +39,9 @@ export class AccountService {
      * @param userID
      */
     getFollowers(userID: string): Observable<Account[]> {
-        let queryString = "?followsMastodonUserID=" + userID;
+        let queryString = "?followsMastodonUserID=" + userID
+                        + "&includeFollowedByActiveUser=" + true
+                        + "&includeFollowsActiveUser=" + true;
         return this.httpClient.get('api/mastodon-users/search' + queryString)
             .map(response => response.Users as UserCard[]);
     }
@@ -49,7 +51,9 @@ export class AccountService {
      * @param userID
      */
     getFollowing(userID: string): Observable<Account[]> {
-        let queryString = "?followedByMastodonUserID=" + userID;
+        let queryString = "?followedByMastodonUserID=" + userID
+                        + "&includeFollowedByActiveUser=" + true
+                        + "&includeFollowsActiveUser=" + true;
         return this.httpClient.get('api/mastodon-users/search' + queryString)
             .map(response => response.Users as UserCard[]);
     }
