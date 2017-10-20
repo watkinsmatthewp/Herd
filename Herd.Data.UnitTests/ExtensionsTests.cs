@@ -8,8 +8,8 @@ namespace Herd.Data.UnitTests
         [Fact]
         public void GetEntityNameTest()
         {
-            var userAccount = new UserAccount();
-            Assert.Equal("UserAccount", userAccount.GetEntityName());
+            Assert.Equal("UserAccount", new UserAccount().GetEntityName());
+            Assert.Equal("Registration", new Registration().GetEntityName());
         }
     }
 }
