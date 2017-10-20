@@ -16,7 +16,7 @@ export class AccountService {
      * Calls Api to get a user by username
      * @param userID
      */
-    getUserById(userID: string) {
+    getUserByID(userID: string) {
         let queryString = "?mastodonUserID=" + userID;
         return this.httpClient.get('api/mastodon-users/search' + queryString)
             .map((response) => response.Users[0] as Account );
@@ -37,8 +37,8 @@ export class AccountService {
     /**
      * Get the posts that the active user has made
      */
-    getUserFeed(): Observable<Status[]> {
-        let queryString = "?onlyOnActiveUserTimeline=" + true;
+    getUserFeed(userID: string): Observable<Status[]> {
+        let queryString = "?authorMastodonUserID=" + true;
         return this.httpClient.get('api/mastodon-posts/search' + queryString)
             .map(response => response.RecentPosts as Status[]);
     }
@@ -50,7 +50,7 @@ export class AccountService {
     getFollowers(userID: string): Observable<Account[]> {
         let queryString = "?followsMastodonUserID=" + userID;
         return this.httpClient.get('api/mastodon-users/search' + queryString)
-            .map(response => response.Users as Account[]);
+            .map(response => response.Users as UserCard[]);
     }
 
     /**
@@ -60,7 +60,7 @@ export class AccountService {
     getFollowing(userID: string): Observable<Account[]> {
         let queryString = "?followedByMastodonUserID=" + userID;
         return this.httpClient.get('api/mastodon-users/search' + queryString)
-            .map(response => response.Users as Account[]);
+            .map(response => response.Users as UserCard[]);
     }
 
     /**
