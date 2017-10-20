@@ -1,6 +1,4 @@
-﻿using Moq;
-using Herd.Logging;
-using Pose;
+﻿using Pose;
 using System;
 using Xunit;
 using System.Collections.Generic;
@@ -13,20 +11,39 @@ namespace Herd.Logging.UnitTests
         [Fact]
         public void TestLog()
         {
-            //(Guid? id, LogLevel logLevel, string message, IEnumerable<KeyValuePair<string, string>> contextParameters = null)
-            ConsoleLogger consoleLogger = new ConsoleLogger(new DefaultLogFormatter());
-            Shim consoleLoggerShim = Shim.Replace(() => consoleLogger.Log(Is.A<Guid?>(), Is.A<LogLevel>(), Is.A<string>(), Is.A<IEnumerable<KeyValuePair<string, string>>>())).With(
-                delegate (ConsoleLogger @this) {
-                    return true;
-                });
+            var outputHandler = new OutputHandler();
+            var consoleLogger = new ConsoleLogger(new DefaultLogFormatter());
+            Shim consoleLoggerShim = Shim.Replace(() => consoleLogger.Log(Is.A<Guid?>(), Is.A<LogLevel>(), Is.A<string>(),
+                                                                          Is.A<IEnumerable<KeyValuePair<string, string>>>())).With(
+                delegate (ConsoleLogger @this, Guid? id, LogLevel logLevel, string message, IEnumerable<KeyValuePair<string, string>> contextParameters)
+                {
+                    outputHandler.AddConsoleOutput(new DefaultLogFormatter().GetLogLine(id, logLevel, message, contextParameters));
+                }
+            );
 
             PoseContext.Isolate(() =>
             {
-                // All code that executes within this block
-                // is isolated and shimmed methods are replaced
-                consoleLogger.Log(Guid.NewGuid(), LogLevel.Info, "messageText", new Dictionary<string, string>());
-                Assert.True(true);
+                consoleLogger.Log(Guid.NewGuid(), LogLevel.Info, "console-messageText", new Dictionary<string, string>());
+                Assert.Contains("console-messageText", outputHandler.ConsoleOutput);
             }, consoleLoggerShim);
+            
         }
+
+        #region Private
+        public class OutputHandler
+        {
+            public string FileOutput { get; set; } = string.Empty;
+            public string ConsoleOutput { get; set; } = string.Empty;
+            public void AddFileOutput(string output)
+            {
+                this.FileOutput += output;
+            }
+
+            public void AddConsoleOutput(string output)
+            {
+                this.ConsoleOutput += output;
+            }
+        }
+        #endregion Private  
     }
 }
