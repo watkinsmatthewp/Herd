@@ -226,10 +226,6 @@ namespace Herd.Business
 
         private async Task<Dictionary<string, MastodonUser>> FilterByUserID(Dictionary<string, MastodonUser> userSet1, string mastodonUserID)
         {
-            if (userSet1?.Count == 0)
-            {
-                return new Dictionary<string, MastodonUser>();
-            }
             return await Filter(userSet1, () => GetMastodonUserOrEmptySet(mastodonUserID), u => u.MastodonUserId);
         }
 
@@ -241,28 +237,16 @@ namespace Herd.Business
 
         private async Task<Dictionary<string, MastodonUser>> FilterByName(Dictionary<string, MastodonUser> userSet1, string name, int limit)
         {
-            if (userSet1?.Count == 0)
-            {
-                return new Dictionary<string, MastodonUser>();
-            }
             return await Filter(userSet1, () => _mastodonApiWrapper.GetUsersByName(name, false, false, false, false, limit), u => u.MastodonUserId);
         }
 
         private async Task<Dictionary<string, MastodonUser>> FilterByFollowedByUserID(Dictionary<string, MastodonUser> userSet1, string followedByUserID, int limit)
         {
-            if (userSet1?.Count == 0)
-            {
-                return new Dictionary<string, MastodonUser>();
-            }
             return await Filter(userSet1, () => _mastodonApiWrapper.GetFollowing(followedByUserID, false, false, false, false, limit), u => u.MastodonUserId);
         }
 
         private async Task<Dictionary<string, MastodonUser>> FilterByFollowsByUserID(Dictionary<string, MastodonUser> userSet1, string followedUserID, int limit)
         {
-            if (userSet1?.Count == 0)
-            {
-                return new Dictionary<string, MastodonUser>();
-            }
             return await Filter(userSet1, () => _mastodonApiWrapper.GetFollowers(followedUserID, false, false, false, false, limit), u => u.MastodonUserId);
         }
 
