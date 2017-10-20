@@ -33,7 +33,7 @@
                         <tab heading="Following ({{ account.FollowingCount }})">
                             <div class="row">
                                 <div *ngFor="let userCard of following" class="text-center">
-                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
                                         <usercard [userCard]="userCard"></usercard>
                                     </div>
                                 </div>
@@ -42,7 +42,7 @@
                         <tab heading="Followers ({{ account.FollowersCount }})">
                             <div class="row">
                                 <div *ngFor="let userCard of followers" class="text-center">
-                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
                                         <usercard [userCard]="userCard"></usercard>
                                     </div>
                                 </div>
