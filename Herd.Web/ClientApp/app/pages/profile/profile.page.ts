@@ -53,14 +53,9 @@ export class ProfilePage implements OnInit {
 
     // Get the posts from this user *STILL NEEDS SOME AUTHOR CHECK SOMEWHERE*
     getMostRecentUserPosts(userID: string) {
-        this.loading = true;
-        let progress = this.alertService.info("Retrieving", "user timeline ...")
         this.accountService.getUserFeed(userID)
-            .finally(() => this.loading = false)
             .subscribe(feed => {
-                this.alertService.remove(progress.id);
                 this.userPosts = feed;
-                this.alertService.success("Finished", "retrieving user timeline.");
             }, error => {
                 this.alertService.error("Error", error.error);
             });
@@ -88,6 +83,7 @@ export class ProfilePage implements OnInit {
                 this.getUserAccount(userID);
                 this.getFollowing(userID);
                 this.getFollowers(userID);
+                this.getMostRecentUserPosts(userID);
             });
 
         // Setup subscription to update modals on status click

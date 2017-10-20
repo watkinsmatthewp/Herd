@@ -38,9 +38,9 @@ export class AccountService {
      * Get the posts that the active user has made
      */
     getUserFeed(userID: string): Observable<Status[]> {
-        let queryString = "?authorMastodonUserID=" + true;
+        let queryString = "?authorMastodonUserID=" + userID;
         return this.httpClient.get('api/mastodon-posts/search' + queryString)
-            .map(response => response.RecentPosts as Status[]);
+            .map(response => response.Posts as Status[]);
     }
 
     /**

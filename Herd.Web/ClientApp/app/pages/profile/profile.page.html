@@ -25,7 +25,7 @@
                 <br />
                 <div>
                     <tabset>
-                        <tab heading="Posts">
+                        <tab heading="Posts ({{ userPosts.length }})">
                             <div *ngFor="let status of userPosts">
                                 <status [status]="status"></status>
                             </div>
