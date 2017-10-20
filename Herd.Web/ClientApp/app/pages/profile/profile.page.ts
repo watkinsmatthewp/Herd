@@ -17,9 +17,11 @@ import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 export class ProfilePage implements OnInit {
     @ViewChild('specificStatusModal')
     specificStatusModal: BsModalComponent;
-
     @ViewChild('replyStatusModal')
     replyStatusModal: BsModalComponent;
+    statusId: number;
+    specificStatus: Status;
+    replyStatus: Status;
 
     account: Account;
     loading: boolean = false;
@@ -30,11 +32,11 @@ export class ProfilePage implements OnInit {
 
     constructor(
         private accountService: AccountService,
-        private statusService: StatusService,
         private localStorage: Storage,
-        private alertService: NotificationsService,
         private route: ActivatedRoute,
-        private timelineAlert: TimelineAlertService) {
+        private statusService: StatusService,
+        private timelineAlert: TimelineAlertService,
+        private toastService: NotificationsService) {
     }
 
     /**
@@ -48,7 +50,7 @@ export class ProfilePage implements OnInit {
             .subscribe(account => {
                 this.account = account;
             }, error => {
-                this.alertService.error("Error", error.error);
+                this.toastService.error("Error", error.error);
             });
     }
 
@@ -58,7 +60,7 @@ export class ProfilePage implements OnInit {
             .subscribe(feed => {
                 this.userPosts = feed;
             }, error => {
-                this.alertService.error("Error", error.error);
+                this.toastService.error("Error", error.error);
             });
     }
 
@@ -73,6 +75,38 @@ export class ProfilePage implements OnInit {
         this.accountService.getFollowing(userID)
             .subscribe(users => {
                 this.following = users;
+            });
+    }
+
+    updateSpecificStatus(statusId: string): void {
+        this.loading = true;
+        let progress = this.toastService.info("Retrieving", "status info ...");
+        this.statusService.getStatus(statusId, true, true)
+            .finally(() => this.loading = false)
+            .subscribe(data => {
+                this.toastService.remove(progress.id);
+                this.specificStatus = data;
+                this.specificStatus.Ancestors = data.Ancestors;
+                this.specificStatus.Descendants = data.Descendants;
+                this.specificStatusModal.open();
+                this.toastService.success("Finished", "retrieving status.")
+            }, error => {
+                this.toastService.error("Error", error.error);
+            });
+    }
+
+    updateReplyStatusModal(statusId: string): void {
+        this.loading = true;
+        let progress = this.toastService.info("Retrieving", "status info ...");
+        this.statusService.getStatus(statusId, false, false)
+            .finally(() => this.loading = false)
+            .subscribe(data => {
+                this.toastService.remove(progress.id);
+                this.replyStatus = data;
+                this.replyStatusModal.open();
+                this.toastService.success("Finished", "retrieving status.")
+            }, error => {
+                this.toastService.error("Error", error.error);
             });
     }
 
@@ -91,9 +125,9 @@ export class ProfilePage implements OnInit {
         this.timelineAlert.getMessage().subscribe(alert => {
             let statusId: string = alert.statusId;
             if (alert.message === "Update specific status") {
-                
+                this.updateSpecificStatus(statusId);
             } else if (alert.message === "Update reply status") {
-                
+                this.updateReplyStatusModal(statusId);
             }
         });
     }

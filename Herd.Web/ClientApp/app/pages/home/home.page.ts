@@ -15,13 +15,12 @@ import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 export class HomePage implements OnInit {
     @ViewChild('specificStatusModal') 
     specificStatusModal: BsModalComponent;
-
     @ViewChild('replyStatusModal')
     replyStatusModal: BsModalComponent;
-
     statusId: number;
     specificStatus: Status;
     replyStatus: Status;
+
     loading: boolean = false;
     homeFeed: Status[] = []; // List of posts for the home feed
 
