@@ -3,7 +3,7 @@ import { NotificationsService } from "angular2-notifications";
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from "rxjs/Observable";
 
-import { AccountService, TimelineAlertService } from "../../services";
+import { AccountService, StatusService, TimelineAlertService } from "../../services";
 import { Account, Status, UserCard } from '../../models/mastodon';
 import { Storage } from '../../models';
 import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
@@ -30,6 +30,7 @@ export class ProfilePage implements OnInit {
 
     constructor(
         private accountService: AccountService,
+        private statusService: StatusService,
         private localStorage: Storage,
         private alertService: NotificationsService,
         private route: ActivatedRoute,
@@ -53,7 +54,7 @@ export class ProfilePage implements OnInit {
 
     // Get the posts from this user *STILL NEEDS SOME AUTHOR CHECK SOMEWHERE*
     getMostRecentUserPosts(userID: string) {
-        this.accountService.getUserFeed(userID)
+        this.statusService.getUserFeed(userID)
             .subscribe(feed => {
                 this.userPosts = feed;
             }, error => {

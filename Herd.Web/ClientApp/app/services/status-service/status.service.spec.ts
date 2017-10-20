@@ -3,19 +3,19 @@ import { HttpModule, Http, Response, ResponseOptions, XHRBackend } from '@angula
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Observable } from "rxjs/Observable";
 
-import { MastodonService } from './mastodon.service';
+import { StatusService } from './status.service';
 import { HttpClientService } from '../http-client-service/http-client.service';
 import { Status } from '../../models/mastodon';
 
-describe('Service: Mastodon Service', () => {
-    let mastodonService: MastodonService;
+describe('Service: Status Service', () => {
+    let statusService: StatusService;
 
     beforeEach(() => {
         // Set up the test bed
         TestBed.configureTestingModule({
             imports: [HttpModule],
             providers: [
-                MastodonService,
+                StatusService,
                 { provide: XHRBackend, useClass: MockBackend },
                 HttpClientService,
             ]
@@ -23,8 +23,8 @@ describe('Service: Mastodon Service', () => {
     });
 
     // Inject commonly used services
-    beforeEach(inject([MastodonService], (ms: MastodonService) => {
-        mastodonService = ms;
+    beforeEach(inject([StatusService], (ms: StatusService) => {
+        statusService = ms;
     }));
 
     describe('Get Home Timeline', () => {
@@ -49,7 +49,7 @@ describe('Service: Mastodon Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                mastodonService.getHomeFeed().subscribe((response) => {
+                statusService.getHomeFeed().subscribe((response) => {
                     expect(response[0].Content).toBe("Content1");
                     expect(response[0].Id).toBe("1");
                     expect(response[1].Content).toBe("Content2");
@@ -77,7 +77,7 @@ describe('Service: Mastodon Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                mastodonService.getHomeFeed().subscribe((response) => {
+                statusService.getHomeFeed().subscribe((response) => {
                     expect(response.length).toBe(0);
                 });
             })

@@ -7,13 +7,22 @@ import { HttpClientService } from '../http-client-service/http-client.service';
 import { Status, UserCard } from '../../models/mastodon';
 
 @Injectable()
-export class MastodonService {
+export class StatusService {
 
     constructor(private http: Http, private httpClient: HttpClientService) {}
 
     // Get a list of posts for the home feed
     getHomeFeed(): Observable<Status[]> {
         let queryString = '?onlyOnActiveUserTimeline=true' 
+        return this.httpClient.get('api/mastodon-posts/search' + queryString)
+            .map(response => response.Posts as Status[]);
+    }
+
+    /**
+     * Get the posts that the active user has made
+     */
+    getUserFeed(userID: string): Observable<Status[]> {
+        let queryString = "?authorMastodonUserID=" + userID;
         return this.httpClient.get('api/mastodon-posts/search' + queryString)
             .map(response => response.Posts as Status[]);
     }
@@ -39,7 +48,7 @@ export class MastodonService {
      * @param sensitive
      * @param spoilerText
      */
-    makeNewPost(message: string, visibility: number, replyStatusId?: string, sensitive?: boolean, spoilerText?: string) {
+    makeNewStatus(message: string, visibility: number, replyStatusId?: string, sensitive?: boolean, spoilerText?: string) {
         let body = {
             'message': message,
             'visibility': visibility,

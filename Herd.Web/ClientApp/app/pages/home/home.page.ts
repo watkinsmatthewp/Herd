@@ -3,7 +3,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { TabsetComponent } from 'ngx-bootstrap';
 
 
-import { MastodonService, TimelineAlertService, AccountService } from "../../services";
+import { StatusService, TimelineAlertService, AccountService } from "../../services";
 import { Status } from "../../models/mastodon";
 import { NotificationsService } from "angular2-notifications";
 import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
@@ -26,13 +26,12 @@ export class HomePage implements OnInit {
     homeFeed: Status[] = []; // List of posts for the home feed
 
     constructor(private activatedRoute: ActivatedRoute, private toastService: NotificationsService,
-        private mastodonService: MastodonService, private timelineAlert: TimelineAlertService,
-    private accountService: AccountService) { }
+        private statusService: StatusService, private timelineAlert: TimelineAlertService, private accountService: AccountService) { }
 
     getMostRecentHomeFeed() {
         this.loading = true;
         let progress = this.toastService.info("Retrieving", "home timeline ...")
-        this.mastodonService.getHomeFeed()
+        this.statusService.getHomeFeed()
             .finally(() => this.loading = false)
             .subscribe(feed => {
                 this.toastService.remove(progress.id);
@@ -46,7 +45,7 @@ export class HomePage implements OnInit {
     updateSpecificStatus(statusId: string): void {
         this.loading = true;
         let progress = this.toastService.info("Retrieving" , "status info ...");
-        this.mastodonService.getStatus(statusId, true, true)
+        this.statusService.getStatus(statusId, true, true)
             .finally(() =>  this.loading = false)
             .subscribe(data => {
                 this.toastService.remove(progress.id);
@@ -63,7 +62,7 @@ export class HomePage implements OnInit {
     updateReplyStatusModal(statusId: string): void {
         this.loading = true;
         let progress = this.toastService.info("Retrieving",  "status info ...");
-        this.mastodonService.getStatus(statusId, false, false)
+        this.statusService.getStatus(statusId, false, false)
             .finally(() => this.loading = false)
             .subscribe(data => {
                 this.toastService.remove(progress.id);

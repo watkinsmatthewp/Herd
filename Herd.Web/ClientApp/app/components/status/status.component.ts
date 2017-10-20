@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { MastodonService, TimelineAlertService } from "../../services";
+import { StatusService, TimelineAlertService } from "../../services";
 import { Status } from '../../models/mastodon';
 
 @Component({

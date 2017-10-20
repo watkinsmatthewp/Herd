@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 
-import { MastodonService, TimelineAlertService, AccountService } from "../../services";
+import { TimelineAlertService, AccountService } from "../../services";
 import { NotificationsService } from "angular2-notifications";
 import { UserCard } from '../../models/mastodon';
 
@@ -14,7 +14,7 @@ export class UserCardComponent implements OnInit {
     isFollowing: boolean = false;
     followUnfollowText: string = "Following";
 
-    constructor(private timelineAlert: TimelineAlertService, private mastodonService: MastodonService,
+    constructor(private timelineAlert: TimelineAlertService,
         private accountService: AccountService, private toastService: NotificationsService) { }
 
     ngOnInit() {

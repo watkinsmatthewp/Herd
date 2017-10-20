@@ -35,15 +35,6 @@ export class AccountService {
     }
 
     /**
-     * Get the posts that the active user has made
-     */
-    getUserFeed(userID: string): Observable<Status[]> {
-        let queryString = "?authorMastodonUserID=" + userID;
-        return this.httpClient.get('api/mastodon-posts/search' + queryString)
-            .map(response => response.Posts as Status[]);
-    }
-
-    /**
      * Get the followers of a userID
      * @param userID
      */
