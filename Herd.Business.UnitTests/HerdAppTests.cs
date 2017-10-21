@@ -134,32 +134,39 @@ namespace Herd.Business.UnitTests
 
         #endregion
 
-        #region Posts
+        #region Mastodon Users
 
-        //[Fact]
-        //public void GetRecentFeedItemsTest()
-        //{
-        //    // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
-        //    var mockData = new Mock<IDataProvider>();
-        //    var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
-        //    var mockLogger = new Mock<ILogger>();
+        [Fact]
+        public void FollowUserTest()
+        {
+            _mockMastodonApiWrapper.Setup(d => d.Follow("1", true))
+                .Returns<string>(id => Task.FromResult(new MastodonRelationship { ID = id, Following = true }));
 
-        //    Status status = new Status();
-        //    status.Content = "Hello, World!";
-        //    List<Status> list = new List<Status>();
-        //    list.Add(status);
+            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
-        //    mockMastodonApiWrapper.Setup(d => d.GetRecentPosts(false, false, null, null, 1)).Returns(Task.FromResult<List<MastodonPost>>(new List<MastodonPost>()));
+            var result = herdApp.FollowUser(new FollowUserCommand { UserID = "1", FollowUser = true });
 
-        //    // Create the HerdApp using the mock objects
-        //    var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
+            Assert.True(result?.Success);
+            _mockMastodonApiWrapper.Verify(a => a.Follow("1", true), Times.Once());
+        }
 
-        //    // Run the HerdApp command (should execute the mock)
-        //    var result = herdApp.GetRecentFeedItems(new GetRecentPostsCommand { MaxCount = 1 });
+        [Fact]
+        public void UnFollowUserTest()
+        {
+            _mockMastodonApiWrapper.Setup(d => d.Follow("1", false))
+                .Returns<string>(id => Task.FromResult(new MastodonRelationship { ID = id, Following = false }));
 
-        //    // Verify the result, should add more tests when dummy data is removed
-        //    Assert.True(result?.Success);
-        //}
+            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+
+            var result = herdApp.FollowUser(new FollowUserCommand { UserID = "1", FollowUser = false });
+
+            Assert.True(result?.Success);
+            _mockMastodonApiWrapper.Verify(a => a.Follow("1", false), Times.Once());
+        }
+
+        #endregion
+
+        #region Mastodon Posts
 
         [Fact]
         public void CreateNewPostTest()
@@ -175,35 +182,6 @@ namespace Herd.Business.UnitTests
 
             // Verify the result, do we need to check any more than this?
             //Assert.True(result?.Success);
-        }
-
-        [Fact]
-        public void HerdAppFollowUserTest()
-        {
-            // Mock the Task
-            TaskCompletionSource<MastodonRelationship> taskCompletion = new TaskCompletionSource<MastodonRelationship>();
-            taskCompletion.SetResult(new MastodonRelationship { ID = "1", Following = true });
-            
-            // Mock the Follow function
-            _mockMastodonApiWrapper.Setup(d => d.Follow("1", true)).Returns(taskCompletion.Task);
-            _mockMastodonApiWrapper.Setup(d => d.Follow("1", false)).Returns(taskCompletion.Task);
-
-            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
-
-            // Run the HerdApp command (should execute the mock)
-            var result = herdApp.FollowUser(new FollowUserCommand { UserID = "1", FollowUser = true });
-
-            // Verify the result
-            Assert.True(result?.Success);
-            // TODO DO more checks, should the function return more than just a CommandResult?
-            //Assert.True(result.Data.Following);
-
-
-            // Run the HerdApp command (should execute the mock)
-            result = herdApp.FollowUser(new FollowUserCommand { UserID = "1", FollowUser = false });
-
-            // Verify the result
-            Assert.True(result?.Success);
         }
 
         #endregion

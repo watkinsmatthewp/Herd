@@ -168,18 +168,7 @@ namespace Herd.Business
                 };
             });
         }
-
-        public CommandResult<GetUserCommandResultData> GetFollowing(GetUserCommand getUserCommand)
-        {
-            return ProcessCommand<GetUserCommandResultData>(result =>
-            {
-                var Following = _mastodonApiWrapper.GetFollowing(
-                    getUserCommand.UserID
-                ).Synchronously();
-            }
-            );
-        }
-
+        
         #endregion Users
 
         #region Mastodon Users
@@ -199,6 +188,55 @@ namespace Herd.Business
                 };
             });
         }
+
+        public CommandResult FollowUser(FollowUserCommand followUserCommand)
+        {
+            return ProcessCommand(result =>
+            {
+                _mastodonApiWrapper.Follow(followUserCommand.UserID, followUserCommand.FollowUser);
+            });
+        }
+
+        #endregion Mastodon Users
+
+        #region Mastodon Posts
+
+        public CommandResult<SearchMastodonPostsCommandResultData> SearchPosts(SearchMastodonPostsCommand searchMastodonPostsCommand)
+        {
+            return ProcessCommand<SearchMastodonPostsCommandResultData>(result =>
+            {
+                if (searchMastodonPostsCommand.IsGlobalSearch)
+                {
+                    throw new UserErrorException("Please specify at least one search criterion");
+                }
+
+                result.Data = new SearchMastodonPostsCommandResultData
+                {
+                    Posts = GetPosts(searchMastodonPostsCommand).Synchronously()
+                };
+            });
+        }
+
+        public CommandResult CreateNewPost(CreateNewPostCommand createNewPostCommand)
+        {
+            return ProcessCommand(result =>
+            {
+                _mastodonApiWrapper.CreateNewPost(
+                    createNewPostCommand.Message,
+                    createNewPostCommand.Visibility,
+                    createNewPostCommand.ReplyStatusId,
+                    createNewPostCommand.MediaIds,
+                    createNewPostCommand.Sensitive,
+                    createNewPostCommand.SpoilerText
+                ).Synchronously();
+            });
+        }
+
+        #endregion
+
+        #region Private helpers
+
+        #region Mastodon Users 
 
         private async Task<IList<MastodonUser>> GetUsers(SearchMastodonUsersCommand searchMastodonUsersCommand)
         {
@@ -259,33 +297,9 @@ namespace Herd.Business
             return Filter(userSet1, () => _mastodonApiWrapper.GetFollowers(followedUserID, false, false, false, false, limit), u => u.MastodonUserId);
         }
 
-        public CommandResult FollowUser(FollowUserCommand followUserCommand)
-        {
-            return ProcessCommand(result =>
-            {
-                _mastodonApiWrapper.Follow(followUserCommand.UserID, followUserCommand.FollowUser);
-            });
-        }
-
-        #endregion Mastodon Users
+        #endregion
 
         #region Mastodon Posts
-
-        public CommandResult<SearchMastodonPostsCommandResultData> SearchPosts(SearchMastodonPostsCommand searchMastodonPostsCommand)
-        {
-            return ProcessCommand<SearchMastodonPostsCommandResultData>(result =>
-            {
-                if (searchMastodonPostsCommand.IsGlobalSearch)
-                {
-                    throw new UserErrorException("Please specify at least one search criterion");
-                }
-
-                result.Data = new SearchMastodonPostsCommandResultData
-                {
-                    Posts = GetPosts(searchMastodonPostsCommand).Synchronously()
-                };
-            });
-        }
 
         private async Task<IList<MastodonPost>> GetPosts(SearchMastodonPostsCommand searchMastodonPostsCommand)
         {
@@ -344,24 +358,9 @@ namespace Herd.Business
             return Filter(postSet1, () => _mastodonApiWrapper.GetPostsByHashTag(hashTag), p => p.Id);
         }
 
-        public CommandResult CreateNewPost(CreateNewPostCommand createNewPostCommand)
-        {
-            return ProcessCommand(result =>
-            {
-                _mastodonApiWrapper.CreateNewPost(
-                    createNewPostCommand.Message,
-                    createNewPostCommand.Visibility,
-                    createNewPostCommand.ReplyStatusId,
-                    createNewPostCommand.MediaIds,
-                    createNewPostCommand.Sensitive,
-                    createNewPostCommand.SpoilerText
-                ).Synchronously();
-            });
-        }
-
         #endregion
 
-        #region Private helpers
+        #region Generic
 
         private CommandResult<D> ProcessCommand<D>(Action<CommandResult<D>> doWork)
             where D : CommandResultDataObject
@@ -411,6 +410,8 @@ namespace Herd.Business
         {
             return set.ToDictionary(getID, u => u);
         }
+
+        #endregion
 
         #endregion Private helpers
     }
