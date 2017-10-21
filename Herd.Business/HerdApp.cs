@@ -14,6 +14,7 @@ using Herd.Core.Exceptions;
 using Herd.Core.Errors;
 using System.Threading.Tasks;
 using Herd.Business.Extensions;
+using Herd.Business.ApiWrappers.MastodonObjectContextOptions;
 
 namespace Herd.Business
 {
@@ -262,10 +263,13 @@ namespace Herd.Business
             await _mastodonApiWrapper.AddContextToMastodonUsers
             (
                 users.Values,
-                searchMastodonUsersCommand.IncludeFollowers,
-                searchMastodonUsersCommand.IncludeFollowing,
-                searchMastodonUsersCommand.IncludeFollowedByActiveUser,
-                searchMastodonUsersCommand.IncludeFollowsActiveUser
+                new MastodonUserContextOptions
+                {
+                    IncludeFollowers = searchMastodonUsersCommand.IncludeFollowers,
+                    IncludeFollowing = searchMastodonUsersCommand.IncludeFollowing,
+                    IncludeIsFollowedByActiveUser = searchMastodonUsersCommand.IncludeFollowedByActiveUser,
+                    IncludeFollowsActiveUser = searchMastodonUsersCommand.IncludeFollowsActiveUser
+                }
             );
 
             return users.Values.ToArray();
@@ -284,17 +288,17 @@ namespace Herd.Business
 
         private Task<Dictionary<string, MastodonUser>> FilterByName(Dictionary<string, MastodonUser> userSet1, string name, int limit)
         {
-            return Filter(userSet1, () => _mastodonApiWrapper.GetUsersByName(name, false, false, false, false, limit), u => u.MastodonUserId);
+            return Filter(userSet1, () => _mastodonApiWrapper.GetUsersByName(name, null, limit), u => u.MastodonUserId);
         }
 
         private Task<Dictionary<string, MastodonUser>> FilterByFollowedByUserID(Dictionary<string, MastodonUser> userSet1, string followedByUserID, int limit)
         {
-            return Filter(userSet1, () => _mastodonApiWrapper.GetFollowing(followedByUserID, false, false, false, false, limit), u => u.MastodonUserId);
+            return Filter(userSet1, () => _mastodonApiWrapper.GetFollowing(followedByUserID, null, limit), u => u.MastodonUserId);
         }
 
         private Task<Dictionary<string, MastodonUser>> FilterByFollowsByUserID(Dictionary<string, MastodonUser> userSet1, string followedUserID, int limit)
         {
-            return Filter(userSet1, () => _mastodonApiWrapper.GetFollowers(followedUserID, false, false, false, false, limit), u => u.MastodonUserId);
+            return Filter(userSet1, () => _mastodonApiWrapper.GetFollowers(followedUserID, null, limit), u => u.MastodonUserId);
         }
 
         #endregion
