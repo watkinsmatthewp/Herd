@@ -30,20 +30,20 @@
             <div *ngIf="showQuickInfo" class="quick-info">
                 <br />
                 <div class="row">
-                    <div class="col-sm-4">
-                        <div class="btn btn-primary" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '0'}">
+                    <div class="col-xs-4">
+                        <div class="btn btn-secondary btn-sm" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '0'}">
                             <p>Statuses</p>
                             <p>{{userCard.PostCount}}</p>
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="btn btn-primary" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '1'}">
+                    <div class="col-xs-4">
+                        <div class="btn btn-secondary btn-sm" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '1'}">
                             <p>Follows</p>
                             <p>{{userCard.FollowingCount}}</p>
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="btn btn-primary" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '2'}">
+                    <div class="col-xs-4">
+                        <div class="btn btn-secondary btn-sm" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '2'}">
                             <p>Followers</p>
                             <p>{{userCard.FollowersCount}}</p>
                         </div>
