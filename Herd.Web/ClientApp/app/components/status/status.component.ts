@@ -1,8 +1,9 @@
 ﻿import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { StatusService, TimelineAlertService } from "../../services";
+import { StatusService, EventAlertService } from "../../services";
 import { Status } from '../../models/mastodon';
+import { EventAlertEnum } from "../../models/index";
 
 @Component({
     selector: 'status',
@@ -13,7 +14,7 @@ export class StatusComponent implements OnInit {
     @Input() status: Status;
     showBlur: boolean = false;
 
-    constructor(private router: Router, private timelineAlert: TimelineAlertService) {}
+    constructor(private router: Router, private eventAlertService: EventAlertService) {}
 
     ngOnInit() {
         if (this.status.IsSensitive === true) {
@@ -27,12 +28,12 @@ export class StatusComponent implements OnInit {
     }
 
     notifyTimelineCommentsClicked(event: any): void {
-        this.timelineAlert.addMessage("Update reply status", this.status.Id);
+        this.eventAlertService.addEvent(EventAlertEnum.UPDATE_SPECIFIC_STATUS, { statusID: this.status.Id });
         event.stopPropagation();
     }
 
     notifyTimelineStatusClicked(event: any): void {
-        this.timelineAlert.addMessage("Update specific status", this.status.Id);
+        this.eventAlertService.addEvent(EventAlertEnum.UPDATE_SPECIFIC_STATUS, { statusID: this.status.Id });
         event.stopPropagation();
     }
 

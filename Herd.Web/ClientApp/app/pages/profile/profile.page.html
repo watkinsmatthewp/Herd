@@ -38,7 +38,7 @@
                                     </div>
                                 </ng-container>
                             </tab>
-                            <tab heading="Following ({{ account?.FollowingCount }})">
+                            <tab heading="Following ({{ following.length }})">
                                 <div class="row">
                                     <ng-container *ngIf="account">
                                         <div *ngFor="let userCard of following" class="text-center">
@@ -49,7 +49,7 @@
                                     </ng-container>
                                 </div> 
                             </tab>
-                            <tab heading="Followers ({{ account?.FollowersCount }})">
+                            <tab heading="Followers ({{ followers.length }})">
                                 <ng-container *ngIf="account">
                                     <div class="row">
                                         <div *ngFor="let userCard of followers" class="text-center">

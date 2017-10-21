@@ -21,12 +21,15 @@
 
   <ItemGroup>
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
+    <Compile Remove="ClientApp\app\services\alert-service\**" />
     <Compile Remove="ClientApp\app\services\alert\**" />
     <Compile Remove="Models\**" />
     <Content Remove="ClientApp\**" />
     <Content Remove="Models\**" />
+    <EmbeddedResource Remove="ClientApp\app\services\alert-service\**" />
     <EmbeddedResource Remove="ClientApp\app\services\alert\**" />
     <EmbeddedResource Remove="Models\**" />
+    <None Remove="ClientApp\app\services\alert-service\**" />
     <None Remove="ClientApp\app\services\alert\**" />
     <None Remove="Models\**" />
   </ItemGroup>
@@ -49,6 +52,7 @@
     <None Remove="ClientApp\app\pages\index.ts" />
     <None Remove="ClientApp\app\pages\searchResults\searchresults.page.ts" />
     <None Remove="ClientApp\app\services\authentication.service.spec.ts" />
+    <None Remove="ClientApp\app\services\event-alert-service\event-alert.service.spec.ts" />
     <None Remove="ClientApp\app\services\index.ts" />
     <None Remove="ClientApp\app\services\mastodon.service.spec.ts" />
     <None Remove="ClientApp\app\services\user.service.ts" />
@@ -71,6 +75,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\status-form\status-form-modal\status-form-modal.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\usercard\usercard.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\models\EventAlert.enum.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\mastodon\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\mastodon\Relationship.ts" />
@@ -85,14 +90,14 @@
     <TypeScriptCompile Include="ClientApp\app\models\User.ts" />
     <TypeScriptCompile Include="ClientApp\app\pages\searchResults\searchResults.page.ts" />
     <TypeScriptCompile Include="ClientApp\app\pipes\index.ts" />
-    <TypeScriptCompile Include="ClientApp\app\services\alert-service\alert.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\authentication-service\authentication.service.spec.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\authentication-service\authentication.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\services\event-alert-service\event-alert.service.spec.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\http-client-service\http-client.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\account-service\account.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\status-service\status.service.spec.ts" />
-    <TypeScriptCompile Include="ClientApp\app\services\timeline-alert-service\timeline-alert.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\services\event-alert-service\event-alert.service.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

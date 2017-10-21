@@ -3,11 +3,12 @@ import { NotificationsService } from "angular2-notifications";
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from "rxjs/Observable";
 
-import { AccountService, StatusService, TimelineAlertService } from "../../services";
+import { AccountService, EventAlertService, StatusService } from "../../services";
 import { Account, Status, UserCard } from '../../models/mastodon';
-import { Storage } from '../../models';
+import { Storage, EventAlertEnum } from '../../models';
 import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 import { TabsetComponent } from "ngx-bootstrap";
+import { Subscription } from "rxjs/Rx";
 
 
 @Component({
@@ -24,18 +25,19 @@ export class ProfilePage implements OnInit, AfterViewInit {
     replyStatus: Status;
 
     account: Account;
-    loading: boolean = false;
     userPosts: Status[] = []; // List of posts from this user
     following: UserCard[] = [];
     followers: UserCard[] = [];
     isFollowing: boolean = false;
 
+    loading: boolean = false;
+
     constructor(
         private accountService: AccountService,
+        private eventAlertService: EventAlertService,
         private localStorage: Storage,
         private route: ActivatedRoute,
         private statusService: StatusService,
-        private timelineAlert: TimelineAlertService,
         private toastService: NotificationsService) {
     }
 
@@ -49,13 +51,15 @@ export class ProfilePage implements OnInit, AfterViewInit {
             .finally(() => this.loading = false)
             .subscribe(account => {
                 this.account = account;
-                console.log("Account", this.account);
             }, error => {
                 this.toastService.error("Error", error.error);
             });
     }
 
-    // Get the posts from this user *STILL NEEDS SOME AUTHOR CHECK SOMEWHERE*
+    /**
+     * Get the posts that this user has made
+     * @param userID
+     */
     getMostRecentUserPosts(userID: string) {
         this.statusService.getUserFeed(userID)
             .subscribe(feed => {
@@ -65,17 +69,27 @@ export class ProfilePage implements OnInit, AfterViewInit {
             });
     }
 
+    /**
+     * Get the follows of this user
+     * @param userID
+     */
     getFollowers(userID: string) {
         this.accountService.getFollowers(userID)
             .subscribe(users => {
                 this.followers = users;
+                console.log("followers", this.followers);
             });
     }
 
+    /**
+     * Get who this user is following
+     * @param userID
+     */
     getFollowing(userID: string) {
         this.accountService.getFollowing(userID)
             .subscribe(users => {
                 this.following = users;
+                console.log("following", this.following);
             });
     }
 
@@ -111,6 +125,9 @@ export class ProfilePage implements OnInit, AfterViewInit {
             });
     }
 
+    /**
+     * Set up subscriptions for alerts
+     */
     ngOnInit() {
         // Monitor Param map 
         this.route.paramMap
@@ -123,16 +140,30 @@ export class ProfilePage implements OnInit, AfterViewInit {
             });
 
         // Setup subscription to update modals on status click
-        this.timelineAlert.getMessage().subscribe(alert => {
-            let statusId: string = alert.statusId;
-            if (alert.message === "Update specific status") {
-                this.updateSpecificStatus(statusId);
-            } else if (alert.message === "Update reply status") {
-                this.updateReplyStatusModal(statusId);
+        this.eventAlertService.getMessage().subscribe(event => {
+            switch (event.eventType) {
+                case EventAlertEnum.UPDATE_SPECIFIC_STATUS: {
+                    let statusID: string = event.statusID;
+                    this.updateSpecificStatus(statusID);
+                    break;
+                }
+                case EventAlertEnum.UPDATE_REPLY_STATUS: {
+                    let statusID: string = event.statusID;
+                    this.updateReplyStatusModal(statusID);
+                    break;
+                }
+                case EventAlertEnum.UPDATE_FOLLOWING_AND_FOLLOWERS: {
+                    this.getFollowers(this.account.MastodonUserId);
+                    this.getFollowing(this.account.MastodonUserId);
+                    break;
+                }
             }
         });
     }
 
+    /**
+     * Update default tab
+     */
     ngAfterViewInit() {
         this.route.queryParams
             .subscribe(params => {
