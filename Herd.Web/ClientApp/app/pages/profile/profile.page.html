@@ -1,24 +1,25 @@
 ﻿<div class="row">
     <!-- Banner Image -->
-    <div *ngIf="account" class="header-image-box">
-        <img class="header-pic" src="{{ account.MastodonHeaderImageURL }}" />
+    <div class="header-image-box">
+        <img class="header-pic" src="{{ account?.MastodonHeaderImageURL }}" />
     </div>
 
     <div class="row profile-content">
         <!-- Left Column -->
         <div class="col-sm-3">
-            <div *ngIf="account" class="col-lg-12">
-                <img class="profile-pic" src="{{ account.MastodonProfileImageURL }}" />
-                <br />
+            <div class="col-lg-12">
+                <div class="profile-image-box">
+                    <img *ngIf="account" class="profile-pic" src="{{ account?.MastodonProfileImageURL }}" />
+                </div>
                 <div class="panel">
                     <div class="panel-body">
                         <p>
-                            <strong>{{ account.MastodonDisplayName }}</strong>
+                            <strong>{{ account?.MastodonDisplayName }}</strong>
                             <br />
-                            @{{ account.MastodonUserName }}
+                            @{{ account?.MastodonUserName }}
                         </p>
                         
-                        <p [innerHTML]="account.MastodonShortBio"></p>
+                        <p [innerHTML]="account?.MastodonShortBio"></p>
                     </div>
                 </div>
             </div>
