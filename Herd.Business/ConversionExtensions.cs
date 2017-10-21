@@ -59,6 +59,7 @@ namespace Herd.Business
             MastodonShortBio = account.Note,
             MastodonUserId = account.Id.ToString(),
             MastodonUserName = account.UserName,
+            PostCount = account.StatusesCount,
             FollowersCount = account.FollowersCount,
             FollowingCount = account.FollowingCount
         };
