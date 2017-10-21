@@ -64,10 +64,17 @@ namespace Herd.Business
         {
             return ProcessCommand<GetRegistrationCommandResultData>(result =>
             {
+                var registration = _data.GetAppRegistration(getOrCreateRegistrationCommand.Instance);
+                if (registration == null)
+                {
+                    _mastodonApiWrapper.MastodonHostInstance = getOrCreateRegistrationCommand.Instance;
+                    registration = _mastodonApiWrapper.RegisterApp().Synchronously();
+                    registration = _data.CreateAppRegistration(registration);
+                }
+
                 result.Data = new GetRegistrationCommandResultData
                 {
-                    Registration = _data.GetAppRegistration(getOrCreateRegistrationCommand.Instance)
-                        ?? _data.CreateAppRegistration(new MastodonApiWrapper(getOrCreateRegistrationCommand.Instance).RegisterApp().Synchronously())
+                    Registration = registration
                 };
             });
         }

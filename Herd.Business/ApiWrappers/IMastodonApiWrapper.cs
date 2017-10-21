@@ -9,7 +9,7 @@ namespace Herd.Business.ApiWrappers
     {
         #region Public properties
 
-        string MastodonHostInstance { get; }
+        string MastodonHostInstance { get; set; }
         Registration AppRegistration { get; set; }
         UserMastodonConnectionDetails UserMastodonConnectionDetails { get; set; }
 

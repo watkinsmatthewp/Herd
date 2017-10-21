@@ -14,7 +14,7 @@ namespace Herd.Business.ApiWrappers
     {
         #region Public properties
 
-        public string MastodonHostInstance { get; }
+        public string MastodonHostInstance { get; set; }
         public Registration AppRegistration { get; set; }
         public UserMastodonConnectionDetails UserMastodonConnectionDetails { get; set; }
         public const Scope ALL_SCOPES = Scope.Read | Scope.Write | Scope.Follow;

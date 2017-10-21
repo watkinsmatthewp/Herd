@@ -44,6 +44,8 @@ namespace Herd.Core
             return containingText.IndexOf(searchString, stringComparison) >= 0;
         }
 
+        public static T With<T>(this T obj, Action<T> doWork) => obj.Then(doWork);
+
         public static T Then<T>(this T obj, Action<T> doWork)
         {
             doWork(obj);

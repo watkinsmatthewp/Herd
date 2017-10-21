@@ -1,9 +1,11 @@
 ﻿using Herd.Business.ApiWrappers;
 using Herd.Business.Models.Commands;
 using Herd.Business.Models.Entities;
+using Herd.Core;
 using Herd.Data.Models;
 using Herd.Data.Providers;
 using Herd.Logging;
+using Herd.UnitTestCore;
 using Mastonet.Entities;
 using Moq;
 using System.Collections.Generic;
@@ -19,104 +21,117 @@ namespace Herd.Business.UnitTests
         Mock<ILogger> _mockLogger = new Mock<ILogger>();
 
         #region App Registration
+
         [Fact]
         public void GetRegistrationTest()
         {
-            // Tell moq that when that object's GetAppRegistration method is called for ID 3,
-            // return this HerdAppRegistrationDataModel object with the following properties
-            _mockData.Setup(d => d.GetAppRegistration(3)).Returns(new Registration
+            var expectedRegistration = new Registration
             {
                 ID = 3,
                 ClientId = "client-id",
                 ClientSecret = "client-secret",
                 Instance = "mastodon.instance",
                 MastodonAppRegistrationID = "42"
-            });
+            };
 
-            // Create the HerdApp using the mock objects
+            _mockData.Setup(d => d.GetAppRegistration(3)).Returns(expectedRegistration);
             var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
-            // Run the HerdApp command (should execute the mock)
             var result = herdApp.GetRegistration(new GetRegistrationCommand { ID = 3 });
 
-            // Make sure the GetAppRegistration was called once with id 3
+            Assert.True(result?.Success);
+            ExtendedAssert.ObjectsEqual(expectedRegistration, result.Data.Registration);
             _mockData.Verify(d => d.GetAppRegistration(3), Times.Once());
+        }
+
+        [Fact]
+        public void GetOrCreateRegistrationWhenRegistrationDoesNotAlreadyExistTest()
+        {
+            _mockData.Setup(d => d.GetAppRegistration("mastodon.instance")).Returns(null as Registration);
+            _mockMastodonApiWrapper.Setup(a => a.RegisterApp()).Returns(Task.FromResult(new Registration
+            {
+                ClientId = "client-id",
+                ClientSecret = "client-secret",
+                Instance = "mastodon.instance",
+                MastodonAppRegistrationID = "42",
+                ID = -1
+            }));
+            _mockData.Setup(d => d.CreateAppRegistration(It.Is<Registration>(r => r.Instance == "mastodon.instance")))
+                .Returns<Registration>(registrationToCreate => registrationToCreate.With(r => r.ID = 3));
+
+            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+
+            var result = herdApp.GetOrCreateRegistration(new GetOrCreateRegistrationCommand { Instance = "mastodon.instance" });
+
+            // Verify the result
+            var expectedRegistration = new Registration
+            {
+                ID = 3,
+                ClientId = "client-id",
+                ClientSecret = "client-secret",
+                Instance = "mastodon.instance",
+                MastodonAppRegistrationID = "42"
+            };
+
+            Assert.True(result?.Success);
+            ExtendedAssert.ObjectsEqual(expectedRegistration, result.Data.Registration);
+
+            // Make sure the GetAppRegistration and CreateAppRegistration were each called exactly once
+            _mockData.Verify(d => d.GetAppRegistration("mastodon.instance"), Times.Once());
+            _mockMastodonApiWrapper.Verify(a => a.RegisterApp(), Times.Once());
+            _mockData.Verify(d => d.CreateAppRegistration(It.Is<Registration>(r => r.Instance == "mastodon.instance")), Times.Once());
+        }
+
+        [Fact]
+        public void GetOrCreateRegistrationWhenRegistrationAlreadyExistsTest()
+        {
+            var expectedRegistration = new Registration
+            {
+                ID = 3,
+                ClientId = "client-id",
+                ClientSecret = "client-secret",
+                Instance = "mastodon.instance",
+                MastodonAppRegistrationID = "42"
+            };
+
+            _mockData.Setup(d => d.GetAppRegistration("mastodon.instance")).Returns(expectedRegistration);
+            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+
+            var result = herdApp.GetOrCreateRegistration(new GetOrCreateRegistrationCommand { Instance = "mastodon.instance" });
 
             // Verify the result
             Assert.True(result?.Success);
-            Assert.Equal(3, result.Data?.Registration?.ID);
-            Assert.Equal("client-id", result.Data?.Registration?.ClientId);
-            Assert.Equal("client-secret", result.Data?.Registration?.ClientSecret);
-            Assert.Equal("mastodon.instance", result.Data?.Registration?.Instance);
-            Assert.Equal("42", result.Data?.Registration?.MastodonAppRegistrationID);
+            ExtendedAssert.ObjectsEqual(expectedRegistration, result.Data.Registration);
+
+            // Make sure the GetAppRegistration was called once and CreateAppRegistration was never called
+            _mockData.Verify(d => d.GetAppRegistration("mastodon.instance"), Times.Once());
+            _mockData.Verify(d => d.CreateAppRegistration(It.Is<Registration>(r => true)), Times.Never());
         }
 
         [Fact]
         public void GetOAuthURLTest()
         {
-            // Setup the mocks
-            _mockData.Setup(d => d.GetAppRegistration(3)).Returns(new Registration
+            _mockData.Setup(d => d.GetAppRegistration(4)).Returns(new Registration
             {
-                ID = 3,
+                ID = 4,
                 ClientId = "client-id",
                 ClientSecret = "client-secret",
                 Instance = "mastodon.instance",
                 MastodonAppRegistrationID = "42"
             });
-
             _mockMastodonApiWrapper.Setup(p => p.GetOAuthUrl("https://SentURL")).Returns("https://ReturnedURL");
 
-            // Create the HerdApp using the mock objects
             var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
-            // Perform the test
-            var result = herdApp.GetOAuthURL(new GetOAuthURLCommand { AppRegistrationID = 3, ReturnURL = "https://SentURL" });
+            var result = herdApp.GetOAuthURL(new GetOAuthURLCommand { AppRegistrationID = 4, ReturnURL = "https://SentURL" });
 
-            // Verify the result
             Assert.True(result?.Success);
             Assert.Equal("https://ReturnedURL", result.Data?.URL);
+
+            _mockData.Verify(d => d.GetAppRegistration(4), Times.Once());
+            _mockMastodonApiWrapper.Verify(a => a.GetOAuthUrl("https://SentURL"), Times.Once());
         }
 
-        [Fact]
-        public void GetOrCreateRegistrationTest()
-        {
-            _mockData.Setup(d => d.GetAppRegistration("instance")).Returns(new Registration
-            {
-                ID = 3,
-                ClientId = "client-id",
-                ClientSecret = "client-secret",
-                Instance = "mastodon.instance",
-                MastodonAppRegistrationID = "42"
-            });
-
-            _mockData.Setup(d => d.CreateAppRegistration(new Registration())).Returns(new Registration
-            {
-                ID = 3,
-                ClientId = "client-id",
-                ClientSecret = "client-secret",
-                Instance = "mastodon.instance",
-                MastodonAppRegistrationID = "42"
-            });
-
-            // Create the HerdApp using the mock objects
-            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
-
-            // Run the HerdApp command (should execute the mock)
-            var result = herdApp.GetOrCreateRegistration(new GetOrCreateRegistrationCommand { Instance = "instance" });
-
-            // Make sure the GetAppRegistration was called once with id 3
-            _mockData.Verify(d => d.GetAppRegistration("instance"), Times.Once());
-
-            // Verify the result
-            Assert.True(result?.Success);
-            Assert.Equal(3, result.Data?.Registration?.ID);
-            Assert.Equal("client-id", result.Data?.Registration?.ClientId);
-            Assert.Equal("client-secret", result.Data?.Registration?.ClientSecret);
-            Assert.Equal("mastodon.instance", result.Data?.Registration?.Instance);
-            Assert.Equal("42", result.Data?.Registration?.MastodonAppRegistrationID);
-
-            //TODO need to check if GetAppRegistration is null?
-        }
         #endregion
 
         #region Posts
