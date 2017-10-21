@@ -140,7 +140,7 @@ namespace Herd.Business.UnitTests
         public void FollowUserTest()
         {
             _mockMastodonApiWrapper.Setup(d => d.Follow("1", true))
-                .Returns<string>(id => Task.FromResult(new MastodonRelationship { ID = id, Following = true }));
+                .Returns<string, bool>((id, follows) => Task.FromResult(new MastodonRelationship { ID = id, Following = follows }));
 
             var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
@@ -153,8 +153,8 @@ namespace Herd.Business.UnitTests
         [Fact]
         public void UnFollowUserTest()
         {
-            _mockMastodonApiWrapper.Setup(d => d.Follow("1", false))
-                .Returns<string>(id => Task.FromResult(new MastodonRelationship { ID = id, Following = false }));
+            _mockMastodonApiWrapper.Setup(d => d.Follow("1", true))
+                .Returns<string, bool>((id, follows) => Task.FromResult(new MastodonRelationship { ID = id, Following = follows }));
 
             var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
@@ -171,8 +171,9 @@ namespace Herd.Business.UnitTests
         [Fact]
         public void CreateNewPostTest()
         {
-            _mockMastodonApiWrapper.Setup(d => d.CreateNewPost("Hello World!", MastodonPostVisibility.Public,
-                null, null, false, null)).Returns(Task.FromResult(new MastodonPost()));
+            _mockMastodonApiWrapper
+                .Setup(d => d.CreateNewPost("Hello World!", MastodonPostVisibility.Public, null, null, false, null))
+                .Returns(Task.FromResult(new MastodonPost()));
 
             // Create the HerdApp using the mock objects
             var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
@@ -181,7 +182,10 @@ namespace Herd.Business.UnitTests
             var result = herdApp.CreateNewPost(new CreateNewPostCommand { Message = "Hello World!" });
 
             // Verify the result, do we need to check any more than this?
-            //Assert.True(result?.Success);
+            Assert.True(result?.Success);
+            _mockMastodonApiWrapper.Verify(a =>
+                a.CreateNewPost("Hello World!", MastodonPostVisibility.Public, null, null, false, null),
+                Times.Once());
         }
 
         #endregion

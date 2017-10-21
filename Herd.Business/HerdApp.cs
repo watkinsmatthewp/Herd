@@ -193,7 +193,7 @@ namespace Herd.Business
         {
             return ProcessCommand(result =>
             {
-                _mastodonApiWrapper.Follow(followUserCommand.UserID, followUserCommand.FollowUser);
+                _mastodonApiWrapper.Follow(followUserCommand.UserID, followUserCommand.FollowUser).Synchronously();
             });
         }
 
