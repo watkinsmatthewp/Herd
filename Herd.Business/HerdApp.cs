@@ -249,15 +249,15 @@ namespace Herd.Business
             }
             if (!string.IsNullOrWhiteSpace(searchMastodonUsersCommand.FollowedByUserID))
             {
-                users = await FilterByFollowedByUserID(users, searchMastodonUsersCommand.FollowedByUserID, searchMastodonUsersCommand.MaxCount);
+                users = await FilterByFollowedByUserID(users, searchMastodonUsersCommand.FollowedByUserID, searchMastodonUsersCommand.PagingOptions);
             }
             if (!string.IsNullOrWhiteSpace(searchMastodonUsersCommand.FollowsUserID))
             {
-                users = await FilterByFollowsByUserID(users, searchMastodonUsersCommand.FollowsUserID, searchMastodonUsersCommand.MaxCount);
+                users = await FilterByFollowsByUserID(users, searchMastodonUsersCommand.FollowsUserID, searchMastodonUsersCommand.PagingOptions);
             }
             if (!string.IsNullOrWhiteSpace(searchMastodonUsersCommand.Name))
             {
-                users = await FilterByName(users, searchMastodonUsersCommand.Name, searchMastodonUsersCommand.MaxCount);
+                users = await FilterByName(users, searchMastodonUsersCommand.Name, searchMastodonUsersCommand.PagingOptions);
             }
 
             await _mastodonApiWrapper.AddContextToMastodonUsers
@@ -286,19 +286,19 @@ namespace Herd.Business
             return mastodonAccount == null ? new MastodonUser[0] : new[] { mastodonAccount };
         }
 
-        private Task<Dictionary<string, MastodonUser>> FilterByName(Dictionary<string, MastodonUser> userSet1, string name, int limit)
+        private Task<Dictionary<string, MastodonUser>> FilterByName(Dictionary<string, MastodonUser> userSet1, string name, PagingOptions pagingOptions)
         {
-            return Filter(userSet1, () => _mastodonApiWrapper.GetUsersByName(name, null, limit), u => u.MastodonUserId);
+            return Filter(userSet1, () => _mastodonApiWrapper.GetUsersByName(name, null, pagingOptions), u => u.MastodonUserId);
         }
 
-        private Task<Dictionary<string, MastodonUser>> FilterByFollowedByUserID(Dictionary<string, MastodonUser> userSet1, string followedByUserID, int limit)
+        private Task<Dictionary<string, MastodonUser>> FilterByFollowedByUserID(Dictionary<string, MastodonUser> userSet1, string followedByUserID, PagingOptions pagingOptions)
         {
-            return Filter(userSet1, () => _mastodonApiWrapper.GetFollowing(followedByUserID, null, limit), u => u.MastodonUserId);
+            return Filter(userSet1, () => _mastodonApiWrapper.GetFollowing(followedByUserID, null, pagingOptions), u => u.MastodonUserId);
         }
 
-        private Task<Dictionary<string, MastodonUser>> FilterByFollowsByUserID(Dictionary<string, MastodonUser> userSet1, string followedUserID, int limit)
+        private Task<Dictionary<string, MastodonUser>> FilterByFollowsByUserID(Dictionary<string, MastodonUser> userSet1, string followedUserID, PagingOptions pagingOptions)
         {
-            return Filter(userSet1, () => _mastodonApiWrapper.GetFollowers(followedUserID, null, limit), u => u.MastodonUserId);
+            return Filter(userSet1, () => _mastodonApiWrapper.GetFollowers(followedUserID, null, pagingOptions), u => u.MastodonUserId);
         }
 
         #endregion

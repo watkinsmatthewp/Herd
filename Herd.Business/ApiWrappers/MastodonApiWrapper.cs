@@ -1,4 +1,5 @@
 ﻿using Herd.Business.ApiWrappers.MastodonObjectContextOptions;
+using Herd.Business.Models;
 using Herd.Business.Models.Entities;
 using Herd.Core;
 using Herd.Data.Models;
@@ -116,26 +117,32 @@ namespace Herd.Business.ApiWrappers
             return mastodonUser;
         }
 
-        public async Task<IList<MastodonUser>> GetUsersByName(string name, MastodonUserContextOptions mastodonUserContextOptions = null, int? limit = 30)
+        public async Task<IList<MastodonUser>> GetUsersByName(string name, MastodonUserContextOptions mastodonUserContextOptions = null, PagingOptions pagingOptions = null)
         {
+            var effectivePagingOptions = pagingOptions ?? new PagingOptions();
             var mastodonClient = BuildMastodonApiClient();
-            var mastodonUsers = (await mastodonClient.SearchAccounts(name, limit)).Select(u => u.ToMastodonUser()).ToList();
+            var mastodonUsersApiTask = mastodonClient.SearchAccounts(name, effectivePagingOptions.Limit);
+            var mastodonUsers = (await mastodonUsersApiTask).Select(u => u.ToMastodonUser()).ToList();
             await AddContextToMastodonUsers(mastodonUsers, mastodonUserContextOptions);
             return mastodonUsers;
         }
 
-        public async Task<IList<MastodonUser>> GetFollowing(string followerUserID, MastodonUserContextOptions mastodonUserContextOptions = null, int? limit = 30)
+        public async Task<IList<MastodonUser>> GetFollowing(string followerUserID, MastodonUserContextOptions mastodonUserContextOptions = null, PagingOptions pagingOptions = null)
         {
+            var effectivePagingOptions = pagingOptions ?? new PagingOptions();
             var mastodonClient = BuildMastodonApiClient();
-            var mastodonUsers = (await mastodonClient.GetAccountFollowing(followerUserID.ToLong(), null, null, limit)).Select(u => u.ToMastodonUser()).ToList();
+            var mastodonUsersApiTask = mastodonClient.GetAccountFollowing(followerUserID.ToLong(), effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
+            var mastodonUsers = (await mastodonUsersApiTask).Select(u => u.ToMastodonUser()).ToList();
             await AddContextToMastodonUsers(mastodonUsers, mastodonUserContextOptions);
             return mastodonUsers;
         }
 
-        public async Task<IList<MastodonUser>> GetFollowers(string followingUserID, MastodonUserContextOptions mastodonUserContextOptions = null, int? limit = 30)
+        public async Task<IList<MastodonUser>> GetFollowers(string followingUserID, MastodonUserContextOptions mastodonUserContextOptions = null, PagingOptions pagingOptions = null)
         {
+            var effectivePagingOptions = pagingOptions ?? new PagingOptions();
             var mastodonClient = BuildMastodonApiClient();
-            var mastodonUsers = (await mastodonClient.GetAccountFollowers(followingUserID.ToLong(), null, null, limit)).Select(u => u.ToMastodonUser()).ToList();
+            var mastodonUsersApiTask = mastodonClient.GetAccountFollowers(followingUserID.ToLong(), effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
+            var mastodonUsers = (await mastodonUsersApiTask).Select(u => u.ToMastodonUser()).ToList();
             await AddContextToMastodonUsers(mastodonUsers, mastodonUserContextOptions);
             return mastodonUsers;
         }
