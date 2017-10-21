@@ -14,18 +14,17 @@ namespace Herd.Business.UnitTests
 {
     public class HerdAppTests
     {
+        Mock<IDataProvider> _mockData = new Mock<IDataProvider>();
+        Mock<IMastodonApiWrapper> _mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
+        Mock<ILogger> _mockLogger = new Mock<ILogger>();
+
         #region App Registration
         [Fact]
         public void GetRegistrationTest()
         {
-            // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
-            var mockData = new Mock<IDataProvider>();
-            var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
-            var mockLogger = new Mock<ILogger>();
-
             // Tell moq that when that object's GetAppRegistration method is called for ID 3,
             // return this HerdAppRegistrationDataModel object with the following properties
-            mockData.Setup(d => d.GetAppRegistration(3)).Returns(new Registration
+            _mockData.Setup(d => d.GetAppRegistration(3)).Returns(new Registration
             {
                 ID = 3,
                 ClientId = "client-id",
@@ -35,13 +34,13 @@ namespace Herd.Business.UnitTests
             });
 
             // Create the HerdApp using the mock objects
-            var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             // Run the HerdApp command (should execute the mock)
             var result = herdApp.GetRegistration(new GetRegistrationCommand { ID = 3 });
 
             // Make sure the GetAppRegistration was called once with id 3
-            mockData.Verify(d => d.GetAppRegistration(3), Times.Once());
+            _mockData.Verify(d => d.GetAppRegistration(3), Times.Once());
 
             // Verify the result
             Assert.True(result?.Success);
@@ -55,13 +54,8 @@ namespace Herd.Business.UnitTests
         [Fact]
         public void GetOAuthURLTest()
         {
-            // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
-            var mockData = new Mock<IDataProvider>();
-            var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
-            var mockLogger = new Mock<ILogger>();
-
             // Setup the mocks
-            mockData.Setup(d => d.GetAppRegistration(3)).Returns(new Registration
+            _mockData.Setup(d => d.GetAppRegistration(3)).Returns(new Registration
             {
                 ID = 3,
                 ClientId = "client-id",
@@ -70,10 +64,10 @@ namespace Herd.Business.UnitTests
                 MastodonAppRegistrationID = "42"
             });
 
-            mockMastodonApiWrapper.Setup(p => p.GetOAuthUrl("https://SentURL")).Returns("https://ReturnedURL");
+            _mockMastodonApiWrapper.Setup(p => p.GetOAuthUrl("https://SentURL")).Returns("https://ReturnedURL");
 
             // Create the HerdApp using the mock objects
-            var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             // Perform the test
             var result = herdApp.GetOAuthURL(new GetOAuthURLCommand { AppRegistrationID = 3, ReturnURL = "https://SentURL" });
@@ -86,12 +80,7 @@ namespace Herd.Business.UnitTests
         [Fact]
         public void GetOrCreateRegistrationTest()
         {
-            // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
-            var mockData = new Mock<IDataProvider>();
-            var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
-            var mockLogger = new Mock<ILogger>();
-
-            mockData.Setup(d => d.GetAppRegistration("instance")).Returns(new Registration
+            _mockData.Setup(d => d.GetAppRegistration("instance")).Returns(new Registration
             {
                 ID = 3,
                 ClientId = "client-id",
@@ -100,7 +89,7 @@ namespace Herd.Business.UnitTests
                 MastodonAppRegistrationID = "42"
             });
 
-            mockData.Setup(d => d.CreateAppRegistration(new Registration())).Returns(new Registration
+            _mockData.Setup(d => d.CreateAppRegistration(new Registration())).Returns(new Registration
             {
                 ID = 3,
                 ClientId = "client-id",
@@ -110,13 +99,13 @@ namespace Herd.Business.UnitTests
             });
 
             // Create the HerdApp using the mock objects
-            var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             // Run the HerdApp command (should execute the mock)
             var result = herdApp.GetOrCreateRegistration(new GetOrCreateRegistrationCommand { Instance = "instance" });
 
             // Make sure the GetAppRegistration was called once with id 3
-            mockData.Verify(d => d.GetAppRegistration("instance"), Times.Once());
+            _mockData.Verify(d => d.GetAppRegistration("instance"), Times.Once());
 
             // Verify the result
             Assert.True(result?.Success);
@@ -130,34 +119,7 @@ namespace Herd.Business.UnitTests
         }
         #endregion
 
-        #region Users
-        [Fact]
-        public void GetUserTest()
-        {
-        }
-
-        [Fact]
-        public void CreateUserTest()
-        {
-        }
-
-        [Fact]
-        public void LoginUserTest()
-        {
-        }
-
-        [Fact]
-        public void UpdateUserMastodonConnectionTest()
-        {
-        }
-
-        public void GetFollowingTest()
-        {
-
-        }
-        #endregion
-
-        #region Feed
+        #region Posts
 
         //[Fact]
         //public void GetRecentFeedItemsTest()
@@ -185,23 +147,13 @@ namespace Herd.Business.UnitTests
         //}
 
         [Fact]
-        public void GetStatusTest()
-        {
-        }
-
-        [Fact]
         public void CreateNewPostTest()
         {
-            // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
-            var mockData = new Mock<IDataProvider>();
-            var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
-            var mockLogger = new Mock<ILogger>();
-            
-            mockMastodonApiWrapper.Setup(d => d.CreateNewPost("Hello World!", MastodonPostVisibility.Public,
+            _mockMastodonApiWrapper.Setup(d => d.CreateNewPost("Hello World!", MastodonPostVisibility.Public,
                 null, null, false, null)).Returns(Task.FromResult(new MastodonPost()));
 
             // Create the HerdApp using the mock objects
-            var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             // Run the HerdApp command (should execute the mock)
             var result = herdApp.CreateNewPost(new CreateNewPostCommand { Message = "Hello World!" });
@@ -213,20 +165,15 @@ namespace Herd.Business.UnitTests
         [Fact]
         public void HerdAppFollowUserTest()
         {
-            // Tell Moq to create an objects that implement the interfaces of the HerdApp dependencies
-            var mockData = new Mock<IDataProvider>();
-            var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
-            var mockLogger = new Mock<ILogger>();
-
             // Mock the Task
             TaskCompletionSource<MastodonRelationship> taskCompletion = new TaskCompletionSource<MastodonRelationship>();
             taskCompletion.SetResult(new MastodonRelationship { ID = "1", Following = true });
             
             // Mock the Follow function
-            mockMastodonApiWrapper.Setup(d => d.Follow("1", true)).Returns(taskCompletion.Task);
-            mockMastodonApiWrapper.Setup(d => d.Follow("1", false)).Returns(taskCompletion.Task);
+            _mockMastodonApiWrapper.Setup(d => d.Follow("1", true)).Returns(taskCompletion.Task);
+            _mockMastodonApiWrapper.Setup(d => d.Follow("1", false)).Returns(taskCompletion.Task);
 
-            var herdApp = new HerdApp(mockData.Object, mockMastodonApiWrapper.Object, mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             // Run the HerdApp command (should execute the mock)
             var result = herdApp.FollowUser(new FollowUserCommand { UserID = "1", FollowUser = true });
@@ -243,7 +190,7 @@ namespace Herd.Business.UnitTests
             // Verify the result
             Assert.True(result?.Success);
         }
-#endregion
 
+        #endregion
     }
 }
