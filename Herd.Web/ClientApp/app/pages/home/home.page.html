@@ -1,12 +1,8 @@
 <div class="row">
     <!-- Left Column -->
-    <div class="col-sm-3">
-        <div class="panel">
-            <div class="panel-heading">
-                <h3>Future Profile Box</h3>
-            </div>
-            <div class="panel-body">
-            </div>
+    <div class="col-sm-6 col-md-6 col-lg-3">
+        <div class="text-center">
+            <usercard  *ngIf="userCard" [userCard]="userCard" fillWidth="true" showBio="true" showActions="true"  showQuickInfo="true"></usercard>
         </div>
         <div class="panel">
             <div class="panel-heading">
@@ -18,7 +14,7 @@
         </div>
     </div>
     <!-- Middle Column -->
-    <div class="col-sm-6">
+    <div class="col-sm-6 col-md-6 col-lg-6">
         <status-form actionName="Create Status"></status-form>
         <div class="text-center">
             <button [disabled]="loading" class="btn btn-default" (click)="getMostRecentHomeFeed()">
@@ -33,7 +29,7 @@
         </div>
     </div>
     <!-- Right Column -->
-    <div class="col-sm-3">
+    <div class="col-sm-6 col-md-6 col-lg-3">
         <div class="panel">
             <div class="panel-heading">
                 <h3>Future Integrations Box</h3>

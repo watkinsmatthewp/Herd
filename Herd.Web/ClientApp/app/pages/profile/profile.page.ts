@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, ViewChild } from '@angular/core';
+﻿import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { NotificationsService } from "angular2-notifications";
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from "rxjs/Observable";
@@ -7,6 +7,7 @@ import { AccountService, StatusService, TimelineAlertService } from "../../servi
 import { Account, Status, UserCard } from '../../models/mastodon';
 import { Storage } from '../../models';
 import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
+import { TabsetComponent } from "ngx-bootstrap";
 
 
 @Component({
@@ -14,11 +15,10 @@ import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
     templateUrl: './profile.page.html',
     styleUrls: ['./profile.page.css']
 })
-export class ProfilePage implements OnInit {
-    @ViewChild('specificStatusModal')
-    specificStatusModal: BsModalComponent;
-    @ViewChild('replyStatusModal')
-    replyStatusModal: BsModalComponent;
+export class ProfilePage implements OnInit, AfterViewInit {
+    @ViewChild('staticTabs') staticTabs: TabsetComponent;
+    @ViewChild('specificStatusModal') specificStatusModal: BsModalComponent;
+    @ViewChild('replyStatusModal') replyStatusModal: BsModalComponent;
     statusId: number;
     specificStatus: Status;
     replyStatus: Status;
@@ -49,6 +49,7 @@ export class ProfilePage implements OnInit {
             .finally(() => this.loading = false)
             .subscribe(account => {
                 this.account = account;
+                console.log("Account", this.account);
             }, error => {
                 this.toastService.error("Error", error.error);
             });
@@ -130,5 +131,13 @@ export class ProfilePage implements OnInit {
                 this.updateReplyStatusModal(statusId);
             }
         });
+    }
+
+    ngAfterViewInit() {
+        this.route.queryParams
+            .subscribe(params => {
+                let tabIndex: number = params['tabIndex'] || 0;
+                setTimeout(() => this.staticTabs.tabs[tabIndex].active = true);
+            });
     }
 }

@@ -11,6 +11,12 @@ import { UserCard } from '../../models/mastodon';
 })
 export class UserCardComponent implements OnInit {
     @Input() userCard: UserCard;
+    @Input() fillWidth: boolean = false;
+    @Input() showBio: boolean = false;
+    @Input() showActions: boolean = false;
+    @Input() showFollowButton: boolean = false;
+    @Input() showQuickInfo: boolean = false;
+
     isFollowing: boolean = false;
     followUnfollowText: string = "Following";
 
@@ -18,7 +24,7 @@ export class UserCardComponent implements OnInit {
         private accountService: AccountService, private toastService: NotificationsService) { }
 
     ngOnInit() {
-        if (this.userCard.IsFollowedByActiveUser === true) {
+        if (this.userCard.IsFollowedByActiveUser) {
             this.isFollowing = true;
         }
     }

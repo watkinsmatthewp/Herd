@@ -8,6 +8,7 @@
 
 .user-names {
     text-align: center;
+    padding-bottom: .25em;
 }
 
     .display-name {
@@ -35,21 +36,15 @@
 }
 
 .quick-info {
-    padding-bottom: .50em;
+    color: #282b31;
 }
-    .quick-info > .quick-info-section {
-        
-    }
 
-    .quick-info > .title {
-        text-transform: uppercase;
-        color: #9baec8;
-    }
-
-    .quick-info > .count {
-        font-weight: 500;
-        color: #fff;
-    }
+.quick-info-border {
+    border-color: #2e6da4;
+    border-color: rgb(46, 109, 164);
+    border-style: solid;
+    border-radius: 5px;
+}
 
 .follow-btn:hover {
     background-color: #ac002b;

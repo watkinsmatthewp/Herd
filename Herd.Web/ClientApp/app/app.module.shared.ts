@@ -19,7 +19,7 @@ import {
 
 // Components
 import {
-    AlertComponent, InstancePickerComponent, NavMenuComponent,
+    InstancePickerComponent, NavMenuComponent,
     StatusComponent, StatusFormComponent, StatusFormModalComponent,
     StatusModalComponent, UserCardComponent
 } from './components';
@@ -29,7 +29,7 @@ import { AdminAuthGuard, AuthGuard } from './guards'
 
 // Services
 import {
-    AccountService, AlertService, AuthenticationService,
+    AccountService, AuthenticationService,
     HttpClientService, StatusService, TimelineAlertService
 } from './services';
 
@@ -42,7 +42,7 @@ import { SafePipe } from './pipes';
         AdminPage, AppPage, HomePage, LocalFeedPage,
         LoginPage, NotificationsPage, ProfilePage, RegisterPage, SearchResultsPage,
         // Components
-        AlertComponent, InstancePickerComponent, NavMenuComponent,
+        InstancePickerComponent, NavMenuComponent,
         StatusComponent, StatusFormComponent, StatusFormModalComponent,
         StatusModalComponent, UserCardComponent,
         // Pipes
@@ -73,7 +73,7 @@ import { SafePipe } from './pipes';
             { path: '**', redirectTo: 'home' }
         ])
     ],
-    providers: [AccountService, AdminAuthGuard, AlertService, AuthenticationService, AuthGuard,
+    providers: [AccountService, AdminAuthGuard, AuthenticationService, AuthGuard,
         HttpClientService, StatusService, TimelineAlertService]
 })
 export class AppModuleShared {}

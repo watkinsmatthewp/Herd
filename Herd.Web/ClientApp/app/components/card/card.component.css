@@ -24,6 +24,10 @@
     width: 225px;
 }
 
+.fill-width {
+    width: 100%;
+}
+
 .card-heading-left,
 .card-heading-right {
     font-weight: normal;

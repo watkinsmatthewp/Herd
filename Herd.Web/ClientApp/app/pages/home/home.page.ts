@@ -4,7 +4,8 @@ import { TabsetComponent } from 'ngx-bootstrap';
 
 
 import { StatusService, TimelineAlertService, AccountService } from "../../services";
-import { Status } from "../../models/mastodon";
+import { Storage } from '../../models';
+import { Status, UserCard } from "../../models/mastodon";
 import { NotificationsService } from "angular2-notifications";
 import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 
@@ -23,9 +24,21 @@ export class HomePage implements OnInit {
 
     loading: boolean = false;
     homeFeed: Status[] = []; // List of posts for the home feed
+    userCard: UserCard;
 
     constructor(private activatedRoute: ActivatedRoute, private toastService: NotificationsService,
-        private statusService: StatusService, private timelineAlert: TimelineAlertService, private accountService: AccountService) { }
+        private statusService: StatusService, private timelineAlert: TimelineAlertService, private accountService: AccountService, private localStorage: Storage) { }
+
+    getUserCard() {
+        let currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+        let userID = currentUser.MastodonConnection.MastodonUserID;
+        this.accountService.getUserByID(userID)
+            .map(response => response as UserCard)
+            .subscribe(usercard => {
+                this.userCard = usercard;
+                console.log("getUserCard", usercard);
+            });
+    }
 
     getMostRecentHomeFeed() {
         this.loading = true;
@@ -83,5 +96,6 @@ export class HomePage implements OnInit {
             }
         });
         this.getMostRecentHomeFeed();
+        this.getUserCard();
     }
 }
