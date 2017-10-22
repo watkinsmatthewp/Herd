@@ -21,6 +21,10 @@ namespace Herd.Business.UnitTests
         public bool AllowAddContextToMastodonUserMethod { get; set; }
         public bool AllowAddContextToMastodonUsersMethod { get; set; }
         public bool AllowGetUsersByNameMethod { get; set; }
+        public bool AllowGetActiveUserMastodonAccountMethod { get; set; }
+        public bool AllowGetMastodonAccountMethod { get; set; }
+        public bool AllowGetFollowingMethod { get; set; }
+        public bool AllowGetFollowersMethod { get; set; }
 
         public void SetupUsers(params int[] userIDs)
         {
@@ -69,6 +73,30 @@ namespace Herd.Business.UnitTests
                     .Setup(a => a.GetUsersByName(It.IsAny<string>(), It.IsAny<MastodonUserContextOptions>(), It.IsAny<PagingOptions>()))
                     .Returns<string, MastodonUserContextOptions, PagingOptions>(GetUsersByName);
             }
+            if (AllowGetActiveUserMastodonAccountMethod)
+            {
+                mockMastodonApiWrapper
+                    .Setup(a => a.GetActiveUserMastodonAccount(It.IsAny<MastodonUserContextOptions>()))
+                    .Returns<MastodonUserContextOptions>(GetActiveUser);
+            }
+            if (AllowGetMastodonAccountMethod)
+            {
+                mockMastodonApiWrapper
+                    .Setup(a => a.GetMastodonAccount(It.IsAny<string>(), It.IsAny<MastodonUserContextOptions>()))
+                    .Returns<string, MastodonUserContextOptions>(GetUserByID);
+            }
+            if (AllowGetFollowingMethod)
+            {
+                mockMastodonApiWrapper
+                    .Setup(a => a.GetFollowing(It.IsAny<string>(), It.IsAny<MastodonUserContextOptions>(), It.IsAny<PagingOptions>()))
+                    .Returns<string, MastodonUserContextOptions, PagingOptions>(GetFollowing);
+            }
+            if (AllowGetFollowersMethod)
+            {
+                mockMastodonApiWrapper
+                    .Setup(a => a.GetFollowers(It.IsAny<string>(), It.IsAny<MastodonUserContextOptions>(), It.IsAny<PagingOptions>()))
+                    .Returns<string, MastodonUserContextOptions, PagingOptions>(GetFollowers);
+            }
 
             return mockMastodonApiWrapper;
         }
@@ -80,11 +108,11 @@ namespace Herd.Business.UnitTests
             var effectiveMastodonUserContextOptions = mastodonUserContextOptions ?? new MastodonUserContextOptions();
             if (effectiveMastodonUserContextOptions.IncludeFollowers)
             {
-                mastodonUser.Followers = GetFollowers(mastodonUser.MastodonUserId).ToList();
+                mastodonUser.Followers = GetFollowerUsers(mastodonUser.MastodonUserId).ToList();
             }
             if (effectiveMastodonUserContextOptions.IncludeFollowing)
             {
-                mastodonUser.Following = GetFollowing(mastodonUser.MastodonUserId).ToList();
+                mastodonUser.Following = GetFollowingUsers(mastodonUser.MastodonUserId).ToList();
             }
             if (effectiveMastodonUserContextOptions.IncludeFollowsActiveUser)
             {
@@ -105,6 +133,18 @@ namespace Herd.Business.UnitTests
             }
         }
 
+        private Task<MastodonUser> GetActiveUser(MastodonUserContextOptions mastodonUserContextOptions)
+        {
+            return GetUserByID(ActiveUserID, mastodonUserContextOptions);
+        }
+
+        private async Task<MastodonUser> GetUserByID(string id, MastodonUserContextOptions mastodonUserContextOptions)
+        {
+            var user = BuildUser(id);
+            await AddContextToMastodonUser(user, mastodonUserContextOptions);
+            return user;
+        }
+
         private Task<IList<MastodonUser>> GetUsersByName(string name, MastodonUserContextOptions mastodonUserContextOptions, PagingOptions pagingOptions)
         {
             return Task.FromResult(GetUsers(mastodonUserContextOptions, null).Where(u => u.MastodonDisplayName.Contains(name, StringComparison.OrdinalIgnoreCase)).ToArray() as IList<MastodonUser>);
@@ -115,6 +155,20 @@ namespace Herd.Business.UnitTests
             var mastodonUsers = _followRelationships.Keys.Select(BuildUser).ToArray();
             AddContextToMastodonUsers(mastodonUsers, mastodonUserContextOptions).Synchronously();
             return mastodonUsers;
+        }
+
+        private async Task<IList<MastodonUser>> GetFollowing(string id, MastodonUserContextOptions mastodonUserContextOptions, PagingOptions pagingOptions)
+        {
+            var users = GetFollowingUsers(id).ToArray();
+            await AddContextToMastodonUsers(users, mastodonUserContextOptions);
+            return users;
+        }
+
+        private async Task<IList<MastodonUser>> GetFollowers(string id, MastodonUserContextOptions mastodonUserContextOptions, PagingOptions pagingOptions)
+        {
+            var users = GetFollowerUsers(id).ToArray();
+            await AddContextToMastodonUsers(users, mastodonUserContextOptions);
+            return users;
         }
 
         private MastodonUser BuildUser(string id) => new MastodonUser
@@ -128,7 +182,7 @@ namespace Herd.Business.UnitTests
             MastodonUserName = $"user_{id}"
         };
 
-        private IEnumerable<MastodonUser> GetFollowers(string targetUserID)
+        private IEnumerable<MastodonUser> GetFollowerUsers(string targetUserID)
         {
             return GetFollowerUserIDs(targetUserID).Select(BuildUser);
         }
@@ -140,7 +194,7 @@ namespace Herd.Business.UnitTests
                 .Select(f => f.Key);
         }
 
-        private IEnumerable<MastodonUser> GetFollowing(string followerUserID)
+        private IEnumerable<MastodonUser> GetFollowingUsers(string followerUserID)
         {
             return GetFollowingUserIDs(followerUserID).Select(BuildUser);
         }

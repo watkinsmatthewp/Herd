@@ -188,6 +188,69 @@ namespace Herd.Business.UnitTests
             mockMastodonApiWrapper.Verify(a => a.GetUsersByName("1", It.IsAny<MastodonUserContextOptions>(), It.IsAny<PagingOptions>()), Times.Once());
         }
 
+        [Fact]
+        public void SearchUserByMastodonUserIdTest()
+        {
+            var searchUsersMockApiWrapperBuilder = new SearchUsersMockMastodonApiWrapperBuilder
+            {
+                ActiveUserID = "2",
+                AllowGetMastodonAccountMethod = true
+            };
+            searchUsersMockApiWrapperBuilder.SetupUsers(1, 2, 11);
+            var mockMastodonApiWrapper = searchUsersMockApiWrapperBuilder.BuildMockMastodonApiWrapper();
+            var herdApp = new HerdApp(_mockData.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
+
+            var result = herdApp.SearchUsers(new SearchMastodonUsersCommand { UserID = "11" });
+
+            Assert.True(result?.Success);
+            Assert.Single(result.Data.Users);
+            Assert.Equal("11", result.Data.Users[0].MastodonUserId);
+
+            mockMastodonApiWrapper.Verify(a => a.GetMastodonAccount(It.IsAny<string>(), It.IsAny<MastodonUserContextOptions>()), Times.Once());
+        }
+
+        [Fact]
+        public void SearchUserIncludingFollowingAndFollowersTest()
+        {
+            var searchUsersMockApiWrapperBuilder = new SearchUsersMockMastodonApiWrapperBuilder
+            {
+                ActiveUserID = "2",
+                AllowAddContextToMastodonUsersMethod = true,
+                AllowGetMastodonAccountMethod = true,
+            };
+
+            searchUsersMockApiWrapperBuilder.SetupUsers(1, 2, 11);
+            searchUsersMockApiWrapperBuilder.SetupFollowRelationship(1, 2);
+            searchUsersMockApiWrapperBuilder.SetupFollowRelationship(1, 11);
+            searchUsersMockApiWrapperBuilder.SetupFollowRelationship(2, 11);
+            searchUsersMockApiWrapperBuilder.SetupFollowRelationship(11, 2);
+
+            var mockMastodonApiWrapper = searchUsersMockApiWrapperBuilder.BuildMockMastodonApiWrapper();
+            var herdApp = new HerdApp(_mockData.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
+
+            var result = herdApp.SearchUsers(new SearchMastodonUsersCommand
+            {
+                UserID = "11",
+                IncludeFollowers = true,
+                IncludeFollowing = true
+            });
+
+            Assert.True(result?.Success);
+            Assert.Single(result.Data.Users);
+            var user = result.Data.Users[0];
+            Assert.Equal("11", user.MastodonUserId);
+
+            Assert.Single(user.Following);
+            Assert.Equal("2", user.Following[0].MastodonUserId);
+
+            Assert.Equal(2, user.Followers.Count);
+            Assert.Equal("1", user.Followers[0].MastodonUserId);
+            Assert.Equal("2", user.Followers[1].MastodonUserId);
+
+            mockMastodonApiWrapper.Verify(a => a.GetMastodonAccount(It.IsAny<string>(), It.IsAny<MastodonUserContextOptions>()), Times.Once());
+            mockMastodonApiWrapper.Verify(a => a.AddContextToMastodonUsers(It.IsAny<IEnumerable<MastodonUser>>(), It.IsAny<MastodonUserContextOptions>()), Times.Once());
+        }
+
         #endregion
 
         #region Mastodon Posts
