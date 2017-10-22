@@ -20,6 +20,14 @@ namespace Herd.Core
             return JsonConvert.SerializeObject(objectToSerialize, indented ? Formatting.Indented : Formatting.None);
         }
 
+        public static void Synchronously(this Task task)
+        {
+            if (!task.IsCompleted)
+            {
+                task.Wait();
+            }
+        }
+
         public static T Synchronously<T>(this Task<T> task)
         {
             if (!task.IsCompleted)

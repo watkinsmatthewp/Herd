@@ -1,4 +1,6 @@
 ﻿using Herd.Business.ApiWrappers;
+using Herd.Business.ApiWrappers.MastodonObjectContextOptions;
+using Herd.Business.Models;
 using Herd.Business.Models.Commands;
 using Herd.Business.Models.Entities;
 using Herd.Core;
@@ -162,6 +164,28 @@ namespace Herd.Business.UnitTests
 
             Assert.True(result?.Success);
             _mockMastodonApiWrapper.Verify(a => a.Follow("1", false), Times.Once());
+        }
+
+        [Fact]
+        public void SearchUserByNameTest()
+        {
+            var searchUsersMockApiWrapperBuilder = new SearchUsersMockMastodonApiWrapperBuilder
+            {
+                ActiveUserID = "2",
+                AllowGetUsersByNameMethod = true
+            };
+            searchUsersMockApiWrapperBuilder.SetupUsers(1, 2, 11);
+            var mockMastodonApiWrapper = searchUsersMockApiWrapperBuilder.BuildMockMastodonApiWrapper();
+            var herdApp = new HerdApp(_mockData.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
+
+            var result = herdApp.SearchUsers(new SearchMastodonUsersCommand { Name = "1" });
+
+            Assert.True(result?.Success);
+            Assert.Equal(2, result.Data.Users.Count);
+            Assert.Equal("1", result.Data.Users[0].MastodonUserId);
+            Assert.Equal("11", result.Data.Users[1].MastodonUserId);
+
+            mockMastodonApiWrapper.Verify(a => a.GetUsersByName("1", It.IsAny<MastodonUserContextOptions>(), It.IsAny<PagingOptions>()), Times.Once());
         }
 
         #endregion
