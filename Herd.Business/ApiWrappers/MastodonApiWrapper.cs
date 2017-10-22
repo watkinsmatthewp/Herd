@@ -229,60 +229,67 @@ namespace Herd.Business.ApiWrappers
 
         #region Posts
 
-        public async Task AddContextToMastodonPosts(IEnumerable<MastodonPost> mastodonPosts, bool includeAncestors = false, bool includeDescendants = false)
+        public async Task AddContextToMastodonPosts(IEnumerable<MastodonPost> mastodonPosts, MastodonPostContextOptions mastodonPostContextOptions = null)
         {
             foreach (var mastodonPost in mastodonPosts)
             {
-                await AddContextToMastodonPost(mastodonPost, includeAncestors, includeDescendants);
+                await AddContextToMastodonPost(mastodonPost, mastodonPostContextOptions);
             }
         }
 
-        public async Task AddContextToMastodonPost(MastodonPost mastodonPost, bool includeAncestors = false, bool includeDescendants = false)
+        public async Task AddContextToMastodonPost(MastodonPost mastodonPost, MastodonPostContextOptions mastodonPostContextOptions = null)
         {
+            var effectiveMastodonPostContextOptions = mastodonPostContextOptions ?? new MastodonPostContextOptions();
             var mastodonClient = BuildMastodonApiClient();
-            if (includeAncestors || includeDescendants)
+            if (mastodonPostContextOptions.IncludeAncestors || mastodonPostContextOptions.IncludeDescendants)
             {
                 var statusContext = await mastodonClient.GetStatusContext(mastodonPost.Id.ToLong());
-                if (includeAncestors)
+                if (effectiveMastodonPostContextOptions.IncludeAncestors)
                 {
                     mastodonPost.Ancestors = statusContext.Ancestors.Select(s => s.ToPost()).ToList();
                 }
-                if (includeDescendants)
+                if (effectiveMastodonPostContextOptions.IncludeDescendants)
                 {
                     mastodonPost.Descendants = statusContext.Descendants.Select(s => s.ToPost()).ToList();
                 }
             }
         }
 
-        public async Task<MastodonPost> GetPost(string postID, bool includeAncestors = false, bool includeDescendants = false)
+        public async Task<MastodonPost> GetPost(string postID, MastodonPostContextOptions mastodonPostContextOptions = null)
         {
             var mastodonClient = BuildMastodonApiClient();
             var post = (await mastodonClient.GetStatus(postID.ToLong())).ToPost();
-            await AddContextToMastodonPost(post, includeAncestors, includeDescendants);
+            await AddContextToMastodonPost(post, mastodonPostContextOptions);
             return post;
         }
 
-        public async Task<IList<MastodonPost>> GetPostsByAuthorUserID(string authorMastodonUserID, bool includeAncestors = false, bool includeDescendants = false, int? limit = 30)
+        public async Task<IList<MastodonPost>> GetPostsByAuthorUserID(string authorMastodonUserID, MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
         {
+            var effectivePagingOptions = pagingOptions ?? new PagingOptions();
             var mastodonClient = BuildMastodonApiClient();
-            var posts = (await mastodonClient.GetAccountStatuses(authorMastodonUserID.ToLong(), null, null, limit, false, false)).Select(s => s.ToPost()).ToList();
-            await AddContextToMastodonPosts(posts, includeAncestors, includeDescendants);
+            var mastodonPostsApiTask = mastodonClient.GetAccountStatuses(authorMastodonUserID.ToLong(), effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit, false, false);
+            var posts = (await mastodonPostsApiTask).Select(s => s.ToPost()).ToList();
+            await AddContextToMastodonPosts(posts, mastodonPostContextOptions);
             return posts;
         }
 
-        public async Task<IList<MastodonPost>> GetPostsByHashTag(string hashTag, bool includeAncestors = false, bool includeDescendants = false, int? limit = 30)
+        public async Task<IList<MastodonPost>> GetPostsByHashTag(string hashTag, MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
         {
+            var effectivePagingOptions = pagingOptions ?? new PagingOptions();
             var mastodonClient = BuildMastodonApiClient();
-            var posts = (await mastodonClient.GetTagTimeline(hashTag, null, null, limit)).Select(s => s.ToPost()).ToList();
-            await AddContextToMastodonPosts(posts, includeAncestors, includeDescendants);
+            var mastodonPostsApiTask = mastodonClient.GetTagTimeline(hashTag, effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
+            var posts = (await mastodonPostsApiTask).Select(s => s.ToPost()).ToList();
+            await AddContextToMastodonPosts(posts, mastodonPostContextOptions);
             return posts;
         }
 
-        public async Task<IList<MastodonPost>> GetPostsOnTimeline(bool includeAncestors = false, bool includeDescendants = false, int? limit = 30)
+        public async Task<IList<MastodonPost>> GetPostsOnTimeline(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
         {
+            var effectivePagingOptions = pagingOptions ?? new PagingOptions();
             var mastodonClient = BuildMastodonApiClient();
-            var posts = (await mastodonClient.GetHomeTimeline(null, null, limit)).Select(s => s.ToPost()).ToList();
-            await AddContextToMastodonPosts(posts, includeAncestors, includeDescendants);
+            var mastodonPostsApiTask = mastodonClient.GetHomeTimeline(effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
+            var posts = (await mastodonPostsApiTask).Select(s => s.ToPost()).ToList();
+            await AddContextToMastodonPosts(posts, mastodonPostContextOptions);
             return posts;
         }
 

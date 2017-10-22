@@ -329,8 +329,11 @@ namespace Herd.Business
             await _mastodonApiWrapper.AddContextToMastodonPosts
             (
                 posts.Values,
-                searchMastodonPostsCommand.IncludeAncestors,
-                searchMastodonPostsCommand.IncludeDescendants
+                new MastodonPostContextOptions
+                {
+                    IncludeAncestors = searchMastodonPostsCommand.IncludeAncestors,
+                    IncludeDescendants = searchMastodonPostsCommand.IncludeDescendants
+                }
             );
 
             return posts.Values.ToArray();
