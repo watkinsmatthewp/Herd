@@ -1,4 +1,5 @@
 ﻿using Herd.Business.ApiWrappers.MastodonObjectContextOptions;
+using Herd.Business.Extensions;
 using Herd.Business.Models;
 using Herd.Business.Models.Entities;
 using Herd.Core;
@@ -154,19 +155,19 @@ namespace Herd.Business.ApiWrappers
 
             foreach (var mastodonUser in mastodonUsers)
             {
-                if (effectiveMastodonUserContext.IncludeFollowers == true)
+                if (effectiveMastodonUserContext.IncludeFollowers)
                 {
                     // Get the follower of this user
                     mastodonUser.Followers = (await mastodonClient.GetAccountFollowers(mastodonUser.MastodonUserId.ToLong()))
                         .Select(u => u.ToMastodonUser().Then(mu => mu.FollowsRelevantUser = true)).ToList();
-                    mastodonUser.IsFollowedByActiveUser = mastodonUser.Followers.Any(f => f.MastodonUserId == UserMastodonConnectionDetails.MastodonUserID);
+                    mastodonUser.IsFollowedByActiveUser = mastodonUser.IsFollowedBy(UserMastodonConnectionDetails.MastodonUserID);
                 }
-                if (effectiveMastodonUserContext.IncludeFollowing == true)
+                if (effectiveMastodonUserContext.IncludeFollowing)
                 {
                     // Get the users this user us following
                     mastodonUser.Following = (await mastodonClient.GetAccountFollowing(mastodonUser.MastodonUserId.ToLong()))
                         .Select(u => u.ToMastodonUser().Then(mu => mu.IsFollowedByRelevantUser = true)).ToList();
-                    mastodonUser.FollowsActiveUser = mastodonUser.Following.Any(f => f.MastodonUserId == UserMastodonConnectionDetails.MastodonUserID);
+                    mastodonUser.FollowsActiveUser = mastodonUser.Follows(UserMastodonConnectionDetails.MastodonUserID);
                 }
             }
 

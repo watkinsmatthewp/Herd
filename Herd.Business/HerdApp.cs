@@ -48,13 +48,13 @@ namespace Herd.Business
             });
         }
 
-        public CommandResult<GetOAuthURLCommandResultData> GetOAuthURL(GetOAuthURLCommand getOAuthUrlCommand)
+        public CommandResult<GetMastodonOAuthURLCommandResultData> GetOAuthURL(GetMastodonOAuthURLCommand getOAuthUrlCommand)
         {
-            return ProcessCommand<GetOAuthURLCommandResultData>(result =>
+            return ProcessCommand<GetMastodonOAuthURLCommandResultData>(result =>
             {
                 var returnURL = string.IsNullOrWhiteSpace(getOAuthUrlCommand.ReturnURL) ? NON_REDIRECT_URL : getOAuthUrlCommand.ReturnURL;
                 _mastodonApiWrapper.AppRegistration = _data.GetAppRegistration(getOAuthUrlCommand.AppRegistrationID) ?? throw new UserErrorException("No app registration with that ID");
-                result.Data = new GetOAuthURLCommandResultData
+                result.Data = new GetMastodonOAuthURLCommandResultData
                 {
                     URL = _mastodonApiWrapper.GetOAuthUrl(getOAuthUrlCommand.ReturnURL)
                 };
@@ -84,20 +84,20 @@ namespace Herd.Business
 
         #region Users
 
-        public CommandResult<GetUserCommandResultData> GetUser(GetUserCommand getUserCommand)
+        public CommandResult<GetHerdUserCommandResultData> GetUser(GetHerdUserCommand getUserCommand)
         {
-            return ProcessCommand<GetUserCommandResultData>(result =>
+            return ProcessCommand<GetHerdUserCommandResultData>(result =>
             {
-                result.Data = new GetUserCommandResultData
+                result.Data = new GetHerdUserCommandResultData
                 {
                     User = _data.GetUser(getUserCommand.UserID)
                 };
             });
         }
 
-        public CommandResult<CreateUserCommandResultData> CreateUser(CreateUserCommand createUserCommand)
+        public CommandResult<CreateHerdUserCommandResultData> CreateUser(CreateHerdUserCommand createUserCommand)
         {
-            return ProcessCommand<CreateUserCommandResultData>(result =>
+            return ProcessCommand<CreateHerdUserCommandResultData>(result =>
             {
                 var userByEmail = _data.GetUser(createUserCommand.Email);
                 if (userByEmail != null)
@@ -106,7 +106,7 @@ namespace Herd.Business
                 }
 
                 var saltKey = _saltGenerator.Next();
-                result.Data = new CreateUserCommandResultData
+                result.Data = new CreateHerdUserCommandResultData
                 {
                     User = _data.CreateUser(new UserAccount
                     {
@@ -121,25 +121,25 @@ namespace Herd.Business
             });
         }
 
-        public CommandResult<LoginUserCommandResultData> LoginUser(LoginUserCommand loginUserCommand)
+        public CommandResult<LoginHerdUserCommandResultData> LoginUser(LoginHerdUserCommand loginUserCommand)
         {
-            return ProcessCommand<LoginUserCommandResultData>(result =>
+            return ProcessCommand<LoginHerdUserCommandResultData>(result =>
             {
                 var userByEmail = _data.GetUser(loginUserCommand.Email);
                 if (userByEmail?.PasswordIs(loginUserCommand.PasswordPlainText) != true)
                 {
                     throw new UserErrorException("Wrong email or password");
                 }
-                result.Data = new LoginUserCommandResultData
+                result.Data = new LoginHerdUserCommandResultData
                 {
                     User = userByEmail
                 };
             });
         }
 
-        public CommandResult<UpdateUserMastodonConnectionCommandResultData> UpdateUserMastodonConnection(UpdateUserMastodonConnectionCommand updateUserMastodonConnectionCommand)
+        public CommandResult<UpdateHerdUserMastodonConnectionCommandResultData> UpdateUserMastodonConnection(UpdateHerdUserMastodonConnectionCommand updateUserMastodonConnectionCommand)
         {
-            return ProcessCommand<UpdateUserMastodonConnectionCommandResultData>(result =>
+            return ProcessCommand<UpdateHerdUserMastodonConnectionCommandResultData>(result =>
             {
                 // Check the token
                 if (string.IsNullOrWhiteSpace(updateUserMastodonConnectionCommand.Token))
@@ -163,7 +163,7 @@ namespace Herd.Business
                 user.MastodonConnection = _mastodonApiWrapper.UserMastodonConnectionDetails;
                 _data.UpdateUser(user);
 
-                result.Data = new UpdateUserMastodonConnectionCommandResultData
+                result.Data = new UpdateHerdUserMastodonConnectionCommandResultData
                 {
                     User = _data.GetUser(user.ID)
                 };
@@ -190,7 +190,7 @@ namespace Herd.Business
             });
         }
 
-        public CommandResult FollowUser(FollowUserCommand followUserCommand)
+        public CommandResult FollowUser(FollowMastodonUserCommand followUserCommand)
         {
             return ProcessCommand(result =>
             {
@@ -218,7 +218,7 @@ namespace Herd.Business
             });
         }
 
-        public CommandResult CreateNewPost(CreateNewPostCommand createNewPostCommand)
+        public CommandResult CreateNewPost(CreateNewMastodonPostCommand createNewPostCommand)
         {
             return ProcessCommand(result =>
             {

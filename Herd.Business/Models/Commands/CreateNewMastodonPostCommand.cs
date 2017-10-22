@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Herd.Business.Models.Commands
 {
-    public class CreateNewPostCommand : Command
+    public class CreateNewMastodonPostCommand : Command
     {
         public string Message { get; set; }
         public MastodonPostVisibility Visibility { get; set; }

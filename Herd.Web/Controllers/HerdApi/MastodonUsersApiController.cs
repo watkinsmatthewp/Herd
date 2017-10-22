@@ -48,7 +48,7 @@ namespace Herd.Web.Controllers.HerdApi
         [HttpPost("follow")]
         public IActionResult Follow([FromBody] JObject body)
         {
-            return ApiJson(App.FollowUser(new FollowUserCommand
+            return ApiJson(App.FollowUser(new FollowMastodonUserCommand
             {
                 UserID = body["mastodonUserID"].Value<string>(),
                 FollowUser = body["followUser"].Value<bool>(),

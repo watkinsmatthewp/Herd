@@ -123,7 +123,7 @@ namespace Herd.Business.UnitTests
 
             var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
-            var result = herdApp.GetOAuthURL(new GetOAuthURLCommand { AppRegistrationID = 4, ReturnURL = "https://SentURL" });
+            var result = herdApp.GetOAuthURL(new GetMastodonOAuthURLCommand { AppRegistrationID = 4, ReturnURL = "https://SentURL" });
 
             Assert.True(result?.Success);
             Assert.Equal("https://ReturnedURL", result.Data?.URL);
@@ -144,7 +144,7 @@ namespace Herd.Business.UnitTests
 
             var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
-            var result = herdApp.FollowUser(new FollowUserCommand { UserID = "1", FollowUser = true });
+            var result = herdApp.FollowUser(new FollowMastodonUserCommand { UserID = "1", FollowUser = true });
 
             Assert.True(result?.Success);
             _mockMastodonApiWrapper.Verify(a => a.Follow("1", true), Times.Once());
@@ -158,7 +158,7 @@ namespace Herd.Business.UnitTests
 
             var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
-            var result = herdApp.FollowUser(new FollowUserCommand { UserID = "1", FollowUser = false });
+            var result = herdApp.FollowUser(new FollowMastodonUserCommand { UserID = "1", FollowUser = false });
 
             Assert.True(result?.Success);
             _mockMastodonApiWrapper.Verify(a => a.Follow("1", false), Times.Once());
@@ -179,7 +179,7 @@ namespace Herd.Business.UnitTests
             var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             // Run the HerdApp command (should execute the mock)
-            var result = herdApp.CreateNewPost(new CreateNewPostCommand { Message = "Hello World!" });
+            var result = herdApp.CreateNewPost(new CreateNewMastodonPostCommand { Message = "Hello World!" });
 
             // Verify the result, do we need to check any more than this?
             Assert.True(result?.Success);
