@@ -51,10 +51,32 @@ namespace Herd.Business.UnitTests
             };
 
             Assert.True(user.PasswordIs("password"));
+        }
+
+
+        [Fact]
+        public void FollowsTest()
+        {
+
+            // Create Mastodon User
+            MastodonUser user = new MastodonUser
+            {
+                MastodonUserId = "12",
+                Following = new List<MastodonUser>
+                {
+                    new MastodonUser
+                    {
+                        MastodonUserId = "55"
+                    }
+                }
+            };
+
+
+            // Perform test
+            Assert.True(user.Follows("55"));
 
 
         }
-
 
     }
 }
