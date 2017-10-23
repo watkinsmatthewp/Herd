@@ -27,6 +27,12 @@ export class StatusService {
             .map(response => response.Posts as Status[]);
     }
 
+    /**
+     * Returns a status with optional context.
+     * @param statusId of status
+     * @param includeAncestors optional include ancestor statuses of this status
+     * @param includeDescendants optional include descendants statuses of this status
+     */
     getStatus(statusId: string, includeAncestors: boolean, includeDescendants: boolean): Observable<Status> {
         let queryString = '?postID=' + statusId
                         + '&includeAncestors=' + includeAncestors

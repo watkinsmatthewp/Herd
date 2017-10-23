@@ -27,6 +27,41 @@ describe('Service: Authentication Service', () => {
     beforeEach(inject([AuthenticationService], (as: AuthenticationService) => {
         authService = as;
     }));
+
+    describe('Check auth', () => {
+        it('should return true for isAuthenticated', () => {
+            spyOn(localStorage, 'getItem').and.callFake(function (key: string) {
+                return {};
+            });
+            let isAuthenticated = authService.isAuthenticated();
+            expect(isAuthenticated).toBeTruthy();
+        });
+
+        it('should return true for checkIfConnectedToMastodon', () => {
+            spyOn(localStorage, 'getItem').and.callFake(function (key: string) {
+                return "true";
+            });
+            let isConnectedToMastodon = authService.checkIfConnectedToMastodon();
+            expect(isConnectedToMastodon).toBeTruthy();
+        });
+
+        it('should return false for isAuthenticatied', () => {
+            spyOn(localStorage, 'getItem').and.callFake(function (key: string) {
+                return null;
+            });
+
+            let isAuthenticated = authService.isAuthenticated();
+            expect(isAuthenticated).toBeFalsy();
+        });
+
+        it('should return false for isConnectedToMastodon', () => {
+            spyOn(localStorage, 'getItem').and.callFake(function (key: string) {
+                return false;
+            });
+            let isConnectedToMastodon = authService.checkIfConnectedToMastodon();
+            expect(isConnectedToMastodon).toBeFalsy();
+        });
+    });
     
     describe('Initial Auth on creation', () => {
         it('should return false for isAuthenticatied', () => {

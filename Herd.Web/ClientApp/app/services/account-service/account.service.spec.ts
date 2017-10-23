@@ -249,6 +249,28 @@ describe('Service: Account Service', () => {
     });
 
     describe('Follow a user', () => {
+        it('should be able to follow a user',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Success: true,
+                    Data: {}
+                };
 
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the login request from our authentication service
+                accountService.followUser("1", true).subscribe((response) => {
+                    // pass if it gets here
+                }, error => {
+                    fail();
+                });
+            })
+        );
     });
 });
