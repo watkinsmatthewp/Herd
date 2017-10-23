@@ -5,7 +5,8 @@
   "scripts": {
     "test": "karma start ClientApp/test/karma.conf.js",
     "test-single": "karma start ClientApp/test/karma.conf.js --single-run",
-    "show-coverage": "npm run test-single && http-server -c-1 -o -p 9875 ClientApp/test/coverage"
+    "test-coverage": "npm run test-single && http-server -c-1 -o -p 9875 ClientApp/test/coverage",
+    "show-coverage": "http-server -c-1 -o -p 9875 ClientApp/test/coverage"
   },
   "dependencies": {
     "@angular/animations": "4.2.5",
