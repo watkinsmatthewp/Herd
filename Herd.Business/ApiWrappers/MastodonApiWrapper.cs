@@ -230,6 +230,40 @@ namespace Herd.Business.ApiWrappers
 
         #region Posts
 
+        /// <summary>
+        /// Reposts or un-reposts a post
+        /// </summary>
+        /// <param name="postID"></param>
+        /// <param name="rePost"></param>
+        /// <returns></returns>
+        public async Task<MastodonPost> Repost(string postID, bool repost)
+        {
+            if (repost)
+            {
+                return (await BuildMastodonApiClient().Reblog(postID.ToLong())).ToPost();
+            } else
+            {
+                return (await BuildMastodonApiClient().Unreblog(postID.ToLong())).ToPost();
+            }
+        }
+
+        /// <summary>
+        /// Likes or unlikes a post
+        /// </summary>
+        /// <param name="postID"></param>
+        /// <param name="like"></param>
+        /// <returns></returns>
+        public async Task<MastodonPost> Like(string postID, bool like)
+        {
+            if (like)
+            {
+                return (await BuildMastodonApiClient().Favourite(postID.ToLong())).ToPost();
+            } else
+            {
+                return (await BuildMastodonApiClient().Unfavourite(postID.ToLong())).ToPost();
+            }
+        }
+
         public async Task AddContextToMastodonPosts(IEnumerable<MastodonPost> mastodonPosts, MastodonPostContextOptions mastodonPostContextOptions = null)
         {
             foreach (var mastodonPost in mastodonPosts)
