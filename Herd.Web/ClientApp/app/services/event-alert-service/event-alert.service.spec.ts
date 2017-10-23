@@ -24,8 +24,8 @@ describe('Service: Event Alert Service', () => {
         it('should return an array of statuses if following people who have posted',
             inject([], () => {
                 eventAlertService.getMessage().subscribe(event => {
-                    expect(event.message).toBe(EventAlertEnum.UPDATE_FOLLOWING);
-                    expect(event.statusID).toBe("1");
+                    expect(event.eventType).toBe(EventAlertEnum.UPDATE_FOLLOWING);
+                    expect(event.StatusID).toBe("1");
                 });
 
                 eventAlertService.addEvent(EventAlertEnum.UPDATE_FOLLOWING, { StatusID: "1" });
