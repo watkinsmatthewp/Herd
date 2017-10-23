@@ -43,6 +43,12 @@ namespace Herd.Core.UnitTests
             var task = DelayReturn(1);
             var result = task.Synchronously();
             Assert.Equal(1, result);
+
+            var voidTask = DelayReturn();
+            voidTask.Synchronously();
+            
+            // Not sure what to test after this, if voidTask is complete?
+
         }
 
         [Fact]
@@ -100,6 +106,12 @@ namespace Herd.Core.UnitTests
         {
             await Task.Delay(500);
             return val;
+        }
+
+        private async Task DelayReturn()
+        {
+            await Task.Delay(5000);
+            return;
         }
 
         #endregion Private helpers
