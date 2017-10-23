@@ -7,7 +7,7 @@ webpackConfig.module.rules = [...webpackConfig.module.rules, {
     test: /\.ts$/,
     include: [path.resolve(__dirname, "../app/")],
     use: {
-        loader: 'sourcemap-istanbul-instrumenter-loader?force-sourcemap=true',
+        loader: 'istanbul-instrumenter-loader',
         options: { esModules: true },  
     },
     exclude: [/\.spec\.ts$/],

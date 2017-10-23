@@ -100,6 +100,10 @@
     <TypeScriptCompile Include="ClientApp\app\services\event-alert-service\event-alert.service.ts" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ClientApp\test\coverage\" />
+  </ItemGroup>
+
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">
