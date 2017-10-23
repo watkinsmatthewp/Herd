@@ -242,7 +242,8 @@ namespace Herd.Business.ApiWrappers
         {
             var effectiveMastodonPostContextOptions = mastodonPostContextOptions ?? new MastodonPostContextOptions();
             var mastodonClient = BuildMastodonApiClient();
-            if (mastodonPostContextOptions.IncludeAncestors || mastodonPostContextOptions.IncludeDescendants)
+            
+            if (effectiveMastodonPostContextOptions.IncludeAncestors || effectiveMastodonPostContextOptions.IncludeDescendants)
             {
                 var statusContext = await mastodonClient.GetStatusContext(mastodonPost.Id.ToLong());
                 if (effectiveMastodonPostContextOptions.IncludeAncestors)
