@@ -4,16 +4,15 @@
 var path = require('path');
 var webpackConfig = require('../../webpack.config.js')().filter(config => config.target !== 'node')[0];
 webpackConfig.module.rules = [...webpackConfig.module.rules, {
-    test: /.ts$/,
+    test: /\.ts$/,
     include: [path.resolve(__dirname, "../app/")],
     use: {
         loader: 'sourcemap-istanbul-instrumenter-loader?force-sourcemap=true',
         options: { esModules: true },  
     },
-    exclude: [/.spec.ts$/],
+    exclude: [/\.spec\.ts$/],
     enforce: 'post'
 }];
-webpackConfig.devtool = 'inline-source-map';
 
 module.exports = function (config) {
     config.set({
