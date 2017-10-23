@@ -32,7 +32,7 @@ module.exports = function (config) {
         webpack: webpackConfig,
         webpackMiddleware: { stats: 'errors-only' },
 
-        reporters: ['progress', 'karma-remap-istanbul'],
+        reporters: ['dots', 'karma-remap-istanbul'],
         remapIstanbulReporter: {
             reports: {
                 html: 'ClientApp/test/coverage',
