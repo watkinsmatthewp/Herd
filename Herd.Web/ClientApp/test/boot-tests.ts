@@ -25,9 +25,11 @@ testing.getTestBed().initTestEnvironment(
 
 // Then we find all the tests
 const context = require.context('../', true, /\.spec\.ts$/);
+const components = require.context('../', true, /\!(.spec)\.ts$/);
 
 // And load the modules
 context.keys().map(context);
+components.keys().map(components);
 
 // Finally, start Karma to run the tests
 __karma__.start();

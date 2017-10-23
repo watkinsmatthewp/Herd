@@ -1,6 +1,20 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/0.13/config/configuration-file.html
 
+var path = require('path');
+var webpackConfig = require('../../webpack.config.js')().filter(config => config.target !== 'node')[0];
+webpackConfig.module.rules = [...webpackConfig.module.rules, {
+    test: /.ts$/,
+    include: [path.resolve(__dirname, "../app/")],
+    use: {
+        loader: 'sourcemap-istanbul-instrumenter-loader?force-sourcemap=true',
+        options: { esModules: true },  
+    },
+    exclude: [/.spec.ts$/],
+    enforce: 'post'
+}];
+webpackConfig.devtool = 'inline-source-map';
+
 module.exports = function (config) {
     config.set({
         basePath: '.',
@@ -12,24 +26,26 @@ module.exports = function (config) {
             './boot-tests.ts',
         ],
         preprocessors: {
-            './boot-tests.ts': ['webpack', 'coverage'],
+            './boot-tests.ts': ['webpack'],
         },
-        reporters: ['dots', 'html', 'coverage'],
-        htmlReporter: {
-            outputDir: './ClientApp/test/karma_html', // report will get generated inside folder `test/karma_html`
+
+        webpack: webpackConfig,
+        webpackMiddleware: { stats: 'errors-only' },
+
+        reporters: ['progress', 'karma-remap-istanbul'],
+        remapIstanbulReporter: {
+            reports: {
+                html: 'ClientApp/test/coverage',
+               'text-summary': null
+            }
         },
-        coverageReporter: {
-            type: 'html',
-            dir: 'karma_coverage_html', // report will get generated inside folder `test/karma_coverage_html`
-        },
+
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
         autoWatch: true,
         browsers: ['PhantomJS'],
-        mime: { 'application/javascript': ['ts','tsx'] },
+        mime: { 'application/javascript': ['ts', 'tsx'] },
         singleRun: true,
-        webpack: require('../../webpack.config.js')().filter(config => config.target !== 'node'), // Test against client bundle, because tests run in a browser
-        webpackMiddleware: { stats: 'errors-only' }
     });
 };
