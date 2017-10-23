@@ -20,8 +20,8 @@ describe('Service: Event Alert Service', () => {
         eventAlertService = eas;
     }));
 
-    describe('Get Home Timeline', () => {
-        it('should return an array of statuses if following people who have posted',
+    describe('Add Event', () => {
+        it('should add an event with an extra details',
             inject([], () => {
                 eventAlertService.getMessage().subscribe(event => {
                     expect(event.eventType).toBe(EventAlertEnum.UPDATE_FOLLOWING);
@@ -29,6 +29,16 @@ describe('Service: Event Alert Service', () => {
                 });
 
                 eventAlertService.addEvent(EventAlertEnum.UPDATE_FOLLOWING, { StatusID: "1" });
+            })
+        );
+
+        it('should add an event without any details',
+            inject([], () => {
+                eventAlertService.getMessage().subscribe(event => {
+                    expect(event.eventType).toBe(EventAlertEnum.UPDATE_FOLLOWING_AND_FOLLOWERS);
+                });
+
+                eventAlertService.addEvent(EventAlertEnum.UPDATE_FOLLOWING_AND_FOLLOWERS);
             })
         );
 

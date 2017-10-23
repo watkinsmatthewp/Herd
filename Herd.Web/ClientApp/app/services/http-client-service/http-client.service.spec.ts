@@ -211,7 +211,7 @@ describe('Service: HttpClient Service', () => {
 
             // Make the request
             let body = { "username": "user", "password": "password" };
-            httpClient.post("api/auth/login", body).subscribe((response) => {
+            httpClient.post("api/auth/login", body, options).subscribe((response) => {
                 expect(response).toBeDefined();
                 expect(response.Data).toBeUndefined();
                 expect(response.User).toBeDefined();
@@ -223,7 +223,7 @@ describe('Service: HttpClient Service', () => {
             // Create a mockedResponse
             const mockResponse = {
                 Success: false,
-                SystemErrors: ["1", "2", "3"],
+                SystemErrors: ["1", "2"],
                 UserErrors: ["5", "6"],
             };
 
@@ -243,6 +243,42 @@ describe('Service: HttpClient Service', () => {
                 expect(error).toBeDefined();
             });
         }));
+    });
+
+    describe('Generate Options', () => {
+        it('should create new headers if none passed in', inject([], () => {
+            // Create a mockedResponse
+            const mockResponse = {
+                Success: true,
+                Data: {
+                    User: {
+                        ID: "1",
+                        firstName: 'Thomas',
+                        lastName: 'Ortiz'
+                    }
+                },
+                SystemErrors: [],
+                UserErrors: [],
+            };
+
+            // If there is an HTTP request intercept it and return the above mockedResponse
+            mockBackend.connections.subscribe((connection: MockConnection) => {
+                connection.mockRespond(new Response(new ResponseOptions({
+                    body: JSON.stringify(mockResponse)
+                })));
+            });
+
+            let options = new RequestOptions();
+
+            // Make the request
+            httpClient.get("api/getUser/1", options).subscribe((response) => {
+                expect(response).toBeDefined();
+                expect(response.Data).toBeUndefined();
+                expect(response.User).toBeDefined();
+                expect(response.User.ID).toBe("1");
+            });
+        }));
+
     });
 
     describe('MapRequest', () => {
