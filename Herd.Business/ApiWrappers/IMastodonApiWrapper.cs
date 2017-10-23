@@ -40,6 +40,8 @@ namespace Herd.Business.ApiWrappers
 
         #region Posts
 
+        Task<MastodonPost> Repost(string postID, bool repost);
+        Task<MastodonPost> Like(string postID, bool like);
         Task AddContextToMastodonPosts(IEnumerable<MastodonPost> mastodonPosts, MastodonPostContextOptions mastodonPostContextOptions = null);
         Task AddContextToMastodonPost(MastodonPost mastodonPost, MastodonPostContextOptions mastodonPostContextOptions = null);
         Task<MastodonPost> GetPost(string postID, MastodonPostContextOptions mastodonPostContextOptions = null);

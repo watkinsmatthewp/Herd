@@ -31,5 +31,7 @@ namespace Herd.Business
         // Mastodon posts
         CommandResult<SearchMastodonPostsCommandResultData> SearchPosts(SearchMastodonPostsCommand searchMastodonPostsCommand);
         CommandResult CreateNewPost(CreateNewMastodonPostCommand createNewPostCommand);
+        CommandResult LikePost(LikeMastodonPostCommand likeCommand);
+        CommandResult RepostPost(RepostMastodonPostCommand repostCommand);
     }
 }
