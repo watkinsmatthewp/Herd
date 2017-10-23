@@ -71,11 +71,68 @@ namespace Herd.Business.UnitTests
                 }
             };
 
-
             // Perform test
             Assert.True(user.Follows("55"));
 
+            // Make user with null Following
+            MastodonUser userNullFollowing = new MastodonUser
+            {
+                MastodonUserId = "15"
+                
+            };
 
+            // Perform null catch test
+            bool passed = false;
+            try
+            {
+                userNullFollowing.Follows("67");
+            } catch
+            {
+                passed = true;
+            }
+
+            Assert.True(passed);
+        }
+
+        [Fact]
+        public void IsFollowedByTest()
+        {
+
+            // Create Mastodon User
+            MastodonUser user = new MastodonUser
+            {
+                MastodonUserId = "12",
+                Followers = new List<MastodonUser>
+                {
+                    new MastodonUser
+                    {
+                        MastodonUserId = "55"
+                    }
+                }
+            };
+
+            // Perform test
+            Assert.True(user.IsFollowedBy("55"));
+
+            // Make user with null Following
+            MastodonUser userNullFollowers = new MastodonUser
+            {
+                MastodonUserId = "15"
+
+            };
+
+            // Perform null catch test
+            bool passed = false;
+            try
+            {
+                userNullFollowers.IsFollowedBy("67");
+            }
+            catch
+            {
+                passed = true;
+            }
+
+            Assert.True(passed);
         }
 
     }
