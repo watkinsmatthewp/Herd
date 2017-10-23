@@ -73,7 +73,7 @@ export class HttpClientService {
      * @param options   Request options arguments
      * @returns         Request options arguments
      */
-    protected generateOptions(options: RequestOptionsArgs = {}): RequestOptionsArgs {
+    protected generateOptions(options: RequestOptionsArgs): RequestOptionsArgs {
         if (!options.headers) {
             options.headers = new Headers();
         }
