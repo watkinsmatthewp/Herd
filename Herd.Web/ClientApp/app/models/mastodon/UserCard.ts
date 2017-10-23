@@ -1,7 +1,4 @@
-﻿import { Account } from './Account';
-import { Relationship } from './Relationship';
-
-export class UserCard {
+﻿export class UserCard {
     FollowersCount: number;
     FollowingCount: number;
     FollowsActiveUser: boolean;

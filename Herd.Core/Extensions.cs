@@ -20,6 +20,14 @@ namespace Herd.Core
             return JsonConvert.SerializeObject(objectToSerialize, indented ? Formatting.Indented : Formatting.None);
         }
 
+        public static void Synchronously(this Task task)
+        {
+            if (!task.IsCompleted)
+            {
+                task.Wait();
+            }
+        }
+
         public static T Synchronously<T>(this Task<T> task)
         {
             if (!task.IsCompleted)
@@ -43,6 +51,8 @@ namespace Herd.Core
         {
             return containingText.IndexOf(searchString, stringComparison) >= 0;
         }
+
+        public static T With<T>(this T obj, Action<T> doWork) => obj.Then(doWork);
 
         public static T Then<T>(this T obj, Action<T> doWork)
         {

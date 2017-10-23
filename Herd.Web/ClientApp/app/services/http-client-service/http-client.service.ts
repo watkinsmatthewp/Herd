@@ -48,7 +48,7 @@ export class HttpClientService {
      * @param value    A value for the key.
      */
     setHeader(key: string, value: string) {
-        this.defaultHeaders.append(key, value);
+        this.defaultHeaders.set(key, value);
     }
 
     /**

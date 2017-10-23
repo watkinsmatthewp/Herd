@@ -1,6 +1,6 @@
 ﻿namespace Herd.Business.Models.Commands
 {
-    public class CreateUserCommand : Command
+    public class CreateHerdUserCommand : Command
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -38,7 +38,7 @@ namespace Herd.Web.Controllers.HerdApi
         }
 
         [HttpPost("new")]
-        public IActionResult NewPost([FromBody] JObject body) => ApiJson(App.CreateNewPost(new CreateNewPostCommand
+        public IActionResult NewPost([FromBody] JObject body) => ApiJson(App.CreateNewPost(new CreateNewMastodonPostCommand
         {
             Message = body["message"].Value<string>(),
             Visibility = (MastodonPostVisibility)body["visibility"].Value<int>(),

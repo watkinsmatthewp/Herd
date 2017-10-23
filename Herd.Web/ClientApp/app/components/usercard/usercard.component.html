@@ -1,4 +1,4 @@
-﻿<card [headerImgSrc]="userCard.MastodonHeaderImageURL">
+﻿<card [fillWidth]="fillWidth" [headerImgSrc]="userCard.MastodonHeaderImageURL">
     
     <card-title>
         <div *ngIf="userCard.MastodonProfileImageURL">
@@ -12,17 +12,44 @@
     </card-title>
     
     <card-content>
-        <div *ngIf="userCard.MastodonShortBio" class="user-bio" [innerHTML]="userCard.MastodonShortBio"></div>
+        <div *ngIf="userCard.MastodonShortBio && showBio" class="user-bio" [innerHTML]="userCard.MastodonShortBio"></div>
     </card-content>
 
-    <card-actions>
+    <card-actions *ngIf="showActions">
         <div class="text-center">
-            <button *ngIf="isFollowing" class="btn btn-primary follow-btn" (mouseenter)="followUnfollowText = 'Unfollow';" (mouseleave)="followUnfollowText = 'Following';" (click)="togglefollow()">
-                {{followUnfollowText}}
-            </button>
-            <button *ngIf="!isFollowing" class="btn btn-secondary not-following-btn" (click)="togglefollow()">
-                Follow
-            </button>
+            <div *ngIf="showFollowButton">
+                <button *ngIf="isFollowing" class="btn btn-primary follow-btn" (mouseenter)="followUnfollowText = 'Unfollow';" (mouseleave)="followUnfollowText = 'Following';" (click)="togglefollow()">
+                    {{followUnfollowText}}
+                </button>
+                <button *ngIf="!isFollowing" class="btn btn-secondary not-following-btn" (click)="togglefollow()">
+                    Follow
+                </button>
+            </div>
+            
+
+            <div *ngIf="showQuickInfo" class="quick-info">
+                <br />
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="btn btn-secondary btn-sm" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '0'}">
+                            <p>Statuses</p>
+                            <p>{{userCard.PostCount}}</p>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="btn btn-secondary btn-sm" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '1'}">
+                            <p>Follows</p>
+                            <p>{{userCard.FollowingCount}}</p>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="btn btn-secondary btn-sm" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '2'}">
+                            <p>Followers</p>
+                            <p>{{userCard.FollowersCount}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </card-actions>
 

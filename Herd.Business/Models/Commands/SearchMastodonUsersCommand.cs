@@ -2,7 +2,6 @@
 {
     public class SearchMastodonUsersCommand : Command
     {
-        public int MaxCount { get; set; } = 30;
         public string UserID { get; set; }
         public string Name { get; set; }
         public string FollowsUserID { get; set; }
@@ -12,6 +11,8 @@
         public bool IncludeFollowing { get; set; }
         public bool IncludeFollowsActiveUser { get; set; }
         public bool IncludeFollowedByActiveUser { get; set; }
+
+        public PagingOptions PagingOptions { get; set; }
 
         public bool IsGlobalSearch => string.IsNullOrWhiteSpace(UserID)
             && string.IsNullOrWhiteSpace(Name)

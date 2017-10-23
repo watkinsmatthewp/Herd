@@ -12,6 +12,8 @@ import { CardTitleComponent } from './card-title.component';
 export class CardComponent implements AfterContentInit {
     @Input()
     public size: string;
+    @Input()
+    public fillWidth: boolean;
 
     @Input()
     public headerImgSrc: string;

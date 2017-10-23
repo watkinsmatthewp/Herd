@@ -8,28 +8,28 @@ namespace Herd.Business
     public interface IHerdApp
     {
         // Basic CRUD
-        CommandResult<GetUserCommandResultData> GetUser(GetUserCommand getUserCommand);
+        CommandResult<GetHerdUserCommandResultData> GetUser(GetHerdUserCommand getUserCommand);
 
         // App registration
         CommandResult<GetRegistrationCommandResultData> GetRegistration(GetRegistrationCommand getRegistrationCommand);
 
         CommandResult<GetRegistrationCommandResultData> GetOrCreateRegistration(GetOrCreateRegistrationCommand getOrCreateRegistrationCommand);
         
-        CommandResult<GetOAuthURLCommandResultData> GetOAuthURL(GetOAuthURLCommand getOAuthUrlCommand);
+        CommandResult<GetMastodonOAuthURLCommandResultData> GetOAuthURL(GetMastodonOAuthURLCommand getOAuthUrlCommand);
 
         // Auth
-        CommandResult<CreateUserCommandResultData> CreateUser(CreateUserCommand createUserCommand);
+        CommandResult<CreateHerdUserCommandResultData> CreateUser(CreateHerdUserCommand createUserCommand);
 
-        CommandResult<LoginUserCommandResultData> LoginUser(LoginUserCommand loginUserCommand);
+        CommandResult<LoginHerdUserCommandResultData> LoginUser(LoginHerdUserCommand loginUserCommand);
 
-        CommandResult<UpdateUserMastodonConnectionCommandResultData> UpdateUserMastodonConnection(UpdateUserMastodonConnectionCommand updateUserMastodonConnectionCommand);
+        CommandResult<UpdateHerdUserMastodonConnectionCommandResultData> UpdateUserMastodonConnection(UpdateHerdUserMastodonConnectionCommand updateUserMastodonConnectionCommand);
 
         // Mastodon users
         CommandResult<SearchMastodonUsersCommandResultData> SearchUsers(SearchMastodonUsersCommand searchMastodonUsersCommand);
-        CommandResult FollowUser(FollowUserCommand followUserCommand);
+        CommandResult FollowUser(FollowMastodonUserCommand followUserCommand);
 
         // Mastodon posts
         CommandResult<SearchMastodonPostsCommandResultData> SearchPosts(SearchMastodonPostsCommand searchMastodonPostsCommand);
-        CommandResult CreateNewPost(CreateNewPostCommand createNewPostCommand);
+        CommandResult CreateNewPost(CreateNewMastodonPostCommand createNewPostCommand);
     }
 }

@@ -16,6 +16,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Herd.Business\Herd.Business.csproj" />
+    <ProjectReference Include="..\Herd.Core\Herd.Core.csproj" />
+    <ProjectReference Include="..\Herd.UnitTestCore\Herd.UnitTestCore.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 
 namespace Herd.Business.Models.CommandResultData
 {
-    public class LoginUserCommandResultData : CommandResultDataObject
+    public class UpdateHerdUserMastodonConnectionCommandResultData : CommandResultDataObject
     {
         public UserAccount User { get; set; }
     }

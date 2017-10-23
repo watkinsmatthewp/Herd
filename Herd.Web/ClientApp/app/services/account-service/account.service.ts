@@ -12,6 +12,23 @@ export class AccountService {
 
     constructor(private httpClient: HttpClientService) { }
 
+
+    search(mastodonUserID: string, name: string, followsMastodonUserID: string, followedByMastodonUserID: string, includeFollowers: boolean,
+        includeFollowing: boolean, includeFollowsActiveUser: boolean, includeFollowedByActiveUser: boolean, max: number = 30) {
+        let queryString = "?mastodonUserID=" + mastodonUserID
+                        + "&name=" + name
+                        + "&followsMastodonUserID=" + followsMastodonUserID
+                        + "&followedByMastodonUserID=" + followedByMastodonUserID
+                        + "&includeFollowers=" + includeFollowers
+                        + "&includeFollowing=" + includeFollowing
+                        + "&includeFollowsActiveUser=" + includeFollowsActiveUser
+                        + "&includeFollowedByActiveUser=" + includeFollowedByActiveUser
+                        + "&max=" + max;
+        return this.httpClient.get('api.mastodon-users/search' + queryString)
+            .map((response) => response.Users as Account);
+
+    }
+
     /**
      * Calls Api to get a user by username
      * @param userID
@@ -39,7 +56,8 @@ export class AccountService {
      * @param userID
      */
     getFollowers(userID: string): Observable<Account[]> {
-        let queryString = "?followsMastodonUserID=" + userID;
+        let queryString = "?followsMastodonUserID=" + userID
+                        + "&includeFollowsActiveUser=" + true;
         return this.httpClient.get('api/mastodon-users/search' + queryString)
             .map(response => response.Users as UserCard[]);
     }
@@ -49,7 +67,8 @@ export class AccountService {
      * @param userID
      */
     getFollowing(userID: string): Observable<Account[]> {
-        let queryString = "?followedByMastodonUserID=" + userID;
+        let queryString = "?followedByMastodonUserID=" + userID
+                        + "&includeFollowedByActiveUser=" + true
         return this.httpClient.get('api/mastodon-users/search' + queryString)
             .map(response => response.Users as UserCard[]);
     }

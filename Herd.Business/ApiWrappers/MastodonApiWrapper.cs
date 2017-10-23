@@ -1,4 +1,7 @@
-﻿using Herd.Business.Models.Entities;
+﻿using Herd.Business.ApiWrappers.MastodonObjectContextOptions;
+using Herd.Business.Extensions;
+using Herd.Business.Models;
+using Herd.Business.Models.Entities;
 using Herd.Core;
 using Herd.Data.Models;
 using Mastonet;
@@ -14,7 +17,7 @@ namespace Herd.Business.ApiWrappers
     {
         #region Public properties
 
-        public string MastodonHostInstance { get; }
+        public string MastodonHostInstance { get; set; }
         public Registration AppRegistration { get; set; }
         public UserMastodonConnectionDetails UserMastodonConnectionDetails { get; set; }
         public const Scope ALL_SCOPES = Scope.Read | Scope.Write | Scope.Follow;
@@ -99,69 +102,76 @@ namespace Herd.Business.ApiWrappers
 
         #region User
 
-        public async Task<MastodonUser> GetActiveUserMastodonAccount(bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false)
+        public async Task<MastodonUser> GetActiveUserMastodonAccount(MastodonUserContextOptions mastodonUserContextOptions = null)
         {
             var mastodonClient = BuildMastodonApiClient();
             var mastodonUser = (await mastodonClient.GetCurrentUser()).ToMastodonUser();
-            await AddContextToMastodonUser(mastodonUser, includeFollowers, includeFollowing, includeIsFollowedByActiveUser, includeFollowsActiveUser);
+            await AddContextToMastodonUser(mastodonUser, mastodonUserContextOptions);
             return mastodonUser;
         }
 
-        public async Task<MastodonUser> GetMastodonAccount(string id, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false)
+        public async Task<MastodonUser> GetMastodonAccount(string id, MastodonUserContextOptions mastodonUserContextOptions = null)
         {
             var mastodonClient = BuildMastodonApiClient();
             var mastodonUser = (await mastodonClient.GetAccount(id.ToLong())).ToMastodonUser();
-            await AddContextToMastodonUser(mastodonUser, includeFollowers, includeFollowing, includeIsFollowedByActiveUser, includeFollowsActiveUser);
+            await AddContextToMastodonUser(mastodonUser, mastodonUserContextOptions);
             return mastodonUser;
         }
 
-        public async Task<IList<MastodonUser>> GetUsersByName(string name, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false, int? limit = 30)
+        public async Task<IList<MastodonUser>> GetUsersByName(string name, MastodonUserContextOptions mastodonUserContextOptions = null, PagingOptions pagingOptions = null)
         {
+            var effectivePagingOptions = pagingOptions ?? new PagingOptions();
             var mastodonClient = BuildMastodonApiClient();
-            var mastodonUsers = (await mastodonClient.SearchAccounts(name, limit)).Select(u => u.ToMastodonUser()).ToList();
-            await AddContextToMastodonUsers(mastodonUsers, includeFollowers, includeFollowing, includeIsFollowedByActiveUser, includeFollowsActiveUser);
+            var mastodonUsersApiTask = mastodonClient.SearchAccounts(name, effectivePagingOptions.Limit);
+            var mastodonUsers = (await mastodonUsersApiTask).Select(u => u.ToMastodonUser()).ToList();
+            await AddContextToMastodonUsers(mastodonUsers, mastodonUserContextOptions);
             return mastodonUsers;
         }
 
-        public async Task<IList<MastodonUser>> GetFollowing(string followerUserID, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false, int? limit = 30)
+        public async Task<IList<MastodonUser>> GetFollowing(string followerUserID, MastodonUserContextOptions mastodonUserContextOptions = null, PagingOptions pagingOptions = null)
         {
+            var effectivePagingOptions = pagingOptions ?? new PagingOptions();
             var mastodonClient = BuildMastodonApiClient();
-            var mastodonUsers = (await mastodonClient.GetAccountFollowing(followerUserID.ToLong(), null, null, limit)).Select(u => u.ToMastodonUser()).ToList();
-            await AddContextToMastodonUsers(mastodonUsers, includeFollowers, includeFollowing, includeIsFollowedByActiveUser, includeFollowsActiveUser);
+            var mastodonUsersApiTask = mastodonClient.GetAccountFollowing(followerUserID.ToLong(), effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
+            var mastodonUsers = (await mastodonUsersApiTask).Select(u => u.ToMastodonUser()).ToList();
+            await AddContextToMastodonUsers(mastodonUsers, mastodonUserContextOptions);
             return mastodonUsers;
         }
 
-        public async Task<IList<MastodonUser>> GetFollowers(string followingUserID, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false, int? limit = 30)
+        public async Task<IList<MastodonUser>> GetFollowers(string followingUserID, MastodonUserContextOptions mastodonUserContextOptions = null, PagingOptions pagingOptions = null)
         {
+            var effectivePagingOptions = pagingOptions ?? new PagingOptions();
             var mastodonClient = BuildMastodonApiClient();
-            var mastodonUsers = (await mastodonClient.GetAccountFollowers(followingUserID.ToLong(), null, null, limit)).Select(u => u.ToMastodonUser()).ToList();
-            await AddContextToMastodonUsers(mastodonUsers, includeFollowers, includeFollowing, includeIsFollowedByActiveUser, includeFollowsActiveUser);
+            var mastodonUsersApiTask = mastodonClient.GetAccountFollowers(followingUserID.ToLong(), effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
+            var mastodonUsers = (await mastodonUsersApiTask).Select(u => u.ToMastodonUser()).ToList();
+            await AddContextToMastodonUsers(mastodonUsers, mastodonUserContextOptions);
             return mastodonUsers;
         }
 
-        public async Task AddContextToMastodonUsers(IEnumerable<MastodonUser> mastodonUsers, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false)
+        public async Task AddContextToMastodonUsers(IEnumerable<MastodonUser> mastodonUsers, MastodonUserContextOptions mastodonUserContextOptions = null)
         {
+            var effectiveMastodonUserContext = mastodonUserContextOptions ?? new MastodonUserContextOptions();
             var mastodonClient = BuildMastodonApiClient();
 
             foreach (var mastodonUser in mastodonUsers)
             {
-                if (includeFollowers)
+                if (effectiveMastodonUserContext.IncludeFollowers)
                 {
                     // Get the follower of this user
                     mastodonUser.Followers = (await mastodonClient.GetAccountFollowers(mastodonUser.MastodonUserId.ToLong()))
                         .Select(u => u.ToMastodonUser().Then(mu => mu.FollowsRelevantUser = true)).ToList();
-                    mastodonUser.IsFollowedByActiveUser = mastodonUser.Followers.Any(f => f.MastodonUserId == UserMastodonConnectionDetails.MastodonUserID);
+                    mastodonUser.IsFollowedByActiveUser = mastodonUser.IsFollowedBy(UserMastodonConnectionDetails.MastodonUserID);
                 }
-                if (includeFollowing)
+                if (effectiveMastodonUserContext.IncludeFollowing)
                 {
                     // Get the users this user us following
                     mastodonUser.Following = (await mastodonClient.GetAccountFollowing(mastodonUser.MastodonUserId.ToLong()))
                         .Select(u => u.ToMastodonUser().Then(mu => mu.IsFollowedByRelevantUser = true)).ToList();
-                    mastodonUser.FollowsActiveUser = mastodonUser.Following.Any(f => f.MastodonUserId == UserMastodonConnectionDetails.MastodonUserID);
+                    mastodonUser.FollowsActiveUser = mastodonUser.Follows(UserMastodonConnectionDetails.MastodonUserID);
                 }
             }
 
-            if ((includeIsFollowedByActiveUser || includeFollowsActiveUser) && (!includeFollowers || !includeFollowing))
+            if ((effectiveMastodonUserContext.IncludeIsFollowedByActiveUser || effectiveMastodonUserContext.IncludeFollowsActiveUser) && (!effectiveMastodonUserContext.IncludeFollowers || !effectiveMastodonUserContext.IncludeFollowing))
             {
                 // We didn't fetch both the full followers and full following lists for the users. But we still need to know
                 // whether these users follow or are followed by the active user. Fortunately we can make a single API call for this.
@@ -175,18 +185,19 @@ namespace Herd.Business.ApiWrappers
             }
         }
 
-        public async Task AddContextToMastodonUser(MastodonUser mastodonUser, bool includeFollowers = false, bool includeFollowing = false, bool includeIsFollowedByActiveUser = false, bool includeFollowsActiveUser = false)
+        public async Task AddContextToMastodonUser(MastodonUser mastodonUser, MastodonUserContextOptions mastodonUserContextOptions = null)
         {
+            var effectiveMastodonUserContext = mastodonUserContextOptions ?? new MastodonUserContextOptions();
             var mastodonClient = BuildMastodonApiClient();
 
-            if (includeFollowers)
+            if (effectiveMastodonUserContext.IncludeFollowers)
             {
                 // Get the follower of this user
                 mastodonUser.Followers = (await mastodonClient.GetAccountFollowers(mastodonUser.MastodonUserId.ToLong()))
                     .Select(u => u.ToMastodonUser().Then(mu => mu.FollowsRelevantUser = true)).ToList();
                 mastodonUser.IsFollowedByActiveUser = mastodonUser.Followers.Any(f => f.MastodonUserId == UserMastodonConnectionDetails.MastodonUserID);
             }
-            if (includeFollowing)
+            if (effectiveMastodonUserContext.IncludeFollowing)
             {
                 // Get the users this user us following
                 mastodonUser.Following = (await mastodonClient.GetAccountFollowing(mastodonUser.MastodonUserId.ToLong()))
@@ -194,7 +205,7 @@ namespace Herd.Business.ApiWrappers
                 mastodonUser.FollowsActiveUser = mastodonUser.Following.Any(f => f.MastodonUserId == UserMastodonConnectionDetails.MastodonUserID);
             }
 
-            if ((includeIsFollowedByActiveUser || includeFollowsActiveUser) && (!mastodonUser.IsFollowedByActiveUser.HasValue || !mastodonUser.FollowsActiveUser.HasValue))
+            if ((effectiveMastodonUserContext.IncludeIsFollowedByActiveUser || effectiveMastodonUserContext.IncludeFollowsActiveUser) && (!mastodonUser.IsFollowedByActiveUser.HasValue || !mastodonUser.FollowsActiveUser.HasValue))
             {
                 // We haven't gotten any follow data, but we still need to know if this user has a relationship with the active user
                 var userRelationships = (await mastodonClient.GetAccountRelationships(mastodonUser.MastodonUserId.ToLong())).ToArray();
@@ -219,60 +230,67 @@ namespace Herd.Business.ApiWrappers
 
         #region Posts
 
-        public async Task AddContextToMastodonPosts(IEnumerable<MastodonPost> mastodonPosts, bool includeAncestors = false, bool includeDescendants = false)
+        public async Task AddContextToMastodonPosts(IEnumerable<MastodonPost> mastodonPosts, MastodonPostContextOptions mastodonPostContextOptions = null)
         {
             foreach (var mastodonPost in mastodonPosts)
             {
-                await AddContextToMastodonPost(mastodonPost, includeAncestors, includeDescendants);
+                await AddContextToMastodonPost(mastodonPost, mastodonPostContextOptions);
             }
         }
 
-        public async Task AddContextToMastodonPost(MastodonPost mastodonPost, bool includeAncestors = false, bool includeDescendants = false)
+        public async Task AddContextToMastodonPost(MastodonPost mastodonPost, MastodonPostContextOptions mastodonPostContextOptions = null)
         {
+            var effectiveMastodonPostContextOptions = mastodonPostContextOptions ?? new MastodonPostContextOptions();
             var mastodonClient = BuildMastodonApiClient();
-            if (includeAncestors || includeDescendants)
+            if (mastodonPostContextOptions.IncludeAncestors || mastodonPostContextOptions.IncludeDescendants)
             {
                 var statusContext = await mastodonClient.GetStatusContext(mastodonPost.Id.ToLong());
-                if (includeAncestors)
+                if (effectiveMastodonPostContextOptions.IncludeAncestors)
                 {
                     mastodonPost.Ancestors = statusContext.Ancestors.Select(s => s.ToPost()).ToList();
                 }
-                if (includeDescendants)
+                if (effectiveMastodonPostContextOptions.IncludeDescendants)
                 {
                     mastodonPost.Descendants = statusContext.Descendants.Select(s => s.ToPost()).ToList();
                 }
             }
         }
 
-        public async Task<MastodonPost> GetPost(string postID, bool includeAncestors = false, bool includeDescendants = false)
+        public async Task<MastodonPost> GetPost(string postID, MastodonPostContextOptions mastodonPostContextOptions = null)
         {
             var mastodonClient = BuildMastodonApiClient();
             var post = (await mastodonClient.GetStatus(postID.ToLong())).ToPost();
-            await AddContextToMastodonPost(post, includeAncestors, includeDescendants);
+            await AddContextToMastodonPost(post, mastodonPostContextOptions);
             return post;
         }
 
-        public async Task<IList<MastodonPost>> GetPostsByAuthorUserID(string authorMastodonUserID, bool includeAncestors = false, bool includeDescendants = false, int? limit = 30)
+        public async Task<IList<MastodonPost>> GetPostsByAuthorUserID(string authorMastodonUserID, MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
         {
+            var effectivePagingOptions = pagingOptions ?? new PagingOptions();
             var mastodonClient = BuildMastodonApiClient();
-            var posts = (await mastodonClient.GetAccountStatuses(authorMastodonUserID.ToLong(), null, null, limit, false, false)).Select(s => s.ToPost()).ToList();
-            await AddContextToMastodonPosts(posts, includeAncestors, includeDescendants);
+            var mastodonPostsApiTask = mastodonClient.GetAccountStatuses(authorMastodonUserID.ToLong(), effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit, false, false);
+            var posts = (await mastodonPostsApiTask).Select(s => s.ToPost()).ToList();
+            await AddContextToMastodonPosts(posts, mastodonPostContextOptions);
             return posts;
         }
 
-        public async Task<IList<MastodonPost>> GetPostsByHashTag(string hashTag, bool includeAncestors = false, bool includeDescendants = false, int? limit = 30)
+        public async Task<IList<MastodonPost>> GetPostsByHashTag(string hashTag, MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
         {
+            var effectivePagingOptions = pagingOptions ?? new PagingOptions();
             var mastodonClient = BuildMastodonApiClient();
-            var posts = (await mastodonClient.GetTagTimeline(hashTag, null, null, limit)).Select(s => s.ToPost()).ToList();
-            await AddContextToMastodonPosts(posts, includeAncestors, includeDescendants);
+            var mastodonPostsApiTask = mastodonClient.GetTagTimeline(hashTag, effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
+            var posts = (await mastodonPostsApiTask).Select(s => s.ToPost()).ToList();
+            await AddContextToMastodonPosts(posts, mastodonPostContextOptions);
             return posts;
         }
 
-        public async Task<IList<MastodonPost>> GetPostsOnTimeline(bool includeAncestors = false, bool includeDescendants = false, int? limit = 30)
+        public async Task<IList<MastodonPost>> GetPostsOnTimeline(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
         {
+            var effectivePagingOptions = pagingOptions ?? new PagingOptions();
             var mastodonClient = BuildMastodonApiClient();
-            var posts = (await mastodonClient.GetHomeTimeline(null, null, limit)).Select(s => s.ToPost()).ToList();
-            await AddContextToMastodonPosts(posts, includeAncestors, includeDescendants);
+            var mastodonPostsApiTask = mastodonClient.GetHomeTimeline(effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
+            var posts = (await mastodonPostsApiTask).Select(s => s.ToPost()).ToList();
+            await AddContextToMastodonPosts(posts, mastodonPostContextOptions);
             return posts;
         }
 

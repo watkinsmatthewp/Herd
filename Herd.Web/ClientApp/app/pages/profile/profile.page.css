@@ -5,11 +5,18 @@
     overflow: hidden;
     position: absolute;
     padding-bottom: 200px;
+    border-radius: 5px;
+    border: 5px solid white;
 }
 
 .header-pic {
     min-width: 100%;
     object-fit: cover;
+}
+
+.profile-image-box {
+    width: 120px;
+    height: 120px;
 }
 
 .profile-pic {
@@ -25,8 +32,15 @@
     z-index: 1;
 }
 
+.pushTop {
+    top: 70px;
+    position: relative;
+    font-size: 100%;
+    z-index: 1;
+}
+
 .info-bar {
-    top: 50px;
+    top: 70px;
     position: relative;
     font-size: 100%;
     z-index: 1;

@@ -3,8 +3,9 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { TabsetComponent } from 'ngx-bootstrap';
 
 
-import { StatusService, TimelineAlertService, AccountService } from "../../services";
-import { Status } from "../../models/mastodon";
+import { StatusService, EventAlertService, AccountService } from "../../services";
+import { EventAlertEnum, Storage } from '../../models';
+import { Status, UserCard } from "../../models/mastodon";
 import { NotificationsService } from "angular2-notifications";
 import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 
@@ -15,18 +16,29 @@ import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 export class HomePage implements OnInit {
     @ViewChild('specificStatusModal') 
     specificStatusModal: BsModalComponent;
-
     @ViewChild('replyStatusModal')
     replyStatusModal: BsModalComponent;
-
     statusId: number;
     specificStatus: Status;
     replyStatus: Status;
+
     loading: boolean = false;
     homeFeed: Status[] = []; // List of posts for the home feed
+    userCard: UserCard;
 
-    constructor(private activatedRoute: ActivatedRoute, private toastService: NotificationsService,
-        private statusService: StatusService, private timelineAlert: TimelineAlertService, private accountService: AccountService) { }
+    constructor(private activatedRoute: ActivatedRoute, private eventAlertService: EventAlertService, private toastService: NotificationsService,
+        private statusService: StatusService, private accountService: AccountService, private localStorage: Storage) { }
+
+    getUserCard() {
+        let currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+        let userID = currentUser.MastodonConnection.MastodonUserID;
+        this.accountService.getUserByID(userID)
+            .map(response => response as UserCard)
+            .subscribe(usercard => {
+                this.userCard = usercard;
+                console.log("getUserCard", usercard);
+            });
+    }
 
     getMostRecentHomeFeed() {
         this.loading = true;
@@ -75,14 +87,22 @@ export class HomePage implements OnInit {
     }
 
     ngOnInit() {
-        this.timelineAlert.getMessage().subscribe(alert => {
-            let statusId: string = alert.statusId;
-            if (alert.message === "Update specific status") {
-                this.updateSpecificStatus(statusId);
-            } else if (alert.message === "Update reply status") {
-                this.updateReplyStatusModal(statusId);
+        this.eventAlertService.getMessage().subscribe(event => {
+            switch (event.eventType) {
+                case EventAlertEnum.UPDATE_SPECIFIC_STATUS: {
+                    let statusID: string = event.statusID;
+                    this.updateSpecificStatus(statusID);
+                    break;
+                }
+                case EventAlertEnum.UPDATE_REPLY_STATUS: {
+                    let statusID: string = event.statusID;
+                    this.updateReplyStatusModal(statusID);
+                    break;
+                }
             }
         });
+
         this.getMostRecentHomeFeed();
+        this.getUserCard();
     }
 }
