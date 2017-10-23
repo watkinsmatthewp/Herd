@@ -45,6 +45,6 @@ module.exports = function (config) {
         autoWatch: true,
         browsers: ['PhantomJS'],
         mime: { 'application/javascript': ['ts', 'tsx'] },
-        singleRun: true,
+        singleRun: false,
     });
 };
