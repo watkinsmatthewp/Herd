@@ -45,7 +45,7 @@ namespace Herd.Business.ApiWrappers
         Task<MastodonPost> GetPost(string postID, MastodonPostContextOptions mastodonPostContextOptions = null);
         Task<IList<MastodonPost>> GetPostsByAuthorUserID(string authorMastodonUserID, MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null);
         Task<IList<MastodonPost>> GetPostsByHashTag(string hashTag, MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null);
-        Task<IList<MastodonPost>> GetPostsOnTimeline(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null);
+        Task<IList<MastodonPost>> GetPostsOnActiveUserTimeline(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null);
         Task<MastodonPost> CreateNewPost(string message, MastodonPostVisibility visibility, string replyStatusId = null, IEnumerable<string> mediaIds = null, bool sensitive = false, string spoilerText = null);
 
         #endregion Timeline Feeds

@@ -391,6 +391,46 @@ namespace Herd.Business.UnitTests
         }
 
         [Fact]
+        public void SearchPostsOnActiveUserTimelineTest()
+        {
+            var mockApiWrapperBuilder = new MockMastodonApiWrapperBuilder
+            {
+                AllowAddContextToMastodonPostMethod = true,
+                AllowAddContextToMastodonPostsMethod = true,
+                AllowGetPostsOnActiveUserTimelineMethod = true,
+                ActiveUserID = "2"
+            };
+
+            mockApiWrapperBuilder.SetupUsers(1, 2, 3, 4);
+            mockApiWrapperBuilder.SetupFollowRelationship(2, 3);
+            mockApiWrapperBuilder.SetupFollowRelationship(2, 4);
+
+            mockApiWrapperBuilder.CreatePost(1, 1);
+            mockApiWrapperBuilder.CreatePost(1, 2);
+            mockApiWrapperBuilder.CreatePost(2, 3);
+            mockApiWrapperBuilder.CreatePost(3, 4);
+            mockApiWrapperBuilder.CreatePost(3, 5);
+            mockApiWrapperBuilder.CreatePost(4, 6);
+
+            var mockMastodonApiWrapper = mockApiWrapperBuilder.BuildMockMastodonApiWrapper();
+
+            var herdApp = new HerdApp(_mockData.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
+
+            var result = herdApp.SearchPosts(new SearchMastodonPostsCommand
+            {
+                OnlyOnlyOnActiveUserTimeline = true
+            });
+
+            Assert.True(result?.Success);
+            Assert.Equal(3, result.Data.Posts.Count);
+            Assert.Equal("4", result.Data.Posts[0].Id);
+            Assert.Equal("5", result.Data.Posts[1].Id);
+            Assert.Equal("6", result.Data.Posts[2].Id);
+
+            mockMastodonApiWrapper.Verify(a => a.GetPostsOnActiveUserTimeline(It.IsAny<MastodonPostContextOptions>(), It.IsAny<PagingOptions>()), Times.Once());
+        }
+
+        [Fact]
         public void CreateNewPostTest()
         {
             _mockMastodonApiWrapper

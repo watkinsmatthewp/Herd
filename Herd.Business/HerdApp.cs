@@ -357,7 +357,7 @@ namespace Herd.Business
 
         private Task<Dictionary<string, MastodonPost>> FilterByOnActiveUserTimeline(Dictionary<string, MastodonPost> postSet1)
         {
-            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsOnTimeline(), p => p.Id);
+            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsOnActiveUserTimeline(), p => p.Id);
         }
 
         private Task<Dictionary<string, MastodonPost>> FilterByHashTag(Dictionary<string, MastodonPost> postSet1, string hashTag)

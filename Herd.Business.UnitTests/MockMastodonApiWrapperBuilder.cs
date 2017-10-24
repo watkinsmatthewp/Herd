@@ -36,6 +36,7 @@ namespace Herd.Business.UnitTests
         public bool AllowGetPostMethod { get; set; }
         public bool AllowGetPostsByAuthorUserIdMethod { get; set; }
         public bool AllowGetPostsByHashTagMethod { get; set; }
+        public bool AllowGetPostsOnActiveUserTimelineMethod { get; set; }
 
         public Mock<IMastodonApiWrapper> BuildMockMastodonApiWrapper()
         {
@@ -115,6 +116,12 @@ namespace Herd.Business.UnitTests
                 mockMastodonApiWrapper
                     .Setup(a => a.GetPostsByHashTag(It.IsAny<string>(), It.IsAny<MastodonPostContextOptions>(), It.IsAny<PagingOptions>()))
                     .Returns<string, MastodonPostContextOptions, PagingOptions>(GetPostsByHashTag);
+            }
+            if (AllowGetPostsOnActiveUserTimelineMethod)
+            {
+                mockMastodonApiWrapper
+                    .Setup(a => a.GetPostsOnActiveUserTimeline(It.IsAny<MastodonPostContextOptions>(), It.IsAny<PagingOptions>()))
+                    .Returns<MastodonPostContextOptions, PagingOptions>(GetPostsOnTimeline);
             }
 
             return mockMastodonApiWrapper;
@@ -318,6 +325,14 @@ namespace Herd.Business.UnitTests
         async Task<IList<MastodonPost>> GetPostsByHashTag(string hashTag, MastodonPostContextOptions mastodonPostContextOptions, PagingOptions pagingOptions)
         {
             var posts = _postsAndAuthors.Keys.Select(BuildPost).Where(p => p.Content.Contains(hashTag, StringComparison.OrdinalIgnoreCase)).ToArray();
+            await AddContextToMastodonPosts(posts, mastodonPostContextOptions);
+            return posts;
+        }
+
+        async Task<IList<MastodonPost>> GetPostsOnTimeline(MastodonPostContextOptions mastodonPostContextOptions, PagingOptions pagingOptions)
+        {
+            var authorUserIDs = GetFollowingUserIDs(ActiveUserID).ToHashSet();
+            var posts = _postsAndAuthors.Where(p => authorUserIDs.Contains(p.Value)).Select(p => BuildPost(p.Key)).ToArray();
             await AddContextToMastodonPosts(posts, mastodonPostContextOptions);
             return posts;
         }

@@ -285,7 +285,7 @@ namespace Herd.Business.ApiWrappers
             return posts;
         }
 
-        public async Task<IList<MastodonPost>> GetPostsOnTimeline(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
+        public async Task<IList<MastodonPost>> GetPostsOnActiveUserTimeline(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
         {
             var effectivePagingOptions = pagingOptions ?? new PagingOptions();
             var mastodonClient = BuildMastodonApiClient();
