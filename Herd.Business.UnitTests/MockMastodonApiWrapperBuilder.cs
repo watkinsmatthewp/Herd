@@ -34,6 +34,7 @@ namespace Herd.Business.UnitTests
         public bool AllowAddContextToMastodonPostMethod { get; set; }
         public bool AllowAddContextToMastodonPostsMethod { get; set; }
         public bool AllowGetPostMethod { get; set; }
+        public bool AllowGetPostsByAuthorUserIdMethod { get; set; }
 
         #region Users
 
@@ -129,6 +130,12 @@ namespace Herd.Business.UnitTests
                 mockMastodonApiWrapper
                     .Setup(a => a.GetPost(It.IsAny<string>(), It.IsAny<MastodonPostContextOptions>()))
                     .Returns<string, MastodonPostContextOptions>(GetPost);
+            }
+            if (AllowGetPostsByAuthorUserIdMethod)
+            {
+                mockMastodonApiWrapper
+                    .Setup(a => a.GetPostsByAuthorUserID(It.IsAny<string>(), It.IsAny<MastodonPostContextOptions>(), It.IsAny<PagingOptions>()))
+                    .Returns<string, MastodonPostContextOptions, PagingOptions>(GetPostsByAuthorUserID);
             }
 
             return mockMastodonApiWrapper;
@@ -265,13 +272,6 @@ namespace Herd.Business.UnitTests
 
         #region Posts
 
-        async Task<MastodonPost> GetPost(string postID, MastodonPostContextOptions mastodonPostContextOptions)
-        {
-            var post = BuildPost(postID);
-            await AddContextToMastodonPost(post, mastodonPostContextOptions);
-            return post;
-        }
-
         async Task AddContextToMastodonPosts(IEnumerable<MastodonPost> posts, MastodonPostContextOptions mastodonPostContextOptions)
         {
             foreach (var post in posts)
@@ -292,6 +292,23 @@ namespace Herd.Business.UnitTests
                 post.Descendants = GetDescendantPostID(post.Id).Select(BuildPost).ToList();
             }
             return Task.CompletedTask;
+        }
+
+        async Task<MastodonPost> GetPost(string postID, MastodonPostContextOptions mastodonPostContextOptions)
+        {
+            var post = BuildPost(postID);
+            await AddContextToMastodonPost(post, mastodonPostContextOptions);
+            return post;
+        }
+
+        async Task<IList<MastodonPost>> GetPostsByAuthorUserID(string authorUserID, MastodonPostContextOptions mastodonPostContextOptions, PagingOptions pagingOptions)
+        {
+            var posts = _postsAndAuthors.Where(p => p.Value == authorUserID).Select(p => BuildPost(p.Key)).ToArray();
+            foreach (var post in posts)
+            {
+                await AddContextToMastodonPost(post, mastodonPostContextOptions);
+            }
+            return posts;
         }
 
         IEnumerable<string> GetAncestorPostIDs(string targetPostID)

@@ -324,6 +324,40 @@ namespace Herd.Business.UnitTests
             mockMastodonApiWrapper.Verify(a => a.GetPost(It.IsAny<string>(), It.IsAny<MastodonPostContextOptions>()), Times.Once());
         }
 
+
+        [Fact]
+        public void SearchPostsByAuthorUserIdTest()
+        {
+            var mockApiWrapperBuilder = new MockMastodonApiWrapperBuilder
+            {
+                AllowAddContextToMastodonPostMethod = true,
+                AllowAddContextToMastodonPostsMethod = true,
+                AllowGetPostsByAuthorUserIdMethod = true,
+                ActiveUserID = "2"
+            };
+
+            mockApiWrapperBuilder.SetupUsers(1, 2);
+            mockApiWrapperBuilder.CreatePost(1, 1);
+            mockApiWrapperBuilder.CreatePost(1, 2);
+            mockApiWrapperBuilder.CreatePost(2, 3);
+
+            var mockMastodonApiWrapper = mockApiWrapperBuilder.BuildMockMastodonApiWrapper();
+
+            var herdApp = new HerdApp(_mockData.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
+
+            var result = herdApp.SearchPosts(new SearchMastodonPostsCommand
+            {
+                ByAuthorMastodonUserID = "1"
+            });
+
+            Assert.True(result?.Success);
+            Assert.Equal(2, result.Data.Posts.Count);
+            Assert.Equal("1", result.Data.Posts[0].Id);
+            Assert.Equal("2", result.Data.Posts[1].Id);
+
+            mockMastodonApiWrapper.Verify(a => a.GetPostsByAuthorUserID(It.IsAny<string>(), It.IsAny<MastodonPostContextOptions>(), It.IsAny<PagingOptions>()), Times.Once());
+        }
+
         [Fact]
         public void CreateNewPostTest()
         {
