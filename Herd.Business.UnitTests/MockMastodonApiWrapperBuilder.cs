@@ -35,34 +35,7 @@ namespace Herd.Business.UnitTests
         public bool AllowAddContextToMastodonPostsMethod { get; set; }
         public bool AllowGetPostMethod { get; set; }
         public bool AllowGetPostsByAuthorUserIdMethod { get; set; }
-
-        #region Users
-
-        public void SetupUsers(params int[] userIDs)
-        {
-            SetupUsers(userIDs.Select(id => id.ToString()).ToArray());
-        }
-
-        public void SetupUsers(params string[] userIDs)
-        {
-            foreach (var userID in userIDs)
-            {
-                if (!_followRelationships.ContainsKey(userID))
-                {
-                    _followRelationships[userID] = new HashSet<string>();
-                }
-            }
-        }
-
-        public void SetupFollowRelationship(int followerUserID, int targetUserID)
-        {
-            SetupFollowRelationship(followerUserID.ToString(), targetUserID.ToString());
-        }
-
-        public void SetupFollowRelationship(string followerUserID, string targetUserID)
-        {
-            _followRelationships[followerUserID].Add(targetUserID);
-        }
+        public bool AllowGetPostsByHashTagMethod { get; set; }
 
         public Mock<IMastodonApiWrapper> BuildMockMastodonApiWrapper()
         {
@@ -137,8 +110,42 @@ namespace Herd.Business.UnitTests
                     .Setup(a => a.GetPostsByAuthorUserID(It.IsAny<string>(), It.IsAny<MastodonPostContextOptions>(), It.IsAny<PagingOptions>()))
                     .Returns<string, MastodonPostContextOptions, PagingOptions>(GetPostsByAuthorUserID);
             }
+            if (AllowGetPostsByHashTagMethod)
+            {
+                mockMastodonApiWrapper
+                    .Setup(a => a.GetPostsByHashTag(It.IsAny<string>(), It.IsAny<MastodonPostContextOptions>(), It.IsAny<PagingOptions>()))
+                    .Returns<string, MastodonPostContextOptions, PagingOptions>(GetPostsByHashTag);
+            }
 
             return mockMastodonApiWrapper;
+        }
+
+        #region Users
+
+        public void SetupUsers(params int[] userIDs)
+        {
+            SetupUsers(userIDs.Select(id => id.ToString()).ToArray());
+        }
+
+        public void SetupUsers(params string[] userIDs)
+        {
+            foreach (var userID in userIDs)
+            {
+                if (!_followRelationships.ContainsKey(userID))
+                {
+                    _followRelationships[userID] = new HashSet<string>();
+                }
+            }
+        }
+
+        public void SetupFollowRelationship(int followerUserID, int targetUserID)
+        {
+            SetupFollowRelationship(followerUserID.ToString(), targetUserID.ToString());
+        }
+
+        public void SetupFollowRelationship(string followerUserID, string targetUserID)
+        {
+            _followRelationships[followerUserID].Add(targetUserID);
         }
 
         #endregion
@@ -304,10 +311,14 @@ namespace Herd.Business.UnitTests
         async Task<IList<MastodonPost>> GetPostsByAuthorUserID(string authorUserID, MastodonPostContextOptions mastodonPostContextOptions, PagingOptions pagingOptions)
         {
             var posts = _postsAndAuthors.Where(p => p.Value == authorUserID).Select(p => BuildPost(p.Key)).ToArray();
-            foreach (var post in posts)
-            {
-                await AddContextToMastodonPost(post, mastodonPostContextOptions);
-            }
+            await AddContextToMastodonPosts(posts, mastodonPostContextOptions);
+            return posts;
+        }
+
+        async Task<IList<MastodonPost>> GetPostsByHashTag(string hashTag, MastodonPostContextOptions mastodonPostContextOptions, PagingOptions pagingOptions)
+        {
+            var posts = _postsAndAuthors.Keys.Select(BuildPost).Where(p => p.Content.Contains(hashTag, StringComparison.OrdinalIgnoreCase)).ToArray();
+            await AddContextToMastodonPosts(posts, mastodonPostContextOptions);
             return posts;
         }
 
@@ -347,7 +358,7 @@ namespace Herd.Business.UnitTests
             return new MastodonPost
             {
                 Author = BuildUser(_postsAndAuthors[postID]),
-                Content = $"Content for post {postID}",
+                Content = $"Content for #post_{postID}",
                 CreatedOnUTC = DateTime.UtcNow,
                 Id = postID,
                 InReplyToPostId = _postParents[postID],
