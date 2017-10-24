@@ -12,12 +12,16 @@ using System.Threading.Tasks;
 
 namespace Herd.Business.UnitTests
 {
-    public class SearchUsersMockMastodonApiWrapperBuilder
+    public class MockMastodonApiWrapperBuilder
     {
-        private Dictionary<string, HashSet<string>> _followRelationships = new Dictionary<string, HashSet<string>>();
+        Dictionary<string, HashSet<string>> _followRelationships = new Dictionary<string, HashSet<string>>();
+        Dictionary<string, string> _postsAndAuthors = new Dictionary<string, string>();
+        Dictionary<string, string> _postParents = new Dictionary<string, string>();
+        Dictionary<string, HashSet<string>> _postReplies = new Dictionary<string, HashSet<string>>();
 
         public string ActiveUserID { get; set; }
 
+        // Users
         public bool AllowAddContextToMastodonUserMethod { get; set; }
         public bool AllowAddContextToMastodonUsersMethod { get; set; }
         public bool AllowGetUsersByNameMethod { get; set; }
@@ -25,6 +29,13 @@ namespace Herd.Business.UnitTests
         public bool AllowGetMastodonAccountMethod { get; set; }
         public bool AllowGetFollowingMethod { get; set; }
         public bool AllowGetFollowersMethod { get; set; }
+
+        // Posts
+        public bool AllowAddContextToMastodonPostMethod { get; set; }
+        public bool AllowAddContextToMastodonPostsMethod { get; set; }
+        public bool AllowGetPostMethod { get; set; }
+
+        #region Users
 
         public void SetupUsers(params int[] userIDs)
         {
@@ -55,6 +66,8 @@ namespace Herd.Business.UnitTests
         public Mock<IMastodonApiWrapper> BuildMockMastodonApiWrapper()
         {
             var mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
+
+            // Users
             if (AllowAddContextToMastodonUserMethod)
             {
                 mockMastodonApiWrapper
@@ -98,10 +111,54 @@ namespace Herd.Business.UnitTests
                     .Returns<string, MastodonUserContextOptions, PagingOptions>(GetFollowers);
             }
 
+            // Posts
+            if (AllowAddContextToMastodonPostMethod)
+            {
+                mockMastodonApiWrapper
+                    .Setup(a => a.AddContextToMastodonPost(It.IsAny<MastodonPost>(), It.IsAny<MastodonPostContextOptions>()))
+                    .Returns<MastodonPost, MastodonPostContextOptions>(AddContextToMastodonPost);
+            }
+            if (AllowAddContextToMastodonPostsMethod)
+            {
+                mockMastodonApiWrapper
+                    .Setup(a => a.AddContextToMastodonPosts(It.IsAny<IEnumerable<MastodonPost>>(), It.IsAny<MastodonPostContextOptions>()))
+                    .Returns<IEnumerable<MastodonPost>, MastodonPostContextOptions>(AddContextToMastodonPosts);
+            }
+            if (AllowGetPostMethod)
+            {
+                mockMastodonApiWrapper
+                    .Setup(a => a.GetPost(It.IsAny<string>(), It.IsAny<MastodonPostContextOptions>()))
+                    .Returns<string, MastodonPostContextOptions>(GetPost);
+            }
+
             return mockMastodonApiWrapper;
         }
 
+        #endregion
+
+        #region Posts
+
+        public void CreatePost(int authorUserID, int postID, int? inReplyToPostID = null)
+        {
+            CreatePost(authorUserID.ToString(), postID.ToString(), inReplyToPostID?.ToString());
+        }
+
+        public void CreatePost(string authorUserID, string postID, string inReplyToPostID = null)
+        {
+            _postsAndAuthors[postID] = authorUserID;
+            _postParents[postID] = inReplyToPostID;
+            _postReplies[postID] = new HashSet<string>();
+            if (!string.IsNullOrWhiteSpace(inReplyToPostID))
+            {
+                _postReplies[inReplyToPostID].Add(postID);
+            }
+        }
+
+        #endregion
+
         #region Private Helpers
+
+        #region Users
 
         private Task AddContextToMastodonUser(MastodonUser mastodonUser, MastodonUserContextOptions mastodonUserContextOptions)
         {
@@ -203,6 +260,91 @@ namespace Herd.Business.UnitTests
         {
             return _followRelationships[followerUserID];
         }
+
+        #endregion
+
+        #region Posts
+
+        async Task<MastodonPost> GetPost(string postID, MastodonPostContextOptions mastodonPostContextOptions)
+        {
+            var post = BuildPost(postID);
+            await AddContextToMastodonPost(post, mastodonPostContextOptions);
+            return post;
+        }
+
+        async Task AddContextToMastodonPosts(IEnumerable<MastodonPost> posts, MastodonPostContextOptions mastodonPostContextOptions)
+        {
+            foreach (var post in posts)
+            {
+                await AddContextToMastodonPost(post, mastodonPostContextOptions);
+            }
+        }
+
+        Task AddContextToMastodonPost(MastodonPost post, MastodonPostContextOptions mastodonPostContextOptions)
+        {
+            var effectiveMastodonPostContextOptions = mastodonPostContextOptions ?? new MastodonPostContextOptions();
+            if (effectiveMastodonPostContextOptions.IncludeAncestors)
+            {
+                post.Ancestors = GetAncestorPostIDs(post.Id).Select(BuildPost).ToList();
+            }
+            if (effectiveMastodonPostContextOptions.IncludeDescendants)
+            {
+                post.Descendants = GetDescendantPostID(post.Id).Select(BuildPost).ToList();
+            }
+            return Task.CompletedTask;
+        }
+
+        IEnumerable<string> GetAncestorPostIDs(string targetPostID)
+        {
+            var parentPostID = _postParents[targetPostID];
+            if (string.IsNullOrWhiteSpace(parentPostID))
+            {
+                yield return null;
+            }
+
+            yield return parentPostID;
+            foreach (var ancestorPostID in GetAncestorPostIDs(parentPostID))
+            {
+                yield return ancestorPostID;
+            }
+        }
+
+        IEnumerable<string> GetDescendantPostID(string targetPostID)
+        {
+            foreach (var replyPostID in _postReplies[targetPostID])
+            {
+                yield return replyPostID;
+            }
+            foreach (var replyPostID in _postReplies[targetPostID])
+            {
+                foreach (var descendantIdOfReplyPost in GetDescendantPostID(replyPostID))
+                {
+                    yield return descendantIdOfReplyPost;
+                }
+            }
+        }
+
+        MastodonPost BuildPost(string postID)
+        {
+            var postIdInt = int.Parse(postID);
+            return new MastodonPost
+            {
+                Author = BuildUser(_postsAndAuthors[postID]),
+                Content = $"Content for post {postID}",
+                CreatedOnUTC = DateTime.UtcNow,
+                Id = postID,
+                InReplyToPostId = _postParents[postID],
+                FavouritesCount = postIdInt,
+                IsFavourited = postIdInt % 3 == 0,
+                IsReblogged = postIdInt % 5 == 0,
+                IsSensitive = postIdInt % 10 == 0,
+                ReblogCount = postIdInt % 5 == 0 ? (postIdInt / 5) : 0,
+                SpoilerText = postIdInt % 10 == 0 ? $"Spoiler text for post {postID}" : null,
+                Visibility = (MastodonPostVisibility)(postIdInt % 4)
+            };
+        }
+
+        #endregion
 
         #endregion
     }
