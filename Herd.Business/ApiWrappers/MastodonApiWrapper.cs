@@ -5,7 +5,6 @@ using Herd.Business.Models.Entities;
 using Herd.Core;
 using Herd.Data.Models;
 using Mastonet;
-using Mastonet.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -96,9 +95,9 @@ namespace Herd.Business.ApiWrappers
                 : new AuthenticationClient(AppRegistration.ToMastodonAppRegistration());
         }
 
-        #endregion Auth - Private mehtods
+        #endregion Auth - Private methods
 
-        #endregion Auth Api
+        #endregion Auth
 
         #region User
 
@@ -216,14 +215,14 @@ namespace Herd.Business.ApiWrappers
 
         public async Task<MastodonRelationship> Follow(string userID, bool followUser)
         {
-            if(followUser)
+            if (followUser)
             {
                 return (await BuildMastodonApiClient().Follow(userID.ToLong())).ToMastodonRelationship();
-            } else
+            }
+            else
             {
                 return (await BuildMastodonApiClient().Unfollow(userID.ToLong())).ToMastodonRelationship();
             }
-            
         }
 
         #endregion User
@@ -241,7 +240,8 @@ namespace Herd.Business.ApiWrappers
             if (repost)
             {
                 return (await BuildMastodonApiClient().Reblog(postID.ToLong())).ToPost();
-            } else
+            }
+            else
             {
                 return (await BuildMastodonApiClient().Unreblog(postID.ToLong())).ToPost();
             }
@@ -258,7 +258,8 @@ namespace Herd.Business.ApiWrappers
             if (like)
             {
                 return (await BuildMastodonApiClient().Favourite(postID.ToLong())).ToPost();
-            } else
+            }
+            else
             {
                 return (await BuildMastodonApiClient().Unfavourite(postID.ToLong())).ToPost();
             }
@@ -276,7 +277,7 @@ namespace Herd.Business.ApiWrappers
         {
             var effectiveMastodonPostContextOptions = mastodonPostContextOptions ?? new MastodonPostContextOptions();
             var mastodonClient = BuildMastodonApiClient();
-            
+
             if (effectiveMastodonPostContextOptions.IncludeAncestors || effectiveMastodonPostContextOptions.IncludeDescendants)
             {
                 var statusContext = await mastodonClient.GetStatusContext(mastodonPost.Id.ToLong());

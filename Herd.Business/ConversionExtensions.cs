@@ -1,5 +1,5 @@
-﻿using Herd.Business.Models.Entities;
-using Herd.Business.ApiWrappers;
+﻿using Herd.Business.ApiWrappers;
+using Herd.Business.Models.Entities;
 using Herd.Data.Models;
 using Mastonet;
 using Mastonet.Entities;
@@ -133,6 +133,6 @@ namespace Herd.Business
 
         public static long? ToNullableLong(this string s) => string.IsNullOrWhiteSpace(s) ? null as long? : s.ToLong();
 
-        #endregion
+        #endregion General
     }
 }

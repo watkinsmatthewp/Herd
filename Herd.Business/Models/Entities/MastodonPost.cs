@@ -7,6 +7,7 @@ namespace Herd.Business.Models.Entities
     {
         // Core properties
         public MastodonUser Author { get; set; }
+
         public string Content { get; set; }
         public DateTime CreatedOnUTC { get; set; }
         public int FavouritesCount { get; set; }
@@ -21,6 +22,7 @@ namespace Herd.Business.Models.Entities
 
         // Extra "context" properties
         public List<MastodonPost> Ancestors { get; set; }
+
         public List<MastodonPost> Descendants { get; set; }
     }
 }

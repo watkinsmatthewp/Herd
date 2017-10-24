@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Herd.Business.ApiWrappers.MastodonObjectContextOptions
+﻿namespace Herd.Business.ApiWrappers.MastodonObjectContextOptions
 {
     public class MastodonUserContextOptions
     {

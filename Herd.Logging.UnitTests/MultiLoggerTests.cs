@@ -1,10 +1,8 @@
 ﻿using Moq;
-using Herd.Logging;
-using Pose;
 using System;
-using Xunit;
 using System.Collections.Generic;
 using System.IO;
+using Xunit;
 
 namespace Herd.Logging.UnitTests
 {
@@ -76,17 +74,18 @@ namespace Herd.Logging.UnitTests
             // Exception should be caught and process continue
             multiLogger.Log(id, logLevel, message, dict);
 
-            
             // Assert
             mockConsoleLogger.Verify(mc => mc.Log(id, logLevel, message, dict), Times.Once());
             mockFileLogger.Verify(mc => mc.Log(id, logLevel, message, dict), Times.Once());
         }
 
         #region Private
+
         public class OutputHandler
         {
             public string FileOutput { get; set; } = string.Empty;
             public string ConsoleOutput { get; set; } = string.Empty;
+
             public void AddFileOutput(string output)
             {
                 this.FileOutput += output;
@@ -97,6 +96,8 @@ namespace Herd.Logging.UnitTests
                 this.ConsoleOutput += output;
             }
         }
-        #endregion Private  
+
+        #endregion Private
+
     }
 }

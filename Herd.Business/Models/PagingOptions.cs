@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Herd.Business.Models
+﻿namespace Herd.Business.Models
 {
     public class PagingOptions
     {

@@ -1,32 +1,20 @@
-﻿using Herd.Business.ApiWrappers;
-using Herd.Business.ApiWrappers.MastodonObjectContextOptions;
-using Herd.Business.Extensions;
-using Herd.Business.Models;
-using Herd.Business.Models.Commands;
+﻿using Herd.Business.Extensions;
 using Herd.Business.Models.Entities;
 using Herd.Core;
 using Herd.Data.Models;
-using Herd.Data.Providers;
-using Herd.Logging;
-using Herd.UnitTestCore;
-using Mastonet.Entities;
-using Moq;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Herd.Business.UnitTests
 {
     public class BusinessEntityExtensionsTests
     {
-
         private static Random _saltGenerator = new Random(Guid.NewGuid().GetHashCode());
 
         [Fact]
         public void PasswordIsTest()
         {
-
             var saltKey = _saltGenerator.Next();
 
             // Create user
@@ -53,11 +41,9 @@ namespace Herd.Business.UnitTests
             Assert.True(user.PasswordIs("password"));
         }
 
-
         [Fact]
         public void FollowsTest()
         {
-
             // Create Mastodon User
             MastodonUser user = new MastodonUser
             {
@@ -78,7 +64,6 @@ namespace Herd.Business.UnitTests
             MastodonUser userNullFollowing = new MastodonUser
             {
                 MastodonUserId = "15"
-                
             };
 
             // Perform null catch test
@@ -86,7 +71,8 @@ namespace Herd.Business.UnitTests
             try
             {
                 userNullFollowing.Follows("67");
-            } catch
+            }
+            catch
             {
                 passed = true;
             }
@@ -97,7 +83,6 @@ namespace Herd.Business.UnitTests
         [Fact]
         public void IsFollowedByTest()
         {
-
             // Create Mastodon User
             MastodonUser user = new MastodonUser
             {
@@ -118,7 +103,6 @@ namespace Herd.Business.UnitTests
             MastodonUser userNullFollowers = new MastodonUser
             {
                 MastodonUserId = "15"
-
             };
 
             // Perform null catch test
@@ -134,6 +118,5 @@ namespace Herd.Business.UnitTests
 
             Assert.True(passed);
         }
-
     }
 }

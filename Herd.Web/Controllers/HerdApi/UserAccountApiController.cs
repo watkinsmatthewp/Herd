@@ -1,5 +1,4 @@
 ﻿using Herd.Business.Models.Commands;
-using Herd.Business.Models.Entities;
 using Herd.Data.Models;
 using Herd.Web.Code;
 using Herd.Web.CustomAttributes;
@@ -61,7 +60,7 @@ namespace Herd.Web.Controllers.HerdApi
             await this.ClearActiveUserFromSession();
             return Ok();
         }
-        
+
         #region Private helpers
 
         private UserAccount ClearUnnecessaryOrSensitiveData(UserAccount userAccount) => new UserAccount

@@ -1,20 +1,20 @@
-﻿using Herd.Business.Models;
-using Herd.Business.ApiWrappers;
+﻿using Herd.Business.ApiWrappers;
+using Herd.Business.ApiWrappers.MastodonObjectContextOptions;
+using Herd.Business.Extensions;
+using Herd.Business.Models;
 using Herd.Business.Models.CommandResultData;
 using Herd.Business.Models.Commands;
 using Herd.Business.Models.Entities;
 using Herd.Core;
+using Herd.Core.Errors;
+using Herd.Core.Exceptions;
 using Herd.Data.Models;
 using Herd.Data.Providers;
 using Herd.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Herd.Core.Exceptions;
-using Herd.Core.Errors;
 using System.Threading.Tasks;
-using Herd.Business.Extensions;
-using Herd.Business.ApiWrappers.MastodonObjectContextOptions;
 
 namespace Herd.Business
 {
@@ -169,7 +169,7 @@ namespace Herd.Business
                 };
             });
         }
-        
+
         #endregion Users
 
         #region Mastodon Users
@@ -214,7 +214,7 @@ namespace Herd.Business
                 _mastodonApiWrapper.Like(likeCommand.PostID, likeCommand.Like).Synchronously();
             });
         }
-        
+
         /// <summary>
         /// Processes command to repost a post
         /// </summary>
@@ -259,11 +259,11 @@ namespace Herd.Business
             });
         }
 
-        #endregion
+        #endregion Mastodon Posts
 
         #region Private helpers
 
-        #region Mastodon Users 
+        #region Mastodon Users
 
         private async Task<IList<MastodonUser>> GetUsers(SearchMastodonUsersCommand searchMastodonUsersCommand)
         {
@@ -327,7 +327,7 @@ namespace Herd.Business
             return Filter(userSet1, () => _mastodonApiWrapper.GetFollowers(followedUserID, null, pagingOptions), u => u.MastodonUserId);
         }
 
-        #endregion
+        #endregion Mastodon Users
 
         #region Mastodon Posts
 
@@ -391,7 +391,7 @@ namespace Herd.Business
             return Filter(postSet1, () => _mastodonApiWrapper.GetPostsByHashTag(hashTag), p => p.Id);
         }
 
-        #endregion
+        #endregion Mastodon Posts
 
         #region Generic
 
@@ -444,7 +444,7 @@ namespace Herd.Business
             return set.ToDictionary(getID, u => u);
         }
 
-        #endregion
+        #endregion Generic
 
         #endregion Private helpers
     }

@@ -1,9 +1,7 @@
 ﻿using Herd.Business.Models.Entities;
 using Herd.Data.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Herd.Business.Extensions
 {

@@ -6,6 +6,7 @@ namespace Herd.Business.Models.Entities
     {
         // Core properties
         public string MastodonUserId { get; set; }
+
         public string MastodonUserName { get; set; }
         public string MastodonDisplayName { get; set; }
         public string MastodonProfileImageURL { get; set; }
@@ -17,6 +18,7 @@ namespace Herd.Business.Models.Entities
 
         // Extra "context" properties
         public bool? FollowsRelevantUser { get; set; }
+
         public bool? IsFollowedByRelevantUser { get; set; }
         public bool? FollowsActiveUser { get; set; }
         public bool? IsFollowedByActiveUser { get; set; }

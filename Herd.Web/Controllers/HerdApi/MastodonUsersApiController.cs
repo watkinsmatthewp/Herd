@@ -1,9 +1,7 @@
-﻿using Herd.Business;
-using Herd.Business.Models;
+﻿using Herd.Business.Models;
 using Herd.Business.Models.Commands;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
-using System.Threading.Tasks;
 
 namespace Herd.Web.Controllers.HerdApi
 {

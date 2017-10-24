@@ -8,7 +8,6 @@ using Herd.Data.Models;
 using Herd.Data.Providers;
 using Herd.Logging;
 using Herd.UnitTestCore;
-using Mastonet.Entities;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -20,9 +19,9 @@ namespace Herd.Business.UnitTests
 {
     public class HerdAppTests
     {
-        Mock<IDataProvider> _mockData = new Mock<IDataProvider>();
-        Mock<IMastodonApiWrapper> _mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
-        Mock<ILogger> _mockLogger = new Mock<ILogger>();
+        private Mock<IDataProvider> _mockData = new Mock<IDataProvider>();
+        private Mock<IMastodonApiWrapper> _mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
+        private Mock<ILogger> _mockLogger = new Mock<ILogger>();
 
         #region General
 
@@ -40,7 +39,7 @@ namespace Herd.Business.UnitTests
             Assert.Contains(new NullReferenceException().Message, result.SystemErrors.First().Message);
         }
 
-        #endregion
+        #endregion General
 
         #region App Registration
 
@@ -154,7 +153,7 @@ namespace Herd.Business.UnitTests
             _mockMastodonApiWrapper.Verify(a => a.GetOAuthUrl("https://SentURL"), Times.Once());
         }
 
-        #endregion
+        #endregion App Registration
 
         #region Mastodon Users
 
@@ -309,7 +308,7 @@ namespace Herd.Business.UnitTests
             mockMastodonApiWrapper.Verify(a => a.GetFollowers(It.IsAny<string>(), It.IsAny<MastodonUserContextOptions>(), It.IsAny<PagingOptions>()), Times.Once());
         }
 
-        #endregion
+        #endregion Mastodon Users
 
         #region Mastodon Posts
 
@@ -343,7 +342,6 @@ namespace Herd.Business.UnitTests
 
             mockMastodonApiWrapper.Verify(a => a.GetPost(It.IsAny<string>(), It.IsAny<MastodonPostContextOptions>()), Times.Once());
         }
-
 
         [Fact]
         public void SearchPostsByAuthorUserIdTest()
@@ -470,6 +468,6 @@ namespace Herd.Business.UnitTests
                 Times.Once());
         }
 
-        #endregion
+        #endregion Mastodon Posts
     }
 }

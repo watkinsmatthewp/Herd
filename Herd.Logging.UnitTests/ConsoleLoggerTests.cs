@@ -1,13 +1,12 @@
 ﻿using Pose;
 using System;
-using Xunit;
 using System.Collections.Generic;
+using Xunit;
 
 namespace Herd.Logging.UnitTests
 {
     public class ConsoleLoggerTests
     {
-
         [Fact]
         public void TestLog()
         {
@@ -29,10 +28,12 @@ namespace Herd.Logging.UnitTests
         }
 
         #region Private
+
         public class OutputHandler
         {
             public string FileOutput { get; set; } = string.Empty;
             public string ConsoleOutput { get; set; } = string.Empty;
+
             public void AddFileOutput(string output)
             {
                 this.FileOutput += output;
@@ -43,6 +44,8 @@ namespace Herd.Logging.UnitTests
                 this.ConsoleOutput += output;
             }
         }
-        #endregion Private  
+
+        #endregion Private
+
     }
 }

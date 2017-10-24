@@ -62,6 +62,5 @@ namespace Herd.Logging.UnitTests
             string actual = dlf.GetLogLine(id, LogLevel.Info, "info-message", contextParameters);
             Assert.Equal(expected, actual);
         }
-
-}
+    }
 }

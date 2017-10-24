@@ -1,8 +1,4 @@
-﻿using Moq;
-using System;
-using System.Collections.Generic;
-using Xunit;
-using Pose;
+﻿using Xunit;
 
 namespace Herd.Logging.UnitTests
 {
@@ -15,7 +11,7 @@ namespace Herd.Logging.UnitTests
             //var logger = new Mock<ConsoleLogger>();
             //var outputHandler = new OutputHandler();
 
-            //Shim consoleLoggerShim = Shim.Replace(() => 
+            //Shim consoleLoggerShim = Shim.Replace(() =>
             //    consoleLogger.Log(Is.A<Guid?>(), Is.A<LogLevel>(), Is.A<string>(), Is.A<IEnumerable<KeyValuePair<string, string>>>())).With(
             //        delegate (ConsoleLogger @this, Guid? id, LogLevel level, string message, IEnumerable<KeyValuePair<string, string>> contextParameters)
             //        {
@@ -98,10 +94,12 @@ namespace Herd.Logging.UnitTests
         }
 
         #region Private
+
         public class OutputHandler
         {
             public string FileOutput { get; set; } = string.Empty;
             public string ConsoleOutput { get; set; } = string.Empty;
+
             public void AddFileOutput(string output)
             {
                 this.FileOutput += output;
@@ -112,7 +110,8 @@ namespace Herd.Logging.UnitTests
                 this.ConsoleOutput += output;
             }
         }
-        #endregion Private  
+
+        #endregion Private
 
     }
 }

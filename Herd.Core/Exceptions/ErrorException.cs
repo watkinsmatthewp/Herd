@@ -22,7 +22,7 @@ namespace Herd.Core.Exceptions
 
     public abstract class ErrorException<T> : ErrorException where T : Error
     {
-        readonly T _error;
+        private readonly T _error;
 
         public override Error Error => _error;
 
@@ -38,7 +38,7 @@ namespace Herd.Core.Exceptions
             _error = BuildError(error);
         }
 
-        T BuildError(T error)
+        private T BuildError(T error)
         {
             error.Id = ERROR_ID_GENERATOR.Next();
             error.Message = Message;

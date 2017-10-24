@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Herd.Business.Models.Entities
+﻿namespace Herd.Business.Models.Entities
 {
     public class MastodonRelationship
     {

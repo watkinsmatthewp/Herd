@@ -7,22 +7,22 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Herd.Business.UnitTests
 {
     public class MockMastodonApiWrapperBuilder
     {
-        Dictionary<string, HashSet<string>> _followRelationships = new Dictionary<string, HashSet<string>>();
-        Dictionary<string, string> _postsAndAuthors = new Dictionary<string, string>();
-        Dictionary<string, string> _postParents = new Dictionary<string, string>();
-        Dictionary<string, HashSet<string>> _postReplies = new Dictionary<string, HashSet<string>>();
+        private Dictionary<string, HashSet<string>> _followRelationships = new Dictionary<string, HashSet<string>>();
+        private Dictionary<string, string> _postsAndAuthors = new Dictionary<string, string>();
+        private Dictionary<string, string> _postParents = new Dictionary<string, string>();
+        private Dictionary<string, HashSet<string>> _postReplies = new Dictionary<string, HashSet<string>>();
 
         public string ActiveUserID { get; set; }
 
         // Users
         public bool AllowAddContextToMastodonUserMethod { get; set; }
+
         public bool AllowAddContextToMastodonUsersMethod { get; set; }
         public bool AllowGetUsersByNameMethod { get; set; }
         public bool AllowGetActiveUserMastodonAccountMethod { get; set; }
@@ -32,6 +32,7 @@ namespace Herd.Business.UnitTests
 
         // Posts
         public bool AllowAddContextToMastodonPostMethod { get; set; }
+
         public bool AllowAddContextToMastodonPostsMethod { get; set; }
         public bool AllowGetPostMethod { get; set; }
         public bool AllowGetPostsByAuthorUserIdMethod { get; set; }
@@ -155,7 +156,7 @@ namespace Herd.Business.UnitTests
             _followRelationships[followerUserID].Add(targetUserID);
         }
 
-        #endregion
+        #endregion Users
 
         #region Posts
 
@@ -175,7 +176,7 @@ namespace Herd.Business.UnitTests
             }
         }
 
-        #endregion
+        #endregion Posts
 
         #region Private Helpers
 
@@ -282,11 +283,11 @@ namespace Herd.Business.UnitTests
             return _followRelationships[followerUserID];
         }
 
-        #endregion
+        #endregion Users
 
         #region Posts
 
-        async Task AddContextToMastodonPosts(IEnumerable<MastodonPost> posts, MastodonPostContextOptions mastodonPostContextOptions)
+        private async Task AddContextToMastodonPosts(IEnumerable<MastodonPost> posts, MastodonPostContextOptions mastodonPostContextOptions)
         {
             foreach (var post in posts)
             {
@@ -294,7 +295,7 @@ namespace Herd.Business.UnitTests
             }
         }
 
-        Task AddContextToMastodonPost(MastodonPost post, MastodonPostContextOptions mastodonPostContextOptions)
+        private Task AddContextToMastodonPost(MastodonPost post, MastodonPostContextOptions mastodonPostContextOptions)
         {
             var effectiveMastodonPostContextOptions = mastodonPostContextOptions ?? new MastodonPostContextOptions();
             if (effectiveMastodonPostContextOptions.IncludeAncestors)
@@ -308,28 +309,28 @@ namespace Herd.Business.UnitTests
             return Task.CompletedTask;
         }
 
-        async Task<MastodonPost> GetPost(string postID, MastodonPostContextOptions mastodonPostContextOptions)
+        private async Task<MastodonPost> GetPost(string postID, MastodonPostContextOptions mastodonPostContextOptions)
         {
             var post = BuildPost(postID);
             await AddContextToMastodonPost(post, mastodonPostContextOptions);
             return post;
         }
 
-        async Task<IList<MastodonPost>> GetPostsByAuthorUserID(string authorUserID, MastodonPostContextOptions mastodonPostContextOptions, PagingOptions pagingOptions)
+        private async Task<IList<MastodonPost>> GetPostsByAuthorUserID(string authorUserID, MastodonPostContextOptions mastodonPostContextOptions, PagingOptions pagingOptions)
         {
             var posts = _postsAndAuthors.Where(p => p.Value == authorUserID).Select(p => BuildPost(p.Key)).ToArray();
             await AddContextToMastodonPosts(posts, mastodonPostContextOptions);
             return posts;
         }
 
-        async Task<IList<MastodonPost>> GetPostsByHashTag(string hashTag, MastodonPostContextOptions mastodonPostContextOptions, PagingOptions pagingOptions)
+        private async Task<IList<MastodonPost>> GetPostsByHashTag(string hashTag, MastodonPostContextOptions mastodonPostContextOptions, PagingOptions pagingOptions)
         {
             var posts = _postsAndAuthors.Keys.Select(BuildPost).Where(p => p.Content.Contains(hashTag, StringComparison.OrdinalIgnoreCase)).ToArray();
             await AddContextToMastodonPosts(posts, mastodonPostContextOptions);
             return posts;
         }
 
-        async Task<IList<MastodonPost>> GetPostsOnTimeline(MastodonPostContextOptions mastodonPostContextOptions, PagingOptions pagingOptions)
+        private async Task<IList<MastodonPost>> GetPostsOnTimeline(MastodonPostContextOptions mastodonPostContextOptions, PagingOptions pagingOptions)
         {
             var authorUserIDs = GetFollowingUserIDs(ActiveUserID).ToHashSet();
             var posts = _postsAndAuthors.Where(p => authorUserIDs.Contains(p.Value)).Select(p => BuildPost(p.Key)).ToArray();
@@ -337,7 +338,7 @@ namespace Herd.Business.UnitTests
             return posts;
         }
 
-        IEnumerable<string> GetAncestorPostIDs(string targetPostID)
+        private IEnumerable<string> GetAncestorPostIDs(string targetPostID)
         {
             var parentPostID = _postParents[targetPostID];
             if (string.IsNullOrWhiteSpace(parentPostID))
@@ -352,7 +353,7 @@ namespace Herd.Business.UnitTests
             }
         }
 
-        IEnumerable<string> GetDescendantPostID(string targetPostID)
+        private IEnumerable<string> GetDescendantPostID(string targetPostID)
         {
             foreach (var replyPostID in _postReplies[targetPostID])
             {
@@ -367,7 +368,7 @@ namespace Herd.Business.UnitTests
             }
         }
 
-        MastodonPost BuildPost(string postID)
+        private MastodonPost BuildPost(string postID)
         {
             var postIdInt = int.Parse(postID);
             return new MastodonPost
@@ -387,8 +388,8 @@ namespace Herd.Business.UnitTests
             };
         }
 
-        #endregion
+        #endregion Posts
 
-        #endregion
+        #endregion Private Helpers
     }
 }

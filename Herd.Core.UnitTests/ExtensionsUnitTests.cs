@@ -46,9 +46,8 @@ namespace Herd.Core.UnitTests
 
             var voidTask = DelayReturn();
             voidTask.Synchronously();
-            
-            // Not sure what to test after this, if voidTask is complete?
 
+            // Not sure what to test after this, if voidTask is complete?
         }
 
         [Fact]
@@ -96,6 +95,7 @@ namespace Herd.Core.UnitTests
         }
 
         #region Private helpers
+
         public class MockObject
         {
             public int ID { get; set; }

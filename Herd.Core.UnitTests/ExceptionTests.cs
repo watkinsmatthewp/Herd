@@ -1,8 +1,6 @@
 ﻿using Herd.Core.Errors;
 using Herd.Core.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace Herd.Core.UnitTests
