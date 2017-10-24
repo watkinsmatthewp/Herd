@@ -65,4 +65,29 @@ export class StatusService {
         return this.httpClient.post('api/mastodon-posts/new', body);
     }
 
+    /**
+     * Reposts the status
+     * @param statusID
+     * @param repost
+     */
+    repost(statusID: string, repost: boolean) {
+        let body = {
+            'statusID': statusID,
+            'repost': repost,
+        }
+        return this.httpClient.post('api/mastodon-posts/repost', body);
+    }
+
+    /**
+     * Likes the status
+     * @param statusID
+     * @param like
+     */
+    like(statusID: string, like: boolean) {
+        let body = {
+            'statusID': statusID,
+            'like': like,
+        }
+        return this.httpClient.post('api/mastodon-posts/like', body);
+    }
 }

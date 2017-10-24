@@ -202,6 +202,32 @@ namespace Herd.Business
 
         #region Mastodon Posts
 
+        /// <summary>
+        /// Processes a command to like a post
+        /// </summary>
+        /// <param name="likeCommand"></param>
+        /// <returns></returns>
+        public CommandResult LikePost(LikeMastodonPostCommand likeCommand)
+        {
+            return ProcessCommand(result =>
+            {
+                _mastodonApiWrapper.Like(likeCommand.PostID, likeCommand.Like).Synchronously();
+            });
+        }
+        
+        /// <summary>
+        /// Processes command to repost a post
+        /// </summary>
+        /// <param name="repostCommand"></param>
+        /// <returns></returns>
+        public CommandResult RepostPost(RepostMastodonPostCommand repostCommand)
+        {
+            return ProcessCommand(result =>
+            {
+                _mastodonApiWrapper.Repost(repostCommand.PostID, repostCommand.Repost).Synchronously();
+            });
+        }
+
         public CommandResult<SearchMastodonPostsCommandResultData> SearchPosts(SearchMastodonPostsCommand searchMastodonPostsCommand)
         {
             return ProcessCommand<SearchMastodonPostsCommandResultData>(result =>

@@ -47,5 +47,25 @@ namespace Herd.Web.Controllers.HerdApi
             Sensitive = body["sensitive"].Value<bool>(),
             SpoilerText = body["spoilerText"].Value<string>(),
         }));
+
+        [HttpPost("repost")]
+        public IActionResult RepostPost([FromBody] JObject body)
+        {
+            return ApiJson(App.RepostPost(new RepostMastodonPostCommand
+            {
+                PostID = body["statusID"].Value<string>(),
+                Repost = body["repost"].Value<bool>()
+            }));
+        }
+
+        [HttpPost("like")]
+        public IActionResult Like([FromBody] JObject body)
+        {
+            return ApiJson(App.LikePost(new LikeMastodonPostCommand
+            {
+                PostID = body["statusID"].Value<string>(),
+                Like = body["like"].Value<bool>()
+            }));
+        }
     }
 }
