@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "gen-report": "ReportGenerator \"-reports:./coverage-reports/coverage-output.coveragexml\" \"-targetdir:./coverage-reports/html\" \"-Reporttypes:CsvSummary;Html;HtmlChart;HtmlSummary;PngChart;TextSummary\" \"-historydir:./coverage-reports/history\"",
+    "show-report": "http-server -c-1 -o -p 9893 ./coverage-reports/html/ -e htm"
+  }
+}

@@ -12,6 +12,7 @@
   
   <ItemGroup>
     <PackageReference Include="Mastonet" Version="1.0.0-beta3" />
+    <PackageReference Include="ReportGenerator" Version="3.0.2" />
     <!-- Required. Include this reference for coverage -->
   </ItemGroup>
 
