@@ -1,0 +1,29 @@
+# from https://dotnetcore.gaprogman.com/2017/06/08/continuous-integration-and-appveyor/
+version: '1.0.{build}'
+image: Visual Studio 2017
+# current branch, no history needed
+clone_depth: 1 
+branches:
+  only:
+  - master
+init:
+  - cmd: git config --global core.autocrlf true
+  # Display .NET Core and versions
+  - cmd: dotnet --version & node -v
+install:
+  - ps: Install-Product node ''
+  - cmd: cd Herd.Web & npm install & npm install @types/node --save-dev & npm link webpack
+before_build:
+  # Restore web with minimal output
+  - cmd: dotnet restore ./Herd.Web/Herd.Web.csproj --verbosity m
+build_script:
+  - cmd: dotnet build ./Herd.Web/Herd.Web.csproj
+after_build:
+  # TODO
+artifacts:
+  # None
+test_script:
+  - ps: Get-ChildItem -name | select-string -pattern "\.UnitTests" | ForEach-Object { cd $_; dotnet test; cd ..\; }
+on_finish :
+  # TODO
+deploy: off
