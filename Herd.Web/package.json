@@ -62,6 +62,7 @@
     "babel-polyfill": "^6.26.0",
     "chai": "4.0.2",
     "http-server": "^0.10.0",
+    "istanbul-instrumenter-loader": "^3.0.0",
     "jasmine-core": "2.6.4",
     "karma": "1.7.0",
     "karma-chai": "0.1.0",
