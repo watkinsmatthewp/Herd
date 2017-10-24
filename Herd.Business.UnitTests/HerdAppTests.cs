@@ -313,6 +313,62 @@ namespace Herd.Business.UnitTests
         #region Mastodon Posts
 
         [Fact]
+        public void RepostPostTest()
+        {
+            _mockMastodonApiWrapper.Setup(d => d.Repost("1", true))
+                .Returns<string, bool>((id, repost) => Task.FromResult(new MastodonPost { Id = id, IsReblogged = repost }));
+
+            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+
+            var result = herdApp.RepostPost(new RepostMastodonPostCommand { PostID = "1", Repost = true });
+
+            Assert.True(result?.Success);
+            _mockMastodonApiWrapper.Verify(a => a.Repost("1", true), Times.Once());
+        }
+
+        [Fact]
+        public void UnRepostPostTest()
+        {
+            _mockMastodonApiWrapper.Setup(d => d.Repost("1", false))
+                .Returns<string, bool>((id, repost) => Task.FromResult(new MastodonPost { Id = id, IsReblogged = repost }));
+
+            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+
+            var result = herdApp.RepostPost(new RepostMastodonPostCommand { PostID = "1", Repost = false });
+
+            Assert.True(result?.Success);
+            _mockMastodonApiWrapper.Verify(a => a.Repost("1", false), Times.Once());
+        }
+
+        [Fact]
+        public void LikePostTest()
+        {
+            _mockMastodonApiWrapper.Setup(d => d.Like("1", true))
+                .Returns<string, bool>((id, like) => Task.FromResult(new MastodonPost { Id = id, IsFavourited = like }));
+
+            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+
+            var result = herdApp.LikePost(new LikeMastodonPostCommand { PostID = "1", Like = true });
+
+            Assert.True(result?.Success);
+            _mockMastodonApiWrapper.Verify(a => a.Like("1", true), Times.Once());
+        }
+
+        [Fact]
+        public void UnLikePostTest()
+        {
+            _mockMastodonApiWrapper.Setup(d => d.Like("1", false))
+                .Returns<string, bool>((id, like) => Task.FromResult(new MastodonPost { Id = id, IsFavourited = like }));
+
+            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+
+            var result = herdApp.LikePost(new LikeMastodonPostCommand { PostID = "1", Like = false });
+
+            Assert.True(result?.Success);
+            _mockMastodonApiWrapper.Verify(a => a.Like("1", false), Times.Once());
+        }
+
+        [Fact]
         public void SearchPostsByIdTest()
         {
             var mockApiWrapperBuilder = new MockMastodonApiWrapperBuilder
