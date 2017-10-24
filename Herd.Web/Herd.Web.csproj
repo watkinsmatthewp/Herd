@@ -57,6 +57,8 @@
     <None Remove="ClientApp\app\services\index.ts" />
     <None Remove="ClientApp\app\services\mastodon.service.spec.ts" />
     <None Remove="ClientApp\app\services\user.service.ts" />
+    <None Remove="ClientApp\test\boot-protractor-tests.ts" />
+    <None Remove="ClientApp\test\spec.e2e.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -99,6 +101,8 @@
     <TypeScriptCompile Include="ClientApp\app\services\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\status-service\status.service.spec.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\event-alert-service\event-alert.service.ts" />
+    <TypeScriptCompile Include="ClientApp\test\boot-protractor-tests.ts" />
+    <TypeScriptCompile Include="ClientApp\test\spec.e2e.ts" />
   </ItemGroup>
 
   <ItemGroup>

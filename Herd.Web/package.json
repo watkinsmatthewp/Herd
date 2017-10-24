@@ -6,7 +6,8 @@
     "test": "karma start ClientApp/test/karma.conf.js",
     "test-single": "karma start ClientApp/test/karma.conf.js --single-run",
     "test-coverage": "npm run test-single && http-server -c-1 -o -p 9875 ClientApp/test/coverage",
-    "show-coverage": "http-server -c-1 -o -p 9875 ClientApp/test/coverage"
+    "show-coverage": "http-server -c-1 -o -p 9875 ClientApp/test/coverage",
+    "e2e-test": "protractor ClientApp/test/protractor.conf.js"
   },
   "dependencies": {
     "@angular/animations": "4.2.5",
@@ -74,6 +75,7 @@
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-remap-istanbul": "^0.6.0",
     "karma-webpack": "2.0.3",
+    "protractor": "^5.2.0",
     "sourcemap-istanbul-instrumenter-loader": "^0.2.0"
   }
 }
