@@ -400,15 +400,15 @@ namespace Herd.Business
 
         private async Task<Dictionary<string, T>> Filter<T>(Dictionary<string, T> set1, Func<Task<IList<T>>> getSet2, Func<T, string> getID)
         {
-            if (set1 == null)
-            {
-                return ToDictionary(await getSet2(), getID);
-            }
-            if (set1.Count == 0)
+            if (set1?.Count == 0)
             {
                 return new Dictionary<string, T>();
             }
             var set2 = await getSet2();
+            if (set1 == null)
+            {
+                return ToDictionary(set2, getID);
+            }
             var idsToPreserve = new HashSet<string>(set1.Keys.Intersect(set2.Select(getID)));
             return ToDictionary(set2.Where(u => idsToPreserve.Contains(getID(u))), getID);
         }
