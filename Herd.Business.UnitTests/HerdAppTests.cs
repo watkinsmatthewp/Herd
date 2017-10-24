@@ -10,7 +10,9 @@ using Herd.Logging;
 using Herd.UnitTestCore;
 using Mastonet.Entities;
 using Moq;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -21,6 +23,24 @@ namespace Herd.Business.UnitTests
         Mock<IDataProvider> _mockData = new Mock<IDataProvider>();
         Mock<IMastodonApiWrapper> _mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
         Mock<ILogger> _mockLogger = new Mock<ILogger>();
+
+        #region General
+
+        [Fact]
+        public void SystemErrorHandledCorrectlyTest()
+        {
+            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var result = herdApp.SearchPosts(null);
+            Assert.False(result?.Success);
+            Assert.True(result.HasSystemErrors);
+            Assert.False(result.HasUserErrors);
+            Assert.Single(result.Errors);
+            Assert.Empty(result.UserErrors);
+            Assert.Single(result.SystemErrors);
+            Assert.Contains(new NullReferenceException().Message, result.SystemErrors.First().Message);
+        }
+
+        #endregion
 
         #region App Registration
 
