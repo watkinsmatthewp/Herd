@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/1q0h5jaiy8n3hk8q?svg=true)](https://ci.appveyor.com/project/watkinsmatthewp/herd)
+[![Build status](https://ci.appveyor.com/api/projects/status/fudfkh1grtixfnti?svg=true)](https://ci.appveyor.com/project/watkinsmatthewp/herd)
 
 This will contain some text someday
 
