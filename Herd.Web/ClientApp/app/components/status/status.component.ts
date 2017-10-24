@@ -14,7 +14,7 @@ export class StatusComponent implements OnInit {
     @Input() status: Status;
     showBlur: boolean = false;
 
-    constructor(private router: Router, private eventAlertService: EventAlertService) {}
+    constructor(private router: Router, private statusService: StatusService, private eventAlertService: EventAlertService) {}
 
     ngOnInit() {
         if (this.status.IsSensitive === true) {
@@ -37,12 +37,28 @@ export class StatusComponent implements OnInit {
         event.stopPropagation();
     }
 
-    retweet() {
-        
+    toggleRepost(event: any) {
+        this.statusService.repost(this.status.Id, !this.status.IsReblogged).subscribe(() => {
+            this.status.IsReblogged = !this.status.IsReblogged;
+            if (this.status.IsFavourited) {
+                this.status.ReblogCount++;
+            } else {
+                this.status.ReblogCount--;
+            }
+        });
+        event.stopPropagation();
     }
 
-    like() {
-        
+    toggleLike(event: any) {
+        this.statusService.like(this.status.Id, !this.status.IsFavourited).subscribe(() => {
+            this.status.IsFavourited = !this.status.IsFavourited;
+            if (this.status.IsFavourited) {
+                this.status.FavouritesCount++;
+            } else {
+                this.status.FavouritesCount--;
+            }
+        });
+        event.stopPropagation();
     }
 
     directMessage() {
