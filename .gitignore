@@ -3,6 +3,8 @@
 /Herd/ClientApp/dist
 /Herd/wwwroot/dist
 
+/coverage-reports/html
+
 /Properties/launchSettings.json
 
 ## Ignore Visual Studio temporary files, build results, and
