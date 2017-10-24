@@ -1,0 +1,1 @@
+dotnet sln list | select-string -pattern "\.UnitTests\.csproj" | dotnet test;
