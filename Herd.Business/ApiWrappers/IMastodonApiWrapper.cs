@@ -3,6 +3,7 @@ using Herd.Business.Models;
 using Herd.Business.Models.Entities;
 using Herd.Data.Models;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Herd.Business.ApiWrappers
@@ -48,7 +49,7 @@ namespace Herd.Business.ApiWrappers
         #endregion User
 
         #region Posts
-
+        
         Task<MastodonPost> Repost(string postID, bool repost);
 
         Task<MastodonPost> Like(string postID, bool like);
@@ -67,6 +68,7 @@ namespace Herd.Business.ApiWrappers
 
         Task<MastodonPost> CreateNewPost(string message, MastodonPostVisibility visibility, string replyStatusId = null, IEnumerable<string> mediaIds = null, bool sensitive = false, string spoilerText = null);
 
+        Task<MastodonAttachment> UploadAttachment(Stream attachment);
         #endregion Posts
     }
 }

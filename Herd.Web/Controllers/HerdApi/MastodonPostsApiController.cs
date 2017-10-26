@@ -2,6 +2,7 @@
 using Herd.Business.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace Herd.Web.Controllers.HerdApi
 {
@@ -38,7 +39,7 @@ namespace Herd.Web.Controllers.HerdApi
             Message = body["message"].Value<string>(),
             Visibility = (MastodonPostVisibility)body["visibility"].Value<int>(),
             ReplyStatusId = body["replyStatusId"].Value<string>(),
-            // MediaIds = body["mediaIds"].Value<IEnumerable<long>>(),
+            AttachmentStream = new MemoryStream(),
             Sensitive = body["sensitive"].Value<bool>(),
             SpoilerText = body["spoilerText"].Value<string>(),
         }));

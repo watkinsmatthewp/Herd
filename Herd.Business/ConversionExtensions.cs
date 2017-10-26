@@ -3,6 +3,7 @@ using Herd.Business.Models.Entities;
 using Herd.Data.Models;
 using Mastonet;
 using Mastonet.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -109,6 +110,15 @@ namespace Herd.Business
             };
 
             return post;
+        }
+
+        public static MastodonAttachment ToMastodonAttachment(this Attachment attachment)
+        {
+            throw new NotImplementedException();
+            return new MastodonAttachment
+            {
+                // fill in with properties
+            };
         }
 
         public static MastodonPostVisibility ToMastodonPostVisibility(this Visibility visibility)

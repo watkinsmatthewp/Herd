@@ -7,6 +7,7 @@ using Herd.Data.Models;
 using Mastonet;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -228,6 +229,11 @@ namespace Herd.Business.ApiWrappers
         #endregion User
 
         #region Posts
+
+        public async Task<MastodonAttachment> UploadAttachment(Stream attachment)
+        {
+            return (await BuildMastodonApiClient().UploadMedia(attachment)).ToMastodonAttachment();
+        }
 
         /// <summary>
         /// Reposts or un-reposts a post
