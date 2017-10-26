@@ -1,4 +1,4 @@
-﻿import { Component, Input } from '@angular/core';
+﻿import { Component, Input, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from "rxjs/Observable";
 
@@ -14,8 +14,8 @@ import { Visibility } from '../../models/mastodon';
 export class StatusFormComponent {
     @Input() actionName: string;
     @Input() isReply: boolean;
-    @Input() inReplyToId: string;
-
+    @Input() inReplyToId: string
+    ImagePreview: any;
     maxStatusLength: number = 200;
     Visibility = Visibility;
     visibilityOptions = [
@@ -44,11 +44,32 @@ export class StatusFormComponent {
         status: "",
         contentWarning: false,
         visibility: Visibility.PUBLIC,
-        spoilerText: ""
+        spoilerText: "",
     };
     
 
     constructor(private statusService: StatusService, private toastService: NotificationsService) {}
+
+    onFileChange(event: any) {
+        if (event.target.files.length > 0) {
+            let file = event.target.files[0];
+            this.model.file = file;
+            this.model.filename = file.name;
+            console.log("File", file);
+
+            let reader = new FileReader();
+            reader.onload = (e: any) => {
+                this.ImagePreview = e.target.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    }
+
+    clearFile() {
+        this.model.filename = null;
+        this.model.file = null;
+        console.log("File", this.model.file);
+    }
 
     toggleContentWarning(): void {
         this.model.contentWarning = !this.model.contentWarning
