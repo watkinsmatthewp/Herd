@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { TabsetComponent } from 'ngx-bootstrap';
 
-
 import { StatusService, EventAlertService, AccountService } from "../../services";
 import { EventAlertEnum, Storage } from '../../models';
 import { Status, UserCard } from "../../models/mastodon";
@@ -12,6 +11,7 @@ import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 @Component({
     selector: 'home',
     templateUrl: './home.page.html',
+    styleUrls: ['./home.page.css']
 })
 export class HomePage implements OnInit {
     @ViewChild('specificStatusModal') 
@@ -28,6 +28,10 @@ export class HomePage implements OnInit {
 
     constructor(private activatedRoute: ActivatedRoute, private eventAlertService: EventAlertService, private toastService: NotificationsService,
         private statusService: StatusService, private accountService: AccountService, private localStorage: Storage) { }
+
+    onScroll() {
+        console.log('scrolled!!')
+    }
 
     getUserCard() {
         let currentUser = JSON.parse(this.localStorage.getItem('currentUser'));

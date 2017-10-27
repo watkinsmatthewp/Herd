@@ -11,6 +11,7 @@ import { BsModalModule } from 'ng2-bs3-modal';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { TabsModule } from 'ngx-bootstrap';
 import { SimpleNotificationsModule } from 'angular2-notifications';
+import { SlimScroll } from 'angular-io-slimscroll';
 
 // Pages
 import {
@@ -43,7 +44,7 @@ import { SafePipe } from './pipes';
         AdminPage, AppPage, HomePage, LocalFeedPage,
         LoginPage, NotificationsPage, ProfilePage, RegisterPage, SearchResultsPage,
         // Components
-        InstancePickerComponent, NavMenuComponent,
+        InstancePickerComponent, NavMenuComponent, SlimScroll,
         StatusComponent, StatusFormComponent, StatusFormModalComponent,
         StatusModalComponent, UserCardComponent,
         // Pipes

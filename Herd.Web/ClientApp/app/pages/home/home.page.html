@@ -11,7 +11,7 @@
                 <h3>Popular Hashtags</h3>
             </div>
             <div class="panel-body">
-
+                
             </div>
         </div>
 
@@ -42,7 +42,6 @@
 
    
     <!-- Middle Column -->
-    
     <div class="col-sm-12 
                 col-md-7
                 col-lg-6 col-lg-pull-3">
@@ -55,8 +54,15 @@
         </div>
         <br />
 
-        <div *ngFor="let status of homeFeed">
-            <status [status]="status"></status>
+        <div class="panel">
+            <!--<div class="panel-heading">
+                <h3 class="text-center">Statuses</h3>
+            </div>-->
+            <div class="panel-body statusesWrapper" slimScroll width="auto" height="550px" size="7px">
+                <div *ngFor="let status of homeFeed">
+                    <status [status]="status"></status>
+                </div>
+            </div>
         </div>
     </div>
 
