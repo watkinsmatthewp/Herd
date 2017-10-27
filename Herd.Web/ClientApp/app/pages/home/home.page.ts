@@ -150,7 +150,7 @@ export class HomePage implements OnInit {
                     item.Content = "A " + index;
                 });
                 this.appendItems(this.homeFeed, new_items);
-                this.statusesWrapper.nativeElement.scrollTo(ev.currentScrollPosition, 500);
+                this.statusesWrapper.nativeElement.scrollTo(0, ev.currentScrollPosition);
             });
     }
 
@@ -170,22 +170,7 @@ export class HomePage implements OnInit {
                     item.Content = "A " + index;
                 });
                 this.prependItems(this.homeFeed, new_items);
-                this.statusesWrapper.nativeElement.scrollTo(ev.currentScrollPosition, 500);
+                this.statusesWrapper.nativeElement.scrollTo(0, ev.currentScrollPosition);
             });
     }
-
-    scrollToElement() {
-        //this.content.scrollTo(0, this.target.nativeElement.offsetTop, 500);
-    }
 }
-
-
-// Focus on last element we looked at
-//let statusArray = this.statuses.toArray();
-//statusArray.forEach((el: StatusComponent, index) => {
-
-//    if (index === statusArray.length / 2) {
-//        let topPos = el.nativeElement.offsetTop;
-//        this.statusesWrapper.nativeElement.scrollTop = topPos;
-//    }
-//});

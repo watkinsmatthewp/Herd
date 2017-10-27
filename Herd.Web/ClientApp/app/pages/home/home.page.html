@@ -56,17 +56,20 @@
         <div class="panel">
             <!--<div class="panel-heading">
                 <h3 class="text-center">Statuses</h3>
+
+                slimScroll height="550px"
             </div>-->
-            <div #statusesWrapper class="panel-body statusesWrapper" slimScroll height="550px" 
-                     data-infinite-scroll
-                     debounce
-                     [infiniteScrollContainer]="statusesWrapper"
-                     [scrollWindow]="false"
-                     [infiniteScrollDistance]="3"
-                     [infiniteScrollUpDistance]="3"
-                     [infiniteScrollThrottle]="1500"
-                     (scrolled)="onScrollDown($event)"
-                     (scrolledUp)="onUp($event)">
+            <div #statusesWrapper class="panel-body statusesWrapper" 
+                
+                data-infinite-scroll
+                    debounce
+                    [infiniteScrollContainer]="statusesWrapper"
+                    [scrollWindow]="false"
+                    [infiniteScrollDistance]="3"
+                    [infiniteScrollUpDistance]="2"
+                    [infiniteScrollThrottle]="1500"
+                    (scrolled)="onScrollDown($event)"
+                    (scrolledUp)="onUp($event)">
                 <div *ngFor="let status of homeFeed">
                     <status [status]="status"></status>
                 </div>
