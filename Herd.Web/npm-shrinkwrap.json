@@ -213,11 +213,6 @@
       "from": "angular2-fontawesome@latest",
       "resolved": "https://registry.npmjs.org/angular2-fontawesome/-/angular2-fontawesome-0.9.3.tgz"
     },
-    "angular2-infinite-scroll": {
-      "version": "0.3.5",
-      "from": "angular2-infinite-scroll@latest",
-      "resolved": "https://registry.npmjs.org/angular2-infinite-scroll/-/angular2-infinite-scroll-0.3.5.tgz"
-    },
     "angular2-notifications": {
       "version": "0.7.8",
       "from": "angular2-notifications@>=0.7.8-0 <0.8.0-0",
