@@ -1,5 +1,6 @@
 ﻿.statusesWrapper {
     max-height: 550px;
+    height: 550px;
     overflow-y: scroll;
     overflow-x: hidden;
 }

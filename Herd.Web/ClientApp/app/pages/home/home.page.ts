@@ -18,6 +18,7 @@ export class HomePage implements OnInit {
     specificStatusModal: BsModalComponent;
     @ViewChild('replyStatusModal')
     replyStatusModal: BsModalComponent;
+    @ViewChild('statuses') statusesWrapper: any;
     statusId: number;
     specificStatus: Status;
     replyStatus: Status;
@@ -29,10 +30,6 @@ export class HomePage implements OnInit {
     constructor(private activatedRoute: ActivatedRoute, private eventAlertService: EventAlertService, private toastService: NotificationsService,
         private statusService: StatusService, private accountService: AccountService, private localStorage: Storage) { }
 
-    onScroll() {
-        console.log('scrolled!!')
-    }
-
     getUserCard() {
         let currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
         let userID = currentUser.MastodonConnection.MastodonUserID;
@@ -40,7 +37,6 @@ export class HomePage implements OnInit {
             .map(response => response as UserCard)
             .subscribe(usercard => {
                 this.userCard = usercard;
-                console.log("getUserCard", usercard);
             });
     }
 
@@ -109,4 +105,73 @@ export class HomePage implements OnInit {
         this.getMostRecentHomeFeed();
         this.getUserCard();
     }
+
+
+
+
+
+
+    /** Infinite Scrolling Handling */
+    sum = 100;
+    addItems(oldItems: any[], newItems: any[], _method: any) {
+        console.log("Adding", newItems);
+        console.log("Before", oldItems);
+
+        oldItems[_method].apply(oldItems, newItems);
+
+        console.log("After", oldItems);
+    }
+
+    /**
+     * Add items to end of list
+     * @param startIndex
+     * @param endIndex
+     */
+    appendItems(oldItems: any[], newItems: any[]) {
+        this.addItems(oldItems, newItems, 'push');
+    }
+
+    /**
+     * Add items to beginning of list
+     * @param startIndex
+     * @param endIndex
+     */
+    prependItems(oldItems: any[], newItems: any[]) {
+        this.addItems(oldItems, newItems, 'unshift');
+    }
+
+    /**
+     * Infinite scroll function that is called
+     * when scrolling down and near end of view port
+     * @param ev
+     */
+    onScrollDown(ev: any) {
+        console.log('scrolled down!!', ev);
+
+        // Get new set of statuses
+        let new_items: any[] = [];
+        this.statusService.getHomeFeed()
+            .subscribe(items => {
+                new_items = items;
+                this.appendItems(this.homeFeed, new_items);
+            });
+    }
+
+    /**
+     * Infinite scroll function that is called
+     * when scrolling up and near beginning of view port
+     * @param ev
+     */
+    onUp(ev: any) {
+        console.log('scrolled up!', ev);
+
+        // Get new set of statuses
+        let new_items: any[] = [];
+        this.statusService.getHomeFeed()
+            .subscribe(items => {
+                new_items = items;
+                this.prependItems(this.homeFeed, new_items);
+            });
+    }
+
 }
