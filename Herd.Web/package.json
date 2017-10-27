@@ -24,6 +24,7 @@
     "@ngtools/webpack": "1.5.0",
     "@types/webpack-env": "1.13.0",
     "angular2-fontawesome": "^0.9.3",
+    "angular2-infinite-scroll": "^0.3.5",
     "angular2-notifications": "^0.7.8",
     "angular2-template-loader": "0.6.2",
     "aspnet-prerendering": "^3.0.1",

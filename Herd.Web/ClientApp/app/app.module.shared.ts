@@ -8,6 +8,7 @@ import { CardModule } from './components/card'
 // External Dependencies
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 import { BsModalModule } from 'ng2-bs3-modal';
+import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { TabsModule } from 'ngx-bootstrap';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 
@@ -50,7 +51,7 @@ import { SafePipe } from './pipes';
     ],
     imports: [
         Angular2FontawesomeModule, BsModalModule, CardModule, CommonModule, 
-        HttpModule, FormsModule, TabsModule.forRoot(), SimpleNotificationsModule.forRoot(),
+        HttpModule, FormsModule, InfiniteScrollModule, TabsModule.forRoot(), SimpleNotificationsModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             // Admin Page 
