@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { TabsetComponent } from 'ngx-bootstrap';
 
@@ -7,6 +7,7 @@ import { EventAlertEnum, Storage } from '../../models';
 import { Status, UserCard } from "../../models/mastodon";
 import { NotificationsService } from "angular2-notifications";
 import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
+import { StatusComponent } from "../../components/index";
 
 @Component({
     selector: 'home',
@@ -14,17 +15,16 @@ import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
     styleUrls: ['./home.page.css']
 })
 export class HomePage implements OnInit {
-    @ViewChild('specificStatusModal') 
-    specificStatusModal: BsModalComponent;
-    @ViewChild('replyStatusModal')
-    replyStatusModal: BsModalComponent;
-    @ViewChild('statuses') statusesWrapper: any;
+    @ViewChild('specificStatusModal') specificStatusModal: BsModalComponent;
+    @ViewChild('replyStatusModal') replyStatusModal: BsModalComponent;
+    @ViewChild('statusesWrapper') statusesWrapper: any;
+
     statusId: number;
     specificStatus: Status;
     replyStatus: Status;
 
     loading: boolean = false;
-    homeFeed: Status[] = []; // List of posts for the home feed
+    homeFeed: Status[] = [];
     userCard: UserCard;
 
     constructor(private activatedRoute: ActivatedRoute, private eventAlertService: EventAlertService, private toastService: NotificationsService,
@@ -108,18 +108,12 @@ export class HomePage implements OnInit {
 
 
 
-
-
-
     /** Infinite Scrolling Handling */
-    sum = 100;
     addItems(oldItems: any[], newItems: any[], _method: any) {
-        console.log("Adding", newItems);
         console.log("Before", oldItems);
-
         oldItems[_method].apply(oldItems, newItems);
-
         console.log("After", oldItems);
+        console.log();
     }
 
     /**
@@ -151,9 +145,12 @@ export class HomePage implements OnInit {
         // Get new set of statuses
         let new_items: any[] = [];
         this.statusService.getHomeFeed()
-            .subscribe(items => {
-                new_items = items;
+            .subscribe(new_items => {
+                new_items.forEach((item, index) => {
+                    item.Content = "A " + index;
+                });
                 this.appendItems(this.homeFeed, new_items);
+                this.statusesWrapper.nativeElement.scrollTo(ev.currentScrollPosition, 500);
             });
     }
 
@@ -168,10 +165,27 @@ export class HomePage implements OnInit {
         // Get new set of statuses
         let new_items: any[] = [];
         this.statusService.getHomeFeed()
-            .subscribe(items => {
-                new_items = items;
+            .subscribe(new_items => {
+                new_items.forEach((item, index) => {
+                    item.Content = "A " + index;
+                });
                 this.prependItems(this.homeFeed, new_items);
+                this.statusesWrapper.nativeElement.scrollTo(ev.currentScrollPosition, 500);
             });
     }
 
+    scrollToElement() {
+        //this.content.scrollTo(0, this.target.nativeElement.offsetTop, 500);
+    }
 }
+
+
+// Focus on last element we looked at
+//let statusArray = this.statuses.toArray();
+//statusArray.forEach((el: StatusComponent, index) => {
+
+//    if (index === statusArray.length / 2) {
+//        let topPos = el.nativeElement.offsetTop;
+//        this.statusesWrapper.nativeElement.scrollTop = topPos;
+//    }
+//});
