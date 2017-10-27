@@ -114,10 +114,14 @@ namespace Herd.Business
 
         public static MastodonAttachment ToMastodonAttachment(this Attachment attachment)
         {
-            throw new NotImplementedException();
             return new MastodonAttachment
             {
-                // fill in with properties
+                Id = attachment.Id.ToString(),
+                Type = attachment.Type,
+                Url = attachment.Url,
+                RemoteUrl = attachment.RemoteUrl,
+                PreviewUrl = attachment.PreviewUrl,
+                TextUrl = attachment.TextUrl
             };
         }
 
