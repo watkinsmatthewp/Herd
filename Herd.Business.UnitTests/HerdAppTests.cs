@@ -508,7 +508,7 @@ namespace Herd.Business.UnitTests
         public void CreateNewPostTest()
         {
             _mockMastodonApiWrapper
-                .Setup(d => d.CreateNewPost("Hello World!", MastodonPostVisibility.Public, null, null, false, null))
+                .Setup(d => d.CreateNewPost("Hello World!", MastodonPostVisibility.Public, null, new string [0], false, null))
                 .Returns(Task.FromResult(new MastodonPost()));
 
             // Create the HerdApp using the mock objects
@@ -520,7 +520,7 @@ namespace Herd.Business.UnitTests
             // Verify the result, do we need to check any more than this?
             Assert.True(result?.Success);
             _mockMastodonApiWrapper.Verify(a =>
-                a.CreateNewPost("Hello World!", MastodonPostVisibility.Public, null, null, false, null),
+                a.CreateNewPost("Hello World!", MastodonPostVisibility.Public, null, new string [0], false, null),
                 Times.Once());
         }
 
