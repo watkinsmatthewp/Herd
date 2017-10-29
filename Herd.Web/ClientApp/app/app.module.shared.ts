@@ -11,7 +11,6 @@ import { BsModalModule } from 'ng2-bs3-modal';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { TabsModule } from 'ngx-bootstrap';
 import { SimpleNotificationsModule } from 'angular2-notifications';
-import { SlimScroll } from 'angular-io-slimscroll';
 
 // Pages
 import {
@@ -44,7 +43,7 @@ import { SafePipe } from './pipes';
         AdminPage, AppPage, HomePage, LocalFeedPage,
         LoginPage, NotificationsPage, ProfilePage, RegisterPage, SearchResultsPage,
         // Components
-        InstancePickerComponent, NavMenuComponent, SlimScroll,
+        InstancePickerComponent, NavMenuComponent,
         StatusComponent, StatusFormComponent, StatusFormModalComponent,
         StatusModalComponent, UserCardComponent,
         // Pipes
@@ -52,7 +51,8 @@ import { SafePipe } from './pipes';
     ],
     imports: [
         Angular2FontawesomeModule, BsModalModule, CardModule, CommonModule, 
-        HttpModule, FormsModule, InfiniteScrollModule, TabsModule.forRoot(), SimpleNotificationsModule.forRoot(),
+        HttpModule, FormsModule, InfiniteScrollModule,
+        TabsModule.forRoot(), SimpleNotificationsModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             // Admin Page 

@@ -203,11 +203,6 @@
       "from": "amdefine@>=0.0.4",
       "resolved": "https://registry.npmjs.org/amdefine/-/amdefine-1.0.1.tgz"
     },
-    "angular-io-slimscroll": {
-      "version": "1.2.11",
-      "from": "angular-io-slimscroll@>=1.2.11 <2.0.0",
-      "resolved": "https://registry.npmjs.org/angular-io-slimscroll/-/angular-io-slimscroll-1.2.11.tgz"
-    },
     "angular2-fontawesome": {
       "version": "0.9.3",
       "from": "angular2-fontawesome@latest",
@@ -1030,7 +1025,8 @@
     "core-js": {
       "version": "2.5.1",
       "from": "core-js@>=2.2.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/core-js/-/core-js-2.5.1.tgz"
+      "resolved": "https://registry.npmjs.org/core-js/-/core-js-2.5.1.tgz",
+      "dev": true
     },
     "core-util-is": {
       "version": "1.0.2",
