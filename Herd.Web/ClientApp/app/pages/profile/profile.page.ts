@@ -77,7 +77,6 @@ export class ProfilePage implements OnInit, AfterViewInit {
         this.accountService.getFollowers(userID)
             .subscribe(users => {
                 this.followers = users;
-                console.log("followers", this.followers);
             });
     }
 
@@ -89,7 +88,6 @@ export class ProfilePage implements OnInit, AfterViewInit {
         this.accountService.getFollowing(userID)
             .subscribe(users => {
                 this.following = users;
-                console.log("following", this.following);
             });
     }
 
