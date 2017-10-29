@@ -51,6 +51,7 @@ p {
 /* Buttons */
 .status-btn {
     background: inherit;
+    outline: none;
 }
 
 .comments-btn:not([disabled]):hover {
