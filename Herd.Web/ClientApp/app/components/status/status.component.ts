@@ -61,8 +61,13 @@ export class StatusComponent implements OnInit {
         event.stopPropagation();
     }
 
-    directMessage() {
-        
+    /**
+     * Set status form text to author of status
+     * @param event
+     */
+    directMessage(event: any) {
+        this.eventAlertService.addEvent(EventAlertEnum.UPDATE_STATUS_FORM_TEXT, { statusText: "@" + this.status.Author.MastodonUserName });
+        event.stopPropagation();
     }
     
 }

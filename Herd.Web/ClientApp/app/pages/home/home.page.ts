@@ -8,7 +8,6 @@ import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 import { StatusService, EventAlertService, AccountService } from "../../services";
 import { EventAlertEnum, Storage } from '../../models';
 import { Status, UserCard } from "../../models/mastodon";
-import { StatusComponent } from "../../components/index";
 
 @Component({
     selector: 'home',

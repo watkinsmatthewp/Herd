@@ -2,9 +2,10 @@
 import { NgForm } from '@angular/forms';
 import { Observable } from "rxjs/Observable";
 
-import { StatusService } from "../../services";
+import { StatusService, EventAlertService } from "../../services";
 import { NotificationsService } from "angular2-notifications";
 import { Visibility } from '../../models/mastodon';
+import { EventAlertEnum } from "../../models/index";
 
 @Component({
     selector: 'status-form',
@@ -48,10 +49,25 @@ export class StatusFormComponent {
     };
     
 
-    constructor(private statusService: StatusService, private toastService: NotificationsService) {}
+    constructor(private statusService: StatusService, private eventAlertService: EventAlertService, private toastService: NotificationsService) { }
+
+    ngOnInit() {
+        this.eventAlertService.getMessage().subscribe(event => {
+            switch (event.eventType) {
+                case EventAlertEnum.UPDATE_STATUS_FORM_TEXT: {
+                    let statusText: string = event.statusText;
+                    this.updateStatusText(statusText);
+                }
+            }
+        });
+    }
 
     toggleContentWarning(): void {
         this.model.contentWarning = !this.model.contentWarning
+    }
+
+    updateStatusText(text: string): void {
+        this.model.status = text + " ";
     }
 
     submitStatus(form: NgForm) {
