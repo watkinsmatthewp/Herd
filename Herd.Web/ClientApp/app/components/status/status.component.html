@@ -4,7 +4,7 @@
         <div class="col-sm-6 status-content">
             <div class="status-header">
                 <img class="profile-picture" src="{{ status.Author.MastodonProfileImageURL }}" />
-                <a href="/todo">
+                <a [routerLink]="['/profile', status.Author.MastodonUserId]">
                     <span class="author-name">{{ status.Author.MastodonDisplayName }}</span>
                     <span class="username">@{{ status.Author.MastodonUserName }}</span>
                 </a>
