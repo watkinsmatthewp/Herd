@@ -23,16 +23,15 @@ export class SearchResultsPage implements OnInit {
     performSearch() {
         this.haveSearchResults = false;
         this.finishedSearching = false;
-        let progress = this.toastService.info("Searching for", this.search + " ...")
+        let progress = this.toastService.info("Searching for", this.search + " ...", { timeOut: 0 })
         this.accountService.searchForUser(this.search)
             .subscribe(users => {
+                this.toastService.remove(progress.id);
                 if (users.length > 0) {
                     this.haveSearchResults = true;
                 }
                 this.finishedSearching = true;
-                this.toastService.remove(progress.id);
                 this.userCards = users;
-                this.toastService.success("Finished", "search for " + this.search + ".");
             });
     }
 

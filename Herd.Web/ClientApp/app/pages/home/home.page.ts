@@ -65,9 +65,11 @@ export class HomePage implements OnInit {
 
     getMostRecentHomeFeed() {
         this.loading = true;
+        let progress = this.toastService.info("Retrieving", "home timeline ...", { timeOut: 0 });
         this.statusService.getHomeFeed()
             .finally(() => this.loading = false)
             .subscribe(feed => {
+                this.toastService.remove(progress.id);
                 this.homeFeed = feed;
             }, error => {
                 this.toastService.error("Error", error.error);
@@ -95,7 +97,7 @@ export class HomePage implements OnInit {
 
     updateSpecificStatus(statusId: string): void {
         this.loading = true;
-        let progress = this.toastService.info("Retrieving" , "status info ...");
+        let progress = this.toastService.info("Retrieving", "status info ...", { timeOut: 0 });
         this.statusService.getStatus(statusId, true, true)
             .finally(() =>  this.loading = false)
             .subscribe(data => {
@@ -104,7 +106,6 @@ export class HomePage implements OnInit {
                 this.specificStatus.Ancestors = data.Ancestors;
                 this.specificStatus.Descendants = data.Descendants;
                 this.specificStatusModal.open();
-                this.toastService.success("Finished", "retrieving status.")
             }, error => {
                 this.toastService.error("Error", error.error);
             });
@@ -112,14 +113,13 @@ export class HomePage implements OnInit {
 
     updateReplyStatusModal(statusId: string): void {
         this.loading = true;
-        let progress = this.toastService.info("Retrieving",  "status info ...");
+        let progress = this.toastService.info("Retrieving", "status info ...", { timeOut: 0 });
         this.statusService.getStatus(statusId, false, false)
             .finally(() => this.loading = false)
             .subscribe(data => {
                 this.toastService.remove(progress.id);
                 this.replyStatus = data;
                 this.replyStatusModal.open();
-                this.toastService.success("Finished", "retrieving status.")
             }, error => {
                 this.toastService.error("Error", error.error);
             });

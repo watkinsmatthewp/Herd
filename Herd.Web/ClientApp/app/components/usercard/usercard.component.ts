@@ -31,8 +31,7 @@ export class UserCardComponent implements OnInit {
 
     togglefollow(): void {
         this.accountService.followUser(String(this.userCard.MastodonUserId), !this.isFollowing)
-            .subscribe(response => {
-                
+            .subscribe(response => { 
                 this.isFollowing = !this.isFollowing;
                 this.eventAlertService.addEvent(EventAlertEnum.UPDATE_FOLLOWING_AND_FOLLOWERS);
                 this.toastService.success("Successfully", "changed relationship.");

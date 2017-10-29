@@ -32,6 +32,25 @@
     z-index: 1;
 }
 
+.follow-btn:hover {
+    background-color: #ac002b;
+    border-color: #ac002b;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #e0245e;
+    color: #fff;
+}
+
+.not-following-btn {
+    color: black;
+}
+
+    .not-following-btn:hover {
+        background-color: #337ab7;
+        border-color: #337ab7;
+        box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #1DA1F2;
+        color: #ffffff;
+    }
+
+
 .pushTop {
     top: 70px;
     position: relative;

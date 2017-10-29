@@ -31,10 +31,6 @@ export class NavMenuComponent {
         return false;
     }
 
-    gotoUserProfile(): void {
-        this.router.navigate(['/profile', 1]);
-    }
-
     search(form: NgForm) {
         this.router.navigate(['/searchresults'], { queryParams: { searchString: this.model.searchItem } });
         this.model.searchItem = "";
