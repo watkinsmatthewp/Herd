@@ -20,6 +20,7 @@ export class ProfilePage implements OnInit, AfterViewInit {
     @ViewChild('staticTabs') staticTabs: TabsetComponent;
     @ViewChild('specificStatusModal') specificStatusModal: BsModalComponent;
     @ViewChild('replyStatusModal') replyStatusModal: BsModalComponent;
+
     statusId: number;
     specificStatus: Status;
     replyStatus: Status;
@@ -28,7 +29,9 @@ export class ProfilePage implements OnInit, AfterViewInit {
     userPosts: Status[] = []; // List of posts from this user
     following: UserCard[] = [];
     followers: UserCard[] = [];
+
     isFollowing: boolean = false;
+    followUnfollowText: string = "Following";
 
     loading: boolean = false;
 
@@ -42,6 +45,73 @@ export class ProfilePage implements OnInit, AfterViewInit {
     }
 
     /**
+     * Set up subscriptions for alerts
+     */
+    ngOnInit() {
+        // Monitor Param map 
+        this.route.paramMap
+            .switchMap((params: ParamMap) => Observable.of(params.get('id') || "-1"))
+            .subscribe(userID => {
+                this.getUserAccount(userID);
+                this.getFollowing(userID);
+                this.getFollowers(userID);
+                this.getMostRecentUserPosts(userID);
+            });
+
+        // Setup subscription to update modals on status click
+        this.eventAlertService.getMessage().subscribe(event => {
+            switch (event.eventType) {
+                case EventAlertEnum.UPDATE_SPECIFIC_STATUS: {
+                    let statusID: string = event.statusID;
+                    this.updateSpecificStatus(statusID);
+                    break;
+                }
+                case EventAlertEnum.UPDATE_REPLY_STATUS: {
+                    let statusID: string = event.statusID;
+                    this.updateReplyStatusModal(statusID);
+                    break;
+                }
+                case EventAlertEnum.UPDATE_FOLLOWING_AND_FOLLOWERS: {
+                    this.getFollowers(this.account.MastodonUserId);
+                    this.getFollowing(this.account.MastodonUserId);
+                    break;
+                }
+            }
+        });
+    }
+
+    /**
+     * Update default tab
+     */
+    ngAfterViewInit() {
+        this.route.queryParams
+            .subscribe(params => {
+                let tabIndex: number = params['tabIndex'] || 0;
+                setTimeout(() => this.staticTabs.tabs[tabIndex].active = true);
+            });
+    }
+
+    isCurrentUser(): boolean {
+        let currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+        let userID = currentUser.MastodonConnection.MastodonUserID;
+        if (userID === this.account.MastodonUserId) {
+            return true;
+        }
+        return false;
+    }
+
+    togglefollow(): void {
+        this.accountService.followUser(String(this.account.MastodonUserId), !this.isFollowing)
+            .subscribe(response => {
+                this.isFollowing = !this.isFollowing;
+                this.eventAlertService.addEvent(EventAlertEnum.UPDATE_FOLLOWING_AND_FOLLOWERS);
+                this.toastService.success("Successfully", "changed relationship.");
+            }, error => {
+                this.toastService.error(error.error);
+            });
+    }
+
+    /**
      * Given a userID, get that Users account
      * @param userId
      */
@@ -51,6 +121,9 @@ export class ProfilePage implements OnInit, AfterViewInit {
             .finally(() => this.loading = false)
             .subscribe(account => {
                 this.account = account;
+                if (this.account.IsFollowedByActiveUser) {
+                    this.isFollowing = true;
+                }
             }, error => {
                 this.toastService.error("Error", error.error);
             });
@@ -120,53 +193,6 @@ export class ProfilePage implements OnInit, AfterViewInit {
                 this.toastService.success("Finished", "retrieving status.")
             }, error => {
                 this.toastService.error("Error", error.error);
-            });
-    }
-
-    /**
-     * Set up subscriptions for alerts
-     */
-    ngOnInit() {
-        // Monitor Param map 
-        this.route.paramMap
-            .switchMap((params: ParamMap) => Observable.of(params.get('id') || "-1"))
-            .subscribe(userID => {
-                this.getUserAccount(userID);
-                this.getFollowing(userID);
-                this.getFollowers(userID);
-                this.getMostRecentUserPosts(userID);
-            });
-
-        // Setup subscription to update modals on status click
-        this.eventAlertService.getMessage().subscribe(event => {
-            switch (event.eventType) {
-                case EventAlertEnum.UPDATE_SPECIFIC_STATUS: {
-                    let statusID: string = event.statusID;
-                    this.updateSpecificStatus(statusID);
-                    break;
-                }
-                case EventAlertEnum.UPDATE_REPLY_STATUS: {
-                    let statusID: string = event.statusID;
-                    this.updateReplyStatusModal(statusID);
-                    break;
-                }
-                case EventAlertEnum.UPDATE_FOLLOWING_AND_FOLLOWERS: {
-                    this.getFollowers(this.account.MastodonUserId);
-                    this.getFollowing(this.account.MastodonUserId);
-                    break;
-                }
-            }
-        });
-    }
-
-    /**
-     * Update default tab
-     */
-    ngAfterViewInit() {
-        this.route.queryParams
-            .subscribe(params => {
-                let tabIndex: number = params['tabIndex'] || 0;
-                setTimeout(() => this.staticTabs.tabs[tabIndex].active = true);
             });
     }
 }

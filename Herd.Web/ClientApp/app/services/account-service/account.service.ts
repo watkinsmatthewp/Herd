@@ -34,7 +34,9 @@ export class AccountService {
      * @param userID
      */
     getUserByID(userID: string) {
-        let queryString = "?mastodonUserID=" + userID;
+        let queryString = "?mastodonUserID=" + userID
+                        + "&includeFollowedByActiveUser=" + true
+                        + "&includeFollowsActiveUser=" + true;
         return this.httpClient.get('api/mastodon-users/search' + queryString)
             .map((response) => response.Users[0] as Account );
     }
