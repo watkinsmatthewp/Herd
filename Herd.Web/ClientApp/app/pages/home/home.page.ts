@@ -77,8 +77,19 @@ export class HomePage implements OnInit {
 
     checkForNewItems() {
         this.statusService.checkForNewItems(this.homeFeed[0].Id)
+            .finally(() => this.loading = false)
             .subscribe(newItems => {
                 this.newItems = newItems;
+            });
+    }
+
+    getPreviousItems(ev: any) {
+        this.loading = true;
+        this.statusService.getPreviousItems(this.homeFeed[this.homeFeed.length - 1].Id)
+            .finally(() => this.loading = false)
+            .subscribe(new_items => {
+                this.appendItems(this.homeFeed, new_items);
+                this.statusesWrapper.nativeElement.scrollTo(0, ev.currentScrollPosition);
             });
     }
 
@@ -136,12 +147,7 @@ export class HomePage implements OnInit {
      * @param ev
      */
     onScrollDown(ev: any) {
-        // Get new set of statuses
-        this.statusService.getPreviousItems(this.homeFeed[this.homeFeed.length - 1].Id)
-            .subscribe(new_items => {
-                this.appendItems(this.homeFeed, new_items);
-                this.statusesWrapper.nativeElement.scrollTo(0, ev.currentScrollPosition);
-            });
+        this.getPreviousItems(ev);
     }
 
     /** Infinite Scrolling Handling */

@@ -46,19 +46,15 @@
                 col-lg-6 col-lg-pull-3">
         <status-form actionName="Create Status"></status-form>
 
-        <br />
-
         <div class="panel">
             <div class="panel-heading text-center" style="min-height: 50px;">
-                <div *ngIf="newItems.length > 0">
-                    <button class="btn btn-primary" type="button" (click)="viewNewItems()">{{newItems.length}} New Statuses</button>
+                <div>
+                    <div *ngIf="loading" class="btn pull-left">
+                        <fa name="spinner" spin=true></fa>
+                    </div>
+                    <button *ngIf="newItems.length > 0" class="btn btn-primary" type="button" (click)="viewNewItems()">{{newItems.length}} New Statuses</button>
+                    <button class="btn btn-primary pull-right" type="button" (click)="scrollToTop()"><fa name="chevron-up"></fa>Scroll to top</button>
                 </div>
-
-                <button class="btn btn-primary pull-right" type="button" (click)="scrollToTop()"><fa name="chevron-up"></fa>Scroll to top</button>
-
-                <!--slimScroll height="550px" -->
-                <!-- (scrolledUp)="onUp($event)" -->
-                <!-- slimScroll [scrollEvents]="scrollEvents" -->
             </div>
             <div #statusesWrapper class="panel-body statusesWrapper" 
                 
@@ -66,9 +62,10 @@
                     debounce
                     [infiniteScrollContainer]="statusesWrapper"
                     [scrollWindow]="false"
-                    [infiniteScrollDistance]="2"
+                    [infiniteScrollDistance]="1.5"
                     [infiniteScrollThrottle]="1500"
                     (scrolled)="onScrollDown($event)">
+                 
                 <div *ngFor="let status of homeFeed">
                     <status [status]="status"></status>
                 </div>
