@@ -23,10 +23,12 @@
                     </button>
                     <button class="btn btn-secondary retweet-btn status-btn" type="button" title="Retweet" (click)="toggleRepost($event)">
                         <fa name="retweet" [ngClass]="{'retweet-color': status.IsReblogged }"></fa>
+                        <span>{{ status.ReblogCount }}</span>
                     </button>
                     <button class="btn btn-secondary like-btn status-btn" type="button" title="Like" (click)="toggleLike($event)">
                         <fa *ngIf="!status.IsFavourited" name="heart-o"></fa>
                         <fa *ngIf="status.IsFavourited" name="heart" class="heart-color"></fa>
+                        <span>{{ status.FavouritesCount }}</span>
                     </button>
                     <button [disabled]="true" class="btn btn-secondary message-btn status-btn" type="button" title="Direct Message" (click)="directMessage()">
                         <fa name="envelope-o"></fa>
