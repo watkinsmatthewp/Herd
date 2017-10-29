@@ -18,6 +18,20 @@ export class StatusService {
             .map(response => response.Posts as Status[]);
     }
 
+    checkForNewItems(sinceID: string): Observable<Status[]> {
+        let queryString = '?onlyOnActiveUserTimeline=true'
+                        + '&sinceID=' + sinceID;
+        return this.httpClient.get('api/mastodon-posts/search' + queryString)
+            .map(response => response.Posts as Status[]);
+    }
+
+    getPreviousItems(sinceID: string): Observable<Status[]> {
+        let queryString = '?onlyOnActiveUserTimeline=true'
+                        + '&maxID=' + sinceID;
+        return this.httpClient.get('api/mastodon-posts/search' + queryString)
+            .map(response => response.Posts as Status[]);
+    }
+
     /**
      * Get the posts that the active user has made
      */
