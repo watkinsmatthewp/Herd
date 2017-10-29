@@ -117,9 +117,11 @@ export class ProfilePage implements OnInit, AfterViewInit {
      */
     getUserAccount(userID: string) {
         this.loading = true;
+        let progress = this.toastService.info("Retrieving", "account information ...", { timeOut: 0 });
         this.accountService.getUserByID(userID)
             .finally(() => this.loading = false)
             .subscribe(account => {
+                this.toastService.remove(progress.id);
                 this.account = account;
                 if (this.account.IsFollowedByActiveUser) {
                     this.isFollowing = true;
