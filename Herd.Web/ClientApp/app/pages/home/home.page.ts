@@ -87,7 +87,7 @@ export class HomePage implements OnInit {
 
     getPreviousItems() {
         this.loading = true;
-        this.statusService.search({ onlyOnActiveUserTimeline: true, sinceID: this.homeFeed[this.homeFeed.length - 1].Id })
+        this.statusService.search({ onlyOnActiveUserTimeline: true, maxID: this.homeFeed[this.homeFeed.length - 1].Id })
             .finally(() => this.loading = false)
             .subscribe(new_items => {
                 this.appendItems(this.homeFeed, new_items);
