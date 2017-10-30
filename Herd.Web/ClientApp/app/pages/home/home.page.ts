@@ -7,7 +7,7 @@ import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 
 import { StatusService, EventAlertService, AccountService } from "../../services";
 import { EventAlertEnum, Storage } from '../../models';
-import { Status, UserCard } from "../../models/mastodon";
+import { Status, Account } from "../../models/mastodon";
 
 @Component({
     selector: 'home',
@@ -26,7 +26,7 @@ export class HomePage implements OnInit {
     loading: boolean = false;
     homeFeed: Status[] = [];
     newItems: Status[] = [];
-    userCard: UserCard;
+    userCard: Account;
 
     constructor(private activatedRoute: ActivatedRoute, private eventAlertService: EventAlertService,
                 private toastService: NotificationsService, private statusService: StatusService,
@@ -56,10 +56,10 @@ export class HomePage implements OnInit {
     getUserCard() {
         let currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
         let userID = currentUser.MastodonConnection.MastodonUserID;
-        this.accountService.getUserByID(userID)
-            .map(response => response as UserCard)
-            .subscribe(usercard => {
-                this.userCard = usercard;
+        this.accountService.search({ mastodonUserID: userID, includeFollowedByActiveUser: true, includeFollowsActiveUser: true })
+            .map(response => response[0] as Account)
+            .subscribe(account => {
+                this.userCard = account;
             });
     }
 

@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, Input } from '@angular/core';
 
 import { AccountService } from '../../services';
-import { UserCard } from "../../models/mastodon";
+import { Account } from "../../models/mastodon";
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationsService } from "angular2-notifications";
@@ -15,7 +15,7 @@ export class SearchResultsPage implements OnInit {
     search: string;
     haveSearchResults: boolean = false;
     finishedSearching: boolean = false;
-    userCards: UserCard[]; // List of users that the search found
+    userCards: Account[]; // List of users that the search found
 
     // Keeping  it simple for now
     constructor(private accountService: AccountService, private route: ActivatedRoute, private router: Router, private toastService: NotificationsService) { }
@@ -24,7 +24,7 @@ export class SearchResultsPage implements OnInit {
         this.haveSearchResults = false;
         this.finishedSearching = false;
         let progress = this.toastService.info("Searching for", this.search + " ...", { timeOut: 0 })
-        this.accountService.searchForUser(this.search)
+        this.accountService.search({ name: this.search, includeFollowedByActiveUser: true, includeFollowsActiveUser: true })
             .subscribe(users => {
                 this.toastService.remove(progress.id);
                 if (users.length > 0) {

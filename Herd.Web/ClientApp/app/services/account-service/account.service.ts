@@ -2,7 +2,7 @@
 import { Observable } from "rxjs/Observable";
 
 import { User } from '../../models';
-import { Account, Status, UserCard } from '../../models/mastodon';
+import { Account, Status } from '../../models/mastodon';
 import { HttpClientService } from '../http-client-service/http-client.service';
 
 /**
@@ -36,8 +36,11 @@ export class AccountService {
 
     constructor(private httpClient: HttpClientService) { }
 
-
-    search(searchParams: AccountSearchParams) {
+    /**
+     * Performs a search across accounts
+     * @param searchParams
+     */
+    search(searchParams: AccountSearchParams): Observable<Account[]> {
         let queryString = "?"
 
         if (searchParams.mastodonUserID)
@@ -59,55 +62,11 @@ export class AccountService {
         if (searchParams.max)
             queryString += "&max=" + searchParams.max
 
-        return this.httpClient.get('api.mastodon-users/search' + queryString)
-            .map((response) => response.Users as Account);
-
-    }
-
-    /**
-     * Calls Api to get a user by username
-     * @param userID
-     */
-    getUserByID(userID: string) {
-        let queryString = "?mastodonUserID=" + userID
-                        + "&includeFollowedByActiveUser=" + true
-                        + "&includeFollowsActiveUser=" + true;
         return this.httpClient.get('api/mastodon-users/search' + queryString)
-            .map((response) => response.Users[0] as Account );
-    }
+            .map(response => { 
+                return response.Users as Account[]
+            });
 
-    /**
-     * Searches for a user
-     * @param name
-     */
-    searchForUser(name: string) {
-        let queryString = "?name=" + name
-                        + "&includeFollowedByActiveUser=" + true
-                        + "&includeFollowsActiveUser=" + true;
-        return this.httpClient.get('api/mastodon-users/search' + queryString)
-            .map(response => response.Users as UserCard[]);
-    }
-
-    /**
-     * Get the followers of a userID
-     * @param userID
-     */
-    getFollowers(userID: string): Observable<Account[]> {
-        let queryString = "?followsMastodonUserID=" + userID
-                        + "&includeFollowsActiveUser=" + true;
-        return this.httpClient.get('api/mastodon-users/search' + queryString)
-            .map(response => response.Users as UserCard[]);
-    }
-
-    /**
-     * Get who the userID is following
-     * @param userID
-     */
-    getFollowing(userID: string): Observable<Account[]> {
-        let queryString = "?followedByMastodonUserID=" + userID
-                        + "&includeFollowedByActiveUser=" + true
-        return this.httpClient.get('api/mastodon-users/search' + queryString)
-            .map(response => response.Users as UserCard[]);
     }
 
     /**

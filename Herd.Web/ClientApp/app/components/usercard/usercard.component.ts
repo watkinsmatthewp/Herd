@@ -2,7 +2,7 @@
 
 import { AccountService, EventAlertService } from "../../services";
 import { NotificationsService } from "angular2-notifications";
-import { UserCard } from '../../models/mastodon';
+import { Account } from '../../models/mastodon';
 import { EventAlertEnum } from '../../models'
 
 @Component({
@@ -11,7 +11,7 @@ import { EventAlertEnum } from '../../models'
     styleUrls: ['./usercard.component.css']
 })
 export class UserCardComponent implements OnInit {
-    @Input() userCard: UserCard;
+    @Input() userCard: Account;
     @Input() fillWidth: boolean = false;
     @Input() showBio: boolean = false;
     @Input() showActions: boolean = false;

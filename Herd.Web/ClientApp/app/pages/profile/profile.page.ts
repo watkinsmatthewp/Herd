@@ -4,7 +4,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from "rxjs/Observable";
 
 import { AccountService, EventAlertService, StatusService } from "../../services";
-import { Account, Status, UserCard } from '../../models/mastodon';
+import { Account, Status } from '../../models/mastodon';
 import { Storage, EventAlertEnum } from '../../models';
 import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 import { TabsetComponent } from "ngx-bootstrap";
@@ -27,8 +27,8 @@ export class ProfilePage implements OnInit, AfterViewInit {
 
     account: Account;
     userPosts: Status[] = []; // List of posts from this user
-    following: UserCard[] = [];
-    followers: UserCard[] = [];
+    following: Account[] = [];
+    followers: Account[] = [];
 
     isFollowing: boolean = false;
     followUnfollowText: string = "Following";
@@ -118,7 +118,8 @@ export class ProfilePage implements OnInit, AfterViewInit {
     getUserAccount(userID: string) {
         this.loading = true;
         let progress = this.toastService.info("Retrieving", "account information ...", { timeOut: 0 });
-        this.accountService.getUserByID(userID)
+        this.accountService.search({ mastodonUserID: userID })
+            .map(response => response[0] as Account)
             .finally(() => this.loading = false)
             .subscribe(account => {
                 this.toastService.remove(progress.id);
@@ -149,7 +150,7 @@ export class ProfilePage implements OnInit, AfterViewInit {
      * @param userID
      */
     getFollowers(userID: string) {
-        this.accountService.getFollowers(userID)
+        this.accountService.search({ followsMastodonUserID: userID, includeFollowsActiveUser: true })
             .subscribe(users => {
                 this.followers = users;
             });
@@ -160,7 +161,7 @@ export class ProfilePage implements OnInit, AfterViewInit {
      * @param userID
      */
     getFollowing(userID: string) {
-        this.accountService.getFollowing(userID)
+        this.accountService.search({ followedByMastodonUserID: userID, includeFollowedByActiveUser: true })
             .subscribe(users => {
                 this.following = users;
             });

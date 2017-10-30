@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
 
 import { HttpClientService } from '../http-client-service/http-client.service';
-import { Status, UserCard } from '../../models/mastodon';
+import { Status } from '../../models/mastodon';
 
 /**
     let params = {
@@ -41,6 +41,8 @@ export class StatusService {
             
         if (searchParams.onlyOnActiveUserTimeline)
             queryString += "onlyOnActiveUserTimeline=" + searchParams.onlyOnActiveUserTimeline
+        if (searchParams.authorMastodonUserID)
+            queryString += "&authorMastodonUserID=" + searchParams.authorMastodonUserID
         if (searchParams.postID)
             queryString += "&postID=" + searchParams.postID
         if (searchParams.hashtag)
