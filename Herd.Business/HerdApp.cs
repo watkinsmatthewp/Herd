@@ -341,15 +341,15 @@ namespace Herd.Business
             }
             if (!string.IsNullOrWhiteSpace(searchMastodonPostsCommand.ByAuthorMastodonUserID))
             {
-                posts = await FilterByAuthorUserID(posts, searchMastodonPostsCommand.ByAuthorMastodonUserID);
+                posts = await FilterByAuthorUserID(posts, searchMastodonPostsCommand.ByAuthorMastodonUserID, searchMastodonPostsCommand.SinceID, searchMastodonPostsCommand.MaxID);
             }
             if (searchMastodonPostsCommand.OnlyOnlyOnActiveUserTimeline)
             {
-                posts = await FilterByOnActiveUserTimeline(posts);
+                posts = await FilterByOnActiveUserTimeline(posts, searchMastodonPostsCommand.SinceID, searchMastodonPostsCommand.MaxID);
             }
             if (!string.IsNullOrWhiteSpace(searchMastodonPostsCommand.HavingHashTag))
             {
-                posts = await FilterByHashTag(posts, searchMastodonPostsCommand.HavingHashTag);
+                posts = await FilterByHashTag(posts, searchMastodonPostsCommand.HavingHashTag, searchMastodonPostsCommand.SinceID, searchMastodonPostsCommand.MaxID);
             }
 
             await _mastodonApiWrapper.AddContextToMastodonPosts
@@ -376,19 +376,19 @@ namespace Herd.Business
             return post == null ? new MastodonPost[0] : new[] { post };
         }
 
-        private Task<Dictionary<string, MastodonPost>> FilterByAuthorUserID(Dictionary<string, MastodonPost> postSet1, string byAuthorMastodonUserID)
+        private Task<Dictionary<string, MastodonPost>> FilterByAuthorUserID(Dictionary<string, MastodonPost> postSet1, string byAuthorMastodonUserID, string sinceID, string maxID)
         {
-            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsByAuthorUserID(byAuthorMastodonUserID), p => p.Id);
+            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsByAuthorUserID(byAuthorMastodonUserID, pagingOptions: new PagingOptions { SinceID = sinceID, MaxID = maxID }), p => p.Id);
         }
 
-        private Task<Dictionary<string, MastodonPost>> FilterByOnActiveUserTimeline(Dictionary<string, MastodonPost> postSet1)
+        private Task<Dictionary<string, MastodonPost>> FilterByOnActiveUserTimeline(Dictionary<string, MastodonPost> postSet1, string sinceID, string maxID)
         {
-            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsOnActiveUserTimeline(), p => p.Id);
+            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsOnActiveUserTimeline(pagingOptions: new PagingOptions { SinceID = sinceID, MaxID = maxID }), p => p.Id);
         }
 
-        private Task<Dictionary<string, MastodonPost>> FilterByHashTag(Dictionary<string, MastodonPost> postSet1, string hashTag)
+        private Task<Dictionary<string, MastodonPost>> FilterByHashTag(Dictionary<string, MastodonPost> postSet1, string hashTag, string sinceID, string maxID)
         {
-            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsByHashTag(hashTag), p => p.Id);
+            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsByHashTag(hashTag, pagingOptions: new PagingOptions { SinceID = sinceID, MaxID = maxID }), p => p.Id);
         }
 
         #endregion Mastodon Posts

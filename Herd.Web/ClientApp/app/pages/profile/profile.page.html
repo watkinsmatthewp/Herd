@@ -12,14 +12,29 @@
                     <img *ngIf="account" class="profile-pic" src="{{ account?.MastodonProfileImageURL }}" />
                 </div>
                 <div class="panel">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <p>
+                                    <strong>{{ account?.MastodonDisplayName }}</strong>
+                                    <br />
+                                    @{{ account?.MastodonUserName }}
+                                </p>
+                            </div>
+                            <div *ngIf="account && !isCurrentUser()" class="col-sm-4">
+                                <button *ngIf="isFollowing" class="btn btn-primary follow-btn" (mouseenter)="followUnfollowText = 'Unfollow';" (mouseleave)="followUnfollowText = 'Following';" (click)="togglefollow()">
+                                    {{followUnfollowText}}
+                                </button>
+                                <button *ngIf="!isFollowing" class="btn btn-secondary not-following-btn" (click)="togglefollow()">
+                                    Follow
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="panel-body">
-                        <p>
-                            <strong>{{ account?.MastodonDisplayName }}</strong>
-                            <br />
-                            @{{ account?.MastodonUserName }}
-                        </p>
-                        
-                        <p [innerHTML]="account?.MastodonShortBio"></p>
+                        <div class="row col-sm-12">
+                            <p [innerHTML]="account?.MastodonShortBio"></p>
+                        </div>
                     </div>
                 </div>
             </div>

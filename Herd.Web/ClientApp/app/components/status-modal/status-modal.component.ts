@@ -19,7 +19,8 @@ export class StatusModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit(): void {
         if (this.statusId) {
-            this.statusService.getStatus(this.statusId, true, true)
+            this.statusService.search({ postID: this.statusId, includeAncestors: true, includeDescendants: true })
+                .map(posts => posts[0] as Status)
                 .subscribe(data => {
                     this.status = data;
                     this.status.Ancestors = data.Ancestors;

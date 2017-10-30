@@ -1,90 +1,36 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { TabsetComponent } from 'ngx-bootstrap';
 
+import { TabsetComponent } from 'ngx-bootstrap';
+import { NotificationsService } from "angular2-notifications";
+import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 
 import { StatusService, EventAlertService, AccountService } from "../../services";
 import { EventAlertEnum, Storage } from '../../models';
-import { Status, UserCard } from "../../models/mastodon";
-import { NotificationsService } from "angular2-notifications";
-import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
+import { Status, Account } from "../../models/mastodon";
 
 @Component({
     selector: 'home',
     templateUrl: './home.page.html',
+    styleUrls: ['./home.page.css']
 })
 export class HomePage implements OnInit {
-    @ViewChild('specificStatusModal') 
-    specificStatusModal: BsModalComponent;
-    @ViewChild('replyStatusModal')
-    replyStatusModal: BsModalComponent;
+    @ViewChild('specificStatusModal') specificStatusModal: BsModalComponent;
+    @ViewChild('replyStatusModal') replyStatusModal: BsModalComponent;
+    @ViewChild('statusesWrapper') statusesWrapper: any;
+
     statusId: number;
     specificStatus: Status;
     replyStatus: Status;
 
     loading: boolean = false;
-    homeFeed: Status[] = []; // List of posts for the home feed
-    userCard: UserCard;
+    homeFeed: Status[] = [];
+    newItems: Status[] = [];
+    userCard: Account;
 
-    constructor(private activatedRoute: ActivatedRoute, private eventAlertService: EventAlertService, private toastService: NotificationsService,
-        private statusService: StatusService, private accountService: AccountService, private localStorage: Storage) { }
-
-    getUserCard() {
-        let currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
-        let userID = currentUser.MastodonConnection.MastodonUserID;
-        this.accountService.getUserByID(userID)
-            .map(response => response as UserCard)
-            .subscribe(usercard => {
-                this.userCard = usercard;
-                console.log("getUserCard", usercard);
-            });
-    }
-
-    getMostRecentHomeFeed() {
-        this.loading = true;
-        let progress = this.toastService.info("Retrieving", "home timeline ...")
-        this.statusService.getHomeFeed()
-            .finally(() => this.loading = false)
-            .subscribe(feed => {
-                this.toastService.remove(progress.id);
-                this.homeFeed = feed;
-                this.toastService.success("Finished",  "retrieving home timeline.");
-            }, error => {
-                this.toastService.error("Error", error.error);
-            });
-    }
-
-    updateSpecificStatus(statusId: string): void {
-        this.loading = true;
-        let progress = this.toastService.info("Retrieving" , "status info ...");
-        this.statusService.getStatus(statusId, true, true)
-            .finally(() =>  this.loading = false)
-            .subscribe(data => {
-                this.toastService.remove(progress.id);
-                this.specificStatus = data;
-                this.specificStatus.Ancestors = data.Ancestors;
-                this.specificStatus.Descendants = data.Descendants;
-                this.specificStatusModal.open();
-                this.toastService.success("Finished", "retrieving status.")
-            }, error => {
-                this.toastService.error("Error", error.error);
-            });
-    }
-
-    updateReplyStatusModal(statusId: string): void {
-        this.loading = true;
-        let progress = this.toastService.info("Retrieving",  "status info ...");
-        this.statusService.getStatus(statusId, false, false)
-            .finally(() => this.loading = false)
-            .subscribe(data => {
-                this.toastService.remove(progress.id);
-                this.replyStatus = data;
-                this.replyStatusModal.open();
-                this.toastService.success("Finished", "retrieving status.")
-            }, error => {
-                this.toastService.error("Error", error.error);
-            });
-    }
+    constructor(private activatedRoute: ActivatedRoute, private eventAlertService: EventAlertService,
+                private toastService: NotificationsService, private statusService: StatusService,
+                private accountService: AccountService, private localStorage: Storage) { }
 
     ngOnInit() {
         this.eventAlertService.getMessage().subscribe(event => {
@@ -102,7 +48,131 @@ export class HomePage implements OnInit {
             }
         });
 
+        setInterval(() => { this.checkForNewItems(); }, 10 * 1000);
         this.getMostRecentHomeFeed();
         this.getUserCard();
+    }
+
+    getUserCard() {
+        let currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+        let userID = currentUser.MastodonConnection.MastodonUserID;
+        this.accountService.search({ mastodonUserID: userID, includeFollowedByActiveUser: true, includeFollowsActiveUser: true })
+            .map(response => response[0] as Account)
+            .subscribe(account => {
+                this.userCard = account;
+            });
+    }
+
+    getMostRecentHomeFeed() {
+        this.loading = true;
+        let progress = this.toastService.info("Retrieving", "home timeline ...", { timeOut: 0 });
+
+        this.statusService.search({ onlyOnActiveUserTimeline: true })
+            .finally(() => this.loading = false)
+            .subscribe(feed => {
+                this.toastService.remove(progress.id);
+                this.homeFeed = feed;
+            }, error => {
+                this.toastService.error("Error", error.error);
+            });
+    }
+
+    checkForNewItems() {
+        this.statusService.search({ onlyOnActiveUserTimeline: true, sinceID: this.homeFeed[0].Id })
+            .finally(() => this.loading = false)
+            .subscribe(newItems => {
+                this.newItems = newItems;
+            });
+    }
+
+    getPreviousItems() {
+        this.loading = true;
+        this.statusService.search({ onlyOnActiveUserTimeline: true, maxID: this.homeFeed[this.homeFeed.length - 1].Id })
+            .finally(() => this.loading = false)
+            .subscribe(new_items => {
+                this.appendItems(this.homeFeed, new_items);
+                let currentYPosition = this.statusesWrapper.nativeElement.scrollTop;
+                this.statusesWrapper.nativeElement.scrollTo(0, currentYPosition);
+            });
+    }
+
+    updateSpecificStatus(statusId: string): void {
+        this.loading = true;
+        let progress = this.toastService.info("Retrieving", "status info ...", { timeOut: 0 });
+        this.statusService.search({ postID: statusId, includeAncestors: true, includeDescendants: true })
+            .map(posts => posts[0] as Status)
+            .finally(() =>  this.loading = false)
+            .subscribe(data => {
+                this.toastService.remove(progress.id);
+                this.specificStatus = data;
+                this.specificStatus.Ancestors = data.Ancestors;
+                this.specificStatus.Descendants = data.Descendants;
+                this.specificStatusModal.open();
+            }, error => {
+                this.toastService.error("Error", error.error);
+            });
+    }
+
+    updateReplyStatusModal(statusId: string): void {
+        this.loading = true;
+        let progress = this.toastService.info("Retrieving", "status info ...", { timeOut: 0 });
+        this.statusService.search({ postID: statusId, includeAncestors: false, includeDescendants: false })
+            .map(posts => posts[0] as Status)
+            .finally(() => this.loading = false)
+            .subscribe(data => {
+                this.toastService.remove(progress.id);
+                this.replyStatus = data;
+                this.replyStatusModal.open();
+            }, error => {
+                this.toastService.error("Error", error.error);
+            });
+    }
+
+    /**
+     * Add the new items to main feed array, scroll to top, empty newItems
+     */
+    viewNewItems() {
+        this.prependItems(this.homeFeed, this.newItems);
+        this.scrollToTop();
+        this.newItems = [];
+    }
+
+    /**
+     * Scrolls the status area to the top
+     */
+    scrollToTop() {
+        this.statusesWrapper.nativeElement.scrollTo(0, 0);
+    }
+
+    /**
+     * Infinite scroll function that is called
+     * when scrolling down and near end of view port
+     * @param ev
+     */
+    onScrollDown(ev: any) {
+        this.getPreviousItems();
+    }
+
+    /** Infinite Scrolling Handling */
+    addItems(oldItems: any[], newItems: any[], _method: any) {
+        oldItems[_method].apply(oldItems, newItems);
+    }
+
+    /**
+     * Add items to end of list
+     * @param startIndex
+     * @param endIndex
+     */
+    appendItems(oldItems: any[], newItems: any[]) {
+        this.addItems(oldItems, newItems, 'push');
+    }
+
+    /**
+     * Add items to beginning of list
+     * @param startIndex
+     * @param endIndex
+     */
+    prependItems(oldItems: any[], newItems: any[]) {
+        this.addItems(oldItems, newItems, 'unshift');
     }
 }

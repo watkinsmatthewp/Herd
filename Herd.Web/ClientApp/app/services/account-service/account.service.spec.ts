@@ -27,6 +27,47 @@ describe('Service: Account Service', () => {
         accountService = as;
     }));
 
+    describe('Status Search Parameter Setting', () => {
+        it('should set all parameters successfully',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Data: {
+                        Users: [
+                            { MastodonUserId: '1', MastodonDisplayName: 'John Jane' },
+                        ]
+                    }
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the request
+                let params = {
+                    mastodonUserID: "1",
+                    name: "1",
+                    followsMastodonUserID: "1",
+                    followedByMastodonUserID: "1",
+                    includeFollowers: true,
+                    includeFollowing: true,
+                    includeFollowsActiveUser: true,
+                    includeFollowedByActiveUser: true,
+                    max: 30
+                }
+                accountService.search(params)
+                    .map(users => users[0] as Account)
+                    .subscribe((user) => {
+                        expect(user.MastodonUserId).toBe("1");
+                        expect(user.MastodonDisplayName).toBe("John Jane");
+                    });
+            })
+        );
+    });
+
     describe('Get User By their mastodonUserID', () => {
         it('should return the user',
             inject([XHRBackend], (mockBackend: MockBackend) => {
@@ -47,9 +88,11 @@ describe('Service: Account Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                accountService.getUserByID("1").subscribe((user) => {
-                    expect(user.MastodonUserId).toBe("1");
-                    expect(user.MastodonDisplayName).toBe("John Jane");
+                accountService.search({ mastodonUserID: "1" })
+                    .map(users => users[0] as Account)
+                    .subscribe((user) => {
+                        expect(user.MastodonUserId).toBe("1");
+                        expect(user.MastodonDisplayName).toBe("John Jane");
                 });
             })
         );
@@ -71,8 +114,8 @@ describe('Service: Account Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                accountService.getUserByID("-1").subscribe((user) => {
-                    expect(user).toBeUndefined();
+                accountService.search({ mastodonUserID: "1" }).subscribe((users) => {
+                    expect(users.length).toBe(0);
                 });
             })
         );
@@ -101,7 +144,7 @@ describe('Service: Account Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                accountService.searchForUser("Jane").subscribe((usercard) => {
+                accountService.search({ name: "Jane" }).subscribe((usercard) => {
                     expect(usercard[0].MastodonUserId).toBe("1");
                     expect(usercard[0].MastodonDisplayName).toBe("John Jane");
                     expect(usercard[1].MastodonUserId).toBe("2");
@@ -131,8 +174,8 @@ describe('Service: Account Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                accountService.getUserByID("John").subscribe((user) => {
-                    expect(user).toBeUndefined();
+                accountService.search({ name: "John" }).subscribe((users) => {
+                    expect(users.length).toBe(0);
                 });
             })
         );
@@ -161,7 +204,7 @@ describe('Service: Account Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                accountService.getFollowers("1").subscribe((usercard) => {
+                accountService.search({ mastodonUserID: "1" }).subscribe((usercard) => {
                     expect(usercard[0].FollowsActiveUser).toBeTruthy();
                     expect(usercard[1].FollowsActiveUser).toBeTruthy();
                     expect(usercard[2].FollowsActiveUser).toBeTruthy();
@@ -186,7 +229,7 @@ describe('Service: Account Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                accountService.getFollowers("1").subscribe((user) => {
+                accountService.search({ mastodonUserID: "1" }).subscribe((user) => {
                     expect(user.length).toBe(0);
                 });
             })
@@ -216,7 +259,7 @@ describe('Service: Account Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                accountService.getFollowing("1").subscribe((usercard) => {
+                accountService.search({ mastodonUserID: "1" }).subscribe((usercard) => {
                     expect(usercard[0].IsFollowedByActiveUser).toBeTruthy();
                     expect(usercard[1].IsFollowedByActiveUser).toBeTruthy();
                     expect(usercard[2].IsFollowedByActiveUser).toBeTruthy();
@@ -241,14 +284,14 @@ describe('Service: Account Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                accountService.getFollowing("1").subscribe((user) => {
+                accountService.search({ mastodonUserID: "1" }).subscribe((user) => {
                     expect(user.length).toBe(0);
                 });
             })
         );
     });
 
-    describe('Follow a user', () => {
+    describe('Un/Following a user', () => {
         it('should be able to follow a user',
             inject([XHRBackend], (mockBackend: MockBackend) => {
                 // Create a mockedResponse
@@ -266,6 +309,30 @@ describe('Service: Account Service', () => {
 
                 // Make the login request from our authentication service
                 accountService.followUser("1", true).subscribe((response) => {
+                    // pass if it gets here
+                }, error => {
+                    fail();
+                });
+            })
+        );
+
+        it('should be able to unfollow a user',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Success: true,
+                    Data: {}
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the login request from our authentication service
+                accountService.followUser("1", false).subscribe((response) => {
                     // pass if it gets here
                 }, error => {
                     fail();

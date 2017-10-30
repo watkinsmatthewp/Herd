@@ -17,7 +17,9 @@ namespace Herd.Web.Controllers.HerdApi
             string hashtag = null,
             bool includeAncestors = false,
             bool includeDescendants = false,
-            int max = 30
+            int max = 30, 
+            string maxID = null,
+            string sinceID = null 
         )
         {
             return ApiJson(App.SearchPosts(new SearchMastodonPostsCommand
@@ -28,7 +30,9 @@ namespace Herd.Web.Controllers.HerdApi
                 HavingHashTag = hashtag,
                 IncludeAncestors = includeAncestors,
                 IncludeDescendants = includeDescendants,
-                MaxCount = max
+                MaxCount = max,
+                MaxID = maxID,
+                SinceID = sinceID
             }));
         }
 

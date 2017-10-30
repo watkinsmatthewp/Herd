@@ -3170,6 +3170,11 @@
       "from": "ngx-bootstrap@latest",
       "resolved": "https://registry.npmjs.org/ngx-bootstrap/-/ngx-bootstrap-1.9.3.tgz"
     },
+    "ngx-infinite-scroll": {
+      "version": "0.6.1",
+      "from": "ngx-infinite-scroll@>=0.6.1 <0.7.0",
+      "resolved": "https://registry.npmjs.org/ngx-infinite-scroll/-/ngx-infinite-scroll-0.6.1.tgz"
+    },
     "no-case": {
       "version": "2.3.1",
       "from": "no-case@>=2.2.0 <3.0.0",

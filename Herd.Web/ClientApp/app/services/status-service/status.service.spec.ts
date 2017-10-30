@@ -27,6 +27,51 @@ describe('Service: Status Service', () => {
         statusService = ms;
     }));
 
+    describe('Status Search Parameter Setting', () => {
+        it('should set all parameters successfully',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Data: {
+                        Posts: [
+                            { Content: 'Content1', Id: "1", Url: 'example.com/1' },
+                            { Content: 'Content2', Id: "2", Url: 'example.com/2' },
+                            { Content: 'Content3', Id: "3", Url: 'example.com/3' },
+                        ]
+                    }
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the request
+                let params = {
+                    onlyOnActiveUserTimeline: true,
+                    authorMastodonUserID: "1",
+                    postID: "1",
+                    hashtag: "#hello",
+                    includeAncestors: true,
+                    includeDescendants: true,
+                    max: 30,
+                    maxID: "5000",
+                    sinceID: "4000"
+                }
+                statusService.search(params).subscribe((response) => {
+                    expect(response[0].Content).toBe("Content1");
+                    expect(response[0].Id).toBe("1");
+                    expect(response[1].Content).toBe("Content2");
+                    expect(response[1].Id).toBe("2");
+                    expect(response[2].Content).toBe("Content3");
+                    expect(response[2].Id).toBe("3");
+                });
+            })
+        );
+    });
+
     describe('Get Home Timeline', () => {
         it('should return an array of statuses if following people who have posted',
             inject([XHRBackend], (mockBackend: MockBackend) => {
@@ -49,7 +94,7 @@ describe('Service: Status Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                statusService.getHomeFeed().subscribe((response) => {
+                statusService.search({ onlyOnActiveUserTimeline: true }).subscribe((response) => {
                     expect(response[0].Content).toBe("Content1");
                     expect(response[0].Id).toBe("1");
                     expect(response[1].Content).toBe("Content2");
@@ -77,13 +122,12 @@ describe('Service: Status Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                statusService.getHomeFeed().subscribe((response) => {
+                statusService.search({ onlyOnActiveUserTimeline: true }).subscribe((response) => {
                     expect(response.length).toBe(0);
                 });
             })
         );
     });
-
 
     describe('Get User Timeline', () => {
         it('should return an array of statuses',
@@ -107,7 +151,7 @@ describe('Service: Status Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                statusService.getUserFeed("1").subscribe((response) => {
+                statusService.search({}).subscribe((response) => {
                     expect(response[0].Content).toBe("Content1");
                     expect(response[0].Id).toBe("1");
                     expect(response[1].Content).toBe("Content2");
@@ -135,7 +179,7 @@ describe('Service: Status Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                statusService.getUserFeed("1").subscribe((response) => {
+                statusService.search({}).subscribe((response) => {
                     expect(response.length).toBe(0);
                 });
             })
@@ -163,9 +207,11 @@ describe('Service: Status Service', () => {
                 });
 
                 // Make the request
-                statusService.getStatus("1", false, false).subscribe((status) => {
-                    expect(status).toBeDefined();
-                    expect(status.Id).toBe("1");
+                statusService.search({ postID: "1", includeAncestors: false, includeDescendants: false })
+                    .map(posts => posts[0] as Status)
+                    .subscribe((status) => {
+                        expect(status).toBeDefined();
+                        expect(status.Id).toBe("1");
                 }, error => {
                     fail();
                 });
@@ -196,13 +242,15 @@ describe('Service: Status Service', () => {
                 });
 
                 // Make the request
-                statusService.getStatus("1", true, true).subscribe((status) => {
-                    expect(status).toBeDefined();
-                    expect(status.Id).toBe("1");
-                    expect(status.Ancestors.length).toBe(1);
-                    expect(status.Ancestors[0].Content).toBe("Ancestor1");
-                    expect(status.Descendants.length).toBe(1);
-                    expect(status.Descendants[0].Content).toBe("Descendant1");
+                statusService.search({ postID: "1", includeAncestors: true, includeDescendants: true })
+                    .map(posts => posts[0] as Status)
+                    .subscribe((status) => {
+                        expect(status).toBeDefined();
+                        expect(status.Id).toBe("1");
+                        expect(status.Ancestors.length).toBe(1);
+                        expect(status.Ancestors[0].Content).toBe("Ancestor1");
+                        expect(status.Descendants.length).toBe(1);
+                        expect(status.Descendants[0].Content).toBe("Descendant1");
                 }, error => {
                     fail();
                 });
@@ -230,6 +278,100 @@ describe('Service: Status Service', () => {
                 statusService.makeNewStatus(message, visibility).subscribe((response) => {
                 }, error => {
                     fail();
+                });
+            })
+        );
+
+        it('should like a status',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Success: true,
+                    Data: {}
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the request
+                statusService.like("1", true).subscribe((response) => {
+                }, error => {
+                    fail();
+                });
+            })
+        );
+
+        it('should fail at liking a status',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Success: false,
+                    Data: {}
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the request
+                statusService.like("1", true).subscribe((response) => {
+                    fail();
+                }, error => {
+                    
+                });
+            })
+        );
+
+        it('should repost a status',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Success: true,
+                    Data: {}
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the request
+                statusService.repost("1", true).subscribe((response) => {
+                }, error => {
+                    fail();
+                });
+            })
+        );
+
+        it('should fail at reposting a status',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Success: false,
+                    Data: {}
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the request
+                statusService.repost("1", true).subscribe((response) => {
+                    fail();
+                }, error => {
+
                 });
             })
         );
