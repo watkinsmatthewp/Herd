@@ -12,7 +12,7 @@
     </card-title>
     
     <card-content>
-        <div *ngIf="userCard.MastodonShortBio && showBio" class="user-bio" [innerHTML]="userCard.MastodonShortBio"></div>
+        <div *ngIf="userCard.MastodonShortBio && showBio" class="row col-sm-12 user-bio" [innerHTML]="userCard.MastodonShortBio"></div>
     </card-content>
 
     <card-actions *ngIf="showActions">

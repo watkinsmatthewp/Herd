@@ -27,11 +27,11 @@
     }
 
 .user-bio {
-    margin: 0 auto 0 auto;
-    width: 300px;
+    /*margin: 0 auto 0 auto;
+    width: 300px;*/
     max-height: 55px;
     overflow: hidden;
-    display: block;
+    /*display: block;*/
     color: #282b31;
 }
 
