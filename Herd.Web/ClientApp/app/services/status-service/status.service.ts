@@ -6,53 +6,58 @@ import 'rxjs/Rx';
 import { HttpClientService } from '../http-client-service/http-client.service';
 import { Status, UserCard } from '../../models/mastodon';
 
+/**
+    let params = {
+        onlyOnActiveUserTimeline: true,
+        authorMastodonUserID: "1",
+        postID: "1",
+        hashtag: "#hello",
+        includeAncestors: true,
+        includeDescendants: true,
+        max: 30,
+        maxID: "5000",
+        sinceID: "4000"
+    }
+*/
+export interface StatusSearchParams {
+    onlyOnActiveUserTimeline?: boolean,
+    authorMastodonUserID?: string,
+    postID?: string,
+    hashtag?: string,
+    includeAncestors?: boolean,
+    includeDescendants?: boolean,
+    max?: number,
+    maxID?: string,
+    sinceID?: string
+}
+
 @Injectable()
 export class StatusService {
 
     constructor(private http: Http, private httpClient: HttpClientService) {}
 
-    // Get a list of posts for the home feed
-    getHomeFeed(): Observable<Status[]> {
-        let queryString = '?onlyOnActiveUserTimeline=true' 
+    search(searchParams: StatusSearchParams): Observable<Status[]> {
+        let queryString = "?"
+            
+        if (searchParams.onlyOnActiveUserTimeline)
+            queryString += "onlyOnActiveUserTimeline=" + searchParams.onlyOnActiveUserTimeline
+        if (searchParams.postID)
+            queryString += "&postID=" + searchParams.postID
+        if (searchParams.hashtag)
+            queryString += "&hashtag=" + searchParams.hashtag
+        if (searchParams.includeAncestors)
+            queryString += "&includeAncestors=" + searchParams.includeAncestors
+        if (searchParams.includeDescendants)
+            queryString += "&includeDescendants=" + searchParams.includeDescendants
+        if (searchParams.maxID)
+            queryString += "&maxID=" + searchParams.maxID
+        if (searchParams.sinceID)
+            queryString += "&sinceID=" + searchParams.sinceID
+        if (searchParams.max)
+            queryString += "&max=" + searchParams.max
+
         return this.httpClient.get('api/mastodon-posts/search' + queryString)
             .map(response => response.Posts as Status[]);
-    }
-
-    checkForNewItems(sinceID: string): Observable<Status[]> {
-        let queryString = '?onlyOnActiveUserTimeline=true'
-                        + '&sinceID=' + sinceID;
-        return this.httpClient.get('api/mastodon-posts/search' + queryString)
-            .map(response => response.Posts as Status[]);
-    }
-
-    getPreviousItems(sinceID: string): Observable<Status[]> {
-        let queryString = '?onlyOnActiveUserTimeline=true'
-                        + '&maxID=' + sinceID;
-        return this.httpClient.get('api/mastodon-posts/search' + queryString)
-            .map(response => response.Posts as Status[]);
-    }
-
-    /**
-     * Get the posts that the active user has made
-     */
-    getUserFeed(userID: string): Observable<Status[]> {
-        let queryString = "?authorMastodonUserID=" + userID;
-        return this.httpClient.get('api/mastodon-posts/search' + queryString)
-            .map(response => response.Posts as Status[]);
-    }
-
-    /**
-     * Returns a status with optional context.
-     * @param statusId of status
-     * @param includeAncestors optional include ancestor statuses of this status
-     * @param includeDescendants optional include descendants statuses of this status
-     */
-    getStatus(statusId: string, includeAncestors: boolean, includeDescendants: boolean): Observable<Status> {
-        let queryString = '?postID=' + statusId
-                        + '&includeAncestors=' + includeAncestors
-                        + '&includeDescendants=' + includeDescendants;
-        return this.httpClient.get('api/mastodon-posts/search' + queryString)
-            .map(response => response.Posts[0] as Status);
     }
 
     /**

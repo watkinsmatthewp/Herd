@@ -66,7 +66,8 @@ export class HomePage implements OnInit {
     getMostRecentHomeFeed() {
         this.loading = true;
         let progress = this.toastService.info("Retrieving", "home timeline ...", { timeOut: 0 });
-        this.statusService.getHomeFeed()
+
+        this.statusService.search({ onlyOnActiveUserTimeline: true })
             .finally(() => this.loading = false)
             .subscribe(feed => {
                 this.toastService.remove(progress.id);
@@ -77,7 +78,7 @@ export class HomePage implements OnInit {
     }
 
     checkForNewItems() {
-        this.statusService.checkForNewItems(this.homeFeed[0].Id)
+        this.statusService.search({ onlyOnActiveUserTimeline: true, sinceID: this.homeFeed[0].Id })
             .finally(() => this.loading = false)
             .subscribe(newItems => {
                 this.newItems = newItems;
@@ -86,7 +87,7 @@ export class HomePage implements OnInit {
 
     getPreviousItems() {
         this.loading = true;
-        this.statusService.getPreviousItems(this.homeFeed[this.homeFeed.length - 1].Id)
+        this.statusService.search({ onlyOnActiveUserTimeline: true, sinceID: this.homeFeed[this.homeFeed.length - 1].Id })
             .finally(() => this.loading = false)
             .subscribe(new_items => {
                 this.appendItems(this.homeFeed, new_items);
@@ -98,7 +99,8 @@ export class HomePage implements OnInit {
     updateSpecificStatus(statusId: string): void {
         this.loading = true;
         let progress = this.toastService.info("Retrieving", "status info ...", { timeOut: 0 });
-        this.statusService.getStatus(statusId, true, true)
+        this.statusService.search({ postID: statusId, includeAncestors: true, includeDescendants: true })
+            .map(posts => posts[0] as Status)
             .finally(() =>  this.loading = false)
             .subscribe(data => {
                 this.toastService.remove(progress.id);
@@ -114,7 +116,8 @@ export class HomePage implements OnInit {
     updateReplyStatusModal(statusId: string): void {
         this.loading = true;
         let progress = this.toastService.info("Retrieving", "status info ...", { timeOut: 0 });
-        this.statusService.getStatus(statusId, false, false)
+        this.statusService.search({ postID: statusId, includeAncestors: false, includeDescendants: false })
+            .map(posts => posts[0] as Status)
             .finally(() => this.loading = false)
             .subscribe(data => {
                 this.toastService.remove(progress.id);
