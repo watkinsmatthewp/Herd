@@ -18,7 +18,10 @@ export class RegisterPage {
 
     register() {
         this.loading = true;
-        let user: User = new User(this.model.email, this.model.password, this.model.firstName, this.model.lastName);
+        let user: User = {
+            email: this.model.email, password: this.model.password,
+            firstName: this.model.firstName, lastName: this.model.lastName
+        } as User;
 
         this.authenticationService.register(user)
             .finally(() => this.loading = false)
