@@ -20,6 +20,9 @@ export class ProfilePage implements OnInit, AfterViewInit {
     @ViewChild('staticTabs') staticTabs: TabsetComponent;
     @ViewChild('specificStatusModal') specificStatusModal: BsModalComponent;
     @ViewChild('replyStatusModal') replyStatusModal: BsModalComponent;
+    @ViewChild('statusesWrapper') statusesWrapper: any;
+    @ViewChild('followingWrapper') followingWrapper: any;
+    @ViewChild('followersWrapper') followersWrapper: any;
 
     statusId: number;
     specificStatus: Status;
@@ -27,6 +30,7 @@ export class ProfilePage implements OnInit, AfterViewInit {
 
     account: Account;
     userPosts: Status[] = []; // List of posts from this user
+    newItems: Status[] = [];
     following: Account[] = [];
     followers: Account[] = [];
 
@@ -48,7 +52,7 @@ export class ProfilePage implements OnInit, AfterViewInit {
      * Set up subscriptions for alerts
      */
     ngOnInit() {
-        // Monitor Param map 
+        // Monitor Param map to update user id 
         this.route.paramMap
             .switchMap((params: ParamMap) => Observable.of(params.get('id') || "-1"))
             .subscribe(userID => {
@@ -57,6 +61,8 @@ export class ProfilePage implements OnInit, AfterViewInit {
                 this.getFollowers(userID);
                 this.getMostRecentUserPosts(userID);
             });
+
+        setInterval(() => { this.checkForNewItems(); }, 10 * 1000);
 
         // Setup subscription to update modals on status click
         this.eventAlertService.getMessage().subscribe(event => {
@@ -100,6 +106,9 @@ export class ProfilePage implements OnInit, AfterViewInit {
         return false;
     }
 
+    /**
+     * Toggle following a user
+     */
     togglefollow(): void {
         this.accountService.followUser(String(this.account.MastodonUserId), !this.isFollowing)
             .subscribe(response => {
@@ -118,7 +127,7 @@ export class ProfilePage implements OnInit, AfterViewInit {
     getUserAccount(userID: string) {
         this.loading = true;
         let progress = this.toastService.info("Retrieving", "account information ...", { timeOut: 0 });
-        this.accountService.search({ mastodonUserID: userID })
+        this.accountService.search({ mastodonUserID: userID, includeFollowedByActiveUser: true })
             .map(response => response[0] as Account)
             .finally(() => this.loading = false)
             .subscribe(account => {
@@ -200,4 +209,85 @@ export class ProfilePage implements OnInit, AfterViewInit {
                 this.toastService.error("Error", error.error);
             });
     }
+
+    checkForNewItems() {
+        this.statusService.search({ authorMastodonUserID: this.account.MastodonUserId, sinceID: this.userPosts[0].Id })
+            .finally(() => this.loading = false)
+            .subscribe(newItems => {
+                this.newItems = newItems;
+            });
+    }
+
+    getPreviousStatuses() {
+        this.loading = true;
+        this.statusService.search({ authorMastodonUserID: this.account.MastodonUserId, maxID: this.userPosts[this.userPosts.length - 1].Id })
+            .finally(() => this.loading = false)
+            .subscribe(new_items => {
+                this.appendItems(this.userPosts, new_items);
+                let currentYPosition = this.statusesWrapper.nativeElement.scrollTop;
+                this.statusesWrapper.nativeElement.scrollTo(0, currentYPosition);
+            });
+    }
+
+    getMoreFollowing() {
+        /// TODO
+    }
+
+    getMoreFollowers() {
+        /// TODO
+    }
+
+    /**
+     * Add the new items to main feed array, scroll to top, empty newItems
+     */
+    viewNewItems() {
+        this.prependItems(this.userPosts, this.newItems);
+        this.scrollToTop();
+        this.newItems = [];
+    }
+
+    /**
+     * Scrolls the status area to the top
+     */
+    scrollToTop() {
+        this.statusesWrapper.nativeElement.scrollTo(0, 0);
+    }
+
+    /**
+     * Infinite scroll function that is called
+     * when scrolling down and near end of view port
+     * @param ev
+     */
+    onScrollDown(ev: any, tab: string) {
+        if (tab === 'statuses')
+            this.getPreviousStatuses();
+        else if (tab === 'following')
+            this.getPreviousStatuses();
+        else if (tab === 'followers')
+            this.getPreviousStatuses();
+    }
+
+    /** Infinite Scrolling Handling */
+    addItems(oldItems: any[], newItems: any[], _method: any) {
+        oldItems[_method].apply(oldItems, newItems);
+    }
+
+    /**
+     * Add items to end of list
+     * @param startIndex
+     * @param endIndex
+     */
+    appendItems(oldItems: any[], newItems: any[]) {
+        this.addItems(oldItems, newItems, 'push');
+    }
+
+    /**
+     * Add items to beginning of list
+     * @param startIndex
+     * @param endIndex
+     */
+    prependItems(oldItems: any[], newItems: any[]) {
+        this.addItems(oldItems, newItems, 'unshift');
+    }
+
 }

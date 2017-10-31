@@ -39,6 +39,12 @@
     color: #fff;
 }
 
+.statusesWrapper {
+    height: 550px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
 .not-following-btn {
     color: black;
 }
