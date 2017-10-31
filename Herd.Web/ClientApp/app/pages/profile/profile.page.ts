@@ -230,27 +230,47 @@ export class ProfilePage implements OnInit, AfterViewInit {
     }
 
     getMoreFollowing() {
-        /// TODO
+        let userID = this.account.MastodonUserId;
+        let lastID = this.following[this.following.length-1].MastodonUserId;
+        this.accountService.search({ followedByMastodonUserID: userID, includeFollowedByActiveUser: true, sinceID: lastID })
+            .subscribe(new_users => {
+                this.appendItems(this.following, new_users);
+                let currentYPosition = this.followingWrapper.nativeElement.scrollTop;
+                this.followingWrapper.nativeElement.scrollTo(0, currentYPosition);
+            });
     }
 
     getMoreFollowers() {
-        /// TODO
+        let userID = this.account.MastodonUserId;
+        let lastID = this.followers[this.followers.length-1].MastodonUserId;
+        this.accountService.search({ followsMastodonUserID: userID, includeFollowsActiveUser: true, sinceID: lastID })
+            .subscribe(new_users => {
+                this.appendItems(this.followers, new_users);
+                let currentYPosition = this.followersWrapper.nativeElement.scrollTop;
+                this.followersWrapper.nativeElement.scrollTo(0, currentYPosition);
+            });
     }
 
     /**
      * Add the new items to main feed array, scroll to top, empty newItems
      */
-    viewNewItems() {
+    viewNewStatuses() {
         this.prependItems(this.userPosts, this.newItems);
-        this.scrollToTop();
+        this.scrollToTop('statuses');
         this.newItems = [];
     }
 
     /**
      * Scrolls the status area to the top
      */
-    scrollToTop() {
-        this.statusesWrapper.nativeElement.scrollTo(0, 0);
+    scrollToTop(tab: string) {
+        if (tab === 'statuses')
+            this.statusesWrapper.nativeElement.scrollTo(0, 0);
+        else if (tab === 'following')
+            this.followingWrapper.nativeElement.scrollTo(0, 0);
+        else if (tab === 'followers')
+            this.followersWrapper.nativeElement.scrollTo(0, 0);
+        
     }
 
     /**
@@ -262,9 +282,9 @@ export class ProfilePage implements OnInit, AfterViewInit {
         if (tab === 'statuses')
             this.getPreviousStatuses();
         else if (tab === 'following')
-            this.getPreviousStatuses();
+            this.getMoreFollowing();
         else if (tab === 'followers')
-            this.getPreviousStatuses();
+            this.getMoreFollowers();
     }
 
     /** Infinite Scrolling Handling */

@@ -28,6 +28,8 @@ export interface AccountSearchParams {
     includeFollowsActiveUser?: boolean,
     includeFollowedByActiveUser?: boolean,
     max?: number,
+    maxID?: string,
+    sinceID?: string,
 }
 
 @Injectable()
@@ -59,6 +61,10 @@ export class AccountService {
             queryString += "&includeFollowsActiveUser=" + searchParams.includeFollowsActiveUser
         if (searchParams.includeFollowedByActiveUser)
             queryString += "&includeFollowedByActiveUser=" + searchParams.includeFollowedByActiveUser
+        if (searchParams.maxID)
+            queryString += "&maxID=" + searchParams.maxID
+        if (searchParams.sinceID)
+            queryString += "&sinceID=" + searchParams.sinceID
         if (searchParams.max)
             queryString += "&max=" + searchParams.max
 

@@ -1,9 +1,31 @@
 ﻿<div class="row">
     <h2 *ngIf="!haveSearchResults && finishedSearching" class="text-center">No results, try again.</h2>
 
-    <div *ngFor="let userCard of userCards" class="text-center">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
-            <usercard [userCard]="userCard" showBio="true" showActions="true" showFollowButton="true"></usercard>
+    <div class="panel">
+        <div class="panel-heading text-center" style="min-height: 50px;">
+            <div>
+                <div *ngIf="loading" class="btn pull-left">
+                    <fa name="spinner" spin=true></fa>
+                </div>
+                <button class="btn btn-primary pull-right" type="button" (click)="scrollToTop('users')"><fa name="chevron-up"></fa>Scroll to top</button>
+            </div>
+        </div>
+        <div #userWrapper class="panel-body scrollWrapper"
+             data-infinite-scroll
+             debounce
+             [infiniteScrollContainer]="userWrapper"
+             [scrollWindow]="false"
+             [infiniteScrollDistance]="3"
+             [infiniteScrollThrottle]="1500"
+             (scrolled)="onScrollDown($event, 'users')">
+
+            <div *ngFor="let userCard of userCards" class="text-center">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                    <usercard [userCard]="userCard" showBio="true" showActions="true" showFollowButton="true"></usercard>
+                </div>
+            </div>
         </div>
     </div>
+
+    
 </div>

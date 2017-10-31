@@ -1,0 +1,5 @@
+﻿.scrollWrapper {
+    height: 550px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}

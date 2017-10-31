@@ -55,8 +55,8 @@
                                                 <div *ngIf="loading" class="btn pull-left">
                                                     <fa name="spinner" spin=true></fa>
                                                 </div>
-                                                <button *ngIf="newItems.length > 0" class="btn btn-primary" type="button" (click)="viewNewItems()">{{newItems.length}} New Statuses</button>
-                                                <button class="btn btn-primary pull-right" type="button" (click)="scrollToTop()"><fa name="chevron-up"></fa>Scroll to top</button>
+                                                <button *ngIf="newItems.length > 0" class="btn btn-primary" type="button" (click)="viewNewStatuses()">{{newItems.length}} New Statuses</button>
+                                                <button class="btn btn-primary pull-right" type="button" (click)="scrollToTop('statuses')"><fa name="chevron-up"></fa>Scroll to top</button>
                                             </div>
                                         </div>
                                         <div #statusesWrapper class="panel-body statusesWrapper"
@@ -75,23 +75,63 @@
                                     </div>
                                 </ng-container>
                             </tab>
-                            <tab heading="Following ({{ following.length }})">
+                            <tab heading="Following ({{ account?.FollowingCount }})">
                                 <div class="row">
                                     <ng-container *ngIf="account">
-                                        <div *ngFor="let userCard of following" class="text-center">
-                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-                                                <usercard [userCard]="userCard" showBio="true" showActions="true" showFollowButton="true"></usercard>
+                                        <div class="panel">
+                                            <div class="panel-heading text-center" style="min-height: 50px;">
+                                                <div>
+                                                    <div *ngIf="loading" class="btn pull-left">
+                                                        <fa name="spinner" spin=true></fa>
+                                                    </div>
+                                                    <button class="btn btn-primary pull-right" type="button" (click)="scrollToTop('following')"><fa name="chevron-up"></fa>Scroll to top</button>
+                                                </div>
+                                            </div>
+                                            <div #followingWrapper class="panel-body statusesWrapper"
+                                                 data-infinite-scroll
+                                                 debounce
+                                                 [infiniteScrollContainer]="followingWrapper"
+                                                 [scrollWindow]="false"
+                                                 [infiniteScrollDistance]="3"
+                                                 [infiniteScrollThrottle]="1500"
+                                                 (scrolled)="onScrollDown($event, 'following')">
+
+                                                <div *ngFor="let userCard of following" class="text-center">
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                                                        <usercard [userCard]="userCard" showBio="true" showActions="true" showFollowButton="true"></usercard>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </ng-container>
                                 </div> 
                             </tab>
-                            <tab heading="Followers ({{ followers.length }})">
+                            <tab heading="Followers ({{ account?.FollowersCount }})">
                                 <ng-container *ngIf="account">
-                                    <div class="row">
-                                        <div *ngFor="let userCard of followers" class="text-center">
-                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-                                                <usercard [userCard]="userCard" showBio="true" showActions="true" showFollowButton="true"></usercard>
+                                    <div class="panel">
+                                        <div class="panel-heading text-center" style="min-height: 50px;">
+                                            <div>
+                                                <div *ngIf="loading" class="btn pull-left">
+                                                    <fa name="spinner" spin=true></fa>
+                                                </div>
+                                                <button class="btn btn-primary pull-right" type="button" (click)="scrollToTop('followers')"><fa name="chevron-up"></fa>Scroll to top</button>
+                                            </div>
+                                        </div>
+                                        <div #followersWrapper class="panel-body statusesWrapper"
+                                             data-infinite-scroll
+                                             debounce
+                                             [infiniteScrollContainer]="followersWrapper"
+                                             [scrollWindow]="false"
+                                             [infiniteScrollDistance]="3"
+                                             [infiniteScrollThrottle]="1500"
+                                             (scrolled)="onScrollDown($event, 'followers')">
+
+                                            <div class="row">
+                                                <div *ngFor="let userCard of followers" class="text-center">
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                                                        <usercard [userCard]="userCard" showBio="true" showActions="true" showFollowButton="true"></usercard>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

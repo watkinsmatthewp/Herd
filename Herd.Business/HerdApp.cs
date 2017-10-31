@@ -300,7 +300,7 @@ namespace Herd.Business
                 }
             );
 
-            return users.Values.ToArray();
+            return users.Values.OrderBy(u => u.MastodonUserId.ToLong()).ToArray();
         }
 
         private Task<Dictionary<string, MastodonUser>> FilterByUserID(Dictionary<string, MastodonUser> userSet1, string mastodonUserID)
