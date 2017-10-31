@@ -24,15 +24,11 @@
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
     <Compile Remove="ClientApp\app\services\alert-service\**" />
     <Compile Remove="ClientApp\app\services\alert\**" />
-    <Compile Remove="Models\**" />
     <Content Remove="ClientApp\**" />
-    <Content Remove="Models\**" />
     <EmbeddedResource Remove="ClientApp\app\services\alert-service\**" />
     <EmbeddedResource Remove="ClientApp\app\services\alert\**" />
-    <EmbeddedResource Remove="Models\**" />
     <None Remove="ClientApp\app\services\alert-service\**" />
     <None Remove="ClientApp\app\services\alert\**" />
-    <None Remove="Models\**" />
   </ItemGroup>
 
   <ItemGroup>

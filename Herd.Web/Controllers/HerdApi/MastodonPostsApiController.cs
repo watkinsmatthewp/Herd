@@ -1,5 +1,6 @@
 ﻿using Herd.Business.Models.Commands;
 using Herd.Business.Models.Entities;
+using Herd.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System.IO;
@@ -34,14 +35,14 @@ namespace Herd.Web.Controllers.HerdApi
         }
 
         [HttpPost("new")]
-        public IActionResult NewPost([FromBody] JObject body) => ApiJson(App.CreateNewPost(new CreateNewMastodonPostCommand
+        public IActionResult NewPost(NewMastodonPostInputModel post) => ApiJson(App.CreateNewPost(new CreateNewMastodonPostCommand
         {
-            Message = body["message"].Value<string>(),
-            Visibility = (MastodonPostVisibility)body["visibility"].Value<int>(),
-            ReplyStatusId = body["replyStatusId"].Value<string>(),
-            AttachmentStream = new MemoryStream(),
-            Sensitive = body["sensitive"].Value<bool>(),
-            SpoilerText = body["spoilerText"].Value<string>(),
+            Message = post.Message,
+            Visibility = post.Visibility,
+            ReplyStatusId = post.ReplyStatusId,
+            Sensitive = post.Sensitive,
+            SpoilerText = post.SpoilerText,
+            Attachment = post.Attachment?.OpenReadStream()
         }));
 
         [HttpPost("repost")]

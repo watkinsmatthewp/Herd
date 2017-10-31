@@ -248,17 +248,17 @@ namespace Herd.Business
         {
             return ProcessCommand(result =>
             {
-                var mediaId = null as string;
-                if (createNewPostCommand.AttachmentStream?.Length > 0)
+                var mediaIDs = new List<string>();
+                if (createNewPostCommand.HasAttachment)
                 {
-                    mediaId = _mastodonApiWrapper.UploadAttachment(createNewPostCommand.AttachmentStream).Synchronously().Id;
+                    mediaIDs.Add(_mastodonApiWrapper.UploadAttachment(createNewPostCommand.Attachment).Synchronously().Id);
                 }
 
                 _mastodonApiWrapper.CreateNewPost(
                     createNewPostCommand.Message,
                     createNewPostCommand.Visibility,
                     createNewPostCommand.ReplyStatusId,
-                    ( string.IsNullOrWhiteSpace(mediaId) ? new string[0] :  new string[] { mediaId } ),
+                    mediaIDs,
                     createNewPostCommand.Sensitive,
                     createNewPostCommand.SpoilerText
                 ).Synchronously();

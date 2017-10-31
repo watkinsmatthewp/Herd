@@ -1,18 +1,19 @@
 ﻿using Herd.Business.Models.Entities;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Herd.Business.Models.Commands
+namespace Herd.Web.Models
 {
-    public class CreateNewMastodonPostCommand : Command
+    public class NewMastodonPostInputModel
     {
         public string Message { get; set; }
         public MastodonPostVisibility Visibility { get; set; }
         public string ReplyStatusId { get; set; }
         public bool Sensitive { get; set; }
         public string SpoilerText { get; set; }
-        public Stream Attachment { get; set; }
-
-        public bool HasAttachment => Attachment?.Length > 0;
+        public IFormFile Attachment { get; set; }
     }
 }
