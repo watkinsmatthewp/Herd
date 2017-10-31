@@ -16,6 +16,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+// Here is a comment
+
 namespace Herd.Business
 {
     public class HerdApp : IHerdApp
