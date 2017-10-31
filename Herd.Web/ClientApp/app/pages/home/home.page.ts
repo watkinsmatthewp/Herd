@@ -85,7 +85,7 @@ export class HomePage implements OnInit {
             });
     }
 
-    getPreviousItems() {
+    getPreviousStatuses() {
         this.loading = true;
         this.statusService.search({ onlyOnActiveUserTimeline: true, maxID: this.homeFeed[this.homeFeed.length - 1].Id })
             .finally(() => this.loading = false)
@@ -150,7 +150,7 @@ export class HomePage implements OnInit {
      * @param ev
      */
     onScrollDown(ev: any) {
-        this.getPreviousItems();
+        this.getPreviousStatuses();
     }
 
     /** Infinite Scrolling Handling */
