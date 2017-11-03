@@ -63,6 +63,8 @@ export class StatusService {
             'spoilerText': spoilerText || null,
             'mediaAttachment': mediaAttachment || null,
         }
+        console.log("Message: " + message);
+        console.log("Media: " + mediaAttachment);
         return this.httpClient.post('api/mastodon-posts/new', body);
     }
 

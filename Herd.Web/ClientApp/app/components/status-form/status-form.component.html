@@ -1,6 +1,6 @@
 ﻿<div class="panel">
     <div class="panel-body">
-        <form name="form" (ngSubmit)="f.form.valid && submitStatus(f)" #f="ngForm" novalidate>
+        <form name="form" enctype="multipart/form-data" (ngSubmit)="f.form.valid && submitStatus(f)" #f="ngForm" novalidate>
             <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !status.valid }">
                 <label for="status">{{ actionName }} | <small>{{ maxStatusLength - model.status.length }}</small></label>
                 <br />

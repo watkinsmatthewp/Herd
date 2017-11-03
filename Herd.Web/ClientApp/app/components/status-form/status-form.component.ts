@@ -81,7 +81,7 @@ export class StatusFormComponent {
     }
 
     submitStatus(form: NgForm) {
-        this.statusService.makeNewStatus(this.model.status, this.model.visibility, this.inReplyToId, this.model.contentWarning, this.model.spoilerText)
+        this.statusService.makeNewStatus(this.model.status, this.model.visibility, this.inReplyToId, this.model.contentWarning, this.model.spoilerText, this.model.formData)
             .finally(() => {
                 this.resetFormDefaults(form);
             })
