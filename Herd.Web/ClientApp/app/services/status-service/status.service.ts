@@ -54,13 +54,14 @@ export class StatusService {
      * @param sensitive
      * @param spoilerText
      */
-    makeNewStatus(message: string, visibility: number, replyStatusId?: string, sensitive?: boolean, spoilerText?: string) {
+    makeNewStatus(message: string, visibility: number, replyStatusId?: string, sensitive?: boolean, spoilerText?: string, mediaAttachment?: FormData) {
         let body = {
             'message': message,
             'visibility': visibility,
             'replyStatusId': replyStatusId || null,
             'sensitive': sensitive || false,
             'spoilerText': spoilerText || null,
+            'mediaAttachment': mediaAttachment || null,
         }
         return this.httpClient.post('api/mastodon-posts/new', body);
     }

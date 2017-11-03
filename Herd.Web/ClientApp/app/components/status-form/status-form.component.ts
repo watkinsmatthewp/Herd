@@ -51,10 +51,14 @@ export class StatusFormComponent {
     constructor(private statusService: StatusService, private toastService: NotificationsService) {}
 
     onFileChange(event: any) {
-        if (event.target.files.length > 0) {
-            let file = event.target.files[0];
+        let fileList: FileList = event.target.files;
+        if (fileList.length > 0) {
+            let file = fileList[0];
             this.model.file = file;
             this.model.filename = file.name;
+            let formData: FormData = new FormData();
+            formData.append('uploadFile', file, file.name);
+            this.model.formData = formData;
             console.log("File", file);
 
             let reader = new FileReader();
@@ -68,6 +72,7 @@ export class StatusFormComponent {
     clearFile() {
         this.model.filename = null;
         this.model.file = null;
+        this.model.formData = null;
         console.log("File", this.model.file);
     }
 
