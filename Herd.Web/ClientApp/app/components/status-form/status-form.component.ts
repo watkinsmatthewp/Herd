@@ -56,11 +56,6 @@ export class StatusFormComponent {
             let file = fileList[0];
             this.model.file = file;
             this.model.filename = file.name;
-            var formData = new FormData();
-            formData.append('uploadFile', file, file.name);
-            formData.append('uploadName', file.name);
-            formData.append('uploadLength', String(file.size));
-            this.model.formData = formData;
 
             let reader = new FileReader();
             reader.onload = (e: any) => {
@@ -82,7 +77,7 @@ export class StatusFormComponent {
     }
 
     submitStatus(form: NgForm) {
-        this.statusService.makeNewStatus(this.model.status, this.model.visibility, this.inReplyToId, this.model.contentWarning, this.model.spoilerText, this.model.formData)
+        this.statusService.makeNewStatus(this.model.status, this.model.visibility, this.inReplyToId, this.model.contentWarning, this.model.spoilerText, this.model.file)
             .finally(() => {
                 this.resetFormDefaults(form);
             })

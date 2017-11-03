@@ -54,19 +54,20 @@ export class StatusService {
      * @param sensitive
      * @param spoilerText
      */
-    makeNewStatus(message: string, visibility: number, replyStatusId?: string, sensitive?: boolean, spoilerText?: string, attachment?: FormData) {
-        var body = {
-            'message': message,
-            'visibility': visibility,
-            'replyStatusId': replyStatusId || null,
-            'sensitive': sensitive || false,
-            'spoilerText': spoilerText || null,
-            'attachment': attachment ? attachment.get('uploadFile') : null || null,
-            'attachmentName': attachment ? attachment.get('uploadName') : null || null,
-            'attachmentLength': attachment ? attachment.get('uploadLength') : null || null,
-        }
-        console.log("Message: " + message);
-        return this.httpClient.post('api/mastodon-posts/new', body);
+    makeNewStatus(message: string, visibility: number, replyStatusId?: string, sensitive?: boolean, spoilerText?: string, attachment?: File) {
+        var formData = new FormData();
+        formData.append('message', message);
+        formData.append('visibility', String(visibility));
+        if (replyStatusId)
+            formData.append('replyStatusId', replyStatusId);
+        if (sensitive)
+            formData.append('sensitive', String(sensitive));
+        if (spoilerText)
+            formData.append('spoilerText', spoilerText);
+        if (attachment)
+            formData.append('attachment', attachment);
+
+        return this.httpClient.post('api/mastodon-posts/new', formData);
     }
 
     /**
