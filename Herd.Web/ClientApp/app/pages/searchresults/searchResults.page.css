@@ -1,5 +1,35 @@
-﻿.scrollWrapper {
-    height: 550px;
+﻿.wrapper-panel {
+    max-height: 550px;
+}
+
+.scrollWrapper {
+    height: 350px;
     overflow-y: scroll;
     overflow-x: hidden;
+}
+
+@media (min-width: 768px) {
+    .wrapper-panel {
+        max-height: 650px;
+    }
+
+    .scrollWrapper {
+        height: 450px;
+    }
+}
+
+@media (min-width: 1235px) {
+    .wrapper-panel {
+        max-height: 650px;
+    }
+}
+
+@media (min-width: 1680px) {
+    .wrapper-panel {
+        max-height: 1000px;
+    }
+
+    .scrollWrapper {
+        height: 800px;
+    }
 }
