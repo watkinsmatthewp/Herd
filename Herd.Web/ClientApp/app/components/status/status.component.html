@@ -15,7 +15,7 @@
                 <div [ngClass]="{'status-blurred': showBlur }" (click)="turnOffBlur($event)">
                     <p  [innerHTML]="status.Content"></p>
                 </div>
-                <img *ngIf="status.MediaAttachment" src="{{ status.MediaAttachment }}" />
+                <img class="status-media" *ngIf="status.MediaAttachment" src="{{ status.MediaAttachment }}" />
             </div>   
             <div class="text-center">
                 <div class="btn-group-lg" role="group">
