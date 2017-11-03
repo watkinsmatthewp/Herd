@@ -1,31 +1,65 @@
 ﻿<div class="row">
-    <h2 *ngIf="!haveSearchResults && finishedSearching" class="text-center">No results, try again.</h2>
+    
 
     <div class="panel">
-        <div class="panel-heading text-center" style="min-height: 50px;">
-            <div>
-                <div *ngIf="loading" class="btn pull-left">
-                    <fa name="spinner" spin=true></fa>
-                </div>
-                <button class="btn btn-primary pull-right" type="button" (click)="scrollToTop('users')"><fa name="chevron-up"></fa>Scroll to top</button>
-            </div>
+        <div class="panel-heading">
+            <!-- TODO: Just throw the string in a variable -->
+            <h3 *ngIf="!finishedSearching" class="text-center">Searching ...</h3>
+            <h3 *ngIf="finishedSearching"  class="text-center">Search Results</h3>
         </div>
-        <div #userWrapper class="panel-body scrollWrapper"
-             data-infinite-scroll
-             debounce
-             [infiniteScrollContainer]="userWrapper"
-             [scrollWindow]="false"
-             [infiniteScrollDistance]="3"
-             [infiniteScrollThrottle]="1500"
-             (scrolled)="onScrollDown($event, 'users')">
 
-            <div *ngFor="let userCard of userCards" class="text-center">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
-                    <usercard [userCard]="userCard" showBio="true" showActions="true" showFollowButton="true"></usercard>
-                </div>
-            </div>
+        <div class="panel-body">
+            <tabset #staticTabs>
+                <tab heading="Posts">
+                    <ng-container>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading text-center" style="min-height: 50px;">
+                                <div *ngIf="loading" class="btn pull-left"><fa name="spinner" spin=true></fa></div>
+                                <button *ngIf="new_statuses.length > 0" class="btn btn-primary" type="button" (click)="viewNewStatuses()">{{ new_statuses.length }} New Statuses</button>
+                                <button class="btn btn-primary pull-right" type="button" (click)="scrollToTop('statuses')"><fa name="chevron-up"></fa>Scroll to top</button>
+                            </div>
+                            <div #statusesWrapper class="panel-body scrollWrapper"
+                                    data-infinite-scroll
+                                    debounce
+                                    [infiniteScrollContainer]="statusesWrapper"
+                                    [scrollWindow]="false"
+                                    [infiniteScrollDistance]="3"
+                                    [infiniteScrollThrottle]="1500"
+                                    (scrolled)="onScrollDown($event, 'statuses')">
+                                <div *ngFor="let status of statuses">
+                                    <status [status]="status"></status>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </tab>
+
+                <tab heading="Users">
+                    <ng-container>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading text-center" style="min-height: 50px;">
+                                <div *ngIf="loading" class="btn pull-left"><fa name="spinner" spin=true></fa></div>
+                                <button class="btn btn-primary pull-right" type="button" (click)="scrollToTop('users')"><fa name="chevron-up"></fa>Scroll to top</button>
+                            </div>
+                            <div #usersWrapper class="panel-body scrollWrapper"
+                                    data-infinite-scroll
+                                    debounce
+                                    [infiniteScrollContainer]="usersWrapper"
+                                    [scrollWindow]="false"
+                                    [infiniteScrollDistance]="3"
+                                    [infiniteScrollThrottle]="1500"
+                                    (scrolled)="onScrollDown($event, 'users')">
+                                <div *ngFor="let userCard of userCards" class="text-center">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                                        <usercard [userCard]="userCard" showBio="true" showActions="true" showFollowButton="true"></usercard>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                    </ng-container>
+                </tab>
+
+            </tabset>
         </div>
     </div>
-
-    
 </div>
