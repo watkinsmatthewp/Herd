@@ -62,6 +62,8 @@ export class StatusService {
             'sensitive': sensitive || false,
             'spoilerText': spoilerText || null,
             'attachment': attachment ? attachment.get('uploadFile') : null || null,
+            'attachmentName': attachment ? attachment.get('uploadName') : null || null,
+            'attachmentLength': attachment ? attachment.get('uploadLength') : null || null,
         }
         console.log("Message: " + message);
         return this.httpClient.post('api/mastodon-posts/new', body);

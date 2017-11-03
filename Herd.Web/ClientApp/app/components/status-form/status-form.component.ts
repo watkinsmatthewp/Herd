@@ -58,8 +58,9 @@ export class StatusFormComponent {
             this.model.filename = file.name;
             var formData = new FormData();
             formData.append('uploadFile', file, file.name);
+            formData.append('uploadName', file.name);
+            formData.append('uploadLength', String(file.size));
             this.model.formData = formData;
-            console.log("File", file.name);
 
             let reader = new FileReader();
             reader.onload = (e: any) => {
