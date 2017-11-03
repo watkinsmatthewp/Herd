@@ -54,17 +54,16 @@ export class StatusService {
      * @param sensitive
      * @param spoilerText
      */
-    makeNewStatus(message: string, visibility: number, replyStatusId?: string, sensitive?: boolean, spoilerText?: string, mediaAttachment?: FormData) {
-        let body = {
+    makeNewStatus(message: string, visibility: number, replyStatusId?: string, sensitive?: boolean, spoilerText?: string, attachment?: FormData) {
+        var body = {
             'message': message,
             'visibility': visibility,
             'replyStatusId': replyStatusId || null,
             'sensitive': sensitive || false,
             'spoilerText': spoilerText || null,
-            'mediaAttachment': mediaAttachment || null,
+            'attachment': attachment ? attachment.get('uploadFile') : null || null,
         }
         console.log("Message: " + message);
-        console.log("Media: " + mediaAttachment);
         return this.httpClient.post('api/mastodon-posts/new', body);
     }
 
