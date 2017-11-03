@@ -1,5 +1,9 @@
-﻿.wrapper-panel {
+﻿/*.wrapper-panel {
     max-height: 550px;
+}*/
+
+.panel-heading {
+    min-height: 50px;
 }
 
 .scrollWrapper {
@@ -9,9 +13,9 @@
 }
 
 @media (min-width: 768px) {
-    .wrapper-panel {
+    /*.wrapper-panel {
         max-height: 650px;
-    }
+    }*/
 
     .scrollWrapper {
         height: 450px;
@@ -19,15 +23,15 @@
 }
 
 @media (min-width: 1235px) {
-    .wrapper-panel {
+    /*.wrapper-panel {
         max-height: 650px;
-    }
+    }*/
 }
 
 @media (min-width: 1680px) {
-    .wrapper-panel {
+    /*.wrapper-panel {
         max-height: 1000px;
-    }
+    }*/
 
     .scrollWrapper {
         height: 800px;

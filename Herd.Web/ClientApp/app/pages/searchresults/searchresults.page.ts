@@ -31,12 +31,17 @@ export class SearchResultsPage implements OnInit {
             .queryParams
             .subscribe(params => {
                 this.search = params['searchString'] || "John";
+                if (this.search.indexOf("#") >= 0) {
+                    this.search = this.search.replace("#", "");
+                }
                 this.performSearch();
             });
         // setInterval(() => { this.checkForNewStatuses(); }, 10 * 1000);
     }
 
     performSearch() {
+        this.userCards = [];
+        this.statuses = [];
         this.finishedSearching = false;
         this.getInitialStatuses();
         this.getInitialUsers();
