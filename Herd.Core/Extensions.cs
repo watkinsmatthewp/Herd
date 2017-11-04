@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 // Add a comment (this should trigger a build)
+// Another comment, another build
 
 namespace Herd.Core
 {
