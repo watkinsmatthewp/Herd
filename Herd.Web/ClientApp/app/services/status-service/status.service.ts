@@ -64,8 +64,10 @@ export class StatusService {
             formData.append('sensitive', String(sensitive));
         if (spoilerText)
             formData.append('spoilerText', spoilerText);
+        if (attachment)
+            formData.append('attachment', attachment);
 
-        return this.httpClient.post('api/mastodon-posts/new', formData);
+        return this.httpClient.postForm('api/mastodon-posts/new', formData);
     }
 
     /**

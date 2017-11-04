@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { angular, Http, Response, RequestOptionsArgs, Headers, RequestOptions } from '@angular/http';
+import { Http, Response, RequestOptionsArgs, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -62,7 +62,7 @@ export class HttpClientService {
      */
     paramify(data: any): any {
         // If this is not an object, defer to native stringification.
-        if (!angular.isObject(data)) {
+        if (typeof data === 'object') {
             return ((data == null) ? "" : data.toString());
         }
 
