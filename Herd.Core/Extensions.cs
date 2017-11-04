@@ -6,6 +6,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
+// Add a comment (this should trigger a build)
+
 namespace Herd.Core
 {
     public static class Extensions
