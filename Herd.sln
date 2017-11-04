@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Herd.Logging", "Herd.Loggin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Herd.Logging.UnitTests", "Herd.Logging.UnitTests\Herd.Logging.UnitTests.csproj", "{27C7655F-A6A3-4D9C-8FE4-05F99A2A152A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Herd.UnitTestCore", "Herd.UnitTestCore\Herd.UnitTestCore.csproj", "{F8324939-9B3B-4D98-9CAA-48AE183EBF63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Herd.UnitTestCore", "Herd.UnitTestCore\Herd.UnitTestCore.csproj", "{F8324939-9B3B-4D98-9CAA-48AE183EBF63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
