@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptionsArgs, Headers, RequestOptions } from '@angular/http';
+import { angular, Http, Response, RequestOptionsArgs, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -13,6 +13,7 @@ type ErrorInterceptor = (error: any) => any;
 export class HttpClientService {
 
     private defaultHeaders: Headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
+    private defaultFormHeaders: Headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
     private responseInterceptors: Array<ResponseInterceptor> = [];
     private requestInterceptors: Array<RequestInterceptor> = [];
 
@@ -25,7 +26,7 @@ export class HttpClientService {
      */
     get<T>(url: string, options?: RequestOptionsArgs): Observable<any> {
         let request = options != null ? this.http.get(url, this.generateOptions(options)) :
-                                        this.http.get(url, new RequestOptions({ headers: this.defaultHeaders }));
+            this.http.get(url, new RequestOptions({ headers: this.defaultHeaders }));
         return request.map(this.mapRequest)
     }
 
@@ -40,6 +41,49 @@ export class HttpClientService {
         let request = options != null ? this.http.post(url, newData, this.generateOptions(options)) :
                                         this.http.post(url, newData, new RequestOptions({ headers: this.defaultHeaders }));
         return request.map(this.mapRequest)
+    }
+
+    /**
+     * Create a Post request in form parameters
+     * @param url to send request
+     * @param data request body
+     * @param options request options
+     */
+    postForm<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<any> {
+        const newData = this.prepareData(data);
+        var paramFormatData = this.paramify(newData);
+        let request = options != null ? this.http.post(url, paramFormatData, this.generateOptions(options)) :
+            this.http.post(url, paramFormatData, new RequestOptions({ headers: this.defaultFormHeaders }));
+        return request.map(this.mapRequest)
+    }
+
+    /**
+     * Turns an object into its parameterized form
+     */
+    paramify(data: any): any {
+        // If this is not an object, defer to native stringification.
+        if (!angular.isObject(data)) {
+            return ((data == null) ? "" : data.toString());
+        }
+
+        var buffer = [];
+
+        // Serialize each key in the object.
+        for (var name in data) {
+            if (!data.hasOwnProperty(name)) {
+                continue;
+            }
+
+            var value = data[name];
+
+            buffer.push(
+                encodeURIComponent(name) + "=" + encodeURIComponent((value == null) ? "" : value)
+            );
+        }
+
+        // Serialize the buffer and clean it up for transportation.
+        var source = buffer.join("&").replace(/%20/g, "+");
+        return (source); 
     }
 
     /**
@@ -154,5 +198,5 @@ export class HttpClientService {
      */
     protected responseHandler(resp: Response): any {
         return this.responseInterceptors.reduce((acc: any, interceptor: any) => interceptor(acc), resp);
-    }
+    }  
 }
