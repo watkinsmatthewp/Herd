@@ -55,7 +55,7 @@ export class StatusService {
      * @param spoilerText
      */
     makeNewStatus(message: string, visibility: number, replyStatusId?: string, sensitive?: boolean, spoilerText?: string, attachment?: File) {
-        var formData = new FormData();
+        const formData = new FormData();
         formData.append('message', message);
         formData.append('visibility', String(visibility));
         if (replyStatusId)
@@ -64,8 +64,6 @@ export class StatusService {
             formData.append('sensitive', String(sensitive));
         if (spoilerText)
             formData.append('spoilerText', spoilerText);
-        if (attachment)
-            formData.append('attachment', attachment);
 
         return this.httpClient.post('api/mastodon-posts/new', formData);
     }

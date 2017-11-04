@@ -14,6 +14,5 @@ namespace Herd.Web.Models
         public string ReplyStatusId { get; set; }
         public bool Sensitive { get; set; }
         public string SpoilerText { get; set; }
-        public byte[] Attachment { get; set; }
     }
 }

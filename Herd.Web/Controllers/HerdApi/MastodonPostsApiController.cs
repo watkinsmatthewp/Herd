@@ -35,14 +35,14 @@ namespace Herd.Web.Controllers.HerdApi
         }
 
         [HttpPost("new")]
-        public IActionResult NewPost(NewMastodonPostInputModel post) => ApiJson(App.CreateNewPost(new CreateNewMastodonPostCommand
+        public IActionResult NewPost([FromForm]NewMastodonPostInputModel post) => ApiJson(App.CreateNewPost(new CreateNewMastodonPostCommand
         {
             Message = post.Message,
             Visibility = post.Visibility,
             ReplyStatusId = post.ReplyStatusId,
             Sensitive = post.Sensitive,
             SpoilerText = post.SpoilerText,
-            Attachment = new MemoryStream(post.Attachment)
+            //Attachment = new MemoryStream(post.Attachment)
         }));
 
         [HttpPost("repost")]
