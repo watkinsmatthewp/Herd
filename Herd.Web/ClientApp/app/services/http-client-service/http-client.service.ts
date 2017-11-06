@@ -13,7 +13,7 @@ type ErrorInterceptor = (error: any) => any;
 export class HttpClientService {
 
     private defaultHeaders: Headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
-    private defaultFormHeaders: Headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    private defaultFormHeaders: Headers = new Headers({ 'Content-Type': 'multipart/form-data' });
     private responseInterceptors: Array<ResponseInterceptor> = [];
     private requestInterceptors: Array<RequestInterceptor> = [];
 
@@ -51,9 +51,9 @@ export class HttpClientService {
      */
     postForm<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<any> {
         const newData = this.prepareData(data);
-        var paramFormatData = this.paramify(newData);
-        let request = options != null ? this.http.post(url, paramFormatData, this.generateOptions(options)) :
-            this.http.post(url, paramFormatData, new RequestOptions({ headers: this.defaultFormHeaders }));
+        //var paramFormatData = this.paramify(newData);
+        let request = options != null ? this.http.post(url, newData, this.generateOptions(options)) :
+            this.http.post(url, newData, new RequestOptions({ headers: this.defaultFormHeaders }));
         return request.map(this.mapRequest)
     }
 
