@@ -1,45 +1,47 @@
-﻿
-<div *ngIf="status" class="well well-sm mouseOver post-format" (click)="notifyTimelineStatusClicked($event)">
-    <div class="row">
-        <div class="col-sm-6 status-content">
-            <div class="status-header">
-                <img class="profile-picture" src="{{ status.Author.MastodonProfileImageURL }}" />
-                <a [routerLink]="['/profile', status.Author.MastodonUserId]">
-                    <span class="author-name">{{ status.Author.MastodonDisplayName }}</span>
-                    <span class="username">@{{ status.Author.MastodonUserName }}</span>
-                </a>
-                <span class="time-stamp"> | {{ status.CreatedOnUTC | date: 'short' }}</span>
+﻿<div class="row well well-sm mouseOver post-format" (click)="notifyTimelineStatusClicked($event)">
+    <div class="col-sm-12 status-content">
+        <!-- Header Row -->
+        <div class="row status-header">
+            <img class="profile-picture" src="{{ status.Author.MastodonProfileImageURL }}" />
+            <a [routerLink]="['/profile', status.Author.MastodonUserId]">
+                <span class="author-name">{{ status.Author.MastodonDisplayName }}</span>
+                <span class="username">@{{ status.Author.MastodonUserName }}</span>
+            </a>
+            <span class="time-stamp"> | {{ status.CreatedOnUTC | date: 'short' }}</span>
+        </div><!-- ./Header Row -->
+
+        <!-- Body Row -->
+        <div class="row status-body">
+            <p *ngIf="status.IsSensitive">{{ status.SpoilerText }}</p>
+            <div [ngClass]="{'status-blurred': showBlur }" (click)="turnOffBlur($event)">
+                <p [innerHTML]="status.Content"></p>
             </div>
-            <div class="status-body">
-                <p *ngIf="status.IsSensitive">{{ status.SpoilerText }}</p>
-                <div [ngClass]="{'status-blurred': showBlur }" (click)="turnOffBlur($event)">
-                    <p  [innerHTML]="status.Content"></p>
-                </div>
-                <modal-gallery (click)="$event.stopPropagation()" [modalImages]="imagesArray" 
-                               [enableCloseOutside]="true" 
-                               [downloadable]="true" 
-                               [buttonsConfig]="{download: true}">
-                </modal-gallery>
-            </div>   
-            <div class="text-center">
-                <div class="btn-group-lg" role="group">
-                    <button class="btn btn-secondary comments-btn status-btn" type="button" title="Reply to Id={{ status.IdString }}" (click)="notifyTimelineCommentsClicked($event)">
-                        <fa name="comments"></fa>
-                    </button>
-                    <button class="btn btn-secondary retweet-btn status-btn" type="button" title="Retweet" (click)="toggleRepost($event)">
-                        <fa name="retweet" [ngClass]="{'retweet-color': status.IsReblogged }"></fa>
-                        <span>{{ status.ReblogCount }}</span>
-                    </button>
-                    <button class="btn btn-secondary like-btn status-btn" type="button" title="Like" (click)="toggleLike($event)">
-                        <fa *ngIf="!status.IsFavourited" name="heart-o"></fa>
-                        <fa *ngIf="status.IsFavourited" name="heart" class="heart-color"></fa>
-                        <span>{{ status.FavouritesCount }}</span>
-                    </button>
-                    <button class="btn btn-secondary message-btn status-btn" type="button" title="Direct Message" (click)="directMessage($event)">
-                        <fa name="envelope-o"></fa>
-                    </button>
-                </div>
+            <modal-gallery (click)="$event.stopPropagation()" [modalImages]="imagesArray"
+                           [enableCloseOutside]="true"
+                           [downloadable]="true"
+                           [buttonsConfig]="{download: true}">
+            </modal-gallery>
+        </div><!-- ./Body Row -->
+
+        <!-- Buttons Row -->
+        <div class="row">
+            <div class="btn-group-lg text-center" role="group">
+                <button class="btn btn-secondary comments-btn status-btn" type="button" title="Reply to Id={{ status.IdString }}" (click)="notifyTimelineCommentsClicked($event)">
+                    <fa name="comments"></fa>
+                </button>
+                <button class="btn btn-secondary retweet-btn status-btn" type="button" title="Retweet" (click)="toggleRepost($event)">
+                    <fa name="retweet" [ngClass]="{'retweet-color': status.IsReblogged }"></fa>
+                    <span>{{ status.ReblogCount }}</span>
+                </button>
+                <button class="btn btn-secondary like-btn status-btn" type="button" title="Like" (click)="toggleLike($event)">
+                    <fa *ngIf="!status.IsFavourited" name="heart-o"></fa>
+                    <fa *ngIf="status.IsFavourited" name="heart" class="heart-color"></fa>
+                    <span>{{ status.FavouritesCount }}</span>
+                </button>
+                <button class="btn btn-secondary message-btn status-btn" type="button" title="Direct Message" (click)="directMessage($event)">
+                    <fa name="envelope-o"></fa>
+                </button>
             </div>
-        </div>
-    </div>
-</div>
+        </div><!-- ./Buttons Row -->
+    </div><!-- ./status-content -->
+</div><!-- ./Row -->
