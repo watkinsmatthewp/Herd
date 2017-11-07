@@ -53,7 +53,7 @@ import { SafePipe } from './pipes';
     ],
     imports: [
         Angular2FontawesomeModule, BsModalModule, CardModule, CommonModule, 
-        HttpModule, FormsModule, InfiniteScrollModule, ModelGalleryModule.forRoot(),
+        HttpModule, FormsModule, InfiniteScrollModule, ModalGalleryModule.forRoot(),
         TabsModule.forRoot(), SimpleNotificationsModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },

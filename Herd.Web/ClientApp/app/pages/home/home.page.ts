@@ -99,7 +99,8 @@ export class HomePage implements OnInit {
     updateSpecificStatus(statusId: string): void {
         this.loading = true;
         //let progress = this.toastService.info("Retrieving" , "status info ...");
-        this.statusService.getStatus(statusId, true, true)
+        this.statusService.search({ postID: statusId, includeAncestors: true, includeDescendants: true })
+            .map(posts => posts[0] as Status)
             .finally(() =>  this.loading = false)
             .subscribe(data => {
                // this.toastService.remove(progress.id);
@@ -116,7 +117,8 @@ export class HomePage implements OnInit {
     updateReplyStatusModal(statusId: string): void {
         this.loading = true;
         //let progress = this.toastService.info("Retrieving",  "status info ...");
-        this.statusService.getStatus(statusId, false, false)
+        this.statusService.search({ postID: statusId, includeAncestors: false, includeDescendants: false })
+            .map(posts => posts[0] as Status)
             .finally(() => this.loading = false)
             .subscribe(data => {
                 //this.toastService.remove(progress.id);
