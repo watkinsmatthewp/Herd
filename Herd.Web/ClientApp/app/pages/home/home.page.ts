@@ -36,7 +36,6 @@ export class HomePage implements OnInit {
             .map(response => response as UserCard)
             .subscribe(usercard => {
                 this.userCard = usercard;
-                console.log("getUserCard", usercard);
             });
     }
 

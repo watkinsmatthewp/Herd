@@ -70,7 +70,6 @@ export class StatusFormComponent {
         this.model.filename = null;
         this.model.file = null;
         this.model.formData = null;
-        console.log("File", this.model.file);
     }
 
     toggleContentWarning(): void {
@@ -95,8 +94,6 @@ export class StatusFormComponent {
         this.model.contentWarning = false;
         this.model.visibility = Visibility.PUBLIC;
         form.controls.visibility.setValue(0); // have to manually set the select value for some reason
-        this.model.spoilerText = "";
-        this.model.file = null;
-        this.model.filename = "";
+        this.clearFile();
     }
 }

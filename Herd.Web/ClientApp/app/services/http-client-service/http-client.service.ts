@@ -54,7 +54,6 @@ export class HttpClientService {
      * @param options request options
      */
     postForm<T>(url: string, data: FormData, options?: RequestOptionsArgs): Observable<any> {
-        console.log("options != null", options != null);
         let request = options != null ?
             this.http.post(url, data, this.generateOptions(options)) :
             this.http.post(url, data, new RequestOptions({ headers: this.defaultFormHeaders }));
