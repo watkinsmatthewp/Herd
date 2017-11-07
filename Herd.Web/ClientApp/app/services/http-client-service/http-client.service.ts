@@ -26,7 +26,7 @@ export class HttpClientService {
      */
     get<T>(url: string, options?: RequestOptionsArgs): Observable<any> {
         let request = options != null ? this.http.get(url, this.generateOptions(options)) :
-            this.http.get(url, new RequestOptions({ headers: this.defaultHeaders }));
+                                        this.http.get(url, new RequestOptions({ headers: this.defaultHeaders }));
         return request.map(this.mapRequest)
     }
 
@@ -50,10 +50,10 @@ export class HttpClientService {
      * @param options request options
      */
     postForm<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<any> {
-        const newData = this.prepareData(data);
-        //var paramFormatData = this.paramify(newData);
-        let request = options != null ? this.http.post(url, newData, this.generateOptions(options)) :
-            this.http.post(url, newData, new RequestOptions({ headers: this.defaultFormHeaders }));
+        let newData = this.prepareData(data);
+        let paramFormatData = this.paramify(newData);
+        let request = options != null ? this.http.post(url, paramFormatData, this.generateOptions(options)) :
+                                        this.http.post(url, paramFormatData, new RequestOptions({ headers: this.defaultFormHeaders }));
         return request.map(this.mapRequest)
     }
 

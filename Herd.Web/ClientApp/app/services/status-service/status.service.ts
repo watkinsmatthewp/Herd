@@ -55,7 +55,7 @@ export class StatusService {
      * @param spoilerText
      */
     makeNewStatus(message: string, visibility: number, replyStatusId?: string, sensitive?: boolean, spoilerText?: string, attachment?: File) {
-        const formData = new FormData();
+        const formData: FormData = new FormData();
         formData.append('message', message);
         formData.append('visibility', String(visibility));
         if (replyStatusId)
