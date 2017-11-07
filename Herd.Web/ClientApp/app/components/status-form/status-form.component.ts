@@ -78,41 +78,15 @@ export class StatusFormComponent {
     }
 
     submitStatus(form: NgForm) {
-        const formData: FormData = new FormData();
-        formData.append('message', this.model.status);
-        formData.append('visibility', String(this.model.visibility));
-        if (this.model.replyStatusId)
-            formData.append('replyStatusId', this.model.replyStatusId);
-        if (this.model.sensitive)
-            formData.append('sensitive', String(this.model.sensitive));
-        if (this.model.spoilerText)
-            formData.append('spoilerText', this.model.spoilerText);
-        if (this.model.file)
-            formData.append('attachment', this.model.file);
-
-        const headers = new Headers({});
-        let options = new RequestOptions({ headers });
-        let url = "api/mastodon-posts/new";
-        this.http.post(url, formData, options)
+        this.statusService.makeNewStatus(this.model.status, this.model.visibility, this.inReplyToId, this.model.contentWarning, this.model.spoilerText, this.model.file)
             .finally(() => {
                 this.resetFormDefaults(form);
             })
-            .subscribe(res => {
+            .subscribe(response => {
                 this.toastService.success("Successfully", "posted a status.");
             }, error => {
                 this.toastService.error(error.error);
             });
-
-
-        //this.statusService.makeNewStatus(this.model.status, this.model.visibility, this.inReplyToId, this.model.contentWarning, this.model.spoilerText, this.model.file)
-        //    .finally(() => {
-        //        this.resetFormDefaults(form);
-        //    })
-        //    .subscribe(response => {
-        //        this.toastService.success("Successfully", "posted a status.");
-        //    }, error => {
-        //        this.toastService.error(error.error);
-        //    });
     }
 
     resetFormDefaults(form: NgForm): void {
@@ -122,5 +96,7 @@ export class StatusFormComponent {
         this.model.visibility = Visibility.PUBLIC;
         form.controls.visibility.setValue(0); // have to manually set the select value for some reason
         this.model.spoilerText = "";
+        this.model.file = null;
+        this.model.filename = "";
     }
 }

@@ -13,7 +13,7 @@ type ErrorInterceptor = (error: any) => any;
 export class HttpClientService {
 
     private defaultHeaders: Headers = new Headers({ 'Content-Type': 'application/json; charset=UTF-8' });
-    private defaultFormHeaders: Headers = new Headers({ 'Content-Type': 'multipart/form-data' });
+    private defaultFormHeaders: Headers = new Headers({});
     private responseInterceptors: Array<ResponseInterceptor> = [];
     private requestInterceptors: Array<RequestInterceptor> = [];
 
@@ -25,8 +25,10 @@ export class HttpClientService {
      * @param options request options
      */
     get<T>(url: string, options?: RequestOptionsArgs): Observable<any> {
-        let request = options != null ? this.http.get(url, this.generateOptions(options)) :
-                                        this.http.get(url, new RequestOptions({ headers: this.defaultHeaders }));
+        let request = options != null ?
+            this.http.get(url, this.generateOptions(options)) :
+            this.http.get(url, new RequestOptions({ headers: this.defaultHeaders }));
+
         return request.map(this.mapRequest)
     }
 
@@ -38,8 +40,10 @@ export class HttpClientService {
      */
     post<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<any> {
         const newData = this.prepareData(data);
-        let request = options != null ? this.http.post(url, newData, this.generateOptions(options)) :
-                                        this.http.post(url, newData, new RequestOptions({ headers: this.defaultHeaders }));
+        let request = options != null ?
+            this.http.post(url, newData, this.generateOptions(options)) :
+            this.http.post(url, newData, new RequestOptions({ headers: this.defaultHeaders }));
+
         return request.map(this.mapRequest)
     }
 
@@ -49,12 +53,13 @@ export class HttpClientService {
      * @param data request body
      * @param options request options
      */
-    postForm<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<any> {
-        let newData = this.prepareData(data);
-        let paramFormatData = this.paramify(newData);
-        let request = options != null ? this.http.post(url, paramFormatData, this.generateOptions(options)) :
-                                        this.http.post(url, paramFormatData, new RequestOptions({ headers: this.defaultFormHeaders }));
-        return request.map(this.mapRequest)
+    postForm<T>(url: string, data: FormData, options?: RequestOptionsArgs): Observable<any> {
+        console.log("options != null", options != null);
+        let request = options != null ?
+            this.http.post(url, data, this.generateOptions(options)) :
+            this.http.post(url, data, new RequestOptions({ headers: this.defaultFormHeaders }));
+
+        return request.map(this.mapRequest);
     }
 
     /**
