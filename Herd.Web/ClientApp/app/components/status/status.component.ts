@@ -1,9 +1,12 @@
 ﻿import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { Image } from 'angular-modal-gallery';
+
 import { StatusService, EventAlertService } from "../../services";
 import { Status } from '../../models/mastodon';
 import { EventAlertEnum } from "../../models/index";
+
 
 @Component({
     selector: 'status',
@@ -13,6 +16,7 @@ import { EventAlertEnum } from "../../models/index";
 export class StatusComponent implements OnInit {
     @Input() status: Status;
     showBlur: boolean = false;
+    imagesArray: Array<Image> = [];
 
     constructor(private router: Router, private statusService: StatusService, private eventAlertService: EventAlertService) {}
 
@@ -20,6 +24,9 @@ export class StatusComponent implements OnInit {
         if (this.status.IsSensitive === true) {
             this.showBlur = true;
         }
+
+        // Add the status images to the imagesArray
+        this.imagesArray.push(new Image(this.status.MediaAttachment));
     }
 
     turnOffBlur(event: any): void {
@@ -64,5 +71,5 @@ export class StatusComponent implements OnInit {
     directMessage() {
         
     }
-    
+
 }

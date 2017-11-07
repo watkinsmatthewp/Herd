@@ -8,8 +8,10 @@ import { CardModule } from './components/card'
 // External Dependencies
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 import { BsModalModule } from 'ng2-bs3-modal';
+import { ModalGalleryModule } from 'angular-modal-gallery';
 import { TabsModule } from 'ngx-bootstrap';
 import { SimpleNotificationsModule } from 'angular2-notifications';
+
 
 // Pages
 import {
@@ -50,7 +52,7 @@ import { SafePipe } from './pipes';
     ],
     imports: [
         Angular2FontawesomeModule, BsModalModule, CardModule, CommonModule, 
-        HttpModule, FormsModule, ModalGalleryModule.forRoot(), TabsModule.forRoot(),
+        HttpModule, FormsModule, TabsModule.forRoot(), ModalGalleryModule.forRoot(),
         SimpleNotificationsModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },

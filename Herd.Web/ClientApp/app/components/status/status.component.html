@@ -15,7 +15,11 @@
                 <div [ngClass]="{'status-blurred': showBlur }" (click)="turnOffBlur($event)">
                     <p  [innerHTML]="status.Content"></p>
                 </div>
-                <img class="status-media" *ngIf="status.MediaAttachment" src="{{ status.MediaAttachment }}" />
+                <modal-gallery (click)="$event.stopPropagation()" [modalImages]="imagesArray" 
+                               [enableCloseOutside]="true" 
+                               [downloadable]="true" 
+                               [buttonsConfig]="{download: true}">
+                </modal-gallery>
             </div>   
             <div class="text-center">
                 <div class="btn-group-lg" role="group">
