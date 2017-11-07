@@ -32,6 +32,6 @@ notifications:
   auth_token:
     secure: tIb0BiBlLMdtx3BmSS6x/lOQuaB95kK/K+/GBbxaxNvO88hCRi/++PJft0OcMgzPOgohUvkqzOwLvzfW3V/nK/DgVTrOJZut/7sFLyLDnno=
   channel: build
-  on_build_success: false
+  on_build_success: true
   on_build_failure: true
   on_build_status_changed: true
