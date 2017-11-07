@@ -50,7 +50,8 @@ import { SafePipe } from './pipes';
     ],
     imports: [
         Angular2FontawesomeModule, BsModalModule, CardModule, CommonModule, 
-        HttpModule, FormsModule, TabsModule.forRoot(), SimpleNotificationsModule.forRoot(),
+        HttpModule, FormsModule, ModalGalleryModule.forRoot(), TabsModule.forRoot(),
+        SimpleNotificationsModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             // Admin Page 

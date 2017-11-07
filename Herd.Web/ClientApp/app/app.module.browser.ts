@@ -5,6 +5,8 @@ import { AppModuleShared } from './app.module.shared';
 
 import { AppPage } from './pages/app/app.page';
 import { Storage, BrowserStorage } from './models';
+import 'hammerjs';
+import 'mousetrap';
 
 @NgModule({
     bootstrap: [ AppPage ],
