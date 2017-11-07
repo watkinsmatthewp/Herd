@@ -41,7 +41,7 @@ p {
 }
 
 .status-content {
-    width: 100%;
+    width: 50%;
 }
 
 .status-body {
@@ -50,7 +50,8 @@ p {
 
 /* Status Media */
 .status-media {
-    width: 100%;
+    width: 50%;
+    max-height: 10%;
 }
 
 /* Buttons */

@@ -5,6 +5,9 @@ import { HttpModule } from '@angular/http';
 import { Routes, RouterModule, CanActivate } from '@angular/router';
 import { CardModule } from './components/card'
 
+import 'hammerjs';
+import 'mousetrap';
+
 // External Dependencies
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 import { BsModalModule } from 'ng2-bs3-modal';
