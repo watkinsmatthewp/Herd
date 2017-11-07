@@ -27,6 +27,8 @@ const nonTreeShakableModules = [
     'angular2-notifications',
     'ng2-bs3-modal',
     'ngx-bootstrap',
+    'hammerjs',
+    'mousetrap',
 ];
 const allModules = treeShakableModules.concat(nonTreeShakableModules);
 

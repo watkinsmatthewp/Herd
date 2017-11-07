@@ -9,8 +9,10 @@ import { CardModule } from './components/card'
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 import { BsModalModule } from 'ng2-bs3-modal';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { ModalGalleryModule } from 'angular-modal-gallery';
 import { TabsModule } from 'ngx-bootstrap';
 import { SimpleNotificationsModule } from 'angular2-notifications';
+
 
 // Pages
 import {
@@ -51,7 +53,7 @@ import { SafePipe } from './pipes';
     ],
     imports: [
         Angular2FontawesomeModule, BsModalModule, CardModule, CommonModule, 
-        HttpModule, FormsModule, InfiniteScrollModule,
+        HttpModule, FormsModule, InfiniteScrollModule, ModelGalleryModule.forRoot(),
         TabsModule.forRoot(), SimpleNotificationsModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },

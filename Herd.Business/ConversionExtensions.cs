@@ -3,6 +3,7 @@ using Herd.Business.Models.Entities;
 using Herd.Data.Models;
 using Mastonet;
 using Mastonet.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -103,12 +104,26 @@ namespace Herd.Business
                 IsFavourited = status.Favourited,
                 IsReblogged = status.Reblogged,
                 IsSensitive = status.Sensitive,
+                MediaAttachment = status.MediaAttachments.Count() > 0 ?status.MediaAttachments.ElementAt(0).Url : "",
                 ReblogCount = status.ReblogCount,
                 SpoilerText = status.SpoilerText,
                 Visibility = status.Visibility.ToMastodonPostVisibility(),
             };
 
             return post;
+        }
+
+        public static MastodonAttachment ToMastodonAttachment(this Attachment attachment)
+        {
+            return new MastodonAttachment
+            {
+                Id = attachment.Id.ToString(),
+                Type = attachment.Type,
+                Url = attachment.Url,
+                RemoteUrl = attachment.RemoteUrl,
+                PreviewUrl = attachment.PreviewUrl,
+                TextUrl = attachment.TextUrl
+            };
         }
 
         public static MastodonPostVisibility ToMastodonPostVisibility(this Visibility visibility)

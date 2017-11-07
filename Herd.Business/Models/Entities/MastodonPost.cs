@@ -16,6 +16,7 @@ namespace Herd.Business.Models.Entities
         public bool? IsFavourited { get; set; }
         public bool? IsReblogged { get; set; }
         public bool? IsSensitive { get; set; }
+        public string MediaAttachment { get; set; }
         public int ReblogCount { get; set; }
         public string SpoilerText { get; set; }
         public MastodonPostVisibility Visibility { get; set; }

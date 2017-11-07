@@ -1,4 +1,4 @@
-﻿import { Component, Input } from '@angular/core';
+﻿import { Component, Input, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from "rxjs/Observable";
 
@@ -15,8 +15,8 @@ import { EventAlertEnum } from "../../models/index";
 export class StatusFormComponent {
     @Input() actionName: string;
     @Input() isReply: boolean;
-    @Input() inReplyToId: string;
-
+    @Input() inReplyToId: string
+    ImagePreview: any;
     maxStatusLength: number = 200;
     Visibility = Visibility;
     visibilityOptions = [
@@ -45,7 +45,7 @@ export class StatusFormComponent {
         status: "",
         contentWarning: false,
         visibility: Visibility.PUBLIC,
-        spoilerText: ""
+        spoilerText: "",
     };
     
 
@@ -62,6 +62,27 @@ export class StatusFormComponent {
         });
     }
 
+    onFileChange(event: any) {
+        let fileList: FileList = event.target.files;
+        if (fileList.length > 0) {
+            let file = fileList[0];
+            this.model.file = file;
+            this.model.filename = file.name;
+
+            let reader = new FileReader();
+            reader.onload = (e: any) => {
+                this.ImagePreview = e.target.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    }
+
+    clearFile() {
+        this.model.filename = null;
+        this.model.file = null;
+        this.model.formData = null;
+    }
+
     toggleContentWarning(): void {
         this.model.contentWarning = !this.model.contentWarning
     }
@@ -71,7 +92,7 @@ export class StatusFormComponent {
     }
 
     submitStatus(form: NgForm) {
-        this.statusService.makeNewStatus(this.model.status, this.model.visibility, this.inReplyToId, this.model.contentWarning, this.model.spoilerText)
+        this.statusService.makeNewStatus(this.model.status, this.model.visibility, this.inReplyToId, this.model.contentWarning, this.model.spoilerText, this.model.file)
             .finally(() => {
                 this.resetFormDefaults(form);
             })
@@ -88,6 +109,6 @@ export class StatusFormComponent {
         this.model.contentWarning = false;
         this.model.visibility = Visibility.PUBLIC;
         form.controls.visibility.setValue(0); // have to manually set the select value for some reason
-        this.model.spoilerText = "";
+        this.clearFile();
     }
 }

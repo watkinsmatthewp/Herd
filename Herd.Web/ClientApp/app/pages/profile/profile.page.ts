@@ -178,17 +178,16 @@ export class ProfilePage implements OnInit, AfterViewInit {
 
     updateSpecificStatus(statusId: string): void {
         this.loading = true;
-        let progress = this.toastService.info("Retrieving", "status info ...");
-        this.statusService.search({ postID: statusId, includeAncestors: true, includeDescendants: true })
-            .map(posts => posts[0] as Status)
+        //let progress = this.toastService.info("Retrieving", "status info ...");
+        this.statusService.getStatus(statusId, true, true)
             .finally(() => this.loading = false)
             .subscribe(data => {
-                this.toastService.remove(progress.id);
+                //this.toastService.remove(progress.id);
                 this.specificStatus = data;
                 this.specificStatus.Ancestors = data.Ancestors;
                 this.specificStatus.Descendants = data.Descendants;
                 this.specificStatusModal.open();
-                this.toastService.success("Finished", "retrieving status.")
+               // this.toastService.success("Finished", "retrieving status.")
             }, error => {
                 this.toastService.error("Error", error.error);
             });
@@ -196,15 +195,14 @@ export class ProfilePage implements OnInit, AfterViewInit {
 
     updateReplyStatusModal(statusId: string): void {
         this.loading = true;
-        let progress = this.toastService.info("Retrieving", "status info ...");
-        this.statusService.search({ postID: statusId, includeAncestors: false, includeDescendants: false })
-            .map(posts => posts[0] as Status)
+      //  let progress = this.toastService.info("Retrieving", "status info ...");
+        this.statusService.getStatus(statusId, false, false)
             .finally(() => this.loading = false)
             .subscribe(data => {
-                this.toastService.remove(progress.id);
+               // this.toastService.remove(progress.id);
                 this.replyStatus = data;
                 this.replyStatusModal.open();
-                this.toastService.success("Finished", "retrieving status.")
+               // this.toastService.success("Finished", "retrieving status.")
             }, error => {
                 this.toastService.error("Error", error.error);
             });

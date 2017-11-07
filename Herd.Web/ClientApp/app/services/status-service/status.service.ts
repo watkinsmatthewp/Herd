@@ -75,15 +75,20 @@ export class StatusService {
      * @param sensitive
      * @param spoilerText
      */
-    makeNewStatus(message: string, visibility: number, replyStatusId?: string, sensitive?: boolean, spoilerText?: string) {
-        let body = {
-            'message': message,
-            'visibility': visibility,
-            'replyStatusId': replyStatusId || null,
-            'sensitive': sensitive || false,
-            'spoilerText': spoilerText || null,
-        }
-        return this.httpClient.post('api/mastodon-posts/new', body);
+    makeNewStatus(message: string, visibility: number, replyStatusId?: string, sensitive?: boolean, spoilerText?: string, attachment?: File) {
+        const formData: FormData = new FormData();
+        formData.append('message', message);
+        formData.append('visibility', String(visibility));
+        if (replyStatusId)
+            formData.append('replyStatusId', replyStatusId);
+        if (sensitive)
+            formData.append('sensitive', String(sensitive));
+        if (spoilerText)
+            formData.append('spoilerText', spoilerText);
+        if (attachment)
+            formData.append('attachment', attachment);
+
+        return this.httpClient.postForm('api/mastodon-posts/new', formData);
     }
 
     /**

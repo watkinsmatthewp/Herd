@@ -1,4 +1,4 @@
-﻿using Herd.Business.ApiWrappers;
+using Herd.Business.ApiWrappers;
 using Herd.Business.ApiWrappers.MastodonObjectContextOptions;
 using Herd.Business.Extensions;
 using Herd.Business.Models;
@@ -15,8 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-// Here is a comment
 
 namespace Herd.Business
 {
@@ -250,11 +248,17 @@ namespace Herd.Business
         {
             return ProcessCommand(result =>
             {
+                var mediaIDs = new List<string>();
+                if (createNewPostCommand.HasAttachment)
+                {
+                    mediaIDs.Add(_mastodonApiWrapper.UploadAttachment(createNewPostCommand.Attachment).Synchronously().Id);
+                }
+
                 _mastodonApiWrapper.CreateNewPost(
                     createNewPostCommand.Message,
                     createNewPostCommand.Visibility,
                     createNewPostCommand.ReplyStatusId,
-                    createNewPostCommand.MediaIds,
+                    mediaIDs,
                     createNewPostCommand.Sensitive,
                     createNewPostCommand.SpoilerText
                 ).Synchronously();
@@ -300,7 +304,7 @@ namespace Herd.Business
                 }
             );
 
-            return users.Values.OrderBy(u => u.MastodonUserId.ToLong()).ToArray();
+            return users.Values.ToArray();
         }
 
         private Task<Dictionary<string, MastodonUser>> FilterByUserID(Dictionary<string, MastodonUser> userSet1, string mastodonUserID)

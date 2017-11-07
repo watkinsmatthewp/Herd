@@ -11,6 +11,7 @@ export class Status {
     IsFavourited: boolean;
     IsReblogged: boolean;
     IsSensitive: boolean;
+    MediaAttachment: string;
     ReblogCount: number;
     SpoilerText: string;
     Visibility: Visibility;
