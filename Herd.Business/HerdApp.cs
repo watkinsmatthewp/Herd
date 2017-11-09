@@ -347,15 +347,15 @@ namespace Herd.Business
             }
             if (!string.IsNullOrWhiteSpace(searchMastodonPostsCommand.ByAuthorMastodonUserID))
             {
-                posts = await FilterByAuthorUserID(posts, searchMastodonPostsCommand.ByAuthorMastodonUserID, searchMastodonPostsCommand.SinceID, searchMastodonPostsCommand.MaxID);
+                posts = await FilterByAuthorUserID(posts, searchMastodonPostsCommand.ByAuthorMastodonUserID, searchMastodonPostsCommand.PagingOptions.SinceID, searchMastodonPostsCommand.PagingOptions.MaxID);
             }
             if (searchMastodonPostsCommand.OnlyOnlyOnActiveUserTimeline)
             {
-                posts = await FilterByOnActiveUserTimeline(posts, searchMastodonPostsCommand.SinceID, searchMastodonPostsCommand.MaxID);
+                posts = await FilterByOnActiveUserTimeline(posts, searchMastodonPostsCommand.PagingOptions.SinceID, searchMastodonPostsCommand.PagingOptions.MaxID);
             }
             if (!string.IsNullOrWhiteSpace(searchMastodonPostsCommand.HavingHashTag))
             {
-                posts = await FilterByHashTag(posts, searchMastodonPostsCommand.HavingHashTag, searchMastodonPostsCommand.SinceID, searchMastodonPostsCommand.MaxID);
+                posts = await FilterByHashTag(posts, searchMastodonPostsCommand.HavingHashTag, searchMastodonPostsCommand.PagingOptions.SinceID, searchMastodonPostsCommand.PagingOptions.MaxID);
             }
 
             await _mastodonApiWrapper.AddContextToMastodonPosts

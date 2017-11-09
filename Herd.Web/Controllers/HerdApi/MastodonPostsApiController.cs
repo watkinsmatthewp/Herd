@@ -1,4 +1,5 @@
-﻿using Herd.Business.Models.Commands;
+﻿using Herd.Business.Models;
+using Herd.Business.Models.Commands;
 using Herd.Business.Models.Entities;
 using Herd.Web.CustomAttributes;
 using Herd.Web.Models;
@@ -33,9 +34,12 @@ namespace Herd.Web.Controllers.HerdApi
                 HavingHashTag = hashtag,
                 IncludeAncestors = includeAncestors,
                 IncludeDescendants = includeDescendants,
-                MaxCount = max,
-                MaxID = maxID,
-                SinceID = sinceID
+                PagingOptions = new PagingOptions
+                {
+                    Limit = max,
+                    MaxID = maxID,
+                    SinceID = sinceID
+                }
             }));
         }
 

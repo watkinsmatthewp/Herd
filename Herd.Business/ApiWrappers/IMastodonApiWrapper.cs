@@ -1,5 +1,6 @@
 using Herd.Business.ApiWrappers.MastodonObjectContextOptions;
 using Herd.Business.Models;
+using Herd.Business.Models.Commands;
 using Herd.Business.Models.Entities;
 using Herd.Data.Models;
 using System.Collections.Generic;

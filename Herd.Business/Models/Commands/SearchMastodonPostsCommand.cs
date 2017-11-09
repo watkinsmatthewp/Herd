@@ -1,10 +1,8 @@
 ﻿namespace Herd.Business.Models.Commands
 {
-    public class SearchMastodonPostsCommand : Command
+    public class SearchMastodonPostsCommand : Command, IPagedCommand
     {
-        public int MaxCount { get; set; } = 30;
-        public string MaxID { get; set; }
-        public string SinceID { get; set; }
+        public PagingOptions PagingOptions { get; set; }
 
         public bool OnlyOnlyOnActiveUserTimeline { get; set; }
         public string ByAuthorMastodonUserID { get; set; }
@@ -18,7 +16,6 @@
             && string.IsNullOrWhiteSpace(ByAuthorMastodonUserID)
             && string.IsNullOrWhiteSpace(PostID)
             && string.IsNullOrWhiteSpace(HavingHashTag)
-            && string.IsNullOrWhiteSpace(MaxID)
-            && string.IsNullOrWhiteSpace(SinceID);
+            && !this.HasPagingOptions();
     }
 }
