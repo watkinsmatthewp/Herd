@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="author" content="BAM">
+  <title>Test</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <script>
+    var flavor = location.search.replace(/(^\?)/g, '') || 'default';
+    document.write('<link media="all" rel="stylesheet" href="' + flavor + '.css">');
+  </script>
+  <style>
+    .block {
+      position: relative;
+      box-sizing: border-box;
+      min-height: 1rem;
+      padding: .75rem;
+      margin-bottom: 1.5rem;
+      background: #007FFF;
+      border: 1px solid #FFF;
+      border-radius: 2px;
+      overflow: hidden;
+      text-align: center;
+      color: #fff
+    }
+
+    .bd-example {
+      padding: 1.5rem;
+      margin-right: 0;
+      margin-bottom: 0;
+      margin-left: 0;
+      border-width: .2rem
+    }
+
+    .bd-example-row-flex-cols .c-row {
+      min-height: 10rem;
+      background-color: #e5e5e5;
+      margin-top: 1rem;
+    }
+
+    .bd-example-row .c-row>.c-col,
+    .bd-example-row .c-row>[class^=c-col-] {
+      padding-top: .75rem;
+      padding-bottom: .75rem;
+      background-color: #007FFF;
+      color: white;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+    }
+
+  </style>
+
+</head>
+
+<body>
+  <main class="c-container">
+    <header class="c-m-top-xl">
+      <h1 class="c-header-md c-text-primary-7 c-text-strong">
+        <script>
+          document.write(flavor.toUpperCase());
+        </script>
+        Theme
+      </h1>
+    </header>
+    <h3>This is only static html for testing and examples.</h3>
+    <h3>Please refer to the <a href="#">Cupcake Docs</a> for complete documentation.</h3>
+
+
+
+
+<div class="bd-example-row bd-example-row-flex-cols">
+    <h1>Rows</h1>
+    <div class="c-container">
+      <h3>Default all columns stretched</h3>
+        <div class="c-row">
+            <div class="c-col">
+              One of three columns
+              <br> One of three columns
+              <br> One of three columns
+              <br> One of three columns
+            </div>
+            <div class="c-col">
+              One of three columns
+            </div>
+            <div class="c-col">
+              One of three columns
+            </div>
+        </div>        
+        <h3>.c-row-content-unstretch</h3>
+        <div class="c-row c-row-content-unstretch">
+            <div class="c-col">
+                One of three columns
+                <br> One of three columns
+                <br> One of three columns
+                <br> One of three columns
+            </div>
+            <div class="c-col">
+                One of three columns
+            </div>
+            <div class="c-col">
+                One of three columns
+            </div>
+        </div>
+
+        <h3>.c-row-align-end</h3>
+        <div class="c-row c-row-align-end">
+            <div class="c-col">
+                One of three columns
+                <br> One of three columns
+                <br> One of three columns
+                <br> One of three columns
+            </div>
+            <div class="c-col">
+                One of three columns
+            </div>
+            <div class="c-col">
+                One of three columns
+            </div>
+        </div>
+
+        <h3>.c-row-align-start</h3>
+        <div class="c-row c-row-align-start">
+            <div class="c-col">
+                One of three columns
+                <br> One of three columns
+                <br> One of three columns
+                <br> One of three columns
+            </div>
+            <div class="c-col">
+                One of three columns
+            </div>
+            <div class="c-col">
+                One of three columns
+            </div>
+        </div>
+
+        <h3>.c-row-align-center</h3>
+        <div class="c-row c-row-align-center">
+            <div class="c-col">
+                One of three columns
+                <br> One of three columns
+                <br> One of three columns
+                <br> One of three columns
+            </div>
+            <div class="c-col">
+                One of three columns
+            </div>
+            <div class="c-col">
+                One of three columns
+            </div>
+        </div>
+
+        <h3>.c-row-collapsed</h3>
+        <div class="c-row c-row-collapsed">
+            <div class="c-col">
+                One of three columns
+            </div>
+            <div class="c-col">
+                One of three columns
+            </div>
+            <div class="c-col">
+                One of three columns
+            </div>
+            <div class="c-col">
+                One of three columns
+            </div>
+            <div class="c-col">
+                One of three columns
+            </div>
+            <div class="c-col">
+                One of three columns
+            </div>            
+        </div>        
+    </div>
+</div><div class="bd-example-row bd-example-row-flex-cols">
+    <div class="c-container">
+
+        <h3>Single Column Unstretch</h3>
+        <div class="c-row">
+            <div class="c-col">
+                One of three columns
+                <br> One of three columns
+                <br> One of three columns
+                <br> One of three columns
+            </div>
+            <div class="c-col c-col-content-unstretch">
+                .c-col-content-unstretch
+            </div>
+            <div class="c-col">
+                One of three columns
+            </div>
+        </div>
+
+        <h3>Single Column Alignment</h3>
+        <div class="c-row">
+            <div class="c-col c-col-align-start">
+                .c-col-align-start
+            </div>
+            <div class="c-col c-col-align-center">
+                .c-col-align-center
+            </div>
+            <div class="c-col c-col-align-end">
+                .c-col-align-end
+            </div>
+        </div>
+
+        <h3>Column Collapsed</h3>
+        <div class="c-row">
+            <div class="c-col c-col-3">
+                .c-col-3
+            </div>
+            <div class="c-col c-col-3 c-col-collapsed">
+                .c-col-collapsed
+            </div>
+            <div class="c-col c-col-3 c-col-collapsed">
+                .c-col-collapsed
+            </div>
+            <div class="c-col c-col-3">
+                .c-col-3
+            </div>
+        </div>
+
+        <h3>Column Shrink</h3>
+        <div class="c-row c-row-content-unstretch">
+            <div class="c-col">
+                .c-col
+            </div>
+            <div class="c-col c-col-shrink">
+                .c-col-shrink
+            </div>
+            <div class="c-col">
+                .c-col
+            </div>
+            <div class="c-col">
+                .c-col
+            </div>
+        </div>
+    </div>
+</div><div class="bd-example-row bd-example-row-flex-cols">
+    <div class="c-container">
+
+        <h3>Single Column Unstretch</h3>
+<div class="c-row">
+  <div class="c-col-sm-6 c-col-sm-offset-3">.c-col-sm-offset-3</div>
+</div>
+
+<div class="c-row">
+  <div class="c-col-sm-4 c-col-sm-offset-8">.c-col-sm-offset-8</div>
+</div>
+
+<div class="c-row">
+  <div class="c-col-sm-11 c-col-sm-offset-1">.c-col-sm-offset-1</div>
+</div>
+    </div>
+</div><h3>All Columns</h3>
+<div class="c-row">
+    <div class="c-col-12">
+        <div class="block"><code> .c-col-12</code></div>
+    </div>
+</div>
+<div class="c-row">
+    <div class="c-col-11">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+    <div class="c-col">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+</div>
+<div class="c-row">
+    <div class="c-col-10">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+    <div class="c-col">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+</div>
+<div class="c-row">
+    <div class="c-col-9">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+    <div class="c-col">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+</div>
+<div class="c-row">
+    <div class="c-col-8">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+    <div class="c-col">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+</div>
+<div class="c-row">
+    <div class="c-col-7">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+    <div class="c-col">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+</div>
+<div class="c-row">
+    <div class="c-col-6">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+    <div class="c-col">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+</div>
+<div class="c-row">
+    <div class="c-col-5">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+    <div class="c-col">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+</div>
+<div class="c-row">
+    <div class="c-col-4">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+    <div class="c-col">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+</div>
+<div class="c-row">
+    <div class="c-col-3">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+    <div class="c-col">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+</div>
+<div class="c-row">
+    <div class="c-col-2">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+    <div class="c-col">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+</div>
+<div class="c-row">
+    <div class="c-col-1">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+    <div class="c-col">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+</div>
+
+<div class="c-row">
+    <div class="c-col-md-4 c-col-xs-12">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+    <div class="c-col-md-4 c-col-xs-6">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+    <div class="c-col-md-4 c-col-xs-6">
+        <div class="block"><code> .c-col</code></div>
+    </div>
+</div>
+</body>
+
+</html>

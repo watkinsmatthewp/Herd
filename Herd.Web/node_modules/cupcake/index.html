@@ -1,0 +1,2917 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="author" content="BAM">
+  <title>Test</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <script>
+    var flavor = location.search.replace(/(^\?)/g, '') || 'default';
+    document.write('<link media="all" rel="stylesheet" href="' + flavor + '.css">');
+  </script>
+  
+  <style>
+    .c-container {
+      max-width: 1425px;
+    }
+  </style>
+</head>
+
+<body>
+      <div class="c-alert c-alert-danger c-alert-top">
+    	<a href="javascript:void(0)" class="c-a c-alert-close" data-dismiss="c-alert" aria-hidden="true">
+    		<i class="fa fa-times" aria-hidden="true"></i>
+    	</a>
+    	<i class="fa fa-exclamation-circle" aria-hidden="true"></i> <strong>Oh snap there is a problem!</strong>
+    </div>
+  <main class="c-container">
+    <header class="c-m-top-xl">
+      <h1 class="c-header-md c-text-primary-7 c-text-strong">
+        <script>
+          document.write(flavor.toUpperCase());
+        </script>
+        Theme
+      </h1>
+    </header>
+
+    
+    <h3>This is only static html for testing and examples.</h3>
+    <h3>Please refer to the <a href="#">Cupcake Docs</a> for complete documentation.</h3>
+
+    <section id="alerts">
+    <h3 class="c-header-md">Alerts</h3>
+    <div class="c-alert c-alert-primary">
+    	<a href="javascript:void(0)" class="c-a c-alert-close" data-dismiss="c-alert" aria-hidden="true">
+    		<i class="fa fa-times" aria-hidden="true"></i>
+    	</a>
+    	<i class="fa fa-exclamation-circle" aria-hidden="true"></i> <strong>Oh snap there is a problem!</strong>
+    </div>
+    <div class="c-alert c-alert-danger">
+    	<a href="javascript:void(0)" class="c-a c-alert-close" data-dismiss="c-alert" aria-hidden="true">
+    		<i class="fa fa-times" aria-hidden="true"></i>
+    	</a>
+    	<i class="fa fa-exclamation-circle" aria-hidden="true"></i> <strong>Oh snap there is a problem!</strong>
+    </div>
+    <div class="c-alert c-alert-warning">
+    	<a href="javascript:void(0)" class="c-a c-alert-close" data-dismiss="c-alert" aria-hidden="true">
+    		<i class="fa fa-times" aria-hidden="true"></i>
+    	</a>
+    	<i class="fa fa-warning"></i> <strong>Warning</strong> Something may go wrong!
+    </div>
+    <div class="c-alert c-alert-success">
+    	<a href="javascript:void(0)" class="c-a c-alert-close" data-dismiss="c-alert" aria-hidden="true">
+    		<i class="fa fa-times" aria-hidden="true"></i>
+    	</a>
+    	<i class="fa fa-check-circle" aria-hidden="true"></i> Rest assured everything is awesome!
+    </div>
+    
+    <h3 class="c-header-md">Toast alerts</h3>
+    <div class="c-row">
+    	<div class="c-col c-col-shrink">
+    		<div class="c-toast-alert">
+    			<button href="javascript:void(0)" class="c-toast-alert-close">&times;</button>
+    			Nam porttitor blandit accumsan.
+    			Ut vel dictum sem, a pretium dui.
+    		</div>
+    	</div>
+    
+    	<div class="c-col c-col-shrink">
+    		<div class="c-toast-alert c-toast-alert-info">
+    			<button href="javascript:void(0)" class="c-toast-alert-close">&times;</button>
+    			Nam porttitor blandit accumsan.
+    			Ut vel dictum sem, a pretium dui.
+    		</div>
+    	</div>
+    	<div class="c-col c-col-shrink">
+    		<div class="c-toast-alert c-toast-alert-danger">
+    			<button href="javascript:void(0)" class="c-toast-alert-close">&times;</button>
+    			Nam porttitor blandit accumsan.
+    			Ut vel dictum sem, a pretium dui.
+    		</div>
+    	</div>
+    	<div class="c-col c-col-shrink">
+    		<div class="c-toast-alert c-toast-alert-warning">
+    			<button href="javascript:void(0)" class="c-toast-alert-close">&times;</button>
+    			Nam porttitor blandit accumsan.
+    			Ut vel dictum sem, a pretium dui.
+    		</div>
+    	</div>
+    	<div class="c-col c-col-shrink">
+    		<div class="c-toast-alert c-toast-alert-success">
+    			<button href="javascript:void(0)" class="c-toast-alert-close">&times;</button>
+    			Nam porttitor blandit accumsan.
+    			Ut vel dictum sem, a pretium dui.
+    		</div>
+    	</div>
+    </div>
+    </section>    
+    <hr class="c-hr c-m-bottom-md c-m-top-md">
+    <section id="avatars">
+    <h3 class="c-header-md">Avatars</h3>
+    
+    
+    <span class="c-avatar" >
+        <img src="https://unsplash.it/200?image=1011">
+    </span>
+    
+    <span class="c-avatar c-avatar-primary">
+      <i class="fa fa-cloud-download"></i>
+    </span>
+    <span class="c-avatar c-avatar-secondary" data-text="CD"></span>
+    <span class="c-avatar c-avatar-success" data-text="EF"></span>
+    <span class="c-avatar c-avatar-danger" data-text="GH"></span>
+    <span class="c-avatar c-avatar-warning" data-text="HI"></span>
+    
+    <br><br>
+    <span class="c-avatar" data-status="success">
+      <img src="https://unsplash.it/200?image=1011">
+    </span>
+    <span class="c-avatar c-avatar-primary" data-text="AB" data-status="success"></span>
+    <span class="c-avatar c-avatar-secondary" data-text="CD" data-status="primary"></span>
+    <span class="c-avatar c-avatar-success" data-text="EF" data-status="danger"></span>
+    <span class="c-avatar c-avatar-danger" data-text="GH" data-status="warning"></span>
+    <span class="c-avatar c-avatar-warning" data-text="HI" data-status="success"></span>
+    
+    <br><br>
+    <span class="c-avatar c-avatar-sm" data-status="success">
+      <img src="https://unsplash.it/200?image=1011">
+    </span>
+    <span class="c-avatar c-avatar-sm c-avatar-primary" data-status="success">
+      <i class="fa fa-cloud-download"></i>
+    </span>
+    <span class="c-avatar c-avatar-sm c-avatar-secondary" data-text="CD" data-status="primary"></span>
+    <span class="c-avatar c-avatar-sm c-avatar-success" data-text="EF" data-status="danger"></span>
+    <span class="c-avatar c-avatar-sm c-avatar-danger" data-text="GH" data-status="warning"></span>
+    <span class="c-avatar c-avatar-sm c-avatar-warning" data-text="HI" data-status="success"></span>
+    
+    <br><br>
+    <span class="c-avatar c-avatar-lg" data-status="success">
+      <img src="https://unsplash.it/200?image=1011">
+    </span>
+    <span class="c-avatar c-avatar-lg c-avatar-primary" data-status="success">
+      <i class="fa fa-cloud-download"></i>
+    </span>
+    <span class="c-avatar c-avatar-lg c-avatar-secondary" data-text="CD" data-status="primary"></span>
+    <span class="c-avatar c-avatar-lg c-avatar-success" data-text="EF" data-status="danger"></span>
+    <span class="c-avatar c-avatar-lg c-avatar-danger" data-text="GH" data-status="warning"></span>
+    <span class="c-avatar c-avatar-lg c-avatar-warning" data-text="HI" data-status="success"></span>
+    
+    <br><br>
+    <span class="c-avatar c-avatar-xl" data-status="success">
+      <img src="https://unsplash.it/200?image=1011">
+    </span>
+    <span class="c-avatar c-avatar-xl c-avatar-primary" data-status="success">
+      <i class="fa fa-cloud-download"></i>
+    </span>
+    <span class="c-avatar c-avatar-xl c-avatar-secondary" data-text="CD" data-status="primary"></span>
+    <span class="c-avatar c-avatar-xl c-avatar-success" data-text="EF" data-status="danger"></span>
+    <span class="c-avatar c-avatar-xl c-avatar-danger" data-text="GH" data-status="warning"></span>
+    <span class="c-avatar c-avatar-xl c-avatar-warning" data-text="HI" data-status="success"></span>
+    
+    </section>    
+    <hr class="c-hr c-m-bottom-lg c-m-top-lg">
+    <section id="badges">
+    <h3 class="c-header-md">Badges</h3>
+    <div class="c-badge c-badge-rounded c-badge-sm c-badge-primary"></div>
+    <div class="c-badge c-badge-rounded c-badge-sm c-badge-success"></div>
+    <div class="c-badge c-badge-rounded c-badge-sm c-badge-warning"></div>
+    <div class="c-badge c-badge-rounded c-badge-sm c-badge-danger"></div>
+    <div class="c-badge c-badge-rounded c-badge-primary"></div>
+    <div class="c-badge c-badge-rounded c-badge-success"></div>
+    <div class="c-badge c-badge-rounded c-badge-warning"></div>
+    <div class="c-badge c-badge-rounded c-badge-danger"></div>
+    <div class="c-badge c-badge-rounded c-badge-lg c-badge-primary"></div>
+    <div class="c-badge c-badge-rounded c-badge-lg c-badge-success"></div>
+    <div class="c-badge c-badge-rounded c-badge-lg c-badge-warning"></div>
+    <div class="c-badge c-badge-rounded c-badge-lg c-badge-danger"></div>
+    <div class="c-badge">v.1.0.5</div>
+    <div class="c-badge c-badge-rounded">v.1.0.5</div>
+    <div class="c-badge c-badge-primary">Primary</div>
+    <div class="c-badge c-badge-success">Success</div>
+    <div class="c-badge c-badge-secondary">Secondary</div>
+    <div class="c-badge c-badge-warning">Warning</div>
+    <div class="c-badge c-badge-danger">Danger</div>
+    <br>
+    <br>
+    <div class="c-body-text-xl"> Information <span class="c-badge c-badge-rounded c-badge-top">8</span></div>
+    <div class="c-badge c-badge">Information <a class="c-badge-link" href="#"><i class="fa fa-close"></i></a></div>
+    <div class="c-badge c-badge-lg">Information <a class="c-badge-link" href="#"><i class="fa fa-close"></i></a></div>
+    <div class="c-badge c-badge-secondary c-badge-xl">Information <a class="c-badge-link" href="#"><i class="fa fa-close"></i></a></div>
+    <br>
+    <br>
+    <div class="c-badge c-badge-rounded c-badge-primary"><i class="fa fa-info-circle" aria-hidden="true"></i> Rounded Icon</div>
+    <div class="c-badge c-badge-rounded c-badge-success-outline"><i class="fa fa-info-circle" aria-hidden="true"></i> Rounded Outline</div>
+    <div class="c-badge c-badge-danger-outline">Outline</div>
+    <div class="c-badge c-badge-warning-outline"><i class="fa fa-info-circle" aria-hidden="true"></i> Outline Icon</div>
+    <div class="c-badge c-badge-rounded c-badge-primary-outline c-badge-xl"><i class="fa fa-info-circle" aria-hidden="true"></i> Rounded XL</div>
+    </section>    
+    <hr class="c-hr c-m-bottom-lg c-m-top-lg">
+        <section id="buttons">
+          <h3 class="c-header-md">Buttons</h3>
+          <div class="c-row">
+              <div class="c-col">
+                <button class="c-btn-link c-btn-link-xs">Xs Button Link</button>
+                <button class="c-btn-link c-btn-link-sm">Sm Button Link</button>
+                <button class="c-btn-link">Button Link</button>
+                <button class="c-btn-link c-btn-link-lg">Lg Button Link</button> 
+                <button class="c-btn-link" disabled>Disabled</button>      
+              </div>
+              <div class="c-col">          
+                  <button class="c-btn c-btn-xs c-btn-primary c-m-right-md">X-Small</button>
+                  <button class="c-btn c-btn-sm c-btn-primary c-m-right-md">Small</button>
+                  <button class="c-btn c-btn c-btn-primary c-m-right-md">Default</button>
+                  <button class="c-btn c-btn-lg c-btn-primary c-m-right-md">Success</button>
+                  <button class="c-btn c-btn-lg c-btn-primary c-m-right-md" disabled>Disabled</button>
+                </div>          
+            </div>       
+          <div class="c-row c-m-top-md">
+            <div class="c-col">          
+                <button class="c-btn-link c-btn-link-secondary c-btn-link-xs">Xs Button Link</button>
+                <button class="c-btn-link c-btn-link-secondary c-btn-link-sm">Sm Button Link</button>
+                <button class="c-btn-link c-btn-link-secondary">Button Link</button>
+                <button class="c-btn-link c-btn-link-secondary c-btn-link-lg">Lg Button Link</button> 
+                <button class="c-btn-link c-btn-link-secondary" disabled>Disabled</button>  
+            </div>
+            <div class="c-col">            
+                <button class="c-btn c-btn-xs c-btn-secondary c-m-right-md">X-Small</button>
+                <button class="c-btn c-btn-sm c-btn-secondary c-m-right-md">Small</button>
+                <button class="c-btn c-btn c-btn-secondary c-m-right-md">Default</button>
+                <button class="c-btn c-btn-lg c-btn-secondary c-m-right-md">Success</button>
+                <button class="c-btn c-btn-lg c-btn-secondary c-m-right-md" disabled>Disabled</button>
+            </div>
+          </div>
+          <div class="c-row c-m-top-md">
+              <div class="c-col">          
+                  <button class="c-btn-link c-btn-link-success c-btn-link-xs">Xs Button Link</button>
+                  <button class="c-btn-link c-btn-link-success c-btn-link-sm">Sm Button Link</button>
+                  <button class="c-btn-link c-btn-link-success">Button Link</button>
+                  <button class="c-btn-link c-btn-link-success c-btn-link-lg">Lg Button Link</button> 
+                  <button class="c-btn-link c-btn-link-success" disabled>Disabled</button>  
+              </div>
+              <div class="c-col">            
+                  <button class="c-btn c-btn-xs c-btn-success c-m-right-md">X-Small</button>
+                  <button class="c-btn c-btn-sm c-btn-success c-m-right-md">Small</button>
+                  <button class="c-btn c-btn c-btn-success c-m-right-md">Default</button>
+                  <button class="c-btn c-btn-lg c-btn-success c-m-right-md">Success</button>
+                  <button class="c-btn c-btn-lg c-btn-success c-m-right-md" disabled>Disabled</button>
+              </div>
+            </div> 
+            
+            <div class="c-row c-m-top-md">
+                <div class="c-col">          
+                    <button class="c-btn-link c-btn-link-danger c-btn-link-xs">Xs Button Link</button>
+                    <button class="c-btn-link c-btn-link-danger c-btn-link-sm">Sm Button Link</button>
+                    <button class="c-btn-link c-btn-link-danger">Button Link</button>
+                    <button class="c-btn-link c-btn-link-danger c-btn-link-lg">Lg Button Link</button> 
+                    <button class="c-btn-link c-btn-link-danger" disabled>Disabled</button>  
+                </div>
+                <div class="c-col">            
+                    <button class="c-btn c-btn-xs c-btn-danger c-m-right-md">X-Small</button>
+                    <button class="c-btn c-btn-sm c-btn-danger c-m-right-md">Small</button>
+                    <button class="c-btn c-btn c-btn-danger c-m-right-md">Default</button>
+                    <button class="c-btn c-btn-lg c-btn-danger c-m-right-md">Success</button>
+                    <button class="c-btn c-btn-lg c-btn-danger c-m-right-md" disabled>Disabled</button>
+                </div>
+              </div>        
+      
+       
+    <div class="c-row c-m-top-md">
+      <div class="c-col">
+        <h3> Groups </h3>
+        <div class="c-btn-group c-m-right-md">
+          <button class="c-btn c-btn-primary c-btn-xs">Small</button>
+          <button class="c-btn c-btn-primary c-btn-xs">Group</button>
+          <button class="c-btn c-btn-primary c-btn-xs">Buttons</button>
+        </div>
+        <div class="c-btn-group c-m-right-md">
+          <button class="c-btn c-btn-primary c-btn-sm">Small</button>
+          <button class="c-btn c-btn-primary c-btn-sm">Group</button>
+          <button class="c-btn c-btn-primary c-btn-sm">Buttons</button>
+        </div>
+        <div class="c-btn-group c-m-right-md">
+          <button class="c-btn c-btn-primary">Default</button>
+          <button class="c-btn c-btn-primary">Group</button>
+          <button class="c-btn c-btn-primary">Buttons</button>
+        </div>
+        <div class="c-btn-group c-m-right-md">
+          <button class="c-btn c-btn-primary c-btn-lg">Small</button>
+          <button class="c-btn c-btn-primary c-btn-lg">Group</button>
+          <button class="c-btn c-btn-primary c-btn-lg">Buttons</button>
+        </div>
+      </div>
+    </div>
+    
+          <div class="c-row">
+            <div class="c-col">
+              <h3> Vertical Group </h3>
+              <div class="c-btn-group-vertical">
+                <button class="c-btn c-btn-primary-outline">Horizontal</button>
+                <button class="c-btn c-btn-primary-outline">Group</button>
+                <button class="c-btn c-btn-primary-outline">Buttons</button>
+              </div>
+              </div>
+              <div class="c-col">
+              <h3> Vertical Group w/modifier </h3>
+              <div class="c-btn-group-vertical">
+                <button class="c-btn c-btn-danger">Horizontal</button>
+                <button class="c-btn c-btn-danger">Group</button>
+                <button class="c-btn c-btn-danger">Buttons</button>
+              </div>
+              </div>
+              <div class="c-col">          
+              <h3> Vertical Group Small w/modifier </h3>
+              <div class="c-btn-group-vertical">
+                <button class="c-btn c-btn-box c-btn-sm c-btn-primary"> <i class="fa fa-exclamation-circle"></i></button>
+                <button class="c-btn c-btn-box c-btn-sm c-btn-primary"> <i class="fa fa-exclamation-circle"></i></button>
+                <button class="c-btn c-btn-box c-btn-sm c-btn-primary"><i class="fa fa-exclamation-circle"></i></button>
+              </div>
+            </div>
+          </div>
+          <h3> Block Buttons </h3>
+          <div class="c-row">
+            <div class="c-col">
+              <a class="c-btn c-btn-block c-btn-primary" href="#">Block Button</a>
+              <br>
+              <a class="c-btn c-btn-lg c-btn-block c-btn-primary" href="#">Block Button Large</a>
+            </div>
+          </div>
+        </section>    
+    <hr class="c-hr c-m-bottom-lg c-m-top-lg">
+    <section id="blockqoute">
+    <h3 class="c-header-md">Blockqoute</h3>
+    <blockquote class="c-blockquote">
+    	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dui ligula, lobortis at sapien ac, commodo varius ipsum. Nulla non est ac nisl tristique elementum.
+    	<cite class="c-cite">Ian Rob Lambert</cite>
+    </blockquote>
+    </section>    
+    <hr class="c-hr c-m-bottom-lg c-m-top-lg">
+    <section id="cards">
+    	<h3 class="c-header-md">Cards</h3>
+    	<div class="c-row">
+    		<div class="c-col">
+    			<div class="c-card">
+    				<header class="c-card-header">
+    					<div class="c-card-header-title">
+    						Component
+    					</div>
+    					<div class="c-card-header-menu">
+    						<a class="c-btn c-btn-box c-btn-secondary" href="#"><i class="fa fa-cog" aria-hidden="true"></i></a>
+    					</div>
+    				</header>
+    				<div class="c-card-content">
+    					<div class="c-card-content-title">Lorem ipsum dolor sit amet consecteur.</div>
+    					<div class="c-card-content-subtitle">Lorem ipsum dolor sit amet consectetur.</div>
+    					<div class="c-card-content-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis luctus dui, ac suscipit eros. Praesent fringilla,
+    						enim quis placerat dignissim, turpis metus vehicula lectus, faucibus tie turpis metus et urna. Quisque dignissim nulla
+    						id scelerisque maximus. Praesent consectetur rhoncus mi, eget sollicitudin leo placerat in. Sed semper commodo dui,
+    						et iaculis est facil isis nec.</div>
+    				</div>
+    				<div class="c-card-footer">Footer if needed</div>
+    			</div>
+    		</div>
+    		<div class="c-col">
+    			<div class="c-card">
+    				<header class="c-card-header">
+    					<div class="c-card-header-title">
+    						Component
+    					</div>
+    					<div class="c-card-header-menu">
+    						<div class="c-card-header-menu-item">
+    						<a class="c-btn c-btn-box c-btn-secondary" href="#"><i class="fa fa-cog" aria-hidden="true"></i></a>
+    						</div>
+    						<div class="c-card-header-menu-item">
+    						<a class="c-btn c-btn-box c-btn-secondary" href="#"><i class="fa fa-cog" aria-hidden="true"></i></a>
+    						</div>
+    					</div>
+    				</header>
+    				<div class="c-card-content">
+    					<div class="c-card-content-title">Lorem ipsum dolor sit amet consecteur.</div>
+    					<div class="c-card-content-subtitle">Lorem ipsum dolor sit amet consectetur.</div>
+    					<div class="c-card-content-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis luctus dui, ac suscipit eros. Praesent fringilla,
+    						enim quis placerat dignissim, turpis metus vehicula lectus, faucibus tie turpis metus et urna. Quisque dignissim nulla
+    						id scelerisque maximus. Praesent consectetur rhoncus mi, eget sollicitudin leo placerat in. Sed semper commodo dui,
+    						et iaculis est facil isis nec.</div>
+    				</div>
+    				<div class="c-card-footer">Footer if needed</div>
+    			</div>
+    		</div>
+    	</div>
+    </section>    
+    <hr class="c-hr c-m-bottom-lg c-m-top-lg">
+    <section id="checkbox">
+    	<h3 class="c-header-md">Checkboxes & Radios</h3>
+    
+    <label class="c-checkbox c-checkbox-sm">
+        <input type="checkbox" name="radio" checked>
+    	<i class="c-bg-primary"></i>
+    </label>
+    
+    
+    <label class="c-control-sm c-checkbox c-checkbox-sm">
+        <input type="checkbox" name="radio" checked>
+    	<i class="c-bg-primary"></i>
+    	c-checkbox-sm
+    </label>
+    
+    
+    <label class="c-control c-checkbox">
+        <input type="checkbox" name="radio" checked>
+    	<i class="c-bg-primary"></i>
+    	c-checkbox
+    </label>
+    
+    <label class="c-control-lg c-checkbox c-checkbox-lg">
+        <input type="checkbox" name="radio" checked>
+    	<i class="c-bg-primary"></i>
+    	c-checkbox-lg
+    </label>
+    
+    <label class="c-control-xl c-checkbox c-checkbox-xl">
+        <input type="checkbox" name="radio" checked>
+    	<i class="c-bg-primary"></i>
+    	c-checkbox-xl
+    </label>
+    
+    <label class="c-checkbox-sm">
+        <input type="checkbox" name="radio" checked>
+    	<i class="c-bg-primary"></i>
+    </label>
+    
+    <label class="c-checkbox">
+        <input type="checkbox" name="radio" checked>
+    	<i class="c-bg-success"></i>
+    </label>
+    
+    <label class="c-checkbox-lg">
+        <input type="checkbox" name="radio" checked>
+    	<i class="c-bg-warning"></i>
+    </label>
+    
+    <label class="c-checkbox-xl">
+        <input type="checkbox" name="radio" checked>
+    	<i class="c-bg-danger"></i>
+    </label>
+    
+    <label class="c-checkbox c-checkbox-sm">
+        <input type="checkbox" name="radio" checked>
+    	<i class="c-bg-primary"></i>
+    </label>
+    
+    <label class="c-checkbox c-checkbox-success">
+        <input type="checkbox" name="radio" checked>
+    	<i></i>
+    </label>
+    
+    <label class="c-checkbox c-checkbox-lg c-checkbox-warning">
+        <input type="checkbox" name="radio" checked>
+    	<i></i>
+    </label>
+    
+    <label class="c-checkbox c-checkbox-xl c-checkbox-danger">
+        <input type="checkbox" name="radio" checked>
+    	<i></i>
+    </label>
+    <br>
+    <br>
+    
+    <label class="c-control-sm c-radio c-radio-sm">
+        <input type="radio" name="radio" checked>
+    	<i class="c-bg-primary"></i>
+    	c-radio-sm
+    </label>
+    
+    <label class="c-control c-radio">
+        <input type="radio" name="radio" checked>
+    	<i class="c-bg-primary"></i>
+    	c-radio
+    </label>
+    <label class="c-control-lg c-radio c-radio-lg">
+        <input type="radio" name="radio" checked>
+    	<i class="c-bg-primary"></i>
+    	c-radio-lg
+    </label>
+    <label class="c-control-xl c-radio c-radio-xl">
+        <input type="radio" name="radio" checked>
+    	<i class="c-bg-primary"></i>
+    	c-radio-Xl
+    </label>
+    
+    <label class="c-radio c-radio-sm">
+        <input type="radio" name="radio" checked>
+    	<i class="c-bg-primary"></i>
+    </label>
+    
+    <label class="c-radio">
+        <input type="radio" name="radio" checked>
+    	<i class="c-bg-success"></i>
+    </label>
+    
+    <label class="c-radio c-radio-lg">
+        <input type="radio" name="radio" checked>
+    	<i class="c-bg-warning"></i>
+    </label>
+    
+    <label class="c-radio c-radio-xl">
+        <input type="radio" name="radio" checked>
+    	<i class="c-bg-danger"></i>
+    </label>
+    
+    
+    </section>
+    <hr class="c-hr c-m-bottom-lg c-m-top-lg">
+    <section id="dropdowns">
+            <h3 class="c-header-md">Dropdowns</h3>
+        
+    
+    <div class="c-row">
+        <div class="c-col">
+            <div class="c-dropdown">
+                <button class="c-btn c-btn-secondary">
+                    Below
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                </button>
+                <ul class="c-dropdown-list c-dropdown-list-below">
+                    <li>
+                        <a class="c-dropdown-item" href="#">Action</a>
+                    </li>
+                    <li>
+                        <a class="c-dropdown-item" href="#">Another action</a>
+                    </li>
+                    <li>
+                        <a class="c-dropdown-item" href="#">Something else here</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    
+        <div class="c-col">
+            <div class="c-dropdown">
+                <button class="c-btn c-btn-secondary">
+                    Above
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                </button>
+                <div class="c-dropdown-list c-dropdown-list-above">
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-right-sm fa fa-folder"></span>
+                        Files
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-right-sm fa fa-play"></span>
+                        Video
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-right-sm fa fa-newspaper-o"></span>
+                        News
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-right-sm fa fa-book"></span>
+                        Contacts
+                    </a>
+    
+                    <div class="c-dropdown-divider"></div>
+    
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-right-sm fa fa-download"></span>
+                        Download
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-right-sm fa fa-gear"></span>
+                        Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+    
+    
+        <div class="c-col">
+            <div class="c-dropdown c-pull-right">
+                <button class="c-btn c-btn-secondary">
+                    Right
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                </button>
+                <div class="c-dropdown-list c-dropdown-list-below c-dropdown-list-right">
+                    <a class="c-dropdown-item" href="#">Action</a>
+                    <a class="c-dropdown-item" href="#">Another action</a>
+                    <a class="c-dropdown-item" href="#">Something else here</a>
+                </div>
+            </div>
+        </div>
+    
+        <div class="c-col">
+            <div class="c-dropdown c-pull-right">
+                <button class="c-btn c-btn-secondary">
+                    Right Above
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                </button>
+                <div class="c-dropdown-list c-dropdown-list-right c-dropdown-list-above">
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-right-sm fa fa-folder"></span>
+                        Files
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-right-sm fa fa-play"></span>
+                        Video
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-right-sm fa fa-newspaper-o"></span>
+                        News
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-right-sm fa fa-book"></span>
+                        Contacts
+                    </a>
+    
+                    <div class="c-dropdown-divider"></div>
+    
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-right-sm fa fa-download"></span>
+                        Download
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-right-sm fa fa-gear"></span>
+                        Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <br>
+    <hr class="c-hr">
+    <br>
+    
+    <div class="c-row">
+    
+        <div class="c-col">
+            <div class="c-dropdown">
+                <button class="c-btn c-btn-secondary">
+                    Grid 2 Columns
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                </button>
+                <div class="c-dropdown-grid c-dropdown-grid-col-2" style="display: none;">
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-camera"></span>
+                        Camera
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-image"></span>
+                        Gallery
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-folder"></span>
+                        Files
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-play"></span>
+                        Video
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-newspaper-o"></span>
+                        News
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-book"></span>
+                        Contacts
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-download"></span>
+                        Download
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-gear"></span>
+                        Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+    
+    
+        <div class="c-col">
+            <div class="c-dropdown">
+                <button class="c-btn c-btn-secondary">
+                    Grid 3 Columns (default)
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                </button>
+                <div class="c-dropdown-grid" style="display: none;">
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-camera"></span>
+                        Camera
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-image"></span>
+                        Gallery
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-folder"></span>
+                        Files
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-play"></span>
+                        Video
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-music"></span>
+                        Music
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-newspaper-o"></span>
+                        News
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-book"></span>
+                        Contacts
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-download"></span>
+                        Download
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-gear"></span>
+                        Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+    
+    
+        <div class="c-col">
+            <div class="c-dropdown">
+                <button class="c-btn c-btn-secondary">
+                    Grid 4 Columns
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                </button>
+                <div class="c-dropdown-grid c-dropdown-grid-col-4" style="display: none;">
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-camera"></span>
+                        Camera
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-image"></span>
+                        Gallery
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-folder"></span>
+                        Files
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-play"></span>
+                        Video
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-newspaper-o"></span>
+                        News
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-book"></span>
+                        Contacts
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-download"></span>
+                        Download
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-gear"></span>
+                        Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+    
+        <div class="c-col">
+            <div class="c-dropdown c-pull-right">
+                <button class="c-btn c-btn-secondary">
+                    Grid Right
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                </button>
+                <div class="c-dropdown-grid c-dropdown-grid-right" style="display: none;">
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-camera"></span>
+                        Camera
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-image"></span>
+                        Gallery
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-folder"></span>
+                        Files
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-play"></span>
+                        Video
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-music"></span>
+                        Music
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-newspaper-o"></span>
+                        News
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-book"></span>
+                        Contacts
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-download"></span>
+                        Download
+                    </a>
+                    <a class="c-dropdown-item" href="#">
+                        <span class="c-p-sm c-icon-xl fa fa-gear"></span>
+                        Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    </section>    
+    <hr class="c-hr c-m-bottom-lg c-m-top-lg">
+    <section id="footer">
+    <h3 class="c-header-md">Footer</h3>
+    <div class="c-footer">
+    	<div class="c-footer-left">
+    		© 2016 Ipreo. All Rights Reserved.
+    	</div>
+    	<div class="c-footer-right">
+    		<div class="c-footer-link">
+    			<a href="javascript:void(0)" class="c-a">Third Party Data</a>
+    		</div>
+    		<div class="c-footer-link">
+    			<a href="javascript:void(0)" class="c-a">Privacy Policy</a>
+    		</div>
+    		<div class="c-footer-link">
+    			<a href="javascript:void(0)" class="c-a">Terms of Use</a>
+    		</div>
+    	</div>
+    </div>
+    <br>
+    <br>
+    <div class="c-footer c-footer-transparent">
+    	<div class="c-footer-left">
+    		© 2016 Ipreo. All Rights Reserved.
+    	</div>
+    	<div class="c-footer-right">
+    		<div class="c-footer-link">
+    			<a href="javascript:void(0)" class="c-a">Third Party Data</a>
+    		</div>
+    		<div class="c-footer-link">
+    			<a href="javascript:void(0)" class="c-a">Privacy Policy</a>
+    		</div>
+    		<div class="c-footer-link">
+    			<a href="javascript:void(0)" class="c-a">Terms of Use</a>
+    		</div>
+    	</div>
+    </div>
+    </section>    
+    <hr class="c-hr c-m-bottom-lg c-m-top-lg">
+    <section id="forms">
+    <h3 class="c-header-md">Forms</h3>
+    
+    <select class="c-input c-input-sm">
+      <option>SM Select</option>
+      <option>Option</option>
+      <option>Option</option>
+    </select>
+    <br>
+    <select class="c-input">
+      <option>Select</option>
+      <option>Option</option>
+      <option>Option</option>
+    </select>
+    <br>
+    <select class="c-input c-input-lg">
+      <option>LG Select</option>
+      <option>Option</option>
+      <option>Option</option>
+    </select>
+    <br>
+    <select class="c-input c-input-xl">
+      <option>XL Select</option>
+      <option>Option</option>
+      <option>Option</option>
+    </select>
+    <br>
+    <select disabled="disabled" class="c-input c-input-xl">
+      <option>Disabled Select</option>
+      <option>Option</option>
+      <option>Option</option>
+    </select>
+    
+    <br>
+    <input class="c-input" type="text" id="general-input-1" placeholder="General input">
+    <br>
+    <div class="c-row">
+    	<div class="c-col c-col-md-3 c-text-right">
+    		<label class="c-input-label" for="size-input-2-sm">Default Label: <sup class="c-text-danger">*</sup></label>
+    	</div>
+    	<div class="c-col">
+    		<input class="c-input c-input-sm" type="text" id="size-input-2-sm" placeholder="Small input">
+    	</div>
+    </div>
+    <br>
+    <div class="c-row">
+    	<div class="c-col c-col-md-3 c-text-right">
+    		<label class="c-input-label" for="size-input-2">Default Label: <sup class="c-text-danger">*</sup></label>
+    	</div>
+    	<div class="c-col">
+    		<input class="c-input" type="text" id="size-input-2" placeholder="Normal input">
+    	</div>
+    </div>
+    <br>
+    <div class="c-row">
+    	<div class="c-col c-col-md-3 c-text-right">
+    		<label class="c-input-label" for="size-input-2-lg">Default Label: <sup class="c-text-danger">*</sup></label>
+    	</div>
+    	<div class="c-col">
+    		<input class="c-input c-input-lg" type="text" id="size-input-2-lg" placeholder="Large input">
+    	</div>
+    </div>
+    <br>
+    <input class="c-input c-input-sm" type="text" id="size-input-1" placeholder="Small input">
+    <br>
+    <input class="c-input" type="text" id="size-input-2" placeholder="Normal input">
+    <br>
+    <input class="c-input c-input-lg" type="text" id="size-input-3" placeholder="Large input">
+    <br>
+    <input class="c-input c-input-xl" type="text" id="size-input-4" placeholder="X Large input">
+    <br>
+    <input class="c-input" type="text" placeholder="I`m disabled" disabled>
+    <br>
+    <input class="c-input c-input-success" type="text" placeholder="I`m success">
+    <br>
+    <input class="c-input c-input-warning" type="text" placeholder="I`m warning">
+    <br>
+    <input class="c-input c-input-error" type="text" placeholder="I`m error/danger">
+    <br>
+    
+    
+    <div class="c-row">
+    	<div class="c-col">
+    		<div class="c-input-container">
+    			<input class="c-input c-input-success" type="text" placeholder="Text input" value="$J-Money$" id="input-helper-1">
+    			<span class="c-hint c-hint-static c-hint-success"><i class="fa fa-check"></i> This username is silly but available!</span>
+    		</div>
+    	</div>
+    	
+    	<div class="c-col">
+    		<div class="c-input-container">
+    			<input class="c-input c-input-error" type="text" placeholder="Click in here to see helper text" value id="input-helper-1">
+    			<span class="c-hint c-hint-error"><i class="fa fa-check"></i> I animate in when input is focused!</span>
+    		</div>
+    	</div>
+    </div>
+    <br>
+    <br>
+    
+    <div class="c-row">
+    	<div class="c-col">
+    		<div class="c-input-group">
+    			<div class="c-input-addon">@</div>
+    			<div class="c-input-container">
+    				<input type="text" class="c-input">
+    			</div>
+    		</div>
+    	</div>
+    	<div class="c-col">
+    		<div class="c-input-group">
+    			<div class="c-input-addon">$</div>
+    			<div class="c-input-container">
+    				<input type="text" class="c-input">
+    			</div>
+    			<div class="c-input-addon">.00</div>
+    		</div>
+    	</div>
+    	<div class="c-col">
+    		<div class="c-input-group">
+    			<div class="c-input-addon">
+    				<label class="c-checkbox">
+    <input type="checkbox" name="radio" checked>
+    <i class="c-bg-primary"></i>
+    </label>
+    			</div>
+    			<div class="c-input-container">
+    				<input type="text" class="c-input">
+    			</div>
+    		</div>
+    	</div>
+    	<div class="c-col">
+    		<div class="c-input-group">
+    			<div class="c-input-addon">
+    				<label class="c-checkbox">
+    <input type="radio" name="radio">
+    <i class="c-bg-primary"></i>
+    </label>
+    			</div>
+    			<div class="c-input-container">
+    				<input type="text" class="c-input">
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    <br>
+    
+    <div class="c-row">
+    	<div class="c-col">
+    			<div class="c-input-group">
+    					<button class="c-btn c-btn-primary c-btn-xs">Action</button>
+    					<div class="c-input-container">
+    						<input type="text" class="c-input c-input-xs" placeholder="text" id="input-group-1">
+    					</div>
+    				</div>
+    				<br>		
+    		<div class="c-input-group">
+    			<button class="c-btn c-btn-primary c-btn-sm">Action</button>
+    			<div class="c-input-container">
+    				<input type="text" class="c-input c-input-sm" placeholder="text" id="input-group-1">
+    			</div>
+    		</div>
+    		<br>
+    		<div class="c-input-group">
+    			<button class="c-btn c-btn-primary">Action</button>
+    			<div class="c-input-container">
+    				<input type="text" class="c-input" placeholder="text" id="input-group-1">
+    			</div>
+    		</div>
+    		<br>
+    		<div class="c-input-group">
+    			<button class="c-btn c-btn-primary c-btn-lg">Action</button>
+    			<div class="c-input-container">
+    				<input type="text" class="c-input c-input-lg" placeholder="text" id="input-group-1">
+    			</div>
+    		</div>
+    	</div>
+    	<div class="c-col">
+    			<div class="c-input-group">
+    					<div class="c-input-container">
+    						<input type="text" class="c-input c-input-xs" placeholder="text">
+    					</div>
+    					<button class="c-btn c-btn-primary c-btn-xs">Action</button>
+    					<button class="c-btn c-btn-primary c-btn-xs c-btn-box"><i class="fa fa-caret-down"></i></button>
+    				</div>
+    				<br>		
+    		<div class="c-input-group">
+    			<div class="c-input-container">
+    				<input type="text" class="c-input c-input-sm" placeholder="text">
+    			</div>
+    			<button class="c-btn c-btn-primary c-btn-sm">Action</button>
+    			<button class="c-btn c-btn-primary c-btn-sm c-btn-box"><i class="fa fa-caret-down"></i></button>
+    		</div>
+    		<br>
+    		<div class="c-input-group">
+    			<div class="c-input-container">
+    				<input type="text" class="c-input" placeholder="text">
+    			</div>
+    			<button class="c-btn c-btn-primary">Action</button>
+    			<button class="c-btn c-btn-primary c-btn-box"><i class="fa fa-caret-down"></i></button>
+    		</div>
+    		<br>
+    		<div class="c-input-group">
+    			<div class="c-input-container">
+    				<input type="text" class="c-input c-input-lg" placeholder="text">
+    			</div>
+    			<button class="c-btn c-btn-primary c-btn-lg">Action</button>
+    			<button class="c-btn c-btn-primary c-btn-lg c-btn-box"><i class="fa fa-caret-down"></i></button>
+    		</div>
+    	</div>
+    </div>
+    <br>
+    <br>
+    
+    <style>
+    	.c-input-inline {
+    		width: auto;
+    	}
+    </style>
+    
+    <h4 class="c-header-xxs">Elements inline</h4>
+    <div class="c-m-bottom-md c-body-text">
+    	<span>Begin</span>
+    	<button class="c-btn c-btn-primary c-btn-sm">Primary Button</button>
+    	<span>text</span>
+    	<input placeholder="placeholder text" type="text" class="c-input c-input-sm c-input-inline">
+    	<span>Primary - Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
+    	<button class="c-btn c-btn-default c-btn-sm">user <i class="fa fa-user"></i></button>
+    </div>
+    
+    <div class="c-m-bottom-md c-body-text ">
+    	Begin
+    	<button class="c-btn c-btn-success">Success Button</button>
+    	text
+    	<input type="text" placeholder="placeholder text" class="c-input c-input-inline">
+    	<span>Success - Lorem ipsum dolor sit amet, consectetur adipisicing elit!</span>
+    	<button class="c-btn c-btn-success">
+    		<i class="fa fa-star"></i> Info
+    	</button>
+    </div>
+    
+    <div class="c-m-bottom-md c-body-text">
+    	<span class=" ">Begin</span>
+    	<button class="c-btn c-btn-default c-btn-lg">Info Button</button>
+    	<span class=" ">text</span>
+    	<input type="text" placeholder="placeholder text" class="c-input c-input-lg c-input-inline">
+    	<span class=" " > - Lorem ipsum dolor sit amet!</span>
+    	<div class="c-btn-group">
+    		<button type="button" class="c-btn c-btn-default c-btn-lg"><i class="fa fa-cog"></i></button>
+    		<button type="button" class="c-btn c-btn-default c-btn-lg"><i class="fa fa-cloud-download"></i></button>
+    		<button type="button" class="c-btn c-btn-default c-btn-lg"><i class="fa fa-bell"></i></button>
+    	</div>
+    </div>
+    
+    </section>
+    <hr class="c-hr c-m-bottom-md c-m-top-md">
+    <section id="forms">
+      <h3 class="c-header-md">Media Object</h3>
+    
+    
+      <div class="c-row">
+        <div class="c-col">
+          <div class="c-media">
+            <span class="fa fa-address-book"></span>
+            <div class="c-media-body">
+              <span class="c-text-md c-text-bold">Have a Cupcake</span>
+            </div>
+          </div>
+        </div>
+        <div class="c-col">
+          <div class="c-media">
+            <div class="c-media-body">
+              <span class="c-text-md c-text-bold">Have a Cupcake</span>
+            </div>
+            <span class="fa fa-address-book"></span>
+          </div>
+        </div>
+        <div class="c-col">
+          <div class="c-media c-media-middle c-media-action-visible">
+            <div class="c-media-body">
+              <span class="c-text-md c-text-bold">Item with actions</span>
+            </div>
+            <a class="c-media-action" href="#">
+              <i class="fa fa-pencil"></i>
+            </a>
+            <a class="c-media-action" href="#">
+              <i class="fa fa-close"></i>
+            </a>
+          </div>
+        </div>
+        <div class="c-col">
+          <div class="c-media">
+            <div class="c-media-body">
+              <span class="c-text-md c-text-bold">Item with actions on hover</span>
+            </div>
+            <a class="c-media-action" href="#">
+              <i class="fa fa-pencil"></i>
+            </a>
+            <a class="c-media-action" href="#">
+              <i class="fa fa-close"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    
+    
+      <div class="c-row c-m-top-lg">
+    
+        <div class="c-col">
+          <div class="c-media c-media-middle">
+            <span class="fa fa-phone c-text-primary-4 c-icon-xl"></span>
+            <div class="c-media-body">
+              <div class="c-text-md c-text-bold">(650) 555 - 1234</div>
+              <div class="c-text-sm c-text-muted c-p-top-xs">Mobile Number</div>
+            </div>
+          </div>
+        </div>
+        <div class="c-col">
+          <div class="c-media c-media-middle">
+            <div class="c-media-body">
+              <div class="c-text-md c-text-bold">(650) 555 - 1234</div>
+              <div class="c-text-sm c-text-muted c-p-top-xs">Mobile Number</div>
+            </div>
+            <span class="fa fa-phone c-icon-xl"></span>
+          </div>
+        </div>
+    
+        <div class="c-col">
+          <div class="c-media c-media-middle c-media-action-visible">
+            <span class="c-avatar c-avatar-primary" data-text="AA"></span>
+            <div class="c-media-body">
+              <div class="c-text-md c-text-bold">Annabelle Admin</div>
+              <div class="c-text-sm c-text-muted c-p-top-xs">IR Administrator</div>
+            </div>
+            <a class="c-media-action" href="#">
+              <span class="fa fa-phone"></span>
+            </a>
+            <a class="c-media-action" href="#">
+              <span class="fa fa-envelope-o "></span>
+            </a>
+          </div>
+        </div>
+        <div class="c-col">
+          <div class="c-media c-media-middle">
+            <span class="c-avatar c-avatar-primary" data-text="AA"></span>
+            <div class="c-media-body">
+              <div class="c-text-md c-text-bold">Annabelle Admin</div>
+              <div class="c-text-sm c-text-muted c-p-top-xs">IR Administrator</div>
+            </div>
+            <a class="c-media-action" href="#">
+              <span class="fa fa-phone"></span>
+            </a>
+            <a class="c-media-action" href="#">
+              <span class="fa fa-envelope-o "></span>
+            </a>
+          </div>
+        </div>
+    
+      </div>
+    
+    
+      <div class="c-row c-m-top-lg">
+        <div class="c-col-4">
+          <div class="c-media c-media-new">
+            <span class="c-avatar c-avatar-success" data-text="AB">
+            </span>
+            <div class="c-media-body">
+              <div class="c-text-md c-text-bold">Item to delete
+                <time class="c-text-xs c-text-muted c-pull-right" datetime="2017-07-14 20:00">24 min ago</time>
+              </div>
+              <div class="c-text-sm c-p-top-xs">You need to update the changelog in documentation before we release the current version.</div>
+            </div>
+          </div>
+        </div>
+    
+        <div class="c-col-4">
+          <div class="c-media c-media-middle">
+            <span class="c-avatar c-avatar-success" data-text="AB">
+            </span>
+            <div class="c-media-body">
+              <div class="c-text-md c-text-bold">Item to delete
+                <time class="c-text-xs c-text-muted c-pull-right" datetime="2017-07-14 20:00">24 min ago</time>
+              </div>
+              <div class="c-text-sm c-p-top-xs">You need to update the changelog in documentation before we release the current version.</div>
+            </div>
+          </div>
+        </div>
+    
+        <div class="c-col-4">
+          <div class="c-media c-media-bottom">
+            <span class="c-avatar c-avatar-success" data-text="AC">
+            </span>
+            <div class="c-media-body">
+              <span class="c-media-body">Maryam Amiri</span>
+              <time class="c-pull-right c-text-xs" datetime="2017-07-14 20:00">24 min ago</time>
+              <div class="c-text-sm c-p-top-xs">You need to update the changelog in documentation before we release the current version.</div>
+              <div class="c-media-block-actions">
+                <nav class="c-text-sm">
+                  <a class="c-a" href="#">Comments (2)</a>
+                  <a class="c-a" href="#">likes (7)</a>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    
+    
+      <div class="c-row c-m-top-lg">
+    
+        <div class="c-col-md-6 c-col-lg-3 c-m-bottom-md">
+    
+          <div class="c-media-list c-media-list-bordered">
+    
+            <div class="c-media">
+              <span class="c-avatar c-avatar-primary" data-text="AA"></span>
+              <div class="c-media-body">
+                <div class="c-text-md c-text-bold">Annabelle Admin</div>
+                <div class="c-text-sm c-text-muted c-p-top-xs">IR Administrator</div>
+              </div>
+            </div>
+    
+            <div class="c-media">
+              <span class="c-avatar c-avatar-success" data-text="SL"></span>
+              <div class="c-media-body">
+                <div class="c-text-md c-text-bold">Siante Lisso</div>
+                <div class="c-text-sm c-text-muted c-p-top-xs">Managing Director</div>
+              </div>
+            </div>
+    
+            <div class="c-media">
+              <span class="c-avatar c-avatar-danger" data-text="MB"></span>
+              <div class="c-media-body">
+                <div class="c-text-md c-text-bold">Martin Board</div>
+                <div class="c-text-sm c-text-muted c-p-top-xs">Managing Director &amp; Board member</div>
+              </div>
+            </div>
+    
+            <div class="c-media">
+              <span class="c-avatar c-avatar-warning" data-text="RR"></span>
+              <div class="c-media-body">
+                <div class="c-text-md c-text-bold">Reggie Research</div>
+                <div class="c-text-sm c-text-muted c-p-top-xs">Research Salesperson</div>
+              </div>
+            </div>
+    
+          </div>
+    
+        </div>
+    
+    
+        <div class="c-col-md-6 c-col-lg-3 c-m-bottom-md">
+          <div class="c-card">
+    
+            <div class="c-media-list c-media-list-striped">
+              <div class="c-media c-media-middle c-media-action-visible">
+                <div class="c-media-body">
+                  <div class="c-text-md c-text-bold">Annabelle Admin</div>
+                  <div class="c-text-sm c-text-muted c-p-top-xs">IR Administrator</div>
+                </div>
+                <a class="c-media-action c-text-success" href="#">
+                  <span class="fa fa-phone"></span>
+                </a>
+                <a class="c-media-action c-text-primary" href="#">
+                  <span class="fa fa-envelope-o "></span>
+                </a>
+              </div>
+    
+              <div class="c-media c-media-middle c-media-action-visible">
+    
+                <div class="c-media-body">
+                  <div class="c-text-md c-text-bold">Siante Lisso</div>
+                  <div class="c-text-sm c-text-muted c-p-top-xs">Managing Director</div>
+                </div>
+                <a class="c-media-action c-text-success" href="#">
+                  <span class="fa fa-phone"></span>
+                </a>
+                <a class="c-media-action c-text-primary" href="#">
+                  <span class="fa fa-envelope-o "></span>
+                </a>
+              </div>
+    
+              <div class="c-media c-media-middle c-media-action-visible">
+                <div class="c-media-body">
+                  <div class="c-text-md c-text-bold">Martin Board</div>
+                  <div class="c-text-sm c-text-muted c-p-top-xs">Managing Director</div>
+                </div>
+                <a class="c-media-action c-text-success" href="#">
+                  <span class="fa fa-phone"></span>
+                </a>
+                <a class="c-media-action c-text-primary" href="#">
+                  <span class="fa fa-envelope-o "></span>
+                </a>
+              </div>
+    
+              <div class="c-media c-media-middle c-media-action-visible">
+                <div class="c-media-body">
+                  <div class="c-text-md c-text-bold">Reggie Research</div>
+                  <div class="c-text-sm c-text-muted c-p-top-xs">Research Salesperson</div>
+                </div>
+                <a class="c-media-action c-text-success" href="#">
+                  <span class="fa fa-phone"></span>
+                </a>
+                <a class="c-media-action c-text-primary" href="#">
+                  <span class="fa fa-envelope-o "></span>
+                </a>
+              </div>
+    
+            </div>
+          </div>
+        </div>
+    
+    
+        <div class="c-col-md-6 c-col-lg-3 c-m-bottom-md">
+          <div class="c-card">
+    
+            <div class="c-media-list c-media-list-divided c-media-list-hover">
+    
+              <header class="c-media-list-header">
+                <div class="c-media">
+                  <div class="c-text-md c-text-bold">Media Header w/ actions on hover</div>
+                </div>
+              </header>
+              <div class="c-media-list-body">
+                <div class="c-media c-media-middle">
+                  <span class="c-avatar c-avatar-primary" data-text="AA"></span>
+                  <div class="c-media-body">
+                    <div class="c-text-md c-text-bold">Annabelle Admin</div>
+                    <div class="c-text-sm c-text-muted c-p-top-xs">IR Administrator</div>
+                  </div>
+                  <a class="c-media-action c-text-success" href="#">
+                    <i class="fa fa-pencil"></i>
+                  </a>
+                  <a class="c-media-action c-text-danger" href="#">
+                    <i class="fa fa-close"></i>
+                  </a>
+                </div>
+    
+                <div class="c-media c-media-middle">
+                  <span class="c-avatar c-avatar-success" data-text="SL"></span>
+                  <div class="c-media-body">
+                    <div class="c-text-md c-text-bold">Siante Lisso</div>
+                    <div class="c-text-sm c-text-muted c-p-top-xs">Managing Director</div>
+                  </div>
+                  <a class="c-media-action c-text-success" href="#">
+                    <i class="fa fa-pencil"></i>
+                  </a>
+                  <a class="c-media-action c-text-danger" href="#">
+                    <i class="fa fa-close"></i>
+                  </a>
+                </div>
+    
+                <div class="c-media c-media-middle">
+                  <span class="c-avatar c-avatar-danger" data-text="MB"></span>
+                  <div class="c-media-body">
+                    <div class="c-text-md c-text-bold">Martin Board</div>
+                    <div class="c-text-sm c-text-muted c-p-top-xs">Managing Director</div>
+                  </div>
+                  <a class="c-media-action c-text-success" href="#">
+                    <i class="fa fa-pencil"></i>
+                  </a>
+                  <a class="c-media-action c-text-danger" href="#">
+                    <i class="fa fa-close"></i>
+                  </a>
+                </div>
+    
+                <div class="c-media c-media-middle">
+                  <span class="c-avatar c-avatar-warning" data-text="RR"></span>
+                  <div class="c-media-body">
+                    <div class="c-text-md c-text-bold">Reggie Research</div>
+                    <div class="c-text-sm c-text-muted c-p-top-xs">Research Salesperson</div>
+                  </div>
+                  <a class="c-media-action c-text-success" href="#">
+                    <i class="fa fa-pencil"></i>
+                  </a>
+                  <a class="c-media-action c-text-danger" href="#">
+                    <i class="fa fa-close"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <div class="c-col-md-6 c-col-lg-3 c-m-bottom-md">
+          <div class="c-card">
+    
+            <div class="c-media-list c-media-list-divided c-media-list-hover c-media-action-visible">
+    
+              <header class="c-media-list-header">
+                <div class="c-media">
+                  <div class="c-text-md c-text-bold">Media Header w/ actions</div>
+                </div>
+              </header>
+              <div class="c-media-list-body">
+                <div class="c-media c-media-middle">
+                  <span class="c-avatar c-avatar-primary" data-text="AA"></span>
+                  <div class="c-media-body">
+                    <div class="c-text-md c-text-bold">Annabelle Admin</div>
+                    <div class="c-text-sm c-text-muted c-p-top-xs">IR Administrator</div>
+                  </div>
+                  <a class="c-media-action c-text-success" href="#">
+                    <i class="fa fa-pencil"></i>
+                  </a>
+                  <a class="c-media-action c-text-danger" href="#">
+                    <i class="fa fa-close"></i>
+                  </a>
+                </div>
+    
+                <div class="c-media c-media-middle">
+                  <span class="c-avatar c-avatar-success" data-text="SL"></span>
+                  <div class="c-media-body">
+                    <div class="c-text-md c-text-bold">Siante Lisso</div>
+                    <div class="c-text-sm c-text-muted c-p-top-xs">Managing Director</div>
+                  </div>
+                  <a class="c-media-action c-text-success" href="#">
+                    <i class="fa fa-pencil"></i>
+                  </a>
+                  <a class="c-media-action c-text-danger" href="#">
+                    <i class="fa fa-close"></i>
+                  </a>
+                </div>
+    
+                <div class="c-media c-media-middle">
+                  <span class="c-avatar c-avatar-danger" data-text="MB"></span>
+                  <div class="c-media-body">
+                    <div class="c-text-md c-text-bold">Martin Board</div>
+                    <div class="c-text-sm c-text-muted c-p-top-xs">Managing Director</div>
+                  </div>
+                  <a class="c-media-action c-text-success" href="#">
+                    <i class="fa fa-pencil"></i>
+                  </a>
+                  <a class="c-media-action c-text-danger" href="#">
+                    <i class="fa fa-close"></i>
+                  </a>
+                </div>
+    
+                <div class="c-media c-media-middle">
+                  <span class="c-avatar c-avatar-warning" data-text="RR"></span>
+                  <div class="c-media-body">
+                    <div class="c-text-md c-text-bold">Reggie Research</div>
+                    <div class="c-text-sm c-text-muted c-p-top-xs">Research Salesperson</div>
+                  </div>
+                  <a class="c-media-action c-text-success" href="#">
+                    <i class="fa fa-pencil"></i>
+                  </a>
+                  <a class="c-media-action c-text-danger" href="#">
+                    <i class="fa fa-close"></i>
+                  </a>
+                </div>
+              </div>
+              <footer class="c-media-list-footer">
+                <div class="c-media">
+                  <div class="c-text-md c-text-bold">Media footer</div>
+                </div>
+              </footer>
+    
+            </div>
+          </div>
+        </div>
+    
+    
+    
+    
+    
+    
+    
+    
+      </div>
+    
+    
+    
+    </section>
+    <hr class="c-hr c-m-bottom-lg c-m-top-lg">
+    <section id="header">
+      <h3 class="c-header-md">Default Header</h3>
+    <header class="c-header">
+      <div class="c-header-left">
+        <div class="c-header-item">
+          <a href="#" class="c-header-item-link c-header-logo">
+            <img src="./img/ipreo-logo.png">
+          </a>
+        </div>
+      </div>
+      <div class="c-header-center"></div>
+      <div class="c-header-right">
+        <div class="c-header-item">
+          <a class="c-header-item-link" href="#">
+            <span class="fa fa-search" aria-hidden="true"></span>
+          </a>
+        </div>
+        <div class="c-header-item">
+          <a class="c-header-item-link" href="#">
+            <span class="fa fa-comments" aria-hidden="true"></span>
+          </a>
+        </div>
+        <div class="c-header-item">
+          <a class="c-header-item-link" href="#">
+            <span class="fa fa-bell" aria-hidden="true"></span>
+          </a>
+        </div>
+        <div class="c-header-item">
+          <a class="c-header-item-link" href="#">
+            <span class="fa fa-th" aria-hidden="true"></span>
+          </a>
+        </div>
+        <div class="c-header-item">
+          <span class="c-dropdown">
+            <a class="c-header-item-link" href="#">
+              <span class="c-avatar c-avatar-sm c-avatar-primary" data-text="AB" data-status="success">
+              </span>
+              <i class="fa fa-caret-down c-p-left-sm" aria-hidden="true"></i>
+            </a>
+            <div class="c-dropdown-list c-dropdown-list-below c-dropdown-list-right">
+              <li>
+                <a href="javascript:void(0)" class="c-a">Help</a>
+              </li>
+              <li>
+                <a href="javascript:void(0)" class="c-a">Contact Support</a>
+              </li>
+              <li>
+                <a href="javascript:void(0)" class="c-a">Settings</a>
+              </li>
+              <li>
+                <a href="javascript:void(0)" class="c-a">Log Out</a>
+              </li>
+            </div>
+          </span>
+        </div>
+      </div>
+    </header>
+    
+    <br><br>
+    
+    <h3 class="c-header-md">Default Header with Tabs</h3>
+    <header class="c-header">
+      <div class="c-header-left">
+        <div class="c-header-item">
+          <a href="#" class="c-header-item-link c-header-logo">
+            <img src="./img/ipreo-logo.png">
+          </a>
+        </div>
+      </div>
+      <div class="c-header-center"></div>
+      <div class="c-header-right">
+        <div class="c-header-item">
+          <a class="c-header-item-link" href="#">
+            <span class="fa fa-search" aria-hidden="true"></span>
+          </a>
+        </div>
+        <div class="c-header-item">
+          <a class="c-header-item-link" href="#">
+            <span class="fa fa-comments" aria-hidden="true"></span>
+          </a>
+        </div>
+        <div class="c-header-item">
+          <a class="c-header-item-link" href="#">
+            <span class="fa fa-bell" aria-hidden="true"></span>
+          </a>
+        </div>
+        <div class="c-header-item">
+          <a class="c-header-item-link" href="#">
+            <span class="fa fa-th" aria-hidden="true"></span>
+          </a>
+        </div>
+        <div class="c-header-item">
+          <span class="c-dropdown">
+            <a class="c-header-item-link" href="#">
+              <span class="c-avatar c-avatar-sm c-avatar-primary" data-text="AB" data-status="success">
+              </span>
+              <i class="fa fa-caret-down c-p-left-sm" aria-hidden="true"></i>
+            </a>
+            <div class="c-dropdown-list c-dropdown-list-below c-dropdown-list-right">
+              <li>
+                <a href="javascript:void(0)" class="c-a">Help</a>
+              </li>
+              <li>
+                <a href="javascript:void(0)" class="c-a">Contact Support</a>
+              </li>
+              <li>
+                <a href="javascript:void(0)" class="c-a">Settings</a>
+              </li>
+              <li>
+                <a href="javascript:void(0)" class="c-a">Log Out</a>
+              </li>
+            </div>
+          </span>
+        </div>
+      </div>
+    </header>
+    <ul class="c-tabs c-header-tabs">
+      <li class="c-tab-item">
+        <a class="c-tab-item-link c-tab-item-link-active" href="#">Tab A</a>
+      </li>
+      <li class="c-tab-item">
+        <a class="c-tab-item-link" href="#">Tab B</a>
+      </li>
+      <li class="c-tab-item">
+        <a class="c-tab-item-link" href="#">Tab C</a>
+      </li>
+      <li class="c-tab-item">
+        <a class="c-tab-item-link" href="#">Tab D</a>
+      </li>
+    </ul>
+    
+    <br><br>
+    
+    <h3 class="c-header-md">Inverse Header</h3>
+    <header class="c-header c-header-inverse">
+      <div class="c-header-left">
+        <div class="c-header-item">
+          <a href="#" class="c-header-item-link c-header-logo">
+            <img src="./img/ipreo-logo-white.png">
+          </a>
+        </div>
+    
+      </div>
+      <div class="c-header-center"></div>
+      <div class="c-header-right">
+        <div class="c-header-item">
+          <a class="c-header-item-link" href="#">
+            <span class="fa fa-search" aria-hidden="true"></span>
+          </a>
+        </div>
+        <div class="c-header-item">
+          <a class="c-header-item-link" href="#">
+            <span class="fa fa-comments" aria-hidden="true"></span>
+          </a>
+        </div>
+        <div class="c-header-item">
+          <a class="c-header-item-link" href="#">
+            <span class="fa fa-bell" aria-hidden="true"></span>
+          </a>
+        </div>
+        <div class="c-header-item">
+          <a class="c-header-item-link" href="#">
+            <span class="fa fa-th" aria-hidden="true"></span>
+          </a>
+        </div>
+        <div class="c-header-item">
+          <span class="c-dropdown">
+            <a class="c-header-item-link" href="#">
+              <span class="c-avatar c-avatar-sm c-avatar-secondary" data-text="AB" data-status="success">
+              </span>
+              <i class="fa fa-caret-down c-p-left-sm" aria-hidden="true"></i>
+            </a>
+            <div class="c-dropdown-list c-dropdown-list-below c-dropdown-list-right">
+              <li>
+                <a href="javascript:void(0)" class="c-a">Help</a>
+              </li>
+              <li>
+                <a href="javascript:void(0)" class="c-a">Contact Support</a>
+              </li>
+              <li>
+                <a href="javascript:void(0)" class="c-a">Settings</a>
+              </li>
+              <li>
+                <a href="javascript:void(0)" class="c-a">Log Out</a>
+              </li>
+            </div>
+          </span>
+        </div>
+      </div>
+    </header>
+    <ul class="c-tabs c-header-tabs">
+      <li class="c-tab-item">
+        <a class="c-tab-item-link c-tab-item-link-active" href="#">Tab A</a>
+      </li>
+      <li class="c-tab-item">
+        <a class="c-tab-item-link" href="#">Tab B</a>
+      </li>
+      <li class="c-tab-item">
+        <a class="c-tab-item-link" href="#">Tab C</a>
+      </li>
+      <li class="c-tab-item">
+        <a class="c-tab-item-link" href="#">Tab D</a>
+      </li>
+    </ul>
+    
+    
+    
+    <br><br>
+    
+    <h3 class="c-header-md">Legacy Header</h3>
+    <div class="c-header-legacy">
+      <header class="c-header">
+        <div class="c-header-left">
+          <div class="c-header-item">
+            <div class="c-header-item">
+              <a href="#" class="c-header-item-link c-header-logo">
+                <img src="./img/ipreo-logo-white.png">
+              </a>
+            </div>
+          </div>
+        </div>
+          <!-- /.header-left -->
+    
+          <div class="c-header-center"></div>
+          <!-- /.header-center -->
+    
+          <div class="c-header-right">
+            <div class="c-header-item">
+              <a class="c-header-item-link" href="#">
+                <span class="fa fa-search" aria-hidden="true"></span>
+              </a>
+            </div>
+            <div class="c-header-item">
+              <a class="c-header-item-link" href="#">
+                <span class="fa fa-comments" aria-hidden="true"></span>
+              </a>
+            </div>
+            <div class="c-header-item">
+              <a class="c-header-item-link" href="#">
+                <span class="fa fa-bell" aria-hidden="true"></span>
+              </a>
+            </div>
+            <div class="c-header-item">
+              <a class="c-header-item-link" href="#">
+                <span class="fa fa-th" aria-hidden="true"></span>
+              </a>
+            </div>
+            <div class="c-header-item">
+              <span class="c-dropdown">
+                <a class="c-header-item-link" href="#">
+                  <span class="c-avatar c-avatar-sm c-avatar-secondary" data-text="AB" data-status="success">
+                  </span>
+                  <i class="fa fa-caret-down c-p-left-sm" aria-hidden="true"></i>
+                </a>
+                <div class="c-dropdown-list c-dropdown-list-below c-dropdown-list-right">
+                  <li>
+                    <a href="javascript:void(0)" class="c-a">Help</a>
+                  </li>
+                  <li>
+                    <a href="javascript:void(0)" class="c-a">Contact Support</a>
+                  </li>
+                  <li>
+                    <a href="javascript:void(0)" class="c-a">Settings</a>
+                  </li>
+                  <li>
+                    <a href="javascript:void(0)" class="c-a">Log Out</a>
+                  </li>
+                </div>
+              </span>
+            </div>
+          </div>
+      </header>
+    
+        <ul class="c-tabs c-header-tabs">
+          <li class="c-tab-item">
+            <a class="c-tab-item-link c-tab-item-link-active" href="#">Tab A</a>
+          </li>
+          <li class="c-tab-item">
+            <a class="c-tab-item-link" href="#">Tab B</a>
+          </li>
+          <li class="c-tab-item">
+            <a class="c-tab-item-link" href="#">Tab C</a>
+          </li>
+          <li class="c-tab-item">
+            <a class="c-tab-item-link" href="#">Tab D</a>
+          </li>
+        </ul>
+      </div>    
+    <hr class="c-hr c-m-bottom-lg c-m-top-lg">
+    <section id="lists">
+    		<h3 class="c-header-md">List Group</h3>
+    		<div class="c-row">
+    			<div class="c-col">
+    				<div class="c-list-group c-list-group-bordered">
+    					<div class="c-list-group-item">
+    						<div class="c-list-group-body">							
+    						<div class="c-text-md c-text-bold">Annabelle Administrator</div>						
+    						<div class="c-text-sm c-text-gray-6 c-p-top-xs"> Consectetur adipiscing elit.  Consectetur adipiscing elit.  Consectetur adipiscing elit.</div>
+    						</div>
+    						<div href class="c-list-group-item-right">
+    							<i class="fa fa-grav fa-2x c-shake c-text-danger" aria-hidden="true"></i>
+    						</div>
+    					</div>
+    					<div class="c-list-group-item c-list-group-item-active">
+    						<div class="c-list-group-body">							
+    							<div class="c-text-md c-text-bold c-text-white">Annabelle Administrator</div>						
+    							<div class="c-text-sm c-text-gray-0 c-p-top-xs"> Consectetur adipiscing elit.  Consectetur adipiscing elit.  Consectetur adipiscing elit.</div>
+    						</div>
+    						<div href class="c-list-group-item-right">
+    							<i class="fa fa-connectdevelop c-spin fa-2x " aria-hidden="true"></i>
+    						</div>					
+    					</div>
+    					<div class="c-list-group-item">
+    						<div class="c-list-group-body">							
+    							<div class="c-text-md c-text-bold">Annabelle Administrator</div>						
+    							<div class="c-text-sm c-text-gray-6 c-p-top-xs"> Consectetur adipiscing elit.  Consectetur adipiscing elit.  Consectetur adipiscing elit.</div>
+    						</div>
+    						<div href class="c-list-group-item-right">
+    							<i class="fa fa-meetup fa-2x c-pulse c-text-success-9" aria-hidden="true"></i>
+    						</div>
+    					</div>
+    					<div class="c-list-group-item">
+    						<div class="c-list-group-body">							
+    							<div class="c-text-md c-text-bold">Annabelle Administrator</div>						
+    							<div class="c-text-sm c-text-gray-6 c-p-top-xs"> Consectetur adipiscing elit.  Consectetur adipiscing elit.  Consectetur adipiscing elit.</div>
+    						</div>
+    						<div href class="c-list-group-item-right">
+    							<i class="fa fa-ravelry fa-2x c-spin c-text-warning-9" aria-hidden="true"></i>
+    						</div>
+    					</div>					
+    				</div>
+    	
+    			</div>
+    	
+    			<div class="c-col">
+    	
+    				<div class="c-list-group c-list-group-hoverable c-list-group-bordered">
+    					<div class="c-list-group-item c-justify-space-between">
+    						<div>
+    						<span class="c-text-sm c-text-bold">Annabelle Administrator</span>
+    						<br>
+    						<small class="c-text-muted">IR Administrator</small>
+    						</div>
+    					<i class="fa fa-caret-right" aria-hidden="true"></i>
+    					</div>
+    					<div class="c-list-group-item c-justify-space-between">
+    							<div>
+    							<span class="c-text-sm c-text-bold">Annabelle Administrator</span>
+    							<br>
+    							<small class="c-text-muted">IR Administrator</small>
+    							</div>
+    						<i class="fa fa-caret-right" aria-hidden="true"></i>
+    						</div>
+    						<div class="c-list-group-item c-justify-space-between">
+    								<div>
+    								<span class="c-text-sm c-text-bold">Annabelle Administrator</span>
+    								<br>
+    								<small class="c-text-muted">IR Administrator</small>
+    								</div>
+    							<i class="fa fa-caret-right" aria-hidden="true"></i>
+    							</div>
+    							<div class="c-list-group-item c-justify-space-between">
+    									<div>
+    									<span class="c-text-sm c-text-bold">Annabelle Administrator</span>
+    									<br>
+    									<small class="c-text-muted">IR Administrator</small>
+    									</div>
+    								<i class="fa fa-caret-right" aria-hidden="true"></i>
+    								</div>													
+    				</div>
+    			</div>
+    	
+    			<div class="c-col">
+    					<div class="c-list-group">
+    							<a href="#" class="c-list-group-item c-justify-space-between">
+    								 Consectetur adipiscing elit.<span class="c-badge c-badge-sm c-badge-secondary c-badge-rounded">12</span>
+    							</a>
+    							<a href="#" class="c-list-group-item c-justify-space-between">
+    								 Lorem ipsum dolor sit amet<span class="c-badge c-badge-success c-badge-rounded"></span>
+    							</a>
+    							<a href="#" class="c-list-group-item c-justify-space-between">
+    								 Ullamcorper solli citudin venenatis<span class="c-badge c-badge-primary c-badge-rounded"></span>
+    			
+    							</a>
+    							<a href="#" class="c-list-group-item c-justify-space-between">
+    								 Aliquam sodales nisi nec<span class="c-badge c-badge-sm c-badge-danger c-badge-rounded c-pulse">9</span>
+    							</a>
+    							<a href="#" class="c-list-group-item c-justify-space-between">
+    								Mauris at pellentesque<span class="c-badge c-badge-sm c-badge warning c-badge-rounded c-pulse">10</span> 
+    							</a>
+    							<a href="#" class="c-list-group-item c-justify-space-between">
+    								 Mauris at pellentesque<span class="c-badge c-badge-sm c-badge-primary-outline c-badge-rounded c-pulse">10</span>
+    							</a>
+    						</div>
+    			</div>
+    	
+    		</div>
+    
+    
+    
+    
+    
+    
+    		<div class="c-row c-m-top-lg">
+    			<div class="c-col">
+    				<div class="c-media-list c-media-list-hover c-media-list-divided c-media-list-bordered">
+    					<div class="c-media">
+    						<div class="c-media-body">						
+    							<div class="c-text-md c-text-bold">Annabelle Administrator</div>						
+    							<div class="c-text-sm c-text-gray-6 c-p-top-xs"> Consectetur adipiscing elit.  Consectetur adipiscing elit.  Consectetur adipiscing elit.</div>
+    						</div>
+    						
+    							<i class="fa fa-grav fa-2x c-shake c-text-danger" aria-hidden="true"></i>
+    						
+    					</div>
+    					<div class="c-media">
+    						<div class="c-media-body">						
+    							<div class="c-text-md c-text-bold">Annabelle Administrator</div>						
+    							<div class="c-text-sm c-text-gray-6 c-p-top-xs"> Consectetur adipiscing elit.  Consectetur adipiscing elit.  Consectetur adipiscing elit.</div>
+    						</div>
+    							<i class="fa fa-connectdevelop c-spin fa-2x " aria-hidden="true"></i>					
+    					</div>
+    					<div class="c-media c-media-new">
+    						<div class="c-media-body">						
+    							<div class="c-text-md c-text-bold">Annabelle Administrator</div>						
+    							<div class="c-text-sm c-text-gray-6 c-p-top-xs"> Consectetur adipiscing elit.  Consectetur adipiscing elit.  Consectetur adipiscing elit.</div>
+    						</div>
+    							<i class="fa fa-meetup fa-2x c-pulse c-text-success-9" aria-hidden="true"></i>
+    					</div>
+    					<div class="c-media">
+    						<div class="c-media-body">						
+    							<div class="c-text-md c-text-bold">Annabelle Administrator</div>						
+    							<div class="c-text-sm c-text-gray-6 c-p-top-xs"> Consectetur adipiscing elit.  Consectetur adipiscing elit.  Consectetur adipiscing elit.</div>
+    						</div>
+    							<i class="fa fa-ravelry fa-2x c-spin c-text-warning-9" aria-hidden="true"></i>
+    					</div>					
+    				</div>
+    	
+    			</div>
+    	
+    
+    			<div class="c-col">
+    				<div class="c-media-list c-media-list-bordered c-media-list-divided c-media-list-hover">
+    					<div class="c-media c-media-middle">
+    						<div class="c-media-body">						
+    							<div class="c-text-md c-text-bold">Annabelle Administrator</div>						
+    							<div class="c-text-sm c-text-gray-6 c-p-top-xs">  Consectetur adipiscing elit. Consectetur adipiscing elit.</div>
+    						</div>
+    						
+    							<i class="fa fa-caret-right c-text-gray-5" aria-hidden="true"></i>
+    						
+    					</div>
+    					<div class="c-media c-media-middle">
+    						<div class="c-media-body">						
+    							<div class="c-text-md c-text-bold">Annabelle Administrator</div>						
+    							<div class="c-text-sm c-text-gray-6 c-p-top-xs"> Consectetur adipiscing elit.  Consectetur adipiscing elit.</div>
+    						</div>
+    							<i class="fa fa-caret-right c-text-gray-5" aria-hidden="true"></i>					
+    					</div>
+    					<div class="c-media c-media-middle">
+    						<div class="c-media-body">						
+    							<div class="c-text-md c-text-bold">Annabelle Administrator</div>						
+    							<div class="c-text-sm c-text-gray-6 c-p-top-xs"> Consectetur adipiscing elit.  Consectetur adipiscing elit.</div>
+    						</div>
+    							<i class="fa fa-caret-right c-text-gray-5" aria-hidden="true"></i>
+    					</div>
+    					<div class="c-media c-media-middle">
+    						<div class="c-media-body">						
+    							<div class="c-text-md c-text-bold">Annabelle Administrator</div>						
+    							<div class="c-text-sm c-text-gray-6 c-p-top-xs"> Consectetur adipiscing elit.  Consectetur adipiscing elit.</div>
+    						</div>
+    							<i class="fa fa-caret-right c-text-gray-5" aria-hidden="true"></i>
+    					</div>					
+    				</div>
+    	
+    			</div>			
+    
+    
+    			<div class="c-col">
+    				<div class="c-media-list c-media-list-bordered c-media-list-divided c-media-list-hover">
+    					<div class="c-media c-media-middle">
+    							<i class="fa fa-user-o c-text-gray-5" aria-hidden="true"></i>
+    						<div class="c-media-body">						
+    							<div class="c-text-md">Profile</div>						
+    						</div>
+    							
+    					</div>
+    					<div class="c-media c-media-middle">
+    							<i class="fa fa-envelope-o c-text-gray-5" aria-hidden="true"></i>
+    						<div class="c-media-body">						
+    							<div class="c-text-md">Inbox</div>						
+    						</div>
+    							<span class="c-badge c-badge-primary c-badge-rounded">6</span>
+    					</div>
+    					<div class="c-media c-media-middle">
+    							<i class="fa fa-address-card-o c-text-gray-5" aria-hidden="true"></i>
+    						<div class="c-media-body">						
+    							<div class="c-text-md">Contacts</div>						
+    						</div>
+    							
+    					</div>
+    					<div class="c-media c-media-middle">
+    							<i class="fa fa-comments-o c-text-gray-5" aria-hidden="true"></i>
+    						<div class="c-media-body">						
+    							<div class="c-text-md">Messages</div>						
+    						</div>
+    							<span class="c-badge c-badge-success c-badge-rounded">10</span>
+    					</div>				
+    				</div>
+    	
+    			</div>				
+    
+    
+    
+    		</div>		
+    	
+    	</section>
+    <hr class="c-hr c-m-bottom-lg c-m-top-lg">    
+    <section id="pagination">
+    <h3 class="c-header-md">Pagination</h3>
+    <ul class="c-pagination-sm">
+    	<li>
+    		<a href="#" class="c-pagination-previous c-pagination-link"> </a>
+    	</li>
+    	<li>
+    		<a href="#" class="c-pagination-link">1</a>
+    	</li>
+    	<li>
+    		<a href="#" class="c-pagination-link c-pagination-current">2</a>
+    	</li>
+    	<li>
+    		<a href="#" class="c-pagination-link">3</a>
+    	</li>
+    	<li><a href="#" class="c-pagination-link">4</a>
+    	</li>
+    	<li>
+    		<a href="#" class="c-pagination-link c-pagination-ellipsis"></a>
+    	</li>
+    	<li>
+    		<a href="#" class="c-pagination-link">12</a>
+    	</li>
+    	<li>
+    		<a href="#" class="c-pagination-link">13</a>
+    	</li>
+    	<li>
+    		<a href="#" class="c-pagination-link c-pagination-next"></a>
+    	</li>
+    </ul>
+    
+    <ul class="c-pagination">
+    	<li>
+    		<a href="#" aria-label="Previous" class="c-pagination-previous c-pagination-link"></a>
+    	</li>
+    	<li> 
+    		<a href="#" aria-label="Previous" class="c-pagination-link c-pagination-current">1</a>
+    	</li>
+    	<li>
+    		<a href="#" aria-label="Page 2" class="c-pagination-link">2</a>
+    	</li>
+    	<li>
+    		<a href="#" class="c-pagination-link c-pagination-ellipsis"></a>
+    	</li>
+    	<li>
+    		<a href="#" aria-label="Page 12" class="c-pagination-link">12</a>
+    	</li>
+    	<li>
+    		<a href="#" aria-label="Page 13" class="c-pagination-link">13</a>
+    	</li>
+    	<li>
+    		<a href="#" aria-label="Next page" class="c-pagination-next c-pagination-link"></a>
+    	</li>
+    </ul>
+    
+    <ul class="c-pagination-lg">
+    	<li>
+    		<a href="#" class="c-pagination-link c-pagination-previous"> </a>
+    	</li>
+    	<li>
+    		<a href="#" class="c-pagination-link"> 1</a>
+    	</li>
+    	<li>
+    		<a href="" class="c-pagination-current c-pagination-link">2</a>
+    	</li>
+    	<li>
+    		<a href="#" class="c-pagination-link">3</a>
+    	</li>
+    	<li><a href="#" class="c-pagination-link">4</a>
+    	</li>
+    	<li>
+    		<a href="#" class="c-pagination-link c-pagination-ellipsis"></a>
+    	</li>
+    	<li>
+    		<a href="#" class="c-pagination-link">12</a>
+    	</li>
+    	<li>
+    		<a href="#" class="c-pagination-link">13</a>
+    	</li>
+    	<li>
+    		<a href="#" class="c-pagination-link c-pagination-next"></a>
+    	</li>
+    </ul>
+    </section>    
+    <hr class="c-hr c-m-bottom-lg c-m-top-lg">    
+    <section id="progress">
+    	<h3 class="c-header-md">Progress</h3>
+    	<div class="c-row">
+    		<div class="c-col">
+    			<div class="c-progress c-progress-primary c-progress-sm">
+    				<div class="c-progress-meter" style="width: 10%"></div>
+    			</div>
+    			<div class="c-progress c-progress-primary c-progress-sm">
+    				<span class="c-progress-meter" style="width: 45%">
+        			<p class="c-progress-meter-text">45%</p>
+      			</span>
+    			</div>
+    			<div class="c-progress c-progress-primary c-progress-sm">
+    				<div class="c-progress-meter-animated" style="width: 60%"></div>
+    			</div>
+    		</div>
+    		<hr class="c-hr">
+    		<div class="c-col">
+    			<div class="c-progress c-progress-success c-progress-sm">
+    				<div class="c-progress-meter" style="width: 10%"></div>
+    			</div>
+    			<div class="c-progress c-progress-success c-progress-sm">
+    				<span class="c-progress-meter" style="width: 45%">
+        			<p class="c-progress-meter-text">45%</p>
+      			</span>
+    			</div>
+    			<div class="c-progress c-progress-success c-progress-sm">
+    				<div class="c-progress-meter-animated" style="width: 60%"></div>
+    			</div>
+    		</div>
+    	</div>
+    	<hr class="c-hr">
+    
+    	<div class="c-row">
+    		<div class="c-col">
+    			<div class="c-progress c-progress-primary">
+    				<div class="c-progress-meter" style="width: 10%"></div>
+    			</div>
+    			<div class="c-progress c-progress-primary">
+    				<span class="c-progress-meter" style="width: 45%">
+        			<p class="c-progress-meter-text">45%</p>
+      			</span>
+    			</div>
+    			<div class="c-progress c-progress-primary">
+    				<div class="c-progress-meter-animated" style="width: 60%"></div>
+    			</div>
+    		</div>
+    
+    		<div class="c-col">
+    			<div class="c-progress c-progress-success">
+    				<div class="c-progress-meter" style="width: 10%"></div>
+    			</div>
+    			<div class="c-progress c-progress-success">
+    				<span class="c-progress-meter" style="width: 45%">
+        			<p class="c-progress-meter-text">45%</p>
+      			</span>
+    			</div>
+    			<div class="c-progress c-progress-success">
+    				<div class="c-progress-meter-animated" style="width: 60%"></div>
+    			</div>
+    		</div>
+    	</div>
+    
+    	<hr class="c-hr">
+    
+    	<div class="c-row">
+    		<div class="c-col">
+    			<div class="c-progress c-progress-primary c-progress-lg">
+    				<div class="c-progress-meter" style="width: 10%"></div>
+    			</div>
+    			<div class="c-progress c-progress-primary c-progress-lg">
+    				<span class="c-progress-meter" style="width: 45%">
+        			<p class="c-progress-meter-text">45%</p>
+      			</span>
+    			</div>
+    			<div class="c-progress c-progress-primary c-progress-lg">
+    				<div class="c-progress-meter-animated" style="width: 60%"></div>
+    			</div>
+    		</div>
+    		<div class="c-col">
+    			<div class="c-progress c-progress-success c-progress-lg">
+    				<div class="c-progress-meter" style="width: 10%"></div>
+    			</div>
+    			<div class="c-progress c-progress-success c-progress-lg">
+    				<span class="c-progress-meter" style="width: 45%">
+        			<p class="c-progress-meter-text">45%</p>
+      			</span>
+    			</div>
+    			<div class="c-progress c-progress-success c-progress-lg">
+    				<div class="c-progress-meter-animated" style="width: 60%"></div>
+    			</div>
+    		</div>
+    	</div>
+    </section>
+    <hr class="c-hr c-m-bottom-lg c-m-top-lg">    
+    <section id="switch">
+    <h3 class="c-header-md">Switch</h3>
+    <label class="c-switch c-switch-primary">
+        <input type="checkbox" class="c-switch-input" checked>
+        <span class="c-switch-label"></span>
+        <span class="c-switch-handle"></span>
+    </label>
+    <label class="c-switch c-switch-success">
+        <input type="checkbox" class="c-switch-input" checked>
+        <span class="c-switch-label"></span>
+        <span class="c-switch-handle"></span>
+    </label>
+    <label class="c-switch c-switch-warning">
+        <input type="checkbox" class="c-switch-input" checked>
+        <span class="c-switch-label"></span>
+        <span class="c-switch-handle"></span>
+    </label>
+    <label class="c-switch c-switch-danger">
+        <input type="checkbox" class="c-switch-input" checked>
+        <span class="c-switch-label"></span>
+        <span class="c-switch-handle"></span>
+    </label>
+    
+    <label class="c-switch c-switch-disabled">
+        <input type="checkbox" class="c-switch-input">
+        <span class="c-switch-label"></span>
+        <span class="c-switch-handle"></span>
+    </label>
+    <br>
+    <label class="c-switch c-switch-primary">
+        <input type="checkbox" class="c-switch-input" checked>
+        <span class="c-switch-label" data-on="On" data-off="Off"></span>
+        <span class="c-switch-handle"></span>
+    </label>
+    
+    <label class="c-switch c-switch-disabled">
+        <input type="checkbox" class="c-switch-input">
+        <span class="c-switch-label" data-on="On" data-off="Off"></span>
+        <span class="c-switch-handle"></span>
+    </label>
+    <br>
+    <label class="c-switch c-switch-primary c-switch-xs">
+        <input type="checkbox" class="c-switch-input" checked>
+        <span class="c-switch-label"></span>
+        <span class="c-switch-handle"></span>
+    </label>
+    <label class="c-switch c-switch-primary c-switch-sm">
+        <input type="checkbox" class="c-switch-input" checked>
+        <span class="c-switch-label"></span>
+        <span class="c-switch-handle"></span>
+    </label>
+    <label class="c-switch c-switch-primary">
+        <input type="checkbox" class="c-switch-input" checked>
+        <span class="c-switch-label"></span>
+        <span class="c-switch-handle"></span>
+    </label>
+    <label class="c-switch c-switch-success">
+        <input type="checkbox" class="c-switch-input" checked>
+        <span class="c-switch-label" data-on="On" data-off="Off"></span>
+        <span class="c-switch-handle"></span>
+    </label>
+    <label class="c-switch c-switch-primary c-switch-lg">
+        <input type="checkbox" class="c-switch-input" checked>
+        <span class="c-switch-label"></span>
+        <span class="c-switch-handle"></span>
+    </label>
+    <label class="c-switch c-switch-success c-switch-lg">
+        <input type="checkbox" class="c-switch-input" checked>
+        <span class="c-switch-label" data-on="On" data-off="Off"></span>
+        <span class="c-switch-handle"></span>
+    </label>
+    <br>
+    <label class="c-switch-square c-switch-sm c-switch-primary">
+    	    <input type="checkbox" class="c-switch-input" checked>
+    	    <span class="c-switch-label" data-on="On" data-off="Off"></span>
+    	    <span class="c-switch-handle"></span>
+    </label>
+    <label class="c-switch-square c-switch-primary">
+    	    <input type="checkbox" class="c-switch-input" checked>
+    	    <span class="c-switch-label" data-on="On" data-off="Off"></span>
+    	    <span class="c-switch-handle"></span>
+    </label>
+    <label class="c-switch-square c-switch-lg c-switch-primary">
+    	    <input type="checkbox" class="c-switch-input" checked>
+    	    <span class="c-switch-label" data-on="On" data-off="Off"></span>
+    	    <span class="c-switch-handle"></span>
+    </label>
+    <br>
+    <label class="c-switch c-switch-sm c-switch-primary">
+    	    <input type="checkbox" class="c-switch-input" checked>
+    	    <span class="c-switch-label" data-on="On" data-off="Off"></span>
+    	    <span class="c-switch-handle"></span>
+    </label>
+    <label class="c-switch c-switch-primary">
+    	    <input type="checkbox" class="c-switch-input" checked>
+    	    <span class="c-switch-label" data-on="On" data-off="Off"></span>
+    	    <span class="c-switch-handle"></span>
+    </label>
+    <label class="c-switch c-switch-lg c-switch-primary">
+    	    <input type="checkbox" class="c-switch-input" checked>
+    	    <span class="c-switch-label" data-on="On" data-off="Off"></span>
+    	    <span class="c-switch-handle"></span>
+    </label>
+    <br>
+    
+    <label class="c-switch c-switch-primary c-switch-sm">
+        <input type="checkbox" class="c-switch-input" checked>
+        <span class="c-switch-label"></span>
+        <span class="c-switch-handle"></span>
+    </label>
+    <label class="c-switch c-switch-primary">
+        <input type="checkbox" class="c-switch-input" checked>
+        <span class="c-switch-label"></span>
+        <span class="c-switch-handle"></span>
+    </label>
+    <label class="c-switch c-switch-success">
+        <input type="checkbox" class="c-switch-input" checked>
+        <span class="c-switch-label" data-on="On" data-off="Off"></span>
+        <span class="c-switch-handle"></span>
+    </label>
+    <label class="c-switch c-switch-primary c-switch-lg">
+        <input type="checkbox" class="c-switch-input" checked>
+        <span class="c-switch-label"></span>
+        <span class="c-switch-handle"></span>
+    </label>
+    <label class="c-switch c-switch-success c-switch-lg">
+        <input type="checkbox" class="c-switch-input" checked>
+        <span class="c-switch-label" data-on="On" data-off="Off"></span>
+        <span class="c-switch-handle"></span>
+    </label>
+    <br>
+    <label class="c-switch-material c-switch-sm c-switch-success">
+    	    <input type="checkbox" class="c-switch-input" checked>
+    	    <span class="c-switch-label"></span>
+    	    <span class="c-switch-handle"></span>
+    	</label>
+    <label class="c-switch-material c-switch-sm c-switch-success">
+    	    <input type="checkbox" class="c-switch-input" checked>
+    	    <span class="c-switch-label"></span>
+    	    <span class="c-switch-handle"></span>
+    	</label>
+    <label class="c-switch-material c-switch-primary">
+    	    <input type="checkbox" class="c-switch-input" checked>
+    	    <span class="c-switch-label"></span>
+    	    <span class="c-switch-handle"></span>
+    	</label>
+    <label class="c-switch-material c-switch-success">
+    	    <input type="checkbox" class="c-switch-input" checked>
+    	    <span class="c-switch-label"></span>
+    	    <span class="c-switch-handle"></span>
+    	</label>
+    <label class="c-switch-material c-switch-lg c-switch-primary">
+    	    <input type="checkbox" class="c-switch-input" checked>
+    	    <span class="c-switch-label"></span>
+    	    <span class="c-switch-handle"></span>
+    	</label>
+    <label class="c-switch-material c-switch-lg c-switch-success">
+    	    <input type="checkbox" class="c-switch-input" checked>
+    	    <span class="c-switch-label"></span>
+    	    <span class="c-switch-handle"></span>
+    	</label>
+    </section>
+    <hr class="c-hr c-m-bottom-lg c-m-top-lg">
+    <section id="table">
+    	<h3 class="c-header-md">Table</h3>
+    	<table class="c-table">
+    		<thead>
+    			<tr>
+    				<th width="200">Table Header</th>
+    				<th>Table Header</th>
+    				<th width="150">Table Header</th>
+    				<th width="150">Table Header</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			<tr>
+    				<td>Content Goes Here</td>
+    				<td>This is longer content Donec id elit non mi porta gravida at eget metus.</td>
+    				<td>Content Goes Here</td>
+    				<td>Content Goes Here</td>
+    			</tr>
+    			<tr>
+    				<td>Content Goes Here</td>
+    				<td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
+    				<td>Content Goes Here</td>
+    				<td>Content Goes Here</td>
+    			</tr>
+    			<tr>
+    				<td>Content Goes Here</td>
+    				<td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
+    				<td>Content Goes Here</td>
+    				<td>Content Goes Here</td>
+    			</tr>
+    		</tbody>
+    	</table>
+    
+    
+    	<h3 class="c-header-md">Table</h3>
+    	<table class="c-table c-table-transparent c-table-border-horizontal c-table-hover">
+    		<thead>
+    			<tr>
+    				<th>
+    					Date Added
+    					<button class="c-btn c-btn-default c-btn-xs c-btn-table-icon c-pull-right">
+    						<i class="fa fa-search"></i>
+    					</button>							
+    				</th>
+    				<th>
+    					Company
+    					<button class="c-btn c-btn-default c-btn-xs c-btn-table-icon c-pull-right">
+    						<i class="fa fa-search"></i>
+    					</button>							
+    				</th>
+    				<th>
+    					Contact Person
+    					<button class="c-btn c-btn-default c-btn-xs c-btn-table-icon c-pull-right">
+    						<i class="fa fa-search"></i>
+    					</button>							
+    				</th>
+    				<th>
+    					Email Address
+    					<button class="c-btn c-btn-default c-btn-xs c-btn-table-icon c-pull-right">
+    						<i class="fa fa-search"></i>
+    					</button>							
+    				</th>
+    				<th>
+    					Profile
+    					<button class="c-btn c-btn-default c-btn-xs c-btn-table-icon c-pull-right">
+    						<i class="fa fa-search"></i>
+    					</button>							
+    				</th>
+    				<th>
+    					Contact
+    					<button class="c-btn c-btn-default c-btn-xs c-btn-table-icon c-pull-right">
+    						<i class="fa fa-search"></i>
+    					</button>							
+    				</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			<tr>
+    				<td>6/19/2017</td>
+    				<td>Pizza Hut</td>
+    				<td>Gianni Block</td>
+    				<td>gianni@pizzahut.com</td>
+    				<td><button class="c-btn c-btn-primary c-btn-xs">Profile</button></td>
+    				<td><button class="c-btn c-btn-default c-btn-xs">Profile</button></td>
+    			</tr>
+    			<tr>
+    				<td>6/19/2017</td>
+    				<td>Siemens AG</td>
+    				<td>Cooper Moore</td>
+    				<td>coopermoore@siemens.com</td>
+    				<td><button class="c-btn c-btn-primary c-btn-xs">Profile</button></td>
+    				<td><button class="c-btn c-btn-default c-btn-xs">Profile</button></td>
+    			</tr>
+    			<tr>
+    				<td>6/20/2017</td>
+    				<td>Oracle Corporation</td>
+    				<td>Alexanne Stanton</td>
+    				<td>alex@oracle.com</td>
+    				<td><button class="c-btn c-btn-primary c-btn-xs">Profile</button></td>
+    				<td><button class="c-btn c-btn-default c-btn-xs">Profile</button></td>
+    			</tr>
+    			<tr>
+    				<td>6/20/2017</td>
+    				<td>
+    					Wells Fargo
+    					<button class="c-btn c-btn-default c-btn-xs c-btn-table-icon c-pull-right"><i class="fa fa-ellipsis-h"></i></button>
+    				</td>
+    				<td>Joyce Quitzon</td>
+    				<td>joyce.quitzon@wellsfargo.com</td>
+    				<td><button class="c-btn c-btn-primary c-btn-xs">Profile</button></td>
+    				<td><button class="c-btn c-btn-default c-btn-xs">Profile</button></td>
+    			</tr>
+    			<tr>
+    				<td>6/21/2017</td>
+    				<td>Johnson &amp; Johnson</td>
+    				<td>Jaquan Roflson</td>
+    				<td>jroflson@jandj.com</td>
+    				<td><button class="c-btn c-btn-primary c-btn-xs">Profile</button></td>
+    				<td><button class="c-btn c-btn-default c-btn-xs">Profile</button></td>
+    			</tr>
+    			<tr>
+    				<td>6/22/2017</td>
+    				<td>United Parcel Service</td>
+    				<td>Myrtle Stiedmann</td>
+    				<td>myrtle@ups.com</td>
+    				<td><button class="c-btn c-btn-primary c-btn-xs">Profile</button></td>
+    				<td><button class="c-btn c-btn-default c-btn-xs">Profile</button></td>
+    			</tr>
+    			<tr>
+    				<td>6/23/2017</td>
+    				<td>Chase</td>
+    				<td>Nia Gutkowski</td>
+    				<td>nia@chase.com</td>
+    				<td><button class="c-btn c-btn-primary c-btn-xs">Profile</button></td>
+    				<td><button class="c-btn c-btn-default c-btn-xs">Profile</button></td>
+    			</tr>
+    			<tr>
+    				<td>6/25/2017</td>
+    				<td>American Express</td>
+    				<td>Adrianna Roberts</td>
+    				<td>adrianna@american.com</td>
+    				<td><button class="c-btn c-btn-primary c-btn-xs">Profile</button></td>
+    				<td><button class="c-btn c-btn-default c-btn-xs">Profile</button></td>
+    			</tr>
+    			<tr>
+    				<td>6/26/2017</td>
+    				<td>Caterpillar Inc.</td>
+    				<td>Milan Collier</td>
+    				<td>milan@caterpillar.com</td>
+    				<td><button class="c-btn c-btn-primary c-btn-xs">Profile</button></td>
+    				<td><button class="c-btn c-btn-default c-btn-xs">Profile</button></td>
+    			</tr>
+    			<tr>
+    				<td>6/27/2017</td>
+    				<td>Nike, Inc.</td>
+    				<td>Otha Kemmer</td>
+    				<td>otha@nike.com</td>
+    				<td><button class="c-btn c-btn-primary c-btn-xs">Profile</button></td>
+    				<td><button class="c-btn c-btn-default c-btn-xs">Profile</button></td>
+    			</tr>
+    			<tr>
+    				<td>6/28/2017</td>
+    				<td>Toyota Motor Corporation</td>
+    				<td>Aniyah Murray</td>
+    				<td>aniyah@toyota.com</td>
+    				<td><button class="c-btn c-btn-primary c-btn-xs">Profile</button></td>
+    				<td><button class="c-btn c-btn-default c-btn-xs">Profile</button></td>
+    			</tr>
+    			<tr>
+    				<td>6/29/2017</td>
+    				<td>Yahoo!</td>
+    				<td>Arianne Merkel</td>
+    				<td>arianne@yahoo.com</td>
+    				<td><button class="c-btn c-btn-primary c-btn-xs">Profile</button></td>
+    				<td><button class="c-btn c-btn-default c-btn-xs">Profile</button></td>
+    			</tr>
+    		</tbody>
+    	</table>
+    
+    	<h3 class="c-header-md">Table draggable (styles only)</h3>
+    	<table class="c-table c-table-border-horizontal c-table-transparent c-table-hover c-table-header-cell-draggable c-table-row-draggable">
+    		<thead>
+    			<tr>
+    				<th width="200">Table Header</th>
+    				<th>Table Header</th>
+    				<th width="150">Table Header</th>
+    				<th width="150">Table Header</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			<tr>
+    				<td>Content Goes Here</td>
+    				<td>This is longer content Donec id elit non mi porta gravida at eget metus.</td>
+    				<td>Content Goes Here</td>
+    				<td>Content Goes Here</td>
+    			</tr>
+    			<tr>
+    				<td>Content Goes Here</td>
+    				<td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
+    				<td>Content Goes Here</td>
+    				<td>Content Goes Here</td>
+    			</tr>
+    			<tr>
+    				<td>Content Goes Here</td>
+    				<td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
+    				<td>Content Goes Here</td>
+    				<td>Content Goes Here</td>
+    			</tr>
+    		</tbody>
+    	</table>
+    
+    
+    </section>
+    <hr class="c-hr c-m-bottom-lg c-m-top-lg">
+    <section id="tabs">
+    <h3 class="c-header-md">Tabs</h3>
+    <ul class="c-tabs c-tabs-sm">
+    	<li class="c-tab-item"><a class="c-tab-item-link c-tab-item-link-active" href="#">Tab A</a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="#">Tab B</a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="#">Tab C</a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="#">Tab D</a></li>
+    </ul>
+    <br>
+    <ul class="c-tabs">
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="#">Tab A</a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link c-tab-item-link-active" href="#">Tab B</a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="#">Tab C</a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="#">Tab D</a></li>
+    </ul>
+    <br>
+    <ul class="c-tabs c-tabs-lg">
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="#">Tab A</a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="#">Tab B</a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link c-tab-item-link-active" href="#">Tab C</a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="#">Tab D</a></li>
+    </ul>
+    <br>
+    <ul class="c-tabs c-tabs-fullwidth">
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="#">Tab A</a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link c-tab-item-link-active" href="#">Tab B</a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="#">Tab C</a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="#">Tab D</a></li>
+    </ul>
+    <br>
+    <ul class="c-tabs">
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="javascript:void(0)"><span><i class="fa fa-hand-rock-o" aria-hidden="true"></i> Rock</span></a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link c-tab-item-link-active" href="javascript:void(0)"><span><i class="fa fa-hand-paper-o" aria-hidden="true"></i> Paper</span></a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="javascript:void(0)"><span><i class="fa fa-hand-scissors-o" aria-hidden="true"></i> Scissors</span></a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="javascript:void(0)"><span><i class="fa fa-hand-spock-o" aria-hidden="true"></i> Spock</span></a></li>
+    </ul>
+    <br>
+    <ul class="c-tabs c-tabs-center">
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="javascript:void(0)"><span><i class="fa fa-hand-rock-o" aria-hidden="true"></i> Rock</span></a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link c-tab-item-link-active" href="javascript:void(0)"><span><i class="fa fa-hand-paper-o" aria-hidden="true"></i> Paper</span></a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="javascript:void(0)"><span><i class="fa fa-hand-scissors-o" aria-hidden="true"></i> Scissors</span></a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="javascript:void(0)"><span><i class="fa fa-hand-spock-o" aria-hidden="true"></i> Spock</span></a></li>
+    </ul>
+    <br>
+    <ul class="c-tabs c-tabs-right">
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="javascript:void(0)"><span><i class="fa fa-hand-rock-o" aria-hidden="true"></i> Rock</span></a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link c-tab-item-link-active" href="javascript:void(0)"><span><i class="fa fa-hand-paper-o" aria-hidden="true"></i> Paper</span></a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="javascript:void(0)"><span><i class="fa fa-hand-scissors-o" aria-hidden="true"></i> Scissors</span></a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link" href="javascript:void(0)"><span><i class="fa fa-hand-spock-o" aria-hidden="true"></i> Spock</span></a></li>
+    </ul>
+    <br>
+    <ul class="c-tabs c-tabs-toggle">
+    	<li class="c-tab-item"><a class="c-tab-item-link" href><span><i class="fa fa-hand-rock-o" aria-hidden="true"></i> Rock</span></a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link c-tab-item-link-active" href><span><i class="fa fa-hand-paper-o" aria-hidden="true"></i> Paper</span></a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link" href><span><i class="fa fa-hand-scissors-o" aria-hidden="true"></i> Scissors</span></a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link" href><span><i class="fa fa-hand-spock-o" aria-hidden="true"></i> Spock</span></a></li>
+    </ul>
+    <br>
+    <ul class="c-tabs c-tabs-bordered">
+    	<li class="c-tab-item"><a class="c-tab-item-link" href><span><i class="fa fa-hand-rock-o" aria-hidden="true"></i> Rock</span></a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link c-tab-item-link-active" href><span><i class="fa fa-hand-paper-o" aria-hidden="true"></i> Paper</span></a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link" href><span><i class="fa fa-hand-scissors-o" aria-hidden="true"></i> Scissors</span></a></li>
+    	<li class="c-tab-item"><a class="c-tab-item-link" href><span><i class="fa fa-hand-spock-o" aria-hidden="true"></i> Spock</span></a></li>
+    </ul>
+    </section>
+    <hr class="c-hr c-m-bottom-lg c-m-top-lg">    
+    <section id="tooltips-popovers">
+        <h3 class="c-header-md">Tooltips/Popovers</h3>
+    
+        <div class="c-row">
+            <div class="c-col">
+    
+                <div class="c-popover c-popover-top">
+                    <div class="c-popover-arrow"></div>
+                    <div class="c-popover-content">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, voluptatibus.
+                    </div>
+                </div>
+    
+            </div>
+            <div class="c-col">
+    
+                <div class="c-popover c-popover-right">
+                    <div class="c-popover-arrow"></div>
+                    <div class="c-popover-content">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, voluptatibus.
+                    </div>
+                </div>
+    
+            </div>
+            <div class="c-col">
+    
+                <div class="c-popover c-popover-bottom" style="margin: 0;">
+                    <div class="c-popover-arrow"></div>
+                    <div class="c-popover-content">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, voluptatibus.
+                    </div>
+                </div>
+    
+            </div>
+            <div class="c-col">
+    
+                <div class="c-popover c-popover-left">
+                    <div class="c-popover-arrow"></div>
+                    <div class="c-popover-content">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, voluptatibus.
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+    
+        <div class="c-p-bottom-xxl"></div>
+    
+        
+        <div class="c-row">
+            <div class="c-col">
+    
+                <h4 class="c-header-sm c-m-0">Popover colors:</h4>
+    
+            </div>
+            <div class="c-col">
+    
+                <div class="c-popover c-popover-right c-popover-success">
+                    <div class="c-popover-arrow"></div>
+                    <div class="c-popover-content">
+                        Success popover!
+                    </div>
+                </div>
+    
+            </div>
+            <div class="c-col">
+    
+                <div class="c-popover c-popover-bottom c-popover-warning" style="margin: 0;">
+                    <div class="c-popover-arrow"></div>
+                    <div class="c-popover-content">
+                        Warning popover!
+                    </div>
+                </div>
+    
+            </div>
+            <div class="c-col">
+    
+                <div class="c-popover c-popover-left c-popover-danger">
+                    <div class="c-popover-arrow"></div>
+                    <div class="c-popover-content">
+                        Danger popover!
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+    
+        <div class="c-p-bottom-lg"></div>
+    
+    </section>    
+    <hr class="c-hr c-m-bottom-lg c-m-top-lg">
+    <section id="typography">
+    <h3 class="c-header-md">Typography</h3>
+    <div class="c-body-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dui ligula, lobortis at sapien ac, commodo varius ipsum. Nulla non est ac nisl tristique elementum. Phasellus vitae nulla urna. Fusce quis ante tempus nisi euismod consequat. Maecenas hendrerit
+    	libero vel rutrum feugiat. Etiam nec justo accumsan, eleifend purus sit amet, egestas eros. Etiam finibus felis ut aliquet ullamcorper. Quisque bibendum orci libero, vitae ullamcorper massa condimentum nec.</div>
+    
+    <br>
+    
+    <div class="c-header-xl">c-header-xl <small>small</small></div>
+    <div class="c-header-lg">c-header-lg <small>small</small></div>
+    <div class="c-header-md">c-header-md <small>small</small></div>
+    <div class="c-header-sm">c-header-sm <small>small</small></div>
+    <div class="c-header-xs">c-header-xs <small>small</small></div>	
+    
+    <br>
+    
+    <div class="c-body-text-xl">c-body-text-xl</div>
+    <div class="c-body-text-lg">c-body-text-lg</div>
+    <div class="c-body-text-md">c-body-text-md</div>
+    <div class="c-body-text">c-body-text</div>
+    <div class="c-body-text-sm">c-body-text-sm</div>
+    <div class="c-body-text-xs">c-body-text-xs</div>	
+    
+    <br>
+    
+    
+    
+    <ol class="c-ol">
+    	<li>Lorem ipsum dolor sit amet</li>
+    	<li>Consectetur adipiscing elit</li>
+    	<li>Integer molestie lorem at massa</li>
+    	<li>Facilisis in pretium nisl aliquet</li>
+    </ol>
+    
+    <br>
+    
+    <ul class="c-ul">
+    	<li>Lorem ipsum dolor sit amet</li>
+    	<li>Consectetur adipiscing elit</li>
+    	<li>Nulla volutpat aliquam velit
+    		<ul>
+    			<li>Phasellus iaculis neque</li>
+    			<li>Purus sodales ultricies</li>
+    		</ul>
+    	</li>
+    	<li>Faucibus porta lacus fringilla vel</li>
+    </ul>
+    
+    <br>
+    
+    <div class="c-body-text c-text-primary">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dui ligula, lobortis at sapien ac, commodo varius ipsum. Nulla non est ac nisl tristique elementum. Phasellus vitae nulla urna.</div>
+    <div class="c-body-text c-text-success">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dui ligula, lobortis at sapien ac, commodo varius ipsum. Nulla non est ac nisl tristique elementum. Phasellus vitae nulla urna.</div>
+    <div class="c-body-text c-text-warning">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dui ligula, lobortis at sapien ac, commodo varius ipsum. Nulla non est ac nisl tristique elementum. Phasellus vitae nulla urna.</div>
+    <div class="c-body-text c-text-danger">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dui ligula, lobortis at sapien ac, commodo varius ipsum. Nulla non est ac nisl tristique elementum. Phasellus vitae nulla urna.</div>
+    <br>
+    
+    <div class="c-body-text c-text-left">Left aligned text.</div>
+    <div class="c-body-text c-text-center">Center aligned text.</div>
+    <div class="c-body-text c-text-right">Right aligned text.</div>
+    <div class="c-body-text c-text-justify">Justified text.</div>
+    
+    <br>
+    <div class="c-body-text c-text-italic">c-body-text c-text-italic</div>
+    <div class="c-body-text c-text-bold">c-body-text c-text-bold</div>
+    
+    </section>
+    <hr class="c-hr c-m-bottom-lg c-m-top-lg">
+    <section id="modals">
+    
+      <div class="c-modal c-modal-fade c-modal-in" style="display: block; position: static;">
+        <div class="c-modal-dialog">
+          <div class="c-modal-content">
+    
+            <div class="c-modal-header">
+              <button type="button" class="c-modal-close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              <h4 class="c-modal-title">Modal header</h4>
+            </div>
+    
+            <div class="c-modal-body">
+              <!-- <ng-transclude> -->
+    
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus fugit perferendis voluptates cumque unde fuga reprehenderit illum doloribus, error, officia earum odit quasi minus odio eveniet explicabo accusantium, tempore quisquam.
+    
+              <!-- </ng-transclude> -->
+            </div>
+    
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="c-modal c-modal-danger c-modal-fade c-modal-in" style="display: block; position: static;">
+        <div class="c-modal-dialog">
+          <div class="c-modal-content">
+            <div class="c-modal-body c-text-center">
+    
+              <i class="fa fa-exclamation-circle c-modal-confirmation-icon"></i>
+              
+              <h2 class="c-modal-confirmation-title">Modal Title</h2>
+    
+              <p class="c-modal-confirmation-text">Modal Text Lorem ipsum, dolor sit amet consectetur adipisicing elit. Neque, eum.</p>
+    
+              <div class="c-modal-confirmation-buttons">
+                <button class="c-btn c-btn-secondary c-m-right-sm">Cancel</button>
+                <button class="c-btn c-btn-danger">Delete</button>
+              </div>
+    
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      <div class="c-modal c-modal-info c-modal-fade c-modal-in" style="display: block; position: static;">
+        <div class="c-modal-dialog">
+          <div class="c-modal-content">
+            <div class="c-modal-body c-text-center">
+    
+              <i class="fa fa-question-circle c-modal-confirmation-icon"></i>
+              
+              <h2 class="c-modal-confirmation-title">Modal Title</h2>
+              
+              <p class="c-modal-confirmation-text">Modal Text Lorem ipsum, dolor sit amet consectetur adipisicing elit. Neque, eum.</p>
+    
+              <div class="c-modal-confirmation-buttons">
+                <button class="c-btn c-btn-secondary c-m-right-sm">Cancel</button>
+                <button class="c-btn c-btn-primary">Ok</button>
+              </div>
+    
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    
+    </section>
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+  <script src="./demo-js/dropdown.js"></script>
+</body>
+</html>

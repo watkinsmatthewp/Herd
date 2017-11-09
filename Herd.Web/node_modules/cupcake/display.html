@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="author" content="BAM">
+  <title>Test</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <script>
+    var flavor = location.search.replace(/(^\?)/g, '') || 'default';
+    document.write('<link media="all" rel="stylesheet" href="' + flavor + '.css">');
+  </script>
+</head>
+
+<body>
+
+  <main class="c-container">
+    <div class="c-row c-row-nowrap">
+      <div class="c-col">
+        <div class="c-hidden-xs c-p-sm c-bg-primary">
+          <p>i'm hidden at xs - 0 to 576px</p>
+        </div>
+      </div>
+        <div class="c-col">
+        <div class="c-hidden-sm c-p-sm c-bg-success">
+          <p>i'm hidden at sm - 576px to 767px</p>
+        </div>
+      </div>
+      <div class="c-col">
+        <div class="c-hidden-md c-p-sm c-bg-warning">
+          <p>i'm hidden at md - 768px to 991px</p>
+        </div>
+      </div>
+      <div class="c-col">
+        <div class="c-hidden-lg c-p-sm c-bg-danger">
+          <p>i'm hidden at lg - 992px to 1199px</p>
+        </div>
+      </div>
+      <div class="c-col">
+        <div class="c-hidden-xl c-p-sm c-bg-primary">
+          <p>i'm hidden at xl - 1200px to 1439px</p>
+        </div>
+      </div>
+      <div class="c-col">
+        <div class="c-hidden-xxl c-p-sm c-bg-primary">
+            <p>i'm hidden at xxl - 1440px and above</p>
+          </div>
+        </div>        
+      </div>
+    </div>
+
+    <br>
+    <hr class="c-hr">
+ <div class="c-row">
+      <div class="c-col">
+        <div class="c-d-none c-card c-p-md c-bg-primary">
+          <p>d-none</p>
+        </div>
+        <div class="c-d-none c-d-block-sm c-card c-p-md c-bg-primary">
+          <p>d-none c-d-sm-block</p>
+        </div>
+        <div class="c-d-none c-d-block-md c-card c-p-md c-bg-success">
+          <p>d-none c-d-md-block</p>
+        </div>
+        <div class="c-d-none c-d-block-lg c-card c-p-md c-bg-warning">
+          <p>d-none c-d-lg-block</p>
+        </div>
+        <div class="c-d-none c-d-block-xl c-card c-p-md c-bg-danger">
+          <p>d-none c-d-xl-block</p>
+        </div>
+      </div>
+
+    </div>
+    <div class="c-row">
+      <div class="c-col">
+        <div class="c-d-none-sm">
+          <p>d-sm-none</p>
+        </div>
+        <div class="c-d-none-md">
+          <p>d-md-none</p>
+        </div>
+        <div class="c-d-none-lg">
+          <p>d-lg-none</p>
+        </div>
+        <div class="c-d-none-xl">
+          <p>d-xl-none</p>
+        </div>
+      </div>
+
+    </div> 
+
+    </div>
+
+
+  </main>
+</body>
+
+</html>
