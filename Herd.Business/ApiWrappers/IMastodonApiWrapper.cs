@@ -47,10 +47,12 @@ namespace Herd.Business.ApiWrappers
 
         Task<MastodonRelationship> Follow(string userID, bool followUser);
 
+        Task<MastodonUser> updateMastodonProfile(string display_name, string bio, string avatar, string header);
+
         #endregion User
 
         #region Posts
-        
+
         Task<MastodonPost> Repost(string postID, bool repost);
 
         Task<MastodonPost> Like(string postID, bool like);

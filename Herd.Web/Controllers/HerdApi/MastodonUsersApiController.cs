@@ -52,5 +52,17 @@ namespace Herd.Web.Controllers.HerdApi
                 FollowUser = body["followUser"].Value<bool>(),
             }));
         }
+
+        [HttpPost("update")]
+        public IActionResult UpdateMastodonUser([FromBody] JObject body)
+        {
+            return ApiJson(App.UpdateUserMastodonProfile(new UpdateUserMastodonProfileCommand
+            {
+                DisplayName = body["display_name"].Value<string>(),
+                Bio = body["bio"].Value<string>(),
+                Avatar = body["avatar"].Value<string>(),
+                Header = body["header"].Value<string>(),
+            }));
+        }
     }
 }

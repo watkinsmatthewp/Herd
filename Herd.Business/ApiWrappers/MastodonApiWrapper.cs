@@ -226,6 +226,19 @@ namespace Herd.Business.ApiWrappers
             }
         }
 
+        /// <summary>
+        /// Updates the currently authenticated user's profile information
+        /// </summary>
+        /// <param name="display_name"></param>
+        /// <param name="bio"></param>
+        /// <param name="avatar"></param>
+        /// <param name="header"></param>
+        /// <returns></returns>
+        public async Task<MastodonUser> updateMastodonProfile(string display_name, string bio, string avatar, string header)
+        {
+            return (await BuildMastodonApiClient().UpdateCredentials(display_name, bio, avatar, header)).ToMastodonUser();
+        }
+
         #endregion User
 
         #region Posts

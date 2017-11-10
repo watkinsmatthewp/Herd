@@ -198,16 +198,32 @@ namespace Herd.Business
             });
         }
 
-        #endregion Mastodon Users
-
-        #region Mastodon Posts
-
         /// <summary>
-        /// Processes a command to like a post
+        /// Updates current user's mastodon profiles information
         /// </summary>
-        /// <param name="likeCommand"></param>
+        /// <param name="updateMastodonProfile"></param>
         /// <returns></returns>
-        public CommandResult LikePost(LikeMastodonPostCommand likeCommand)
+        public CommandResult<UpdateUserMastodonProfileCommandResultData> UpdateUserMastodonProfile(UpdateUserMastodonProfileCommand update)
+        {
+            return ProcessCommand<UpdateUserMastodonProfileCommandResultData>(result =>
+            {
+                result.Data = new UpdateUserMastodonProfileCommandResultData
+                {
+                    UpdatedUser = _mastodonApiWrapper.updateMastodonProfile(update.DisplayName, update.Bio, update.Avatar, update.Header).Synchronously()
+                };
+            });
+        }
+
+    #endregion Mastodon Users
+
+    #region Mastodon Posts
+
+    /// <summary>
+    /// Processes a command to like a post
+    /// </summary>
+    /// <param name="likeCommand"></param>
+    /// <returns></returns>
+    public CommandResult LikePost(LikeMastodonPostCommand likeCommand)
         {
             return ProcessCommand(result =>
             {
