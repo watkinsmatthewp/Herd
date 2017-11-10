@@ -2,10 +2,13 @@
 import { NgForm } from '@angular/forms';
 import { Observable } from "rxjs/Observable";
 
-import { StatusService, EventAlertService } from "../../services";
+import { Image } from 'angular-modal-gallery';
 import { NotificationsService } from "angular2-notifications";
+
+import { StatusService, EventAlertService } from "../../services";
 import { Visibility } from '../../models/mastodon';
 import { EventAlertEnum } from "../../models/index";
+
 
 @Component({
     selector: 'status-form',
@@ -16,7 +19,10 @@ export class StatusFormComponent {
     @Input() actionName: string;
     @Input() isReply: boolean;
     @Input() inReplyToId: string
+
+    loading = false;
     ImagePreview: any;
+    imagesArray: Array<Image> = [];
     maxStatusLength: number = 200;
     Visibility = Visibility;
     visibilityOptions = [
@@ -72,6 +78,7 @@ export class StatusFormComponent {
             let reader = new FileReader();
             reader.onload = (e: any) => {
                 this.ImagePreview = e.target.result;
+                this.imagesArray.push(new Image(this.ImagePreview));
             }
             reader.readAsDataURL(event.target.files[0]);
         }
@@ -97,6 +104,7 @@ export class StatusFormComponent {
                 this.resetFormDefaults(form);
             })
             .subscribe(response => {
+                this.loading = true;
                 this.toastService.success("Successfully", "posted a status.");
             }, error => {
                 this.toastService.error(error.error);

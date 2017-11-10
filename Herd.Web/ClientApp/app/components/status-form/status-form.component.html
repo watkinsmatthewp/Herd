@@ -1,46 +1,47 @@
 ﻿<div class="panel">
     <div class="panel-body">
+
         <form name="form" (ngSubmit)="f.form.valid && submitStatus(f)" #f="ngForm" enctype="multipart/form-data" novalidate>
             <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !status.valid }">
                 <label for="status">{{ actionName }} | <small>{{ maxStatusLength - model.status.length }}</small></label>
                 <br />
-                <select name="visibility" class="btn btn-default btn-outline" [(ngModel)]="model.visibility" selected=0 required>
-                    <option *ngFor="let visibility of visibilityOptions" [ngValue]="visibility.value" title="{{ visibility.context }}">{{ visibility.option }}</option>
-                </select>
-                <input *ngIf="model.contentWarning" class="form-control" name="spoilerText"  [(ngModel)]="model.spoilerText" #spoilerText="ngModel" maxlength="{{ maxStatusLength }}" placeholder="Spoiler Text" required/>
+                <div class="row col-sm-3">
+                    <select name="visibility" class="btn btn-default btn-outline" [(ngModel)]="model.visibility" selected=0 required>
+                        <option *ngFor="let visibility of visibilityOptions" [ngValue]="visibility.value" title="{{ visibility.context }}">{{ visibility.option }}</option>
+                    </select>
+                </div>
+                
+                <input *ngIf="model.contentWarning" class="form-control" name="spoilerText" [(ngModel)]="model.spoilerText" #spoilerText="ngModel" maxlength="{{ maxStatusLength }}" placeholder="Spoiler Text" required />
                 <textarea class="form-control" name="status" [(ngModel)]="model.status" #status="ngModel" required placeholder="What's happening?" maxlength="{{ maxStatusLength }}" rows="3"></textarea>
                 <div *ngIf="f.submitted && !status.valid" class="help-block">Status is required</div>
             </div>
             <div class="form-horizontal">
-                <div class="pull-left">
-                    <button type="button" class="btn btn-default btn-outline" [ngClass]="{'btn-warning': model.contentWarning }" (click)="toggleContentWarning()" >
-                        <fa name="exclamation-triangle" size="2"></fa>
+                <div class="pull-left btn-group">
+                    <button type="button" class="btn btn-default btn-outline" [ngClass]="{'btn-warning': model.contentWarning }" (click)="toggleContentWarning()">
+                        <fa name="exclamation-triangle" size="1"></fa>
                     </button>
+                    <label class="btn btn-default">
+                        <fa name="paperclip" size="1"></fa>
+                        <input style="display: none !important;" type="file" (change)="onFileChange($event)">
+                    </label>
+                   
+
+                    <modal-gallery (click)="$event.stopPropagation()" [modalImages]="imagesArray" [enableCloseOutside]="true"></modal-gallery>
+                    <button class="btn btn-default file-button" type="button" (click)="clearFile()">
+                        {{ model.filename }}<fa name="times"></fa>
+                    </button>
+
+
+                    <!--<img #previewImage [src]="ImagePreview" alt="your image" style="height: 60px; width: 60px;" />-->
                 </div>
                 <div class="pull-right">
-                    <fa *ngIf="loading" name="spinner" spin=true></fa>
                     <button [disabled]="loading || !f.valid" type="submit" class="btn btn-primary">
+                        <fa *ngIf="loading" name="spinner" spin=true></fa>
                         <span><fa name="pencil"></fa> {{ actionName }}</span>
                     </button>
                 </div>
             </div>
-            <div class="form-horizontal">
-                <div class="pull-left">
-                    <!--<button type="button" class="btn" title="Upload an image"><fa name="camera"></fa></button>-->
-                    <!--<input type="file" id="file" (change)="onFileChange($event)" #fileInput>-->
-                    <label class="btn btn-default">
-                        <fa name="paperclip" size="2"></fa>
-                        <input style="display: none !important;" type="file" (change)="onFileChange($event)">
-                    </label>
-                </div>
-            </div>
-            <div *ngIf="model.file">
-                <img #previewImage [src]="ImagePreview" alt="your image" style="height: 60px; width: 60px;"/>
-                <button class="btn btn-default file-button" type="button">
-                    {{ model.filename }}
-                    <span (click)="clearFile()"><fa name="times"></fa></span>
-                </button>
-            </div>
         </form>
+
     </div><!-- /.panel-body -->
 </div><!-- /.panel -->
