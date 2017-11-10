@@ -17,7 +17,8 @@ import { SimpleNotificationsModule } from 'angular2-notifications';
 // Pages
 import {
     AdminPage, AppPage, HomePage, LocalFeedPage,
-    LoginPage, NotificationsPage, ProfilePage, RegisterPage, SearchResultsPage
+    LoginPage, NotificationsPage, ProfilePage, RegisterPage,
+    SearchResultsPage, SettingsPage
 } from './pages';
 
 // Components
@@ -43,7 +44,7 @@ import { SafePipe } from './pipes';
     declarations: [
         // Page
         AdminPage, AppPage, HomePage, LocalFeedPage,
-        LoginPage, NotificationsPage, ProfilePage, RegisterPage, SearchResultsPage,
+        LoginPage, NotificationsPage, ProfilePage, RegisterPage, SearchResultsPage, SettingsPage,
         // Components
         InstancePickerComponent, NavMenuComponent,
         StatusComponent, StatusFormComponent, StatusFormModalComponent,
@@ -73,8 +74,11 @@ import { SafePipe } from './pipes';
             { path: 'profile/:id', component: ProfilePage, canActivate: [AuthGuard], data: { title: "Profile" } },
             // Search Results (am I doing this right?)
             { path: 'searchresults', component: SearchResultsPage, canActivate: [AuthGuard], data: { title: "Search Results" } },
+            // Settings Page
+            { path: 'settings', component: SettingsPage, canActivate: [AuthGuard], data: {title: "Settings"} },
             // Etc Pages
-            { path: '**', redirectTo: 'home' }
+            { path: '**', redirectTo: 'home' },
+
         ])
     ],
     providers: [AccountService, AdminAuthGuard, AuthenticationService, AuthGuard, EventAlertService,

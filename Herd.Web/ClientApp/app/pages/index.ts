@@ -7,3 +7,4 @@ export * from './notifications/notifications.page';
 export * from './profile/profile.page';
 export * from './register/register.page';
 export * from './searchResults/searchResults.page';
+export * from './settings/settings.page';
