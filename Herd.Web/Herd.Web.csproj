@@ -38,6 +38,7 @@
     <None Remove="ClientApp\app\components\card\card.module.ts" />
     <None Remove="ClientApp\app\components\card\index.ts" />
     <None Remove="ClientApp\app\components\index.ts" />
+    <None Remove="ClientApp\app\components\profile-updater\profile-updater.component.ts" />
     <None Remove="ClientApp\app\components\status-form\status-form-modal\status-form-modal.component.ts" />
     <None Remove="ClientApp\app\components\status-reply-modal.ts" />
     <None Remove="ClientApp\app\components\usercard\usercard.component.ts" />
@@ -71,6 +72,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\card\card.module.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\card\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\index.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\profile-updater\profile-updater.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\status-form\status-form-modal\status-form-modal.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\usercard\usercard.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\EventAlert.enum.ts" />
