@@ -1,17 +1,17 @@
-﻿.post-format {
+﻿.status-format {
     background-color: #ffffff;
 }
 
-.post-format:hover {
-    background-color: #f8f9fa;
-    box-shadow: 2px 2px 2px #4dadf7;
-}
+    .status-format:hover {
+        background-color: #f8f9fa;
+        box-shadow: 2px 2px 2px #4dadf7;
+    }
 
-p {
+/*p {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 110%;
     color: #000000;
-}
+}*/
 
 .profile-picture {
     width: 60px; 
@@ -40,21 +40,11 @@ p {
     filter: blur(5px);
 }
 
-.status-content {
-    width: 100%;
-}
-
 .status-body {
     margin: 0.5em;
 }
 
-/* Status Media */
-.status-media {
-    width: 50%;
-    max-height: 10%;
-}
-
-/* Buttons */
+/* ------------- Buttons -------------*/
 .status-btn {
     background: inherit;
     outline: none;
@@ -72,13 +62,13 @@ p {
     color: red;
 }
 
-.message-btn:not([disabled]):hover {
-    color: black;
-}
-
 .message-btn {
     color: #657786;
 }
+
+    .message-btn:not([disabled]):hover {
+        color: black;
+    }
 
 .heart-color {
     color: red;
