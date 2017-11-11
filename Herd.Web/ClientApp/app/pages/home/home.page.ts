@@ -27,6 +27,7 @@ export class HomePage implements OnInit {
     homeFeed: Status[] = [];
     newItems: Status[] = [];
     userCard: Account;
+    hashtags: string[] = [];
 
     constructor(private activatedRoute: ActivatedRoute, private eventAlertService: EventAlertService,
                 private toastService: NotificationsService, private statusService: StatusService,
@@ -51,6 +52,7 @@ export class HomePage implements OnInit {
         setInterval(() => { this.checkForNewItems(); }, 10 * 1000);
         this.getMostRecentHomeFeed();
         this.getUserCard();
+        this.getPopularHashtags();
     }
 
     getUserCard() {
@@ -75,6 +77,13 @@ export class HomePage implements OnInit {
             }, error => {
                 this.toastService.error("Error", error.error);
             });
+    }
+
+    getPopularHashtags() {
+        console.log("Getting hashtags");
+        // call service to get hashtags, for now just mocked.
+        this.hashtags.push("lunch", "ipreo", "Avengers", "Iron Man", "Black Widow", "Captain America", "The Hulk", "Nick Fury", "Doctor Strange", "Clint Barton");
+        console.log("got them");
     }
 
     checkForNewItems() {

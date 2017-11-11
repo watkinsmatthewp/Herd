@@ -9,6 +9,11 @@
                 <h3>Popular Hashtags</h3>
             </div>
             <div class="panel-body">
+                <ol class="two-column">
+                    <li *ngFor="let hashtag of hashtags">
+                        <a [routerLink]="['/searchresults']" [queryParams]="{ searchString: hashtag }">{{ hashtag }}</a>
+                    </li>
+                </ol>
             </div>
         </div>
 
