@@ -1,5 +1,5 @@
-﻿<div class="row well well-sm mouseOver post-format" (click)="notifyTimelineStatusClicked($event)">
-    <div class="col-sm-12 status-content">
+﻿<div class="row well well-sm mouseOver status-format" (click)="notifyTimelineStatusClicked($event)">
+    <div class="col-sm-12">
         <!-- Header Row -->
         <div class="row status-header">
             <img class="profile-picture" src="{{ status.Author.MastodonProfileImageURL }}" />
@@ -11,7 +11,7 @@
         </div><!-- ./Header Row -->
 
         <!-- Body Row -->
-        <div class="row status-body">
+        <div class="row status-body c-body-text-md">
             <p *ngIf="status.IsSensitive">{{ status.SpoilerText }}</p>
             <div [ngClass]="{'status-blurred': showBlur }" (click)="turnOffBlur($event)">
                 <p [innerHTML]="status.Content"></p>
