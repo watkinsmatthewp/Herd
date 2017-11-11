@@ -29,7 +29,6 @@ const nonTreeShakableModules = [
     'ngx-bootstrap',
     'hammerjs',
     'mousetrap',
-    'cupcake/default.min.css',
 ];
 const allModules = treeShakableModules.concat(nonTreeShakableModules);
 
