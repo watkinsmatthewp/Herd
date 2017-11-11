@@ -16,6 +16,7 @@ import { EventAlertEnum } from "../../models/index";
     styleUrls: ['./status-form.component.css']
 })
 export class StatusFormComponent {
+    @ViewChild('fileInput') fileInput: any;
     @Input() actionName: string;
     @Input() isReply: boolean;
     @Input() inReplyToId: string
@@ -85,9 +86,9 @@ export class StatusFormComponent {
     }
 
     clearFile() {
+        this.fileInput.nativeElement.value = ""; // this completely resets file input
         this.model.filename = null;
         this.model.file = null;
-        this.model.formData = null;
     }
 
     toggleContentWarning(): void {
@@ -99,6 +100,7 @@ export class StatusFormComponent {
     }
 
     submitStatus(form: NgForm) {
+
         this.loading = true;
         this.statusService.makeNewStatus(this.model.status, this.model.visibility, this.inReplyToId, this.model.contentWarning, this.model.spoilerText, this.model.file)
             .finally(() => {
