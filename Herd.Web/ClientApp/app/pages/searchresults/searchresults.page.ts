@@ -2,6 +2,7 @@
 
 import { AccountService, StatusService } from '../../services';
 import { Account, Status } from "../../models/mastodon";
+import { Storage } from '../../models';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationsService } from "angular2-notifications";
@@ -24,7 +25,7 @@ export class SearchResultsPage implements OnInit {
 
     // Keeping  it simple for now
     constructor(private accountService: AccountService, private route: ActivatedRoute, private router: Router,
-                private statusService: StatusService, private toastService: NotificationsService) { }
+        private statusService: StatusService, private toastService: NotificationsService, private localStorage: Storage) { }
 
     ngOnInit(): void {
         this.route
@@ -45,6 +46,15 @@ export class SearchResultsPage implements OnInit {
         this.finishedSearching = false;
         this.getInitialStatuses();
         this.getInitialUsers();
+    }
+
+    isCurrentUser(checkID: string): boolean {
+        let currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+        let userID: string = currentUser.MastodonConnection.MastodonUserID;
+        if (userID === checkID) {
+            return true;
+        }
+        return false;
     }
 
     getInitialStatuses() {

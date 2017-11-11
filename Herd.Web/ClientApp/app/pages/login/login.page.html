@@ -12,9 +12,9 @@
             <div *ngIf="f.submitted && !password.valid" class="help-block">Password is required</div>
         </div>
         <div class="form-group">
-            <button [disabled]="loading || !f.valid" type="submit" class="btn btn-primary">Login</button>
+            <button [disabled]="loading || !f.valid" type="submit" class="c-btn c-btn-primary">Login</button>
             <fa *ngIf="loading" name="spinner" spin=true></fa>
-            <a [routerLink]="['/register']" class="btn btn-link">Register</a>
+            <a [routerLink]="['/register']" class="c-btn c-btn-secondary-outline">Register</a>
         </div>
     </form>
 </div>

@@ -51,8 +51,8 @@
                     <div *ngIf="loading" class="btn pull-left">
                         <fa name="spinner" spin=true></fa>
                     </div>
-                    <button *ngIf="newItems.length > 0" class="btn btn-primary" type="button" (click)="viewNewItems()">{{newItems.length}} New Statuses</button>
-                    <button class="btn btn-primary pull-right" type="button" (click)="scrollToTop()"><fa name="chevron-up"></fa>Scroll to top</button>
+                    <button *ngIf="newItems.length > 0" class="c-btn c-btn-primary" type="button" (click)="viewNewItems()">{{newItems.length}} New Statuses</button>
+                    <button class="c-btn c-btn-primary pull-right" type="button" (click)="scrollToTop()"><fa name="chevron-up"></fa>Scroll to top</button>
                 </div>
             </div>
             <div #statusesWrapper class="panel-body statusesWrapper" 
@@ -64,8 +64,10 @@
                     [infiniteScrollThrottle]="1500"
                     (scrolled)="onScrollDown($event)">
                  
-                <div *ngFor="let status of homeFeed">
-                    <status [status]="status"></status>
+                <div *ngFor="let status of homeFeed" class="row">
+                    <div class="col-sm-12">
+                        <status [status]="status"></status>
+                    </div>
                 </div>
             </div>
         </div>

@@ -13,7 +13,7 @@
             <!-- Visibility -->
             <div class="row">
                 <div class="form-group col-sm-3">
-                    <select name="visibility" class="btn btn-default btn-outline" [(ngModel)]="model.visibility" selected=0 required>
+                    <select name="visibility" class="c-btn c-btn-secondary c-btn-secondary-outline" [(ngModel)]="model.visibility" selected=0 required>
                         <option *ngFor="let visibility of visibilityOptions" [ngValue]="visibility.value" title="{{ visibility.context }}">{{ visibility.option }}</option>
                     </select>
                 </div>
@@ -33,16 +33,16 @@
                 <div class="col-sm-12">
                     <div class="form-horizontal">
                         <div class="pull-left btn-group">
-                            <button type="button" class="btn btn-default btn-outline" [ngClass]="{'btn-warning': model.contentWarning }" (click)="toggleContentWarning()">
+                            <button type="button" class="c-btn c-btn-secondary" [ngClass]="{'btn-warning': model.contentWarning }" (click)="toggleContentWarning()">
                                 <fa name="exclamation-triangle" size="1"></fa>
                             </button>
-                            <label class="btn btn-default">
+                            <label class="c-btn c-btn-secondary">
                                 <fa name="paperclip" size="1"></fa>
                                 <input style="display: none !important;" type="file" (change)="onFileChange($event)">
                             </label>
                         </div>
-                        <div class="pull-right btn-group">
-                            <button [disabled]="loading || !f.valid" type="submit" class="btn btn-primary">
+                        <div class="pull-right c-btn-group">
+                            <button [disabled]="loading || !f.valid" type="submit" class="c-btn c-btn-primary">
                                 <fa *ngIf="loading" name="spinner" spin=true></fa>
                                 <span><fa name="pencil"></fa> {{ actionName }}</span>
                             </button>

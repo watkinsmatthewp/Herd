@@ -8,8 +8,8 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading text-center">
                         <div *ngIf="loading" class="btn pull-left"><fa name="spinner" spin=true></fa></div>
-                        <button *ngIf="new_statuses.length > 0" class="btn btn-primary" type="button" (click)="viewNewStatuses()">{{ new_statuses.length }} New Statuses</button>
-                        <button class="btn btn-primary pull-right" type="button" (click)="scrollToTop('statuses')"><fa name="chevron-up"></fa>Scroll to top</button>
+                        <button *ngIf="new_statuses.length > 0" class="c-btn c-btn-primary" type="button" (click)="viewNewStatuses()">{{ new_statuses.length }} New Statuses</button>
+                        <button class="c-btn c-btn-primary pull-right" type="button" (click)="scrollToTop('statuses')"><fa name="chevron-up"></fa>Scroll to top</button>
                     </div>
                     <div class="panel-body">
                         <div *ngIf="statuses.length > 0" #statusesWrapper class="scrollWrapper"
@@ -37,7 +37,7 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading text-center">
                         <div *ngIf="loading" class="btn pull-left"><fa name="spinner" spin=true></fa></div>
-                        <button class="btn btn-primary pull-right" type="button" (click)="scrollToTop('users')"><fa name="chevron-up"></fa>Scroll to top</button>
+                        <button class="c-btn c-btn-primary pull-right" type="button" (click)="scrollToTop('users')"><fa name="chevron-up"></fa>Scroll to top</button>
                     </div>
                     <div class="panel-body text-center">
                         <div *ngIf="userCards.length > 0" #usersWrapper class="scrollWrapper"
@@ -50,7 +50,7 @@
                              (scrolled)="onScrollDown($event, 'users')">
                             <div *ngFor="let userCard of userCards">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-                                    <usercard [userCard]="userCard" showBio="true" showActions="true" showFollowButton="true"></usercard>
+                                    <usercard *ngIf="!isCurrentUser(userCard.MastodonUserId)" [userCard]="userCard" showBio="true" showActions="true" showFollowButton="true"></usercard>
                                 </div>
                             </div>
                         </div>

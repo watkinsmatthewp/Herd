@@ -29,9 +29,9 @@
             <div *ngIf="f.submitted && !confirmPassword.valid" class="help-block">Confirm your password</div>
         </div>
         <div class="form-group">
-            <button [disabled]="loading || !f.valid" class="btn btn-primary">Register</button>
+            <button [disabled]="loading || !f.valid" class="c-btn c-btn-primary">Register</button>
             <fa *ngIf="loading" name="spinner" spin=true></fa>
-            <a [routerLink]="['/login']" class="btn btn-link">Cancel</a>
+            <a [routerLink]="['/login']" class="c-btn c-btn-secondary-outline">Cancel</a>
         </div>
     </form>
 </div>

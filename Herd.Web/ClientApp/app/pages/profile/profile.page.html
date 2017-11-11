@@ -22,10 +22,10 @@
                                 </p>
                             </div>
                             <div *ngIf="account && !isCurrentUser()" class="col-sm-4">
-                                <button *ngIf="isFollowing" class="btn btn-primary follow-btn" (mouseenter)="followUnfollowText = 'Unfollow';" (mouseleave)="followUnfollowText = 'Following';" (click)="togglefollow()">
+                                <button *ngIf="isFollowing" class="c-btn c-btn-primary follow-btn" (mouseenter)="followUnfollowText = 'Unfollow';" (mouseleave)="followUnfollowText = 'Following';" (click)="togglefollow()">
                                     {{followUnfollowText}}
                                 </button>
-                                <button *ngIf="!isFollowing" class="btn btn-secondary not-following-btn" (click)="togglefollow()">
+                                <button *ngIf="!isFollowing" class="c-btn c-btn-secondary c-btn-secondary-outline not-following-btn" (click)="togglefollow()">
                                     Follow
                                 </button>
                             </div>
@@ -55,8 +55,8 @@
                                                 <div *ngIf="loading" class="btn pull-left">
                                                     <fa name="spinner" spin=true></fa>
                                                 </div>
-                                                <button *ngIf="newItems.length > 0" class="btn btn-primary" type="button" (click)="viewNewStatuses()">{{newItems.length}} New Statuses</button>
-                                                <button class="btn btn-primary pull-right" type="button" (click)="scrollToTop('statuses')"><fa name="chevron-up"></fa>Scroll to top</button>
+                                                <button *ngIf="newItems.length > 0" class="c-btn c-btn-primary" type="button" (click)="viewNewStatuses()">{{newItems.length}} New Statuses</button>
+                                                <button class="c-btn c-btn-primary pull-right" type="button" (click)="scrollToTop('statuses')"><fa name="chevron-up"></fa>Scroll to top</button>
                                             </div>
                                         </div>
                                         <div #statusesWrapper class="panel-body statusesWrapper"
@@ -84,7 +84,7 @@
                                                     <div *ngIf="loading" class="btn pull-left">
                                                         <fa name="spinner" spin=true></fa>
                                                     </div>
-                                                    <button class="btn btn-primary pull-right" type="button" (click)="scrollToTop('following')"><fa name="chevron-up"></fa>Scroll to top</button>
+                                                    <button class="c-btn c-btn-primary pull-right" type="button" (click)="scrollToTop('following')"><fa name="chevron-up"></fa>Scroll to top</button>
                                                 </div>
                                             </div>
                                             <div #followingWrapper class="panel-body statusesWrapper"
@@ -114,7 +114,7 @@
                                                 <div *ngIf="loading" class="btn pull-left">
                                                     <fa name="spinner" spin=true></fa>
                                                 </div>
-                                                <button class="btn btn-primary pull-right" type="button" (click)="scrollToTop('followers')"><fa name="chevron-up"></fa>Scroll to top</button>
+                                                <button class="c-btn c-btn-primary pull-right" type="button" (click)="scrollToTop('followers')"><fa name="chevron-up"></fa>Scroll to top</button>
                                             </div>
                                         </div>
                                         <div #followersWrapper class="panel-body statusesWrapper"

@@ -7,7 +7,7 @@
             <div *ngIf="f.submitted && !instance.valid" class="help-block">Instance is required</div>
         </div>
         <div class="form-group">
-            <button [disabled]="loading || !f.valid" type="submit" class="btn btn-primary">Submit</button>
+            <button [disabled]="loading || !f.valid" type="submit" class="c-btn c-btn-primary">Submit</button>
             <fa *ngIf="loading" name="spinner" spin=true></fa>
         </div>
     </form>
@@ -22,7 +22,7 @@
             <div *ngIf="f.submitted && !oAuthToken.valid" class="help-block">An OAuth Token is required</div>
         </div>
         <div class="form-group">
-            <button [disabled]="loading || !f.valid" type="submit" class="btn btn-primary">Submit</button>
+            <button [disabled]="loading || !f.valid" type="submit" class="c-btn c-btn-primary">Submit</button>
             <fa *ngIf="loading" name="spinner" spin=true></fa>
         </div>
     </form>
