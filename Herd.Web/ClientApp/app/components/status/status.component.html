@@ -26,8 +26,9 @@
         <!-- Buttons Row -->
         <div class="row">
             <div class="btn-group-lg text-center" role="group">
-                <button class="btn btn-secondary comments-btn status-btn" type="button" title="Reply to Id={{ status.IdString }}" (click)="notifyTimelineCommentsClicked($event)">
+                <button class="btn btn-secondary comments-btn status-btn" type="button" title="Reply" (click)="notifyTimelineCommentsClicked($event)">
                     <fa name="comments"></fa>
+                    <!--<span>{{ status.ReblogCount }}</span>-->
                 </button>
                 <button class="btn btn-secondary retweet-btn status-btn" type="button" title="Retweet" (click)="toggleRepost($event)">
                     <fa name="retweet" [ngClass]="{'retweet-color': status.IsReblogged }"></fa>

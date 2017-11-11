@@ -4,6 +4,10 @@
     transition: all .5s;
 }
 
+textarea {
+    resize: none;
+}
+
 .btn-primary.btn-outline {
     color: #428bca;
 }
@@ -24,8 +28,29 @@
     color: #d9534f;
 }
 
-.file-button {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100px;
+.image-row {
+    padding-top: 2em;
+}
+
+.image-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.image {
+    height: 60px;
+    width: 60px;
+}
+
+.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.close:hover {
+    color: red;
 }

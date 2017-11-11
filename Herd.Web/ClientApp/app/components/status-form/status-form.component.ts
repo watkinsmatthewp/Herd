@@ -99,8 +99,10 @@ export class StatusFormComponent {
     }
 
     submitStatus(form: NgForm) {
+        this.loading = true;
         this.statusService.makeNewStatus(this.model.status, this.model.visibility, this.inReplyToId, this.model.contentWarning, this.model.spoilerText, this.model.file)
             .finally(() => {
+                this.loading = false;
                 this.resetFormDefaults(form);
             })
             .subscribe(response => {
