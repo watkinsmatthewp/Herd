@@ -1,11 +1,11 @@
-﻿<h3 *ngIf="!finishedSearching" class="text-center">Searching for <small>"{{ search }}"</small> ...</h3>
-<h3 *ngIf="finishedSearching" class="text-center">Search Results for <small>"{{ search }}"</small></h3>
+﻿<h3 *ngIf="!finishedSearching" class="c-header-md text-center">Searching for <small>"{{ search }}"</small> ...</h3>
+<h3 *ngIf="finishedSearching" class="c-header-md text-center">Search Results for <small>"{{ search }}"</small></h3>
 
-<div class="row col-sm-offset-2 col-sm-8" >
+<div class="row col-sm-offset-2 col-sm-8">  
     <tabset #staticTabs>
         <tab heading="Posts">
             <ng-container>
-                <div class="panel panel-primary">
+                <div class="panel">
                     <div class="panel-heading text-center">
                         <div *ngIf="loading" class="btn pull-left"><fa name="spinner" spin=true></fa></div>
                         <button *ngIf="new_statuses.length > 0" class="c-btn c-btn-primary" type="button" (click)="viewNewStatuses()">{{ new_statuses.length }} New Statuses</button>

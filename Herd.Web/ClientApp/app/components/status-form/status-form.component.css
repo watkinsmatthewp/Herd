@@ -8,26 +8,6 @@ textarea {
     resize: none;
 }
 
-.btn-primary.btn-outline {
-    color: #428bca;
-}
-
-.btn-success.btn-outline {
-    color: #5cb85c;
-}
-
-.btn-info.btn-outline {
-    color: #5bc0de;
-}
-
-.btn-warning.btn-outline {
-    color: #f0ad4e;
-}
-
-.btn-danger.btn-outline {
-    color: #d9534f;
-}
-
 .image-row {
     padding-top: 2em;
 }
@@ -40,6 +20,10 @@ textarea {
 .image {
     height: 60px;
     width: 60px;
+}
+
+.spoilerButton:hover {
+    background-color: #f59f00;
 }
 
 .close {

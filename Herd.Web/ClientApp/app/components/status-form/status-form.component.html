@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !status.valid }">
-                        <label for="status">{{ actionName }} | <small>{{ maxStatusLength - model.status.length }}</small></label>
+                        <div class="c-header-xs">{{ actionName }} | <small>{{ maxStatusLength - model.status.length }}</small></div>
                     </div>
                 </div>
             </div>
@@ -33,11 +33,11 @@
                 <div class="col-sm-12">
                     <div class="form-horizontal">
                         <div class="pull-left btn-group">
-                            <button type="button" class="c-btn c-btn-secondary" [ngClass]="{'btn-warning': model.contentWarning }" (click)="toggleContentWarning()">
+                            <button type="button" class="c-btn c-btn-secondary spoilerButton" [ngClass]="{'c-bg-warning': model.contentWarning, 'spoilerButton': !model.contentWarning }" (click)="toggleContentWarning()">
                                 <fa name="exclamation-triangle" size="1"></fa>
                             </button>
                             <label class="c-btn c-btn-secondary">
-                                <fa name="paperclip" size="1"></fa>
+                                <fa name="cloud-upload" size="1"></fa>
                                 <input #fileInput style="display: none !important;" type="file" (change)="onFileChange($event)">
                             </label>
                         </div>
