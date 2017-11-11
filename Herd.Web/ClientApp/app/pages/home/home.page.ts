@@ -26,7 +26,7 @@ export class HomePage implements OnInit {
     loading: boolean = false;
     homeFeed: Status[] = [];
     newItems: Status[] = [];
-    userCard: Account;
+    userCard: Account = new Account();
     hashtags: string[] = [];
 
     constructor(private activatedRoute: ActivatedRoute, private eventAlertService: EventAlertService,
