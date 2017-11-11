@@ -4,7 +4,7 @@
     FollowsActiveUser: boolean;
     IsFollowedByActiveUser: boolean;
     MastodonDisplayName: string;
-    MastodonHeaderImageUrl: string;
+    MastodonHeaderImageURL: string;
     MastodonProfileImageURL: string;
     MastodonShortBio: string;
     MastodonUserId: string;
