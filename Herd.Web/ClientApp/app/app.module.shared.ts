@@ -24,7 +24,7 @@ import {
 import {
     InstancePickerComponent, NavMenuComponent,
     StatusComponent, StatusFormComponent, StatusFormModalComponent,
-    StatusModalComponent, UserCardComponent
+    UserCardComponent
 } from './components';
 
 // Guards
@@ -47,7 +47,7 @@ import { SafePipe } from './pipes';
         // Components
         InstancePickerComponent, NavMenuComponent,
         StatusComponent, StatusFormComponent, StatusFormModalComponent,
-        StatusModalComponent, UserCardComponent,
+        UserCardComponent,
         // Pipes
         SafePipe
     ],
