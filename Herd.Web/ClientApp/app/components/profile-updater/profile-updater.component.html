@@ -1,7 +1,7 @@
 ﻿<div class="panel">
     <div class="panel-body">
 
-        <form name="form" (ngSubmit)="f.form.valid && submitStatus(f)" #f="ngForm" enctype="multipart/form-data" novalidate>
+        <form name="form" (ngSubmit)="f.form.valid && submitUpdate(f)" #f="ngForm" enctype="multipart/form-data" novalidate>
 
             <input type="text" class="form-control" name="display" [(ngModel)]="model.display" #display="ngModel" required placeholder="Display Name Here" />
 
@@ -31,6 +31,12 @@
                 <span *ngIf="model.headerFile">
                     {{ model.headerFilename }}
                 </span>
+            </div>
+
+            <div class="pull-right c-btn-group">
+                <button [disabled]="!f.valid" type="submit" class="c-btn c-btn-primary">
+                    <span>Update Profile</span>
+                </button>
             </div>
 
         </form>

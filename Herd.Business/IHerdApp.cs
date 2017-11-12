@@ -28,7 +28,7 @@ namespace Herd.Business
 
         CommandResult FollowUser(FollowMastodonUserCommand followUserCommand);
 
-        CommandResult<UpdateUserMastodonProfileCommandResultData> UpdateUserMastodonProfile(UpdateUserMastodonProfileCommand update);
+        CommandResult UpdateUserMastodonProfile(UpdateUserMastodonProfileCommand update);
 
         // Mastodon posts
         CommandResult<SearchMastodonPostsCommandResultData> SearchPosts(SearchMastodonPostsCommand searchMastodonPostsCommand);

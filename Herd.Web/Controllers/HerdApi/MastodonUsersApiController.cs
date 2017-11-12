@@ -1,5 +1,6 @@
 ﻿using Herd.Business.Models;
 using Herd.Business.Models.Commands;
+using Herd.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
@@ -54,14 +55,21 @@ namespace Herd.Web.Controllers.HerdApi
         }
 
         [HttpPost("update")]
-        public IActionResult UpdateMastodonUser([FromBody] JObject body)
+        public IActionResult UpdateMastodonUser(UpdateMastodonProfileInputModel update)
         {
+            //return ApiJson(App.UpdateUserMastodonProfile(new UpdateUserMastodonProfileCommand
+            //{
+            //    DisplayName = body["display_name"].Value<string>(),
+            //    Bio = body["bio"].Value<string>(),
+            //    Avatar = body["avatar"].Value<string>(),
+            //    Header = body["header"].Value<string>(),
+            //}));
             return ApiJson(App.UpdateUserMastodonProfile(new UpdateUserMastodonProfileCommand
             {
-                DisplayName = body["display_name"].Value<string>(),
-                Bio = body["bio"].Value<string>(),
-                Avatar = body["avatar"].Value<string>(),
-                Header = body["header"].Value<string>(),
+                DisplayName = update.DisplayName,
+                Bio = update.Bio,
+                Avatar = update.Avatar,
+                Header = update.Header
             }));
         }
     }

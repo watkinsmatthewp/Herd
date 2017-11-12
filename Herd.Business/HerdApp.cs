@@ -203,14 +203,19 @@ namespace Herd.Business
         /// </summary>
         /// <param name="updateMastodonProfile"></param>
         /// <returns></returns>
-        public CommandResult<UpdateUserMastodonProfileCommandResultData> UpdateUserMastodonProfile(UpdateUserMastodonProfileCommand update)
+        public CommandResult UpdateUserMastodonProfile(UpdateUserMastodonProfileCommand update)
         {
-            return ProcessCommand<UpdateUserMastodonProfileCommandResultData>(result =>
+            // This can be used to return the new account, if needed. Code not tested
+            //return ProcessCommand<UpdateUserMastodonProfileCommandResultData>(result =>
+            //{
+            //    result.Data = new UpdateUserMastodonProfileCommandResultData
+            //    {
+            //        UpdatedUser = _mastodonApiWrapper.updateMastodonProfile(update.DisplayName, update.Bio, update.Avatar, update.Header).Synchronously()
+            //    };
+            //});
+            return ProcessCommand(result =>
             {
-                result.Data = new UpdateUserMastodonProfileCommandResultData
-                {
-                    UpdatedUser = _mastodonApiWrapper.updateMastodonProfile(update.DisplayName, update.Bio, update.Avatar, update.Header).Synchronously()
-                };
+                _mastodonApiWrapper.updateMastodonProfile(update.DisplayName, update.Bio, update.Avatar, update.Header).Synchronously();
             });
         }
 
