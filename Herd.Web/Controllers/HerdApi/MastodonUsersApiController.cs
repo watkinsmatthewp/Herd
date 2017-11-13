@@ -3,6 +3,7 @@ using Herd.Business.Models.Commands;
 using Herd.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace Herd.Web.Controllers.HerdApi
 {
@@ -64,6 +65,8 @@ namespace Herd.Web.Controllers.HerdApi
             //    Avatar = body["avatar"].Value<string>(),
             //    Header = body["header"].Value<string>(),
             //}));
+
+            System.Diagnostics.Debug.WriteLine(update.Avatar);
             return ApiJson(App.UpdateUserMastodonProfile(new UpdateUserMastodonProfileCommand
             {
                 DisplayName = update.DisplayName,

@@ -35,8 +35,8 @@ export class ProfileUpdaterComponent implements OnInit {
             let reader = new FileReader();
             reader.readAsDataURL(event.target.files[0]);
             reader.onload = (e: any) => {
-                this.model.headerBase64 = reader.result;
-                console.log(this.model.headerBase64);
+                this.model.headerBase64 = reader.result.split("base64,")[1];
+                
             }
         }
     }
@@ -52,8 +52,9 @@ export class ProfileUpdaterComponent implements OnInit {
             let reader = new FileReader();
             reader.readAsDataURL(event.target.files[0]);
             reader.onload = (e: any) => {
-                this.model.avatarBase64 = reader.result;
-                //console.log(this.model.avatarBase64);
+                //console.log(reader.result);
+                this.model.avatarBase64 = reader.result.split("base64,")[1];
+                console.log(this.model.avatarBase64);
             }
         }
     }
