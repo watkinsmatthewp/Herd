@@ -66,7 +66,7 @@ namespace Herd.Web.Controllers.HerdApi
             //    Header = body["header"].Value<string>(),
             //}));
 
-            System.Diagnostics.Debug.WriteLine(update.Avatar);
+            //System.Diagnostics.Debug.WriteLine(update.Avatar);
             return ApiJson(App.UpdateUserMastodonProfile(new UpdateUserMastodonProfileCommand
             {
                 DisplayName = update.DisplayName,

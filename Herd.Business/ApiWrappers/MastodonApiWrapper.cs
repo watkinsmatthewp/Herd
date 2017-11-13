@@ -236,6 +236,7 @@ namespace Herd.Business.ApiWrappers
         /// <returns></returns>
         public async Task<MastodonUser> updateMastodonProfile(string display_name, string bio, string avatar, string header)
         {
+            System.Diagnostics.Debug.WriteLine(avatar);
             return (await BuildMastodonApiClient().UpdateCredentials(display_name, bio, avatar, header)).ToMastodonUser();
         }
 

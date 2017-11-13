@@ -38,6 +38,7 @@
                     <ul class="dropdown-menu">
                         <li [routerLinkActive]="['link-active']"><a [routerLink]="['/profile', userID]"><fa name="user"></fa> Profile</a></li>
                         <li [routerLinkActive]="['link-active']"><a [routerLink]="['/instance-picker']"><fa name="bell"></fa> Instance Picker</a></li>
+                        <li [routerLinkActive]="['link-active']"><a [routerLink]="['/settings']"><fa name="gear"></fa> Settings </a></li>
                         <li role="separator" class="divider"></li>
                         <li><a [routerLink]="['/login']" (click)="logout()"><fa name="sign-out"></fa> Logout</a></li>
                     </ul>
