@@ -13,7 +13,7 @@
             <!-- Visibility -->
             <div class="row">
                 <div class="form-group col-sm-3">
-                    <select name="visibility" class="c-btn c-btn-secondary c-btn-secondary-outline" [(ngModel)]="model.visibility" selected=0 required>
+                    <select name="visibility" class="c-select-sm" [(ngModel)]="model.visibility" selected=0 required>
                         <option *ngFor="let visibility of visibilityOptions" [ngValue]="visibility.value" title="{{ visibility.context }}">{{ visibility.option }}</option>
                     </select>
                 </div>
