@@ -105,8 +105,8 @@
                                             (scrolled)="onScrollDown($event, 'following')">
 
                                         <div *ngFor="let user of followingList.Items" class="text-center">
-                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-                                                <usercard [userCard]="user" showBio="true" showActions="true" showFollowButton="true"></usercard>
+                                            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4">
+                                                <usercard [userCard]="user" showBio="true" showActions="true" showFollowButton="true" size="small"></usercard>
                                             </div>
                                         </div>
                                     </div>
@@ -136,8 +136,8 @@
 
                                     <div class="row">
                                         <div *ngFor="let user of followerList.Items" class="text-center">
-                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-                                                <usercard [userCard]="user" showBio="true" showActions="true" showFollowButton="true"></usercard>
+                                            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4">
+                                                <usercard [userCard]="user" showBio="true" showActions="true" showFollowButton="true" size="small"></usercard>
                                             </div>
                                         </div>
                                     </div>
