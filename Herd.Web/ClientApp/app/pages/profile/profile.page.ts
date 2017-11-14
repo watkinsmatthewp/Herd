@@ -128,7 +128,7 @@ export class ProfilePage implements OnInit, AfterViewInit {
         this.loading = true;
         let progress = this.toastService.info("Retrieving", "account information ...", { timeOut: 0 });
         this.accountService.search({ mastodonUserID: userID, includeFollowedByActiveUser: true })
-            .map(response => response[0] as Account)
+            .map(response => response.Items[0] as Account)
             .finally(() => this.loading = false)
             .subscribe(account => {
                 this.toastService.remove(progress.id);
@@ -147,8 +147,9 @@ export class ProfilePage implements OnInit, AfterViewInit {
      */
     getMostRecentUserPosts(userID: string) {
         this.statusService.search({ authorMastodonUserID: userID })
-            .subscribe(feed => {
-                this.userPosts = feed;
+            .subscribe(feedList => {
+                // TODO: Update pagination
+                this.userPosts = feedList.Items;
             }, error => {
                 this.toastService.error("Error", error.error);
             });
@@ -160,8 +161,9 @@ export class ProfilePage implements OnInit, AfterViewInit {
      */
     getFollowers(userID: string) {
         this.accountService.search({ followsMastodonUserID: userID, includeFollowsActiveUser: true })
-            .subscribe(users => {
-                this.followers = users;
+            .subscribe(usersList => {
+                // TODO: Update pagination
+                this.followers = usersList.Items;
             });
     }
 
@@ -171,8 +173,9 @@ export class ProfilePage implements OnInit, AfterViewInit {
      */
     getFollowing(userID: string) {
         this.accountService.search({ followedByMastodonUserID: userID, includeFollowedByActiveUser: true })
-            .subscribe(users => {
-                this.following = users;
+            .subscribe(usersList => {
+                // TODO: Update pagination
+                this.following = usersList.Items;
             });
     }
 
@@ -180,7 +183,7 @@ export class ProfilePage implements OnInit, AfterViewInit {
         this.loading = true;
         //let progress = this.toastService.info("Retrieving", "status info ...");
         this.statusService.search({ postID: statusId, includeAncestors: true, includeDescendants: true })
-            .map(posts => posts[0] as Status)
+            .map(postList => postList.Items[0] as Status)
             .finally(() => this.loading = false)
             .subscribe(data => {
                 //this.toastService.remove(progress.id);
@@ -198,7 +201,7 @@ export class ProfilePage implements OnInit, AfterViewInit {
         this.loading = true;
         //let progress = this.toastService.info("Retrieving", "status info ...");
         this.statusService.search({ postID: statusId, includeAncestors: false, includeDescendants: false })
-            .map(posts => posts[0] as Status)
+            .map(postList => postList.Items[0] as Status)
             .finally(() => this.loading = false)
             .subscribe(data => {
                // this.toastService.remove(progress.id);
@@ -213,8 +216,9 @@ export class ProfilePage implements OnInit, AfterViewInit {
     checkForNewItems() {
         this.statusService.search({ authorMastodonUserID: this.account.MastodonUserId, sinceID: this.userPosts[0].Id })
             .finally(() => this.loading = false)
-            .subscribe(newItems => {
-                this.newItems = newItems;
+            .subscribe(newItemsList => {
+                // TODO: Update pagination
+                this.newItems = newItemsList.Items;
             });
     }
 
@@ -222,8 +226,9 @@ export class ProfilePage implements OnInit, AfterViewInit {
         this.loading = true;
         this.statusService.search({ authorMastodonUserID: this.account.MastodonUserId, maxID: this.userPosts[this.userPosts.length - 1].Id })
             .finally(() => this.loading = false)
-            .subscribe(new_items => {
-                this.appendItems(this.userPosts, new_items);
+            .subscribe(newItemsList => {
+                // TODO: Update pagination
+                this.appendItems(this.userPosts, newItemsList.Items);
                 let currentYPosition = this.statusesWrapper.nativeElement.scrollTop;
                 this.statusesWrapper.nativeElement.scrollTo(0, currentYPosition);
             });
@@ -233,8 +238,9 @@ export class ProfilePage implements OnInit, AfterViewInit {
         let userID = this.account.MastodonUserId;
         let lastID = this.following[this.following.length-1].MastodonUserId;
         this.accountService.search({ followedByMastodonUserID: userID, includeFollowedByActiveUser: true, sinceID: lastID })
-            .subscribe(new_users => {
-                this.appendItems(this.following, new_users);
+            .subscribe(newUsersList => {
+                // TODO: Update pagination
+                this.appendItems(this.following, newUsersList.Items);
                 let currentYPosition = this.followingWrapper.nativeElement.scrollTop;
                 this.followingWrapper.nativeElement.scrollTo(0, currentYPosition);
             });
@@ -244,8 +250,9 @@ export class ProfilePage implements OnInit, AfterViewInit {
         let userID = this.account.MastodonUserId;
         let lastID = this.followers[this.followers.length-1].MastodonUserId;
         this.accountService.search({ followsMastodonUserID: userID, includeFollowsActiveUser: true, sinceID: lastID })
-            .subscribe(new_users => {
-                this.appendItems(this.followers, new_users);
+            .subscribe(newUsersList => {
+                // TODO: Update pagination
+                this.appendItems(this.followers, newUsersList.Items);
                 let currentYPosition = this.followersWrapper.nativeElement.scrollTop;
                 this.followersWrapper.nativeElement.scrollTo(0, currentYPosition);
             });

@@ -72,7 +72,7 @@ export class AccountService {
             .map(response => { 
                 console.log('user-response', response);
                 let pagedList = response as PagedList<Account>;
-                console.log('\tAccount-tPagedList', pagedList);
+                console.log('\tAccount-PagedList', pagedList);
                 return pagedList;
                 //return response.Users as Account[]
             });

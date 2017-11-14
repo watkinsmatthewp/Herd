@@ -81,10 +81,8 @@ export class HomePage implements OnInit {
     }
 
     getPopularHashtags() {
-        console.log("Getting hashtags");
         // call service to get hashtags, for now just mocked.
         this.hashtags.push("lunch", "ipreo", "Avengers", "Iron Man", "Black Widow", "Captain America", "The Hulk", "Nick Fury", "Doctor Strange", "Clint Barton");
-        console.log("got them");
     }
 
     checkForNewItems() {

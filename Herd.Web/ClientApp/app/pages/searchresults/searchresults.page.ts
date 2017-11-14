@@ -59,8 +59,9 @@ export class SearchResultsPage implements OnInit {
 
     getInitialStatuses() {
         this.statusService.search({ hashtag: this.search })
-            .subscribe(statuses => {
-                this.statuses = statuses;
+            .subscribe(statusList => {
+                // TODO: Update pagination
+                this.statuses = statusList.Items;
             });
     }
 
@@ -68,15 +69,16 @@ export class SearchResultsPage implements OnInit {
         this.accountService.search({ name: this.search, includeFollowedByActiveUser: true, includeFollowsActiveUser: true })
             .subscribe(users => {
                 this.finishedSearching = true;
-                this.userCards = users;
+                this.userCards = users.Items;
             });
     }
 
     getMoreUsers() {
         let lastID = this.userCards[this.userCards.length-1].MastodonUserId;
         this.accountService.search({ name: this.search, includeFollowedByActiveUser: true, includeFollowsActiveUser: true, sinceID: lastID })
-            .subscribe(new_users => {
-                this.appendItems(this.userCards, new_users);
+            .subscribe(newUsersList => {
+                // TODO: Update pagination
+                this.appendItems(this.userCards, newUsersList.Items);
                 let currentYPosition = this.usersWrapper.nativeElement.scrollTop;
                 this.usersWrapper.nativeElement.scrollTo(0, currentYPosition);
             });
@@ -87,8 +89,9 @@ export class SearchResultsPage implements OnInit {
         if (this.statuses.length > 0) {
             this.statusService.search({ hashtag: this.search, sinceID: this.statuses[0].Id })
                 .finally(() => this.loading = false)
-                .subscribe(newItems => {
-                    this.statuses = newItems;
+                .subscribe(newItemsList => {
+                    // TODO: Update pagination
+                    this.statuses = newItemsList.Items;
                 });
         } else {
             this.getInitialStatuses();
@@ -99,8 +102,9 @@ export class SearchResultsPage implements OnInit {
         this.loading = true;
         this.statusService.search({ hashtag: this.search, maxID: this.statuses[this.statuses.length - 1].Id })
             .finally(() => this.loading = false)
-            .subscribe(new_items => {
-                this.appendItems(this.statuses, new_items);
+            .subscribe(newStatusesList => {
+                // TODO: Update pagination
+                this.appendItems(this.statuses, newStatusesList.Items);
                 let currentYPosition = this.statusesWrapper.nativeElement.scrollTop;
                 this.statusesWrapper.nativeElement.scrollTo(0, currentYPosition);
             });
