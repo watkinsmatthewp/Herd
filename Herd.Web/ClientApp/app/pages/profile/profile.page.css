@@ -44,6 +44,10 @@
     overflow-x: hidden;
 }
 
+.tabContentHeader {
+    min-height: 35px;
+}
+
 .follow-btn:hover {
     background-color: #ac002b;
     border-color: #ac002b;
