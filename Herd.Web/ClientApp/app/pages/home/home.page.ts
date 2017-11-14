@@ -7,7 +7,7 @@ import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 
 import { StatusService, EventAlertService, AccountService } from "../../services";
 import { EventAlertEnum, Storage } from '../../models';
-import { Status, Account } from "../../models/mastodon";
+import { Status, Account, PagedList } from "../../models/mastodon";
 
 @Component({
     selector: 'home',
@@ -24,9 +24,13 @@ export class HomePage implements OnInit {
     replyStatus: Status;
 
     loading: boolean = false;
-    homeFeed: Status[] = [];
-    newItems: Status[] = [];
-    userCard: Account = new Account();
+
+    account: Account = new Account();
+    statusList: PagedList<Status> = new PagedList<Status>();
+    newStatusList: PagedList<Status> = new PagedList<Status>();
+    //homeFeed: Status[] = [];
+    //newItems: Status[] = [];
+    
     hashtags: string[] = [];
 
     constructor(private activatedRoute: ActivatedRoute, private eventAlertService: EventAlertService,
@@ -49,19 +53,19 @@ export class HomePage implements OnInit {
             }
         });
 
-        setInterval(() => { this.checkForNewItems(); }, 10 * 1000);
+        setInterval(() => { this.checkForNewStatuses(); }, 10 * 1000);
         this.getMostRecentHomeFeed();
-        this.getUserCard();
+        this.getaccount();
         this.getPopularHashtags();
     }
 
-    getUserCard() {
+    getaccount() {
         let currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
         let userID = currentUser.MastodonConnection.MastodonUserID;
         this.accountService.search({ mastodonUserID: userID, includeFollowedByActiveUser: true, includeFollowsActiveUser: true })
-            .map(response => response[0] as Account)
+            .map(response => response.Items[0] as Account)
             .subscribe(account => {
-                this.userCard = account;
+                this.account = account;
             });
     }
 
@@ -71,37 +75,35 @@ export class HomePage implements OnInit {
 
         this.statusService.search({ onlyOnActiveUserTimeline: true })
             .finally(() => this.loading = false)
-            .subscribe(feed => {
+            .subscribe(statusList => {
                 this.toastService.remove(progress.id);
-                this.homeFeed = feed;
+                this.statusList = statusList;
             }, error => {
                 this.toastService.error("Error", error.error);
             });
     }
 
     getPopularHashtags() {
-        console.log("Getting hashtags");
         // call service to get hashtags, for now just mocked.
-        this.hashtags.push("lunch", "ipreo", "Avengers", "Iron Man", "Black Widow", "Captain America", "The Hulk", "Nick Fury", "Doctor Strange", "Clint Barton");
-        console.log("got them");
+        this.hashtags.push("lunch", "ipreo", "Avengers", "IronMan", "BlackWidow", "CaptainAmerica", "TheHulk", "NickFury", "DrStrange", "ClintBarton");
     }
 
-    checkForNewItems() {
-        this.statusService.search({ onlyOnActiveUserTimeline: true, sinceID: this.homeFeed[0].Id })
+    checkForNewStatuses() {
+        this.statusService.search({ onlyOnActiveUserTimeline: true, sinceID: this.statusList.Items[0].Id })
             .finally(() => this.loading = false)
-            .subscribe(newItems => {
-                this.newItems = newItems;
+            .subscribe(newStatusList => {
+                this.newStatusList = newStatusList;
             });
     }
 
     getPreviousStatuses() {
         this.loading = true;
-        this.statusService.search({ onlyOnActiveUserTimeline: true, maxID: this.homeFeed[this.homeFeed.length - 1].Id })
+        this.statusService.search({ onlyOnActiveUserTimeline: true, maxID: this.statusList.PageInformation.EarlierPageMaxID })
             .finally(() => this.loading = false)
-            .subscribe(new_items => {
-                this.appendItems(this.homeFeed, new_items);
-                let currentYPosition = this.statusesWrapper.nativeElement.scrollTop;
-                this.statusesWrapper.nativeElement.scrollTo(0, currentYPosition);
+            .subscribe(newStatusList => {
+                this.appendItems(this.statusList.Items, newStatusList.Items);
+                this.statusList.PageInformation = newStatusList.PageInformation;
+                this.statusesWrapper.nativeElement.scrollTo(0, this.statusesWrapper.nativeElement.scrollTop);
             });
     }
 
@@ -109,7 +111,7 @@ export class HomePage implements OnInit {
         this.loading = true;
         //let progress = this.toastService.info("Retrieving" , "status info ...");
         this.statusService.search({ postID: statusId, includeAncestors: true, includeDescendants: true })
-            .map(posts => posts[0] as Status)
+            .map(postList => postList.Items[0] as Status)
             .finally(() =>  this.loading = false)
             .subscribe(data => {
                // this.toastService.remove(progress.id);
@@ -127,7 +129,7 @@ export class HomePage implements OnInit {
         this.loading = true;
         //let progress = this.toastService.info("Retrieving",  "status info ...");
         this.statusService.search({ postID: statusId, includeAncestors: false, includeDescendants: false })
-            .map(posts => posts[0] as Status)
+            .map(postList => postList.Items[0] as Status)
             .finally(() => this.loading = false)
             .subscribe(data => {
                 //this.toastService.remove(progress.id);
@@ -143,9 +145,9 @@ export class HomePage implements OnInit {
      * Add the new items to main feed array, scroll to top, empty newItems
      */
     viewNewItems() {
-        this.prependItems(this.homeFeed, this.newItems);
+        this.prependItems(this.statusList.Items, this.newStatusList.Items);
         this.scrollToTop();
-        this.newItems = [];
+        this.newStatusList = new PagedList<Status>();
     }
 
     /**

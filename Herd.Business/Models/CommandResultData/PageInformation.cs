@@ -6,7 +6,7 @@ namespace Herd.Business.Models.CommandResultData
 {
     public class PageInformation
     {
-        public long? MaxID { get; set; }
-        public long? SinceID { get; set; }
+        public string EarlierPageMaxID { get; set; }
+        public string NewerPageSinceID { get; set; }
     }
 }

@@ -1,8 +1,8 @@
 <div class="row">
     <!-- Left Column -->
     <div class="col-sm-12 col-md-5 col-lg-3">
-        <div class="text-center" [ngClass]="{'c-full-page-loader': !userCard.MastodonUserId }"> 
-            <usercard *ngIf="userCard" [userCard]="userCard" fillWidth="true" showBio="true" showActions="true" showQuickInfo="true"></usercard>
+        <div class="text-center" [ngClass]="{'c-full-page-loader': !account.MastodonUserId }"> 
+            <usercard *ngIf="account" [userCard]="account" fillWidth="true" showBio="true" showActions="true" showQuickInfo="true"></usercard>
         </div>
         <div class="panel">
             <div class="panel-heading">
@@ -51,7 +51,7 @@
                     <div *ngIf="loading" class="btn pull-left">
                         <fa name="spinner" spin=true></fa>
                     </div>
-                    <button *ngIf="newItems.length > 0" class="c-btn c-btn-primary" type="button" (click)="viewNewItems()">{{newItems.length}} New Statuses</button>
+                    <button *ngIf="newStatusList.Items.length > 0" class="c-btn c-btn-primary" type="button" (click)="viewNewItems()">{{newStatusList.Items.length}} New Statuses</button>
                     <button class="c-btn c-btn-primary pull-right" type="button" (click)="scrollToTop()"><fa name="chevron-up"></fa>Scroll to top</button>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                     [infiniteScrollThrottle]="1500"
                     (scrolled)="onScrollDown($event)">
                  
-                <div *ngFor="let status of homeFeed" class="row">
+                <div *ngFor="let status of statusList.Items" class="row">
                     <div class="col-sm-12">
                         <status [status]="status"></status>
                     </div>
