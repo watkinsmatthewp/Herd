@@ -14,8 +14,6 @@ export class ProfileUpdaterComponent implements OnInit {
     model: any = {
         display: "",
         bio: "",
-        avatarBase64: "",
-        headerBase64: "",
     };
 
     constructor(private accountService: AccountService, private eventAlertService: EventAlertService,
@@ -35,15 +33,13 @@ export class ProfileUpdaterComponent implements OnInit {
             let reader = new FileReader();
             reader.readAsDataURL(event.target.files[0]);
             reader.onload = (e: any) => {
-                this.model.headerBase64 = reader.result.split("base64,")[1];
-                
+                //this.model.headerBase64 = reader.result.split("base64,")[1];
             }
         }
     }
 
     onAvatarFileChange(event: any) {
         let fileList: FileList = event.target.files;
-        console.log("Made it here");
         if (fileList.length > 0) {
             let file = fileList[0];
             this.model.avatarFile = file;
@@ -52,9 +48,7 @@ export class ProfileUpdaterComponent implements OnInit {
             let reader = new FileReader();
             reader.readAsDataURL(event.target.files[0]);
             reader.onload = (e: any) => {
-                //console.log(reader.result);
-                this.model.avatarBase64 = reader.result.split("base64,")[1];
-                console.log(this.model.avatarBase64);
+                //this.model.avatarBase64 = reader.result.split("base64,")[1];
             }
         }
     }
@@ -64,13 +58,9 @@ export class ProfileUpdaterComponent implements OnInit {
             this.model.diplay = null;
         if (this.model.bio === "")
             this.model.bio = null;
-        if (this.model.avatarBase64 === "")
-            this.model.avatarBase64 = null;
-        if (this.model.headerBase64 === "")
-            this.model.headerBase64 = null;
 
         this.accountService.updateUserMastodonAccount(this.model.display, this.model.bio,
-            this.model.avatarBase64, this.model.headerBase64)
+            this.model.avatarFile, this.model.headerFile)
             .finally(() => {
 
             })
