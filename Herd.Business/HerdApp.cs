@@ -183,9 +183,11 @@ namespace Herd.Business
                     throw new UserErrorException("Please specify at least one search criterion");
                 }
 
+                var refPagedList = new PageInformation();
                 result.Data = new SearchMastodonUsersCommandResultData
                 {
-                    Users = GetUsers(searchMastodonUsersCommand).Synchronously()
+                    Users = GetUsers(searchMastodonUsersCommand, refPagedList).Synchronously(),
+                    PageInformation = refPagedList
                 };
             });
         }
@@ -237,9 +239,11 @@ namespace Herd.Business
                     throw new UserErrorException("Please specify at least one search criterion");
                 }
 
+                var pageInformation = new PageInformation();
                 result.Data = new SearchMastodonPostsCommandResultData
                 {
-                    Posts = GetPosts(searchMastodonPostsCommand).Synchronously()
+                    Posts = GetPosts(searchMastodonPostsCommand, pageInformation).Synchronously(),
+                    PageInformation = pageInformation
                 };
             });
         }
@@ -271,7 +275,7 @@ namespace Herd.Business
 
         #region Mastodon Users
 
-        private async Task<IList<MastodonUser>> GetUsers(SearchMastodonUsersCommand searchMastodonUsersCommand)
+        private async Task<IList<MastodonUser>> GetUsers(SearchMastodonUsersCommand searchMastodonUsersCommand, PageInformation refPageInformtation)
         {
             var users = null as Dictionary<string, MastodonUser>;
 
@@ -281,11 +285,11 @@ namespace Herd.Business
             }
             if (!string.IsNullOrWhiteSpace(searchMastodonUsersCommand.FollowedByUserID))
             {
-                users = await FilterByFollowedByUserID(users, searchMastodonUsersCommand.FollowedByUserID, searchMastodonUsersCommand.PagingOptions);
+                users = await FilterByFollowedByUserID(users, searchMastodonUsersCommand.FollowedByUserID, searchMastodonUsersCommand.PagingOptions, refPageInformtation);
             }
             if (!string.IsNullOrWhiteSpace(searchMastodonUsersCommand.FollowsUserID))
             {
-                users = await FilterByFollowsByUserID(users, searchMastodonUsersCommand.FollowsUserID, searchMastodonUsersCommand.PagingOptions);
+                users = await FilterByFollowsByUserID(users, searchMastodonUsersCommand.FollowsUserID, searchMastodonUsersCommand.PagingOptions, refPageInformtation);
             }
             if (!string.IsNullOrWhiteSpace(searchMastodonUsersCommand.Name))
             {
@@ -323,21 +327,21 @@ namespace Herd.Business
             return Filter(userSet1, () => _mastodonApiWrapper.GetUsersByName(name, null, pagingOptions), u => u.MastodonUserId);
         }
 
-        private Task<Dictionary<string, MastodonUser>> FilterByFollowedByUserID(Dictionary<string, MastodonUser> userSet1, string followedByUserID, PagingOptions pagingOptions)
+        private Task<Dictionary<string, MastodonUser>> FilterByFollowedByUserID(Dictionary<string, MastodonUser> userSet1, string followedByUserID, PagingOptions pagingOptions, PageInformation refPageInformtation)
         {
-            return Filter(userSet1, () => _mastodonApiWrapper.GetFollowing(followedByUserID, null, pagingOptions), u => u.MastodonUserId);
+            return Filter(userSet1, () => _mastodonApiWrapper.GetFollowing(followedByUserID, null, pagingOptions), u => u.MastodonUserId, refPageInformtation);
         }
 
-        private Task<Dictionary<string, MastodonUser>> FilterByFollowsByUserID(Dictionary<string, MastodonUser> userSet1, string followedUserID, PagingOptions pagingOptions)
+        private Task<Dictionary<string, MastodonUser>> FilterByFollowsByUserID(Dictionary<string, MastodonUser> userSet1, string followedUserID, PagingOptions pagingOptions, PageInformation refPageInformtation)
         {
-            return Filter(userSet1, () => _mastodonApiWrapper.GetFollowers(followedUserID, null, pagingOptions), u => u.MastodonUserId);
+            return Filter(userSet1, () => _mastodonApiWrapper.GetFollowers(followedUserID, null, pagingOptions), u => u.MastodonUserId, refPageInformtation);
         }
 
         #endregion Mastodon Users
 
         #region Mastodon Posts
 
-        private async Task<IList<MastodonPost>> GetPosts(SearchMastodonPostsCommand searchMastodonPostsCommand)
+        private async Task<IList<MastodonPost>> GetPosts(SearchMastodonPostsCommand searchMastodonPostsCommand, PageInformation refPageInformtation)
         {
             var posts = null as Dictionary<string, MastodonPost>;
 
@@ -347,15 +351,15 @@ namespace Herd.Business
             }
             if (!string.IsNullOrWhiteSpace(searchMastodonPostsCommand.ByAuthorMastodonUserID))
             {
-                posts = await FilterByAuthorUserID(posts, searchMastodonPostsCommand.ByAuthorMastodonUserID, searchMastodonPostsCommand.PagingOptions.SinceID, searchMastodonPostsCommand.PagingOptions.MaxID);
+                posts = await FilterByAuthorUserID(posts, searchMastodonPostsCommand.ByAuthorMastodonUserID, searchMastodonPostsCommand.PagingOptions.SinceID, searchMastodonPostsCommand.PagingOptions.MaxID, refPageInformtation);
             }
             if (searchMastodonPostsCommand.OnlyOnlyOnActiveUserTimeline)
             {
-                posts = await FilterByOnActiveUserTimeline(posts, searchMastodonPostsCommand.PagingOptions.SinceID, searchMastodonPostsCommand.PagingOptions.MaxID);
+                posts = await FilterByOnActiveUserTimeline(posts, searchMastodonPostsCommand.PagingOptions.SinceID, searchMastodonPostsCommand.PagingOptions.MaxID, refPageInformtation);
             }
             if (!string.IsNullOrWhiteSpace(searchMastodonPostsCommand.HavingHashTag))
             {
-                posts = await FilterByHashTag(posts, searchMastodonPostsCommand.HavingHashTag, searchMastodonPostsCommand.PagingOptions.SinceID, searchMastodonPostsCommand.PagingOptions.MaxID);
+                posts = await FilterByHashTag(posts, searchMastodonPostsCommand.HavingHashTag, searchMastodonPostsCommand.PagingOptions.SinceID, searchMastodonPostsCommand.PagingOptions.MaxID, refPageInformtation);
             }
 
             await _mastodonApiWrapper.AddContextToMastodonPosts
@@ -382,19 +386,19 @@ namespace Herd.Business
             return post == null ? new MastodonPost[0] : new[] { post };
         }
 
-        private Task<Dictionary<string, MastodonPost>> FilterByAuthorUserID(Dictionary<string, MastodonPost> postSet1, string byAuthorMastodonUserID, string sinceID, string maxID)
+        private Task<Dictionary<string, MastodonPost>> FilterByAuthorUserID(Dictionary<string, MastodonPost> postSet1, string byAuthorMastodonUserID, string sinceID, string maxID, PageInformation refPageInformtation)
         {
-            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsByAuthorUserID(byAuthorMastodonUserID, pagingOptions: new PagingOptions { SinceID = sinceID, MaxID = maxID }), p => p.Id);
+            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsByAuthorUserID(byAuthorMastodonUserID, pagingOptions: new PagingOptions { SinceID = sinceID, MaxID = maxID }), p => p.Id, refPageInformtation);
         }
 
-        private Task<Dictionary<string, MastodonPost>> FilterByOnActiveUserTimeline(Dictionary<string, MastodonPost> postSet1, string sinceID, string maxID)
+        private Task<Dictionary<string, MastodonPost>> FilterByOnActiveUserTimeline(Dictionary<string, MastodonPost> postSet1, string sinceID, string maxID, PageInformation refPageInformtation)
         {
-            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsOnActiveUserTimeline(pagingOptions: new PagingOptions { SinceID = sinceID, MaxID = maxID }), p => p.Id);
+            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsOnActiveUserTimeline(pagingOptions: new PagingOptions { SinceID = sinceID, MaxID = maxID }), p => p.Id, refPageInformtation);
         }
 
-        private Task<Dictionary<string, MastodonPost>> FilterByHashTag(Dictionary<string, MastodonPost> postSet1, string hashTag, string sinceID, string maxID)
+        private Task<Dictionary<string, MastodonPost>> FilterByHashTag(Dictionary<string, MastodonPost> postSet1, string hashTag, string sinceID, string maxID, PageInformation refPageInformtation)
         {
-            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsByHashTag(hashTag, pagingOptions: new PagingOptions { SinceID = sinceID, MaxID = maxID }), p => p.Id);
+            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsByHashTag(hashTag, pagingOptions: new PagingOptions { SinceID = sinceID, MaxID = maxID }), p => p.Id, refPageInformtation);
         }
 
         #endregion Mastodon Posts
@@ -428,6 +432,40 @@ namespace Herd.Business
                 });
             }
             return result;
+        }
+
+        private async Task<Dictionary<string, T>> Filter<T>(Dictionary<string, T> set1, Func<Task<PagedList<T>>> getPagedSet2, Func<T, string> getID, PageInformation refPageInformtation)
+        {
+            if (set1?.Count == 0)
+            {
+                return new Dictionary<string, T>();
+            }
+            var pagedSet2 = await getPagedSet2();
+            UpdatedRefPagedList(refPageInformtation, pagedSet2);
+            if (set1 == null)
+            {
+                return ToDictionary(pagedSet2.Elements, getID);
+            }
+            var idsToPreserve = new HashSet<string>(set1.Keys.Intersect(pagedSet2.Elements.Select(getID)));
+            return ToDictionary(pagedSet2.Elements.Where(u => idsToPreserve.Contains(getID(u))), getID);
+        }
+
+        private void UpdatedRefPagedList<T>(PageInformation refPagedList, PagedList<T> newPagedSet)
+        {
+            if (!string.IsNullOrWhiteSpace(newPagedSet.PageInformation.EarlierPageMaxID))
+            {
+                if (string.IsNullOrWhiteSpace(refPagedList.EarlierPageMaxID) || long.Parse(refPagedList.EarlierPageMaxID) > long.Parse(newPagedSet.PageInformation.NewerPageSinceID))
+                {
+                    refPagedList.EarlierPageMaxID = newPagedSet.PageInformation.EarlierPageMaxID;
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(newPagedSet.PageInformation.NewerPageSinceID))
+            {
+                if (string.IsNullOrWhiteSpace(refPagedList.NewerPageSinceID) || long.Parse(refPagedList.NewerPageSinceID) < long.Parse(newPagedSet.PageInformation.NewerPageSinceID))
+                {
+                    refPagedList.NewerPageSinceID = newPagedSet.PageInformation.NewerPageSinceID;
+                }
+            }
         }
 
         private async Task<Dictionary<string, T>> Filter<T>(Dictionary<string, T> set1, Func<Task<IList<T>>> getSet2, Func<T, string> getID)
