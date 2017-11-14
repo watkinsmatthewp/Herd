@@ -43,7 +43,10 @@
    
     <!-- Middle Column -->
     <div class="col-sm-12 col-md-7 col-lg-6 col-lg-pull-3">
-        <status-form #homeStatusForm actionName="Create Status"></status-form>
+        <div class="statusFormWrapper">
+            <status-form #homeStatusForm actionName="Create Status"></status-form>
+        </div>
+        
 
         <div class="panel">
             <div class="panel-heading text-center" style="min-height: 50px;">
@@ -55,7 +58,7 @@
                     <button class="c-btn c-btn-primary pull-right" type="button" (click)="scrollToTop()"><fa name="chevron-up"></fa>Scroll to top</button>
                 </div>
             </div>
-            <div #statusesWrapper class="panel-body statusesWrapper" 
+            <div #statusesWrapper class="panel-body statusesWrapper"
                 data-infinite-scroll
                     debounce
                     [infiniteScrollContainer]="statusesWrapper"
