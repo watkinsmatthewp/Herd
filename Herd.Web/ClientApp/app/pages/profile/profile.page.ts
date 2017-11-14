@@ -4,7 +4,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from "rxjs/Observable";
 
 import { AccountService, EventAlertService, StatusService } from "../../services";
-import { Account, Status } from '../../models/mastodon';
+import { Account, Status, PagedList } from '../../models/mastodon';
 import { Storage, EventAlertEnum } from '../../models';
 import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 import { TabsetComponent } from "ngx-bootstrap";
@@ -24,19 +24,19 @@ export class ProfilePage implements OnInit, AfterViewInit {
     @ViewChild('followingWrapper') followingWrapper: any;
     @ViewChild('followersWrapper') followersWrapper: any;
 
+    // Modal Variables
     statusId: number;
     specificStatus: Status;
     replyStatus: Status;
 
     account: Account;
-    userPosts: Status[] = []; // List of posts from this user
-    newItems: Status[] = [];
-    following: Account[] = [];
-    followers: Account[] = [];
+    followingList: PagedList<Account> = new PagedList<Account>();
+    followerList: PagedList<Account> = new PagedList<Account>();
+    statusList: PagedList<Status> = new PagedList<Status>();
+    newStatusList: PagedList<Status> = new PagedList<Status>();
 
     isFollowing: boolean = false;
     followUnfollowText: string = "Following";
-
     loading: boolean = false;
 
     constructor(
@@ -62,7 +62,7 @@ export class ProfilePage implements OnInit, AfterViewInit {
                 this.getMostRecentUserPosts(userID);
             });
 
-        setInterval(() => { this.checkForNewItems(); }, 10 * 1000);
+        setInterval(() => { this.checkForNewStatuses(); }, 10 * 1000);
 
         // Setup subscription to update modals on status click
         this.eventAlertService.getMessage().subscribe(event => {
@@ -147,9 +147,8 @@ export class ProfilePage implements OnInit, AfterViewInit {
      */
     getMostRecentUserPosts(userID: string) {
         this.statusService.search({ authorMastodonUserID: userID })
-            .subscribe(feedList => {
-                // TODO: Update pagination
-                this.userPosts = feedList.Items;
+            .subscribe(statusList => {
+                this.statusList = statusList;
             }, error => {
                 this.toastService.error("Error", error.error);
             });
@@ -161,9 +160,8 @@ export class ProfilePage implements OnInit, AfterViewInit {
      */
     getFollowers(userID: string) {
         this.accountService.search({ followsMastodonUserID: userID, includeFollowsActiveUser: true })
-            .subscribe(usersList => {
-                // TODO: Update pagination
-                this.followers = usersList.Items;
+            .subscribe(followerList => {
+                this.followerList = followerList;
             });
     }
 
@@ -173,9 +171,8 @@ export class ProfilePage implements OnInit, AfterViewInit {
      */
     getFollowing(userID: string) {
         this.accountService.search({ followedByMastodonUserID: userID, includeFollowedByActiveUser: true })
-            .subscribe(usersList => {
-                // TODO: Update pagination
-                this.following = usersList.Items;
+            .subscribe(followingList => {
+                this.followingList = followingList;
             });
     }
 
@@ -213,48 +210,46 @@ export class ProfilePage implements OnInit, AfterViewInit {
             });
     }
 
-    checkForNewItems() {
-        this.statusService.search({ authorMastodonUserID: this.account.MastodonUserId, sinceID: this.userPosts[0].Id })
+    checkForNewStatuses() {
+        this.statusService.search({ authorMastodonUserID: this.account.MastodonUserId, sinceID: this.statusList.Items[0].Id })
             .finally(() => this.loading = false)
-            .subscribe(newItemsList => {
-                // TODO: Update pagination
-                this.newItems = newItemsList.Items;
+            .subscribe(newStatusList => {
+                this.newStatusList = newStatusList;
             });
     }
 
     getPreviousStatuses() {
         this.loading = true;
-        this.statusService.search({ authorMastodonUserID: this.account.MastodonUserId, maxID: this.userPosts[this.userPosts.length - 1].Id })
+        this.statusService.search({ authorMastodonUserID: this.account.MastodonUserId, maxID: this.statusList.PageInformation.EarlierPageMaxID })
             .finally(() => this.loading = false)
-            .subscribe(newItemsList => {
-                // TODO: Update pagination
-                this.appendItems(this.userPosts, newItemsList.Items);
-                let currentYPosition = this.statusesWrapper.nativeElement.scrollTop;
-                this.statusesWrapper.nativeElement.scrollTo(0, currentYPosition);
+            .subscribe(newStatusList => {
+                this.appendItems(this.statusList.Items, newStatusList.Items);
+                this.statusList.PageInformation = newStatusList.PageInformation;
+                this.statusesWrapper.nativeElement.scrollTo(0, this.statusesWrapper.nativeElement.scrollTop);
             });
     }
 
     getMoreFollowing() {
         let userID = this.account.MastodonUserId;
-        let lastID = this.following[this.following.length-1].MastodonUserId;
-        this.accountService.search({ followedByMastodonUserID: userID, includeFollowedByActiveUser: true, sinceID: lastID })
+        this.accountService.search({ followedByMastodonUserID: userID, includeFollowedByActiveUser: true, maxID: this.followingList.PageInformation.EarlierPageMaxID })
             .subscribe(newUsersList => {
-                // TODO: Update pagination
-                this.appendItems(this.following, newUsersList.Items);
-                let currentYPosition = this.followingWrapper.nativeElement.scrollTop;
-                this.followingWrapper.nativeElement.scrollTo(0, currentYPosition);
+                if (newUsersList.Items.length > 0) {
+                    this.appendItems(this.followingList.Items, newUsersList.Items);
+                    this.followingList.PageInformation = newUsersList.PageInformation;
+                    this.followingWrapper.nativeElement.scrollTo(0, this.followingWrapper.nativeElement.scrollTop);
+                }
             });
     }
 
     getMoreFollowers() {
         let userID = this.account.MastodonUserId;
-        let lastID = this.followers[this.followers.length-1].MastodonUserId;
-        this.accountService.search({ followsMastodonUserID: userID, includeFollowsActiveUser: true, sinceID: lastID })
+        this.accountService.search({ followsMastodonUserID: userID, includeFollowsActiveUser: true, maxID: this.followerList.PageInformation.EarlierPageMaxID })
             .subscribe(newUsersList => {
-                // TODO: Update pagination
-                this.appendItems(this.followers, newUsersList.Items);
-                let currentYPosition = this.followersWrapper.nativeElement.scrollTop;
-                this.followersWrapper.nativeElement.scrollTo(0, currentYPosition);
+                if (newUsersList.Items.length > 0) {
+                    this.appendItems(this.followerList.Items, newUsersList.Items);
+                    this.followerList.PageInformation = newUsersList.PageInformation;
+                    this.followersWrapper.nativeElement.scrollTo(0, this.followersWrapper.nativeElement.scrollTop);
+                }
             });
     }
 
@@ -262,10 +257,13 @@ export class ProfilePage implements OnInit, AfterViewInit {
      * Add the new items to main feed array, scroll to top, empty newItems
      */
     viewNewStatuses() {
-        this.prependItems(this.userPosts, this.newItems);
+        this.prependItems(this.statusList.Items, this.newStatusList.Items);
         this.scrollToTop('statuses');
-        this.newItems = [];
+        this.newStatusList = new PagedList<Status>();
     }
+
+
+
 
     /**
      * Scrolls the status area to the top

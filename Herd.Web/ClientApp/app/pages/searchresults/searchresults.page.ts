@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, Input, ViewChild } from '@angular/core';
 
 import { AccountService, StatusService } from '../../services';
-import { Account, Status } from "../../models/mastodon";
+import { Account, Status, PagedList } from "../../models/mastodon";
 import { Storage } from '../../models';
 
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,14 +18,15 @@ export class SearchResultsPage implements OnInit {
 
     search: string;
     finishedSearching: boolean = false;
-    userCards: Account[] = []; // List of users that the search found
-    statuses: Status[] = [];
-    new_statuses: Status[] = [];
     loading: boolean = false;
 
-    // Keeping  it simple for now
+    userList: PagedList<Account> = new PagedList<Account>();
+    statusList: PagedList<Status> = new PagedList<Status>();
+    newStatusList: PagedList<Status> = new PagedList<Status>(); // only used if we poll statuses
+
     constructor(private accountService: AccountService, private route: ActivatedRoute, private router: Router,
-        private statusService: StatusService, private toastService: NotificationsService, private localStorage: Storage) { }
+                private statusService: StatusService, private toastService: NotificationsService,
+                private localStorage: Storage) { }
 
     ngOnInit(): void {
         this.route
@@ -37,12 +38,13 @@ export class SearchResultsPage implements OnInit {
                 }
                 this.performSearch();
             });
+        // Only used if we want to continually check for new statuses with a hashtag search
         // setInterval(() => { this.checkForNewStatuses(); }, 10 * 1000);
     }
 
     performSearch() {
-        this.userCards = [];
-        this.statuses = [];
+        this.userList.Items = [];
+        this.statusList.Items = [];
         this.finishedSearching = false;
         this.getInitialStatuses();
         this.getInitialUsers();
@@ -60,64 +62,51 @@ export class SearchResultsPage implements OnInit {
     getInitialStatuses() {
         this.statusService.search({ hashtag: this.search })
             .subscribe(statusList => {
-                // TODO: Update pagination
-                this.statuses = statusList.Items;
+                this.statusList = statusList;
             });
     }
 
     getInitialUsers() {
         this.accountService.search({ name: this.search, includeFollowedByActiveUser: true, includeFollowsActiveUser: true })
-            .subscribe(users => {
+            .subscribe(userList => {
                 this.finishedSearching = true;
-                this.userCards = users.Items;
+                this.userList = userList;
             });
-    }
-
-    getMoreUsers() {
-        let lastID = this.userCards[this.userCards.length-1].MastodonUserId;
-        this.accountService.search({ name: this.search, includeFollowedByActiveUser: true, includeFollowsActiveUser: true, sinceID: lastID })
-            .subscribe(newUsersList => {
-                // TODO: Update pagination
-                this.appendItems(this.userCards, newUsersList.Items);
-                let currentYPosition = this.usersWrapper.nativeElement.scrollTop;
-                this.usersWrapper.nativeElement.scrollTo(0, currentYPosition);
-            });
-    }
-
-
-    checkForNewStatuses() {
-        if (this.statuses.length > 0) {
-            this.statusService.search({ hashtag: this.search, sinceID: this.statuses[0].Id })
-                .finally(() => this.loading = false)
-                .subscribe(newItemsList => {
-                    // TODO: Update pagination
-                    this.statuses = newItemsList.Items;
-                });
-        } else {
-            this.getInitialStatuses();
-        }
     }
 
     getPreviousStatuses() {
         this.loading = true;
-        this.statusService.search({ hashtag: this.search, maxID: this.statuses[this.statuses.length - 1].Id })
+        this.statusService.search({ hashtag: this.search, maxID: this.statusList.PageInformation.EarlierPageMaxID })
             .finally(() => this.loading = false)
-            .subscribe(newStatusesList => {
-                // TODO: Update pagination
-                this.appendItems(this.statuses, newStatusesList.Items);
-                let currentYPosition = this.statusesWrapper.nativeElement.scrollTop;
-                this.statusesWrapper.nativeElement.scrollTo(0, currentYPosition);
+            .subscribe(newStatusList => {
+                this.appendItems(this.statusList.Items, newStatusList.Items);
+                this.statusList.PageInformation = newStatusList.PageInformation;
+                this.statusesWrapper.nativeElement.scrollTo(0, this.statusesWrapper.nativeElement.scrollTop);
             });
     }
 
-    /**
-     * Add the new items to main statuses array, scroll to top, empty newItems
-     */
-    viewNewStatuses() {
-        this.prependItems(this.statuses, this.new_statuses);
-        this.scrollToTop('statuses');
-        this.new_statuses = [];
-    }
+    // Only used if we want to continually check for new statuses with a hashtag search
+    //checkForNewStatuses() {
+    //    if (this.statuses.length > 0) {
+    //        this.statusService.search({ hashtag: this.search, sinceID: this.statuses[0].Id })
+    //            .finally(() => this.loading = false)
+    //            .subscribe(newItemsList => {
+    //                // TODO: Update pagination
+    //                this.statuses = newItemsList.Items;
+    //            });
+    //    } else {
+    //        this.getInitialStatuses();
+    //    }
+    //}
+
+    ///**
+    // * Add the new items to main statuses array, scroll to top, empty newItems
+    // */
+    //viewNewStatuses() {
+    //    this.prependItems(this.statusList.Items, this.newStatusList.Items);
+    //    this.scrollToTop('statuses');
+    //    this.newStatusList = new PagedList<Status>();
+    //}
 
 
 
@@ -130,10 +119,10 @@ export class SearchResultsPage implements OnInit {
      * Scrolls the status area to the top
      */
     scrollToTop(tab: string) {
-        if (tab === 'users')
-            this.usersWrapper.nativeElement.scrollTo(0, 0);
-        else if (tab === 'statuses')
+        if (tab === 'statuses')
             this.statusesWrapper.nativeElement.scrollTo(0, 0);
+        else if (tab === 'users')
+            this.usersWrapper.nativeElement.scrollTo(0, 0);
     }
 
     /**
@@ -142,9 +131,7 @@ export class SearchResultsPage implements OnInit {
      * @param ev
      */
     onScrollDown(ev: any, tab: string) {
-        if (tab === 'users')
-            this.getMoreUsers();
-        else if (tab === 'statuses')
+        if (tab === 'statuses')
             this.getPreviousStatuses();
     }
 

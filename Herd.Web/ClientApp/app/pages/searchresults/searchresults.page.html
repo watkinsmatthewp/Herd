@@ -3,16 +3,16 @@
 
 <div class="row col-sm-offset-2 col-sm-8">  
     <tabset #staticTabs>
-        <tab heading="Posts">
+        <tab heading="Statuses">
             <ng-container>
                 <div class="panel">
                     <div class="panel-heading text-center">
                         <div *ngIf="loading" class="btn pull-left"><fa name="spinner" spin=true></fa></div>
-                        <button *ngIf="new_statuses.length > 0" class="c-btn c-btn-primary" type="button" (click)="viewNewStatuses()">{{ new_statuses.length }} New Statuses</button>
+                        <button *ngIf="newStatusList.Items.length > 0" class="c-btn c-btn-primary" type="button" (click)="viewNewStatuses()">{{ new_statuses.length }} New Statuses</button>
                         <button class="c-btn c-btn-primary pull-right" type="button" (click)="scrollToTop('statuses')"><fa name="chevron-up"></fa>Scroll to top</button>
                     </div>
                     <div class="panel-body">
-                        <div *ngIf="statuses.length > 0" #statusesWrapper class="scrollWrapper"
+                        <div *ngIf="statusList.Items.length > 0" #statusesWrapper class="scrollWrapper"
                              data-infinite-scroll
                              debounce
                              [infiniteScrollContainer]="statusesWrapper"
@@ -20,11 +20,11 @@
                              [infiniteScrollDistance]="3"
                              [infiniteScrollThrottle]="1500"
                              (scrolled)="onScrollDown($event, 'statuses')">
-                            <div *ngFor="let status of statuses">
+                            <div *ngFor="let status of statusList.Items">
                                 <status [status]="status"></status>
                             </div>
                         </div>
-                        <div *ngIf="statuses.length === 0" class="text-center">
+                        <div *ngIf="statusList.Items.length === 0" class="text-center">
                             <h3>No results</h3>
                         </div>
                     </div>        
@@ -34,27 +34,26 @@
 
         <tab heading="Users">
             <ng-container>
-                <div class="panel panel-primary">
+                <div class="panel">
                     <div class="panel-heading text-center">
                         <div *ngIf="loading" class="btn pull-left"><fa name="spinner" spin=true></fa></div>
                         <button class="c-btn c-btn-primary pull-right" type="button" (click)="scrollToTop('users')"><fa name="chevron-up"></fa>Scroll to top</button>
                     </div>
                     <div class="panel-body text-center">
-                        <div *ngIf="userCards.length > 0" #usersWrapper class="scrollWrapper"
+                        <div *ngIf="userList.Items.length > 0" #usersWrapper class="scrollWrapper"
                              data-infinite-scroll
                              debounce
                              [infiniteScrollContainer]="usersWrapper"
                              [scrollWindow]="false"
                              [infiniteScrollDistance]="3"
-                             [infiniteScrollThrottle]="1500"
-                             (scrolled)="onScrollDown($event, 'users')">
-                            <div *ngFor="let userCard of userCards">
+                             [infiniteScrollThrottle]="1500">
+                            <div *ngFor="let user of userList.Items">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-                                    <usercard *ngIf="!isCurrentUser(userCard.MastodonUserId)" [userCard]="userCard" showBio="true" showActions="true" showFollowButton="true"></usercard>
+                                    <usercard *ngIf="!isCurrentUser(user.MastodonUserId)" [userCard]="user" showBio="true" showActions="true" showFollowButton="true"></usercard>
                                 </div>
                             </div>
                         </div>
-                        <div *ngIf="userCards.length === 0">
+                        <div *ngIf="userList.Items.length === 0">
                             <h3>No results</h3>
                         </div>
                     </div>

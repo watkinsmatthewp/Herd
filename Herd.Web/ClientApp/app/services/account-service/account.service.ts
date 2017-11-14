@@ -69,14 +69,7 @@ export class AccountService {
             queryString += "&max=" + searchParams.max
 
         return this.httpClient.get('api/mastodon-users/search' + queryString)
-            .map(response => { 
-                console.log('user-response', response);
-                let pagedList = response as PagedList<Account>;
-                console.log('\tAccount-PagedList', pagedList);
-                return pagedList;
-                //return response.Users as Account[]
-            });
-
+            .map(response => response as PagedList<Account>);
     }
 
     /**

@@ -200,9 +200,9 @@ namespace Herd.Business.UnitTests
             var result = herdApp.SearchUsers(new SearchMastodonUsersCommand { Name = "1" });
 
             Assert.True(result?.Success);
-            Assert.Equal(2, result.Data.Items.Count);
-            Assert.Equal("1", result.Data.Items[0].MastodonUserId);
-            Assert.Equal("11", result.Data.Items[1].MastodonUserId);
+            Assert.Equal(2, result.Data.Users.Count);
+            Assert.Equal("1", result.Data.Users[0].MastodonUserId);
+            Assert.Equal("11", result.Data.Users[1].MastodonUserId);
 
             mockMastodonApiWrapper.Verify(a => a.GetUsersByName("1", It.IsAny<MastodonUserContextOptions>(), It.IsAny<PagingOptions>()), Times.Once());
         }
@@ -222,8 +222,8 @@ namespace Herd.Business.UnitTests
             var result = herdApp.SearchUsers(new SearchMastodonUsersCommand { UserID = "11" });
 
             Assert.True(result?.Success);
-            Assert.Single(result.Data.Items);
-            Assert.Equal("11", result.Data.Items[0].MastodonUserId);
+            Assert.Single(result.Data.Users);
+            Assert.Equal("11", result.Data.Users[0].MastodonUserId);
 
             mockMastodonApiWrapper.Verify(a => a.GetMastodonAccount(It.IsAny<string>(), It.IsAny<MastodonUserContextOptions>()), Times.Once());
         }
@@ -255,8 +255,8 @@ namespace Herd.Business.UnitTests
             });
 
             Assert.True(result?.Success);
-            Assert.Single(result.Data.Items);
-            var user = result.Data.Items[0];
+            Assert.Single(result.Data.Users);
+            var user = result.Data.Users[0];
             Assert.Equal("11", user.MastodonUserId);
 
             Assert.Single(user.Following);
@@ -299,9 +299,9 @@ namespace Herd.Business.UnitTests
             });
 
             Assert.True(result?.Success);
-            Assert.Single(result.Data.Items);
-            Assert.Equal(1, result.Data.Items.Count);
-            Assert.Equal("2", result.Data.Items[0].MastodonUserId);
+            Assert.Single(result.Data.Users);
+            Assert.Equal(1, result.Data.Users.Count);
+            Assert.Equal("2", result.Data.Users[0].MastodonUserId);
 
             mockMastodonApiWrapper.Verify(a => a.AddContextToMastodonUsers(It.IsAny<IEnumerable<MastodonUser>>(), It.IsAny<MastodonUserContextOptions>()), Times.Once());
             mockMastodonApiWrapper.Verify(a => a.GetFollowing(It.IsAny<string>(), It.IsAny<MastodonUserContextOptions>(), It.IsAny<PagingOptions>()), Times.Once());
@@ -393,8 +393,8 @@ namespace Herd.Business.UnitTests
             });
 
             Assert.True(result?.Success);
-            Assert.Equal(1, result.Data.Items.Count);
-            Assert.Equal("1", result.Data.Items[0].Id);
+            Assert.Equal(1, result.Data.Posts.Count);
+            Assert.Equal("1", result.Data.Posts[0].Id);
 
             mockMastodonApiWrapper.Verify(a => a.GetPost(It.IsAny<string>(), It.IsAny<MastodonPostContextOptions>()), Times.Once());
         }
@@ -425,9 +425,9 @@ namespace Herd.Business.UnitTests
             });
 
             Assert.True(result?.Success);
-            Assert.Equal(2, result.Data.Items.Count);
-            Assert.Equal("1", result.Data.Items[0].Id);
-            Assert.Equal("2", result.Data.Items[1].Id);
+            Assert.Equal(2, result.Data.Posts.Count);
+            Assert.Equal("1", result.Data.Posts[0].Id);
+            Assert.Equal("2", result.Data.Posts[1].Id);
 
             mockMastodonApiWrapper.Verify(a => a.GetPostsByAuthorUserID(It.IsAny<string>(), It.IsAny<MastodonPostContextOptions>(), It.IsAny<PagingOptions>()), Times.Once());
         }
@@ -458,8 +458,8 @@ namespace Herd.Business.UnitTests
             });
 
             Assert.True(result?.Success);
-            Assert.Equal(1, result.Data.Items.Count);
-            Assert.Equal("2", result.Data.Items[0].Id);
+            Assert.Equal(1, result.Data.Posts.Count);
+            Assert.Equal("2", result.Data.Posts[0].Id);
 
             mockMastodonApiWrapper.Verify(a => a.GetPostsByHashTag(It.IsAny<string>(), It.IsAny<MastodonPostContextOptions>(), It.IsAny<PagingOptions>()), Times.Once());
         }
@@ -496,10 +496,10 @@ namespace Herd.Business.UnitTests
             });
 
             Assert.True(result?.Success);
-            Assert.Equal(3, result.Data.Items.Count);
-            Assert.Equal("4", result.Data.Items[0].Id);
-            Assert.Equal("5", result.Data.Items[1].Id);
-            Assert.Equal("6", result.Data.Items[2].Id);
+            Assert.Equal(3, result.Data.Posts.Count);
+            Assert.Equal("4", result.Data.Posts[0].Id);
+            Assert.Equal("5", result.Data.Posts[1].Id);
+            Assert.Equal("6", result.Data.Posts[2].Id);
 
             mockMastodonApiWrapper.Verify(a => a.GetPostsOnActiveUserTimeline(It.IsAny<MastodonPostContextOptions>(), It.IsAny<PagingOptions>()), Times.Once());
         }

@@ -186,7 +186,7 @@ namespace Herd.Business
                 var refPagedList = new PageInformation();
                 result.Data = new SearchMastodonUsersCommandResultData
                 {
-                    Items = GetUsers(searchMastodonUsersCommand, refPagedList).Synchronously(),
+                    Users = GetUsers(searchMastodonUsersCommand, refPagedList).Synchronously(),
                     PageInformation = refPagedList
                 };
             });
@@ -242,7 +242,7 @@ namespace Herd.Business
                 var pageInformation = new PageInformation();
                 result.Data = new SearchMastodonPostsCommandResultData
                 {
-                    Items = GetPosts(searchMastodonPostsCommand, pageInformation).Synchronously(),
+                    Posts = GetPosts(searchMastodonPostsCommand, pageInformation).Synchronously(),
                     PageInformation = pageInformation
                 };
             });

@@ -1,10 +1,9 @@
-﻿class PagingOptions {
-    MaxID: string;
-    SinceID: string;
-    Limit: number = 30;
+﻿class PageInformation {
+    EarlierPageMaxID: string;
+    NewerPageSinceID: string;
 }
 
 export class PagedList<T> {
-    PagingInformation: PagingOptions;
-    Items: T[];
+    PageInformation: PageInformation;
+    Items: T[] = [];
 }

@@ -59,13 +59,7 @@ export class StatusService {
             queryString += "&max=" + searchParams.max
 
         return this.httpClient.get('api/mastodon-posts/search' + queryString)
-            .map(response => {
-                console.log('status-response', response);
-                let pagedList = response as PagedList<Status>;
-                console.log('\tStatus-PagedList', pagedList);
-                return pagedList;
-                //return response.Posts as Status[];
-            });
+            .map(response => response as PagedList<Status>);
     }
 
     /**
