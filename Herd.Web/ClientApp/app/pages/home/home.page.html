@@ -54,8 +54,8 @@
                     <div *ngIf="loading" class="btn pull-left">
                         <fa name="spinner" spin=true></fa>
                     </div>
-                    <button *ngIf="newStatusList.Items.length > 0" class="c-btn c-btn-primary" type="button" (click)="viewNewItems()">{{newStatusList.Items.length}} New Statuses</button>
-                    <button class="c-btn c-btn-primary pull-right" type="button" (click)="scrollToTop()"><fa name="chevron-up"></fa>Scroll to top</button>
+                    <button *ngIf="newStatusList.Items.length > 0" class="c-btn c-btn-primary c-btn-sm" type="button" (click)="viewNewItems()">{{newStatusList.Items.length}} New Statuses</button>
+                    <button class="c-btn c-btn-primary c-btn-sm pull-right" type="button" (click)="scrollToTop()"><fa name="chevron-up"></fa>Scroll to top</button>
                 </div>
             </div>
             <div #statusesWrapper class="panel-body statusesWrapper"
