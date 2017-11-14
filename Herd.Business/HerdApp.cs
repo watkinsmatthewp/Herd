@@ -201,34 +201,32 @@ namespace Herd.Business
         /// <summary>
         /// Updates current user's mastodon profiles information
         /// </summary>
-        /// <param name="updateMastodonProfile"></param>
+        /// <param name="updateMastodonProfileCommand"></param>
         /// <returns></returns>
-        public CommandResult UpdateUserMastodonProfile(UpdateUserMastodonProfileCommand update)
+        public CommandResult UpdateUserMastodonProfile(UpdateUserMastodonProfileCommand updateMastodonProfileCommand)
         {
-            // This can be used to return the new account, if needed. Code not tested
-            //return ProcessCommand<UpdateUserMastodonProfileCommandResultData>(result =>
-            //{
-            //    result.Data = new UpdateUserMastodonProfileCommandResultData
-            //    {
-            //        UpdatedUser = _mastodonApiWrapper.updateMastodonProfile(update.DisplayName, update.Bio, update.Avatar, update.Header).Synchronously()
-            //    };
-            //});
             return ProcessCommand(result =>
             {
-                _mastodonApiWrapper.updateMastodonProfile(update.DisplayName, update.Bio, update.Avatar, update.Header).Synchronously();
+                _mastodonApiWrapper.UpdateMastodonProfile
+                (
+                    updateMastodonProfileCommand.DisplayName,
+                    updateMastodonProfileCommand.Bio,
+                    updateMastodonProfileCommand.AvatarImageStream,
+                    updateMastodonProfileCommand.HeaderImageStream
+                ).Synchronously();
             });
         }
 
-    #endregion Mastodon Users
+        #endregion Mastodon Users
 
-    #region Mastodon Posts
+        #region Mastodon Posts
 
-    /// <summary>
-    /// Processes a command to like a post
-    /// </summary>
-    /// <param name="likeCommand"></param>
-    /// <returns></returns>
-    public CommandResult LikePost(LikeMastodonPostCommand likeCommand)
+        /// <summary>
+        /// Processes a command to like a post
+        /// </summary>
+        /// <param name="likeCommand"></param>
+        /// <returns></returns>
+        public CommandResult LikePost(LikeMastodonPostCommand likeCommand)
         {
             return ProcessCommand(result =>
             {

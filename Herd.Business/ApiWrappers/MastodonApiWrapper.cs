@@ -227,17 +227,31 @@ namespace Herd.Business.ApiWrappers
         }
 
         /// <summary>
-        /// Updates the currently authenticated user's profile information
+        /// Updates the mastodon profile information
         /// </summary>
         /// <param name="display_name"></param>
         /// <param name="bio"></param>
-        /// <param name="avatar"></param>
-        /// <param name="header"></param>
+        /// <param name="avatarImage"></param>
+        /// <param name="headerImage"></param>
         /// <returns></returns>
-        public async Task<MastodonUser> updateMastodonProfile(string display_name, string bio, string avatar, string header)
+        public async Task<MastodonUser> UpdateMastodonProfile(string display_name, string bio, Stream avatarImage, Stream headerImage)
         {
-            System.Diagnostics.Debug.WriteLine(avatar);
-            return (await BuildMastodonApiClient().UpdateCredentials(display_name, bio, avatar, header)).ToMastodonUser();
+            var apiTask = BuildMastodonApiClient().UpdateCredentials(display_name, bio, await ReadBase64(avatarImage), await ReadBase64(headerImage));
+            return (await apiTask).ToMastodonUser();
+        }
+
+        async Task<string> ReadBase64(Stream stream)
+        {
+            if (stream?.Length > 0)
+            {
+                using (stream)
+                {
+                    var bytes = new byte[stream.Length];
+                    await stream.ReadAsync(bytes, 0, (int)(stream.Length));
+                    return Convert.ToBase64String(bytes);
+                }
+            }
+            return null;
         }
 
         #endregion User
