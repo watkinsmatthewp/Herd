@@ -60,7 +60,9 @@ describe('Service: Account Service', () => {
                     includeFollowing: true,
                     includeFollowsActiveUser: true,
                     includeFollowedByActiveUser: true,
-                    max: 30
+                    max: 30,
+                    maxID: "101010",
+                    sinceID: "0"
                 }
 
                 accountService.search(params)
