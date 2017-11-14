@@ -2,7 +2,7 @@
 import { Observable } from "rxjs/Observable";
 
 import { User } from '../../models';
-import { Account, Status } from '../../models/mastodon';
+import { Account, Status, PagedList } from '../../models/mastodon';
 import { HttpClientService } from '../http-client-service/http-client.service';
 
 /**
@@ -42,7 +42,7 @@ export class AccountService {
      * Performs a search across accounts
      * @param searchParams
      */
-    search(searchParams: AccountSearchParams): Observable<Account[]> {
+    search(searchParams: AccountSearchParams): Observable<PagedList<Account>> {
         let queryString = "?"
 
         if (searchParams.mastodonUserID)
@@ -70,7 +70,11 @@ export class AccountService {
 
         return this.httpClient.get('api/mastodon-users/search' + queryString)
             .map(response => { 
-                return response.Users as Account[]
+                console.log('user-response', response);
+                let pagedList = response as PagedList<Account>;
+                console.log('\tAccount-tPagedList', pagedList);
+                return pagedList;
+                //return response.Users as Account[]
             });
 
     }

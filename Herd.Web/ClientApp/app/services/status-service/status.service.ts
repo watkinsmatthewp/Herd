@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
 
 import { HttpClientService } from '../http-client-service/http-client.service';
-import { Status } from '../../models/mastodon';
+import { Status, PagedList } from '../../models/mastodon';
 
 /**
     let params = {
@@ -36,7 +36,7 @@ export class StatusService {
 
     constructor(private http: Http, private httpClient: HttpClientService) {}
 
-    search(searchParams: StatusSearchParams): Observable<Status[]> {
+    search(searchParams: StatusSearchParams): Observable<PagedList<Status>> {
         let queryString = "?"
             
         if (searchParams.onlyOnActiveUserTimeline)
@@ -59,7 +59,13 @@ export class StatusService {
             queryString += "&max=" + searchParams.max
 
         return this.httpClient.get('api/mastodon-posts/search' + queryString)
-            .map(response => response.Posts as Status[]);
+            .map(response => {
+                console.log('status-response', response);
+                let pagedList = response as PagedList<Status>;
+                console.log('\tStatus-PagedList', pagedList);
+                return pagedList;
+                //return response.Posts as Status[];
+            });
     }
 
     /**

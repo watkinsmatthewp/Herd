@@ -59,7 +59,7 @@ export class HomePage implements OnInit {
         let currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
         let userID = currentUser.MastodonConnection.MastodonUserID;
         this.accountService.search({ mastodonUserID: userID, includeFollowedByActiveUser: true, includeFollowsActiveUser: true })
-            .map(response => response[0] as Account)
+            .map(response => response.Items[0] as Account)
             .subscribe(account => {
                 this.userCard = account;
             });
@@ -73,7 +73,8 @@ export class HomePage implements OnInit {
             .finally(() => this.loading = false)
             .subscribe(feed => {
                 this.toastService.remove(progress.id);
-                this.homeFeed = feed;
+                // TODO: Update pagination
+                this.homeFeed = feed.Items;
             }, error => {
                 this.toastService.error("Error", error.error);
             });
@@ -90,7 +91,8 @@ export class HomePage implements OnInit {
         this.statusService.search({ onlyOnActiveUserTimeline: true, sinceID: this.homeFeed[0].Id })
             .finally(() => this.loading = false)
             .subscribe(newItems => {
-                this.newItems = newItems;
+                // TODO: Update pagination
+                this.newItems = newItems.Items;
             });
     }
 
@@ -99,7 +101,8 @@ export class HomePage implements OnInit {
         this.statusService.search({ onlyOnActiveUserTimeline: true, maxID: this.homeFeed[this.homeFeed.length - 1].Id })
             .finally(() => this.loading = false)
             .subscribe(new_items => {
-                this.appendItems(this.homeFeed, new_items);
+                // TODO: Update pagination
+                this.appendItems(this.homeFeed, new_items.Items);
                 let currentYPosition = this.statusesWrapper.nativeElement.scrollTop;
                 this.statusesWrapper.nativeElement.scrollTo(0, currentYPosition);
             });
@@ -109,7 +112,7 @@ export class HomePage implements OnInit {
         this.loading = true;
         //let progress = this.toastService.info("Retrieving" , "status info ...");
         this.statusService.search({ postID: statusId, includeAncestors: true, includeDescendants: true })
-            .map(posts => posts[0] as Status)
+            .map(postList => postList.Items[0] as Status)
             .finally(() =>  this.loading = false)
             .subscribe(data => {
                // this.toastService.remove(progress.id);
@@ -127,7 +130,7 @@ export class HomePage implements OnInit {
         this.loading = true;
         //let progress = this.toastService.info("Retrieving",  "status info ...");
         this.statusService.search({ postID: statusId, includeAncestors: false, includeDescendants: false })
-            .map(posts => posts[0] as Status)
+            .map(postList => postList.Items[0] as Status)
             .finally(() => this.loading = false)
             .subscribe(data => {
                 //this.toastService.remove(progress.id);
