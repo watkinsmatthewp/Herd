@@ -3,13 +3,13 @@
 
         <form name="form" (ngSubmit)="f.form.valid && submitStatus(f)" #f="ngForm" enctype="multipart/form-data" novalidate>
             <!--  Title and Remaining Chars -->
-            <div class="row">
+            <!--<div class="row">
                 <div class="col-sm-12">
                     <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !status.valid }">
-                        <div class="c-header-xs">{{ actionName }} | <small>{{ maxStatusLength - model.status.length }}</small></div>
+                        <div class="c-body">{{ actionName }} | <small>{{ maxStatusLength - model.status.length }}</small></div>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <!-- Visibility -->
             <div class="row">
                 <div class="form-group col-sm-3">
@@ -42,6 +42,9 @@
                             </label>
                         </div>
                         <div class="pull-right c-btn-group">
+                            <div class="charLimitOffset">
+                                <p><small>{{ maxStatusLength - model.status.length }}</small></p>
+                            </div>
                             <button [disabled]="loading || !f.valid" type="submit" class="c-btn c-btn-primary">
                                 <fa *ngIf="loading" name="spinner" spin=true></fa>
                                 <span><fa name="pencil"></fa> {{ actionName }}</span>
