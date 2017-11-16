@@ -43,7 +43,7 @@
         <div class="panel">
             <div class="panel-body">
                 <tabset #staticTabs>
-                    <tab heading="Posts ({{ account?.PostCount }})">
+                    <tab heading="Posts ({{ account?.PostCount | number }})">
                         <div class="row">
                             <ng-container *ngIf="account">
                                 <div class="panel">
@@ -71,7 +71,7 @@
                             </ng-container>
                         </div>
                     </tab>
-                    <tab heading="Following ({{ account?.FollowingCount }})">
+                    <tab heading="Following ({{ account?.FollowingCount | number }})">
                         <div class="row">
                             <ng-container *ngIf="account">
                                 <div class="panel">
@@ -98,7 +98,7 @@
                             </ng-container>
                         </div> 
                     </tab>
-                    <tab heading="Followers ({{ account?.FollowersCount }})">
+                    <tab heading="Followers ({{ account?.FollowersCount | number }})">
                         <div class="row">
                             <ng-container *ngIf="account">
                                 <div class="panel">
