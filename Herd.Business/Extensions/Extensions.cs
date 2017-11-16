@@ -1,5 +1,6 @@
 ﻿using Herd.Core;
 using System;
+using System.Collections;
 using System.Linq;
 
 namespace Herd.Business.Extensions

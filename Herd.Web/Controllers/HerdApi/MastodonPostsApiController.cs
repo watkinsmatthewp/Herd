@@ -1,17 +1,26 @@
 ﻿using Herd.Business.Models;
 using Herd.Business.Models.Commands;
 using Herd.Business.Models.Entities;
+using Herd.Core;
 using Herd.Web.CustomAttributes;
 using Herd.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Linq;
 
 namespace Herd.Web.Controllers.HerdApi
 {
     [Route("api/mastodon-posts")]
     public class MastodonPostsApiController : BaseApiController
     {
+        [HttpGet("top-hashtags")]
+        public IActionResult TopHashTags(int max = 30)
+        {
+            return ApiJson(App.GetTopHashTags(new GetTopHashTagsCommand { Limit = max })
+                .Then(r => r.Data.HashTags = r.Data.HashTags.OrderByDescending(h => h).ToArray()));
+        }
+
         [HttpGet("search")]
         public IActionResult Search
         (

@@ -20,19 +20,21 @@ namespace Herd.Business
 {
     public class HerdApp : IHerdApp
     {
-        private const string NON_REDIRECT_URL = "urn:ietf:wg:oauth:2.0:oob";
+        const string NON_REDIRECT_URL = "urn:ietf:wg:oauth:2.0:oob";
 
-        private static Random _saltGenerator = new Random(Guid.NewGuid().GetHashCode());
+        static Random _saltGenerator = new Random(Guid.NewGuid().GetHashCode());
 
-        private IDataProvider _data;
-        private IMastodonApiWrapper _mastodonApiWrapper;
-        private ILogger _logger;
+        IDataProvider _data;
+        IMastodonApiWrapper _mastodonApiWrapper;
+        ILogger _logger;
+        IHashTagRelevanceManager _hashTagRelevanceManager;
 
-        public HerdApp(IDataProvider data, IMastodonApiWrapper mastodonApiWrapper, ILogger logger)
+        public HerdApp(IDataProvider data, IHashTagRelevanceManager hashTagRelevanceManager, IMastodonApiWrapper mastodonApiWrapper, ILogger logger)
         {
             _data = data ?? throw new ArgumentNullException(nameof(data));
             _mastodonApiWrapper = mastodonApiWrapper ?? throw new ArgumentNullException(nameof(mastodonApiWrapper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _hashTagRelevanceManager = hashTagRelevanceManager ?? throw new ArgumentNullException(nameof(hashTagRelevanceManager));
         }
 
         #region App registration
@@ -221,16 +223,16 @@ namespace Herd.Business
             });
         }
 
-    #endregion Mastodon Users
+        #endregion Mastodon Users
 
-    #region Mastodon Posts
+        #region Mastodon Posts
 
-    /// <summary>
-    /// Processes a command to like a post
-    /// </summary>
-    /// <param name="likeCommand"></param>
-    /// <returns></returns>
-    public CommandResult LikePost(LikeMastodonPostCommand likeCommand)
+        /// <summary>
+        /// Processes a command to like a post
+        /// </summary>
+        /// <param name="likeCommand"></param>
+        /// <returns></returns>
+        public CommandResult LikePost(LikeMastodonPostCommand likeCommand)
         {
             return ProcessCommand(result =>
             {
@@ -287,10 +289,43 @@ namespace Herd.Business
                     createNewPostCommand.Sensitive,
                     createNewPostCommand.SpoilerText
                 ).Synchronously();
+
+                foreach (var sanitizedHashTag in new HashTagExtractor().ExtractHashTags(createNewPostCommand.Message))
+                {
+                    _hashTagRelevanceManager.RegisterHashTagUse(sanitizedHashTag);
+                }
             });
         }
 
         #endregion Mastodon Posts
+
+        #region HashTags
+
+        public CommandResult<GetTopHashTagsCommandResultData> GetTopHashTags(GetTopHashTagsCommand getTopHashTagsCommand)
+        {
+            return ProcessCommand<GetTopHashTagsCommandResultData>(result =>
+            {
+                result.Data = new GetTopHashTagsCommandResultData
+                {
+                    HashTags = _hashTagRelevanceManager.TopHashTagsList
+                        .Take(getTopHashTagsCommand.Limit)
+                        .ToArray()
+                };
+            });
+        }
+
+        public CommandResult CreateTopHashTags()
+        {
+            return ProcessCommand(result =>
+            {
+                _data.CreateTopHashTagsList(new TopHashTagsList
+                {
+                    HashTags = new SortedSet<HashTag>()
+                });
+            });
+        }
+
+        #endregion
 
         #region Private helpers
 
