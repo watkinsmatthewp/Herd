@@ -1,5 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 
+import { Notification } from '../../models/mastodon';
+
 @Component({
     selector: 'notification',
     templateUrl: './notification.component.html',
