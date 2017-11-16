@@ -36,21 +36,17 @@
    
     <!-- Middle Column -->
     <div class="col-sm-12 col-md-7 col-lg-6 col-lg-pull-3">
-        <div class="statusFormWrapper">
-            <status-form #homeStatusForm actionName="Create Status"></status-form>
-        </div>
-        
-
         <div class="panel">
-            <div class="panel-heading text-center" style="min-height: 50px;">
+            <!--<div class="panel-heading text-center" style="min-height: 50px;">
                 <div>
                     <div *ngIf="loading" class="btn pull-left">
                         <fa name="spinner" spin=true></fa>
                     </div>
-                    <button *ngIf="newStatusList.Items.length > 0" class="c-btn c-btn-primary c-btn-sm" type="button" (click)="viewNewItems()">{{newStatusList.Items.length}} New Statuses</button>
-                    <button class="c-btn c-btn-primary c-btn-sm pull-right" type="button" (click)="scrollToTop()"><fa name="chevron-up"></fa>Scroll to top</button>
+                    <button *ngIf="newStatusList.Items.length > 0"   class="c-btn c-btn-primary c-btn-sm" type="button" (click)="viewNewItems()">{{newStatusList.Items.length}} New Statuses</button>
+                    <button *ngIf="newStatusList.Items.length === 0" class="c-btn c-btn-primary c-btn-sm" type="button" (click)="scrollToTop()"><fa name="chevron-up"></fa>Scroll to top</button>
                 </div>
-            </div>
+            </div>-->
+            
             <div #statusesWrapper class="panel-body statusesWrapper"
                 data-infinite-scroll
                     debounce
@@ -60,10 +56,19 @@
                     [infiniteScrollThrottle]="1500"
                     (scrolled)="onScrollDown($event)">
                  
+                <status-form #homeStatusForm actionName="Create Status"></status-form>
                 <div *ngFor="let status of statusList.Items" class="row">
                     <div class="col-sm-12">
                         <status [status]="status"></status>
                     </div>
+                </div>
+                <div class="infiniteStaticButtons">
+                    <button *ngIf="newStatusList.Items.length > 0" class="c-btn c-btn-primary c-btn-sm" type="button" (click)="viewNewItems()">{{newStatusList.Items.length}} 
+                        New Statuses
+                    </button>
+                    <button *ngIf="newStatusList.Items.length === 0" class="c-btn c-btn-primary c-btn-sm" type="button" (click)="scrollToTop()">
+                        <fa name="chevron-up"></fa>
+                    </button>
                 </div>
             </div>
         </div>
