@@ -32,14 +32,21 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-horizontal">
-                        <div class="pull-left btn-group">
-                            <button type="button" class="c-btn c-btn-secondary spoilerButton" [ngClass]="{'c-bg-warning': model.contentWarning, 'spoilerButton': !model.contentWarning }" (click)="toggleContentWarning()">
-                                <fa name="exclamation-triangle" size="1"></fa>
-                            </button>
-                            <label class="c-btn c-btn-secondary">
-                                <fa name="cloud-upload" size="1"></fa>
-                                <input #fileInput style="display: none !important;" type="file" (change)="onFileChange($event)">
-                            </label>
+                        <div class="pull-left">
+                            <div class="form-inline">
+                                <button type="button" class="c-btn c-btn-secondary spoilerButton" [ngClass]="{'c-bg-warning': model.contentWarning, 'spoilerButton': !model.contentWarning }" (click)="toggleContentWarning()">
+                                    <fa name="exclamation-triangle" size="1"></fa>
+                                </button>
+                                <label class="c-btn c-btn-secondary">
+                                    <fa name="cloud-upload" size="1"></fa>
+                                    <input #fileInput style="display: none !important;" type="file" (change)="onFileChange($event)">
+                                </label>
+                                <select name="visibility" class="form-control" [(ngModel)]="model.visibility" selected=0 required>
+                                    <option *ngFor="let visibility of visibilityOptions" [ngValue]="visibility.value" title="{{ visibility.context }}">
+                                        {{ visibility.option }}
+                                    </option>
+                                </select>
+                            </div>
                         </div>
                         <div class="pull-right c-btn-group">
                             <div class="charLimitOffset">
