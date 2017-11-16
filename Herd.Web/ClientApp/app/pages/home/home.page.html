@@ -63,8 +63,8 @@
                     </div>
                 </div>
                 <div class="infiniteStaticButtons">
-                    <button *ngIf="newStatusList.Items.length > 0" class="c-btn c-btn-primary c-btn-sm" type="button" (click)="viewNewItems()">{{newStatusList.Items.length}} 
-                        New Statuses
+                    <button *ngIf="newStatusList.Items.length > 0" class="c-btn c-btn-primary c-btn-sm" type="button" (click)="viewNewItems()">
+                        {{newStatusList.Items.length}} new status(es)
                     </button>
                     <button *ngIf="newStatusList.Items.length === 0" class="c-btn c-btn-primary c-btn-sm" type="button" (click)="scrollToTop()">
                         <fa name="chevron-up"></fa>
