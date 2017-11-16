@@ -39,8 +39,8 @@
                     <fa *ngIf="status.IsFavourited" name="heart" class="heart-color"></fa>
                     <span>{{ status.FavouritesCount }}</span>
                 </button>
-                <button class="btn btn-secondary message-btn status-btn" type="button" title="Direct Message" (click)="directMessage($event)">
-                    <fa name="envelope-o"></fa>
+                <button class="btn btn-secondary message-btn status-btn" type="button" title="Mention" (click)="directMessage($event)">
+                    <fa name="at"></fa>
                 </button>
             </div>
         </div><!-- ./Buttons Row -->
