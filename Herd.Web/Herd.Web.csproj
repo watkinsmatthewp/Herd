@@ -104,7 +104,6 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\test\coverage\" />
-    <Folder Include="wwwroot\css\" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
