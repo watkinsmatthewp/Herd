@@ -42,7 +42,9 @@
                         </div>
                         <div class="pull-right c-btn-group">
                             <div class="charLimitOffset">
-                                <p><small>{{ maxStatusLength - model.status.length }}</small></p>
+                                <div class="charLimitCenter">
+                                    <small>{{ maxStatusLength - model.status.length }}</small>
+                                </div>
                             </div>
                             <button [disabled]="loading || !f.valid" type="submit" class="c-btn c-btn-primary">
                                 <fa *ngIf="loading" name="spinner" spin=true></fa>

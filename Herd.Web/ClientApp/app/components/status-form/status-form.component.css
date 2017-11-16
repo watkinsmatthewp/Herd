@@ -30,6 +30,12 @@ textarea {
     padding-right: .5em;
 }
 
+.charLimitCenter {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 .close {
     position: absolute;
     top: 0;
