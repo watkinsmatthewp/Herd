@@ -6,9 +6,6 @@ namespace Herd.Business
 {
     public interface IHerdApp
     {
-        // Basic CRUD
-        CommandResult<GetHerdUserCommandResultData> GetUser(GetHerdUserCommand getUserCommand);
-
         // App registration
         CommandResult<GetRegistrationCommandResultData> GetRegistration(GetRegistrationCommand getRegistrationCommand);
 
@@ -17,6 +14,7 @@ namespace Herd.Business
         CommandResult<GetMastodonOAuthURLCommandResultData> GetOAuthURL(GetMastodonOAuthURLCommand getOAuthUrlCommand);
 
         // Auth
+        CommandResult<GetHerdUserCommandResultData> GetUser(GetHerdUserCommand getUserCommand);
         CommandResult<CreateHerdUserCommandResultData> CreateUser(CreateHerdUserCommand createUserCommand);
 
         CommandResult<LoginHerdUserCommandResultData> LoginUser(LoginHerdUserCommand loginUserCommand);
@@ -38,5 +36,9 @@ namespace Herd.Business
         CommandResult LikePost(LikeMastodonPostCommand likeCommand);
 
         CommandResult RepostPost(RepostMastodonPostCommand repostCommand);
+
+        // HashTags
+        CommandResult<GetTopHashTagsCommandResultData> GetTopHashTags(GetTopHashTagsCommand getTopHashTagsCommand);
+        CommandResult CreateTopHashTags();
     }
 }

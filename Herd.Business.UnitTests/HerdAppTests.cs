@@ -22,13 +22,14 @@ namespace Herd.Business.UnitTests
         private Mock<IDataProvider> _mockData = new Mock<IDataProvider>();
         private Mock<IMastodonApiWrapper> _mockMastodonApiWrapper = new Mock<IMastodonApiWrapper>();
         private Mock<ILogger> _mockLogger = new Mock<ILogger>();
+        private Mock<IHashTagRelevanceManager> _mockHashTagRelevanceManager = new Mock<IHashTagRelevanceManager>();
 
         #region General
 
         [Fact]
         public void SystemErrorHandledCorrectlyTest()
         {
-            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
             var result = herdApp.SearchPosts(null);
             Assert.False(result?.Success);
             Assert.True(result.HasSystemErrors);
@@ -56,7 +57,7 @@ namespace Herd.Business.UnitTests
             };
 
             _mockData.Setup(d => d.GetAppRegistration(3)).Returns(expectedRegistration);
-            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             var result = herdApp.GetRegistration(new GetRegistrationCommand { ID = 3 });
 
@@ -80,7 +81,7 @@ namespace Herd.Business.UnitTests
             _mockData.Setup(d => d.CreateAppRegistration(It.Is<Registration>(r => r.Instance == "mastodon.instance")))
                 .Returns<Registration>(registrationToCreate => registrationToCreate.With(r => r.ID = 3));
 
-            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             var result = herdApp.GetOrCreateRegistration(new GetOrCreateRegistrationCommand { Instance = "mastodon.instance" });
 
@@ -116,7 +117,7 @@ namespace Herd.Business.UnitTests
             };
 
             _mockData.Setup(d => d.GetAppRegistration("mastodon.instance")).Returns(expectedRegistration);
-            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             var result = herdApp.GetOrCreateRegistration(new GetOrCreateRegistrationCommand { Instance = "mastodon.instance" });
 
@@ -142,7 +143,7 @@ namespace Herd.Business.UnitTests
             });
             _mockMastodonApiWrapper.Setup(p => p.GetOAuthUrl("https://SentURL")).Returns("https://ReturnedURL");
 
-            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             var result = herdApp.GetOAuthURL(new GetMastodonOAuthURLCommand { AppRegistrationID = 4, ReturnURL = "https://SentURL" });
 
@@ -163,7 +164,7 @@ namespace Herd.Business.UnitTests
             _mockMastodonApiWrapper.Setup(d => d.Follow("1", true))
                 .Returns<string, bool>((id, follows) => Task.FromResult(new MastodonRelationship { ID = id, Following = follows }));
 
-            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             var result = herdApp.FollowUser(new FollowMastodonUserCommand { UserID = "1", FollowUser = true });
 
@@ -177,7 +178,7 @@ namespace Herd.Business.UnitTests
             _mockMastodonApiWrapper.Setup(d => d.Follow("1", true))
                 .Returns<string, bool>((id, follows) => Task.FromResult(new MastodonRelationship { ID = id, Following = follows }));
 
-            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             var result = herdApp.FollowUser(new FollowMastodonUserCommand { UserID = "1", FollowUser = false });
 
@@ -195,7 +196,7 @@ namespace Herd.Business.UnitTests
             };
             mockApiWrapperBuilder.SetupUsers(1, 2, 11);
             var mockMastodonApiWrapper = mockApiWrapperBuilder.BuildMockMastodonApiWrapper();
-            var herdApp = new HerdApp(_mockData.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             var result = herdApp.SearchUsers(new SearchMastodonUsersCommand { Name = "1" });
 
@@ -217,7 +218,7 @@ namespace Herd.Business.UnitTests
             };
             mockApiWrapperBuilder.SetupUsers(1, 2, 11);
             var mockMastodonApiWrapper = mockApiWrapperBuilder.BuildMockMastodonApiWrapper();
-            var herdApp = new HerdApp(_mockData.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             var result = herdApp.SearchUsers(new SearchMastodonUsersCommand { UserID = "11" });
 
@@ -245,7 +246,7 @@ namespace Herd.Business.UnitTests
             mockApiWrapperBuilder.SetupFollowRelationship(11, 2);
 
             var mockMastodonApiWrapper = mockApiWrapperBuilder.BuildMockMastodonApiWrapper();
-            var herdApp = new HerdApp(_mockData.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             var result = herdApp.SearchUsers(new SearchMastodonUsersCommand
             {
@@ -288,7 +289,7 @@ namespace Herd.Business.UnitTests
             mockApiWrapperBuilder.SetupFollowRelationship(11, 2);
 
             var mockMastodonApiWrapper = mockApiWrapperBuilder.BuildMockMastodonApiWrapper();
-            var herdApp = new HerdApp(_mockData.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             var result = herdApp.SearchUsers(new SearchMastodonUsersCommand
             {
@@ -318,7 +319,7 @@ namespace Herd.Business.UnitTests
             _mockMastodonApiWrapper.Setup(d => d.Repost("1", true))
                 .Returns<string, bool>((id, repost) => Task.FromResult(new MastodonPost { Id = id, IsReblogged = repost }));
 
-            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             var result = herdApp.RepostPost(new RepostMastodonPostCommand { PostID = "1", Repost = true });
 
@@ -332,7 +333,7 @@ namespace Herd.Business.UnitTests
             _mockMastodonApiWrapper.Setup(d => d.Repost("1", false))
                 .Returns<string, bool>((id, repost) => Task.FromResult(new MastodonPost { Id = id, IsReblogged = repost }));
 
-            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             var result = herdApp.RepostPost(new RepostMastodonPostCommand { PostID = "1", Repost = false });
 
@@ -346,7 +347,7 @@ namespace Herd.Business.UnitTests
             _mockMastodonApiWrapper.Setup(d => d.Like("1", true))
                 .Returns<string, bool>((id, like) => Task.FromResult(new MastodonPost { Id = id, IsFavourited = like }));
 
-            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             var result = herdApp.LikePost(new LikeMastodonPostCommand { PostID = "1", Like = true });
 
@@ -360,7 +361,7 @@ namespace Herd.Business.UnitTests
             _mockMastodonApiWrapper.Setup(d => d.Like("1", false))
                 .Returns<string, bool>((id, like) => Task.FromResult(new MastodonPost { Id = id, IsFavourited = like }));
 
-            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             var result = herdApp.LikePost(new LikeMastodonPostCommand { PostID = "1", Like = false });
 
@@ -385,7 +386,7 @@ namespace Herd.Business.UnitTests
 
             var mockMastodonApiWrapper = mockApiWrapperBuilder.BuildMockMastodonApiWrapper();
 
-            var herdApp = new HerdApp(_mockData.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             var result = herdApp.SearchPosts(new SearchMastodonPostsCommand
             {
@@ -417,7 +418,7 @@ namespace Herd.Business.UnitTests
 
             var mockMastodonApiWrapper = mockApiWrapperBuilder.BuildMockMastodonApiWrapper();
 
-            var herdApp = new HerdApp(_mockData.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             var result = herdApp.SearchPosts(new SearchMastodonPostsCommand
             {
@@ -450,7 +451,7 @@ namespace Herd.Business.UnitTests
 
             var mockMastodonApiWrapper = mockApiWrapperBuilder.BuildMockMastodonApiWrapper();
 
-            var herdApp = new HerdApp(_mockData.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             var result = herdApp.SearchPosts(new SearchMastodonPostsCommand
             {
@@ -488,7 +489,7 @@ namespace Herd.Business.UnitTests
 
             var mockMastodonApiWrapper = mockApiWrapperBuilder.BuildMockMastodonApiWrapper();
 
-            var herdApp = new HerdApp(_mockData.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             var result = herdApp.SearchPosts(new SearchMastodonPostsCommand
             {
@@ -512,7 +513,7 @@ namespace Herd.Business.UnitTests
                 .Returns(Task.FromResult(new MastodonPost()));
 
             // Create the HerdApp using the mock objects
-            var herdApp = new HerdApp(_mockData.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
 
             // Run the HerdApp command (should execute the mock)
             var result = herdApp.CreateNewPost(new CreateNewMastodonPostCommand { Message = "Hello World!" });
