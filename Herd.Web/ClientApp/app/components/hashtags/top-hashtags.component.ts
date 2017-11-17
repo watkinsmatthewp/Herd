@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 
 import { StatusService } from "../../services";
+import { Hashtag } from "../../models/mastodon";
 
 
 @Component({
@@ -11,14 +12,17 @@ import { StatusService } from "../../services";
     styleUrls: ['./top-hashtags.component.css']
 })
 export class TopHashtagsComponent implements OnInit {
-    hashtags: string[] = [];
+    hashtags: Hashtag[] = [];
+
+    constructor(private statusService: StatusService) { }
 
     ngOnInit() {
         this.getPopularHashtags();
     }
 
     getPopularHashtags() {
-        // call service to get hashtags, for now just mocked.
-        this.hashtags.push("lunch", "ipreo", "Avengers", "IronMan", "BlackWidow", "CaptainAmerica", "TheHulk", "NickFury", "DrStrange", "ClintBarton");
+        this.statusService.getTopHashtags().subscribe(hashtagList => {
+            this.hashtags = hashtagList;
+        });
     }
 }

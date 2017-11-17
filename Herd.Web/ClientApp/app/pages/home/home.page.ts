@@ -7,7 +7,7 @@ import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 
 import { StatusService, EventAlertService, AccountService } from "../../services";
 import { EventAlertEnum, Storage } from '../../models';
-import { Status, Account, PagedList } from "../../models/mastodon";
+import { Account, Hashtag, PagedList, Status } from "../../models/mastodon";
 
 @Component({
     selector: 'home',
@@ -28,7 +28,6 @@ export class HomePage implements OnInit {
     account: Account = new Account();
     statusList: PagedList<Status> = new PagedList<Status>();
     newStatusList: PagedList<Status> = new PagedList<Status>();
-    hashtags: string[] = [];
 
     constructor(private activatedRoute: ActivatedRoute, private eventAlertService: EventAlertService,
                 private toastService: NotificationsService, private statusService: StatusService,
@@ -53,7 +52,6 @@ export class HomePage implements OnInit {
         setInterval(() => { this.checkForNewStatuses(); }, 10 * 1000);
         this.getMostRecentHomeFeed();
         this.getaccount();
-        this.getPopularHashtags();
     }
 
     getaccount() {
@@ -78,11 +76,6 @@ export class HomePage implements OnInit {
             }, error => {
                 this.toastService.error("Error", error.error);
             });
-    }
-
-    getPopularHashtags() {
-        // call service to get hashtags, for now just mocked.
-        this.hashtags.push("lunch", "ipreo", "Avengers", "IronMan", "BlackWidow", "CaptainAmerica", "TheHulk", "NickFury", "DrStrange", "ClintBarton");
     }
 
     checkForNewStatuses() {

@@ -78,6 +78,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\usercard\usercard.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\EventAlert.enum.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\index.ts" />
+    <TypeScriptCompile Include="ClientApp\app\models\mastodon\Hashtag.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\mastodon\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\mastodon\PagedList.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\mastodon\Visibility.ts" />
