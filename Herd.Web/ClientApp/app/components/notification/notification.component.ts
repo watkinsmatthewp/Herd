@@ -1,6 +1,10 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Notification } from '../../models/mastodon';
+import { StatusService, EventAlertService } from "../../services";
+import { Status } from '../../models/mastodon';
+import { EventAlertEnum } from "../../models/index";
 
 @Component({
     selector: 'notification',
@@ -9,9 +13,12 @@ import { Notification } from '../../models/mastodon';
 })
 export class NotificationComponent implements OnInit {
 
-    constructor() {}
+    @Input() notification: Notification;
+
+    constructor(private router: Router, private statusService: StatusService, private eventAlertService: EventAlertService) { }
 
     ngOnInit() {
+
     }
 
 }

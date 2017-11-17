@@ -1,1 +1,8 @@
-﻿
+﻿.notification-format {
+    background-color: #ffffff;
+}
+
+.profile-picture {
+    width: 60px;
+    height: 60px;
+}
