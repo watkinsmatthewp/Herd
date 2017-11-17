@@ -26,7 +26,9 @@ export class StatusComponent implements OnInit {
         }
 
         // Add the status images to the imagesArray
-        this.imagesArray.push(new Image(this.status.MediaAttachment));
+        if (this.status.MediaAttachment) {
+            this.imagesArray.push(new Image(this.status.MediaAttachment));
+        }
     }
 
     turnOffBlur(event: any): void {
@@ -72,7 +74,7 @@ export class StatusComponent implements OnInit {
      * Set status form text to author of status
      * @param event
      */
-    directMessage(event: any) {
+    mention(event: any) {
         this.eventAlertService.addEvent(EventAlertEnum.UPDATE_STATUS_FORM_TEXT, { statusText: "@" + this.status.Author.MastodonUserName });
         event.stopPropagation();
     }

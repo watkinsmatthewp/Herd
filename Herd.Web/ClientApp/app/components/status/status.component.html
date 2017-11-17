@@ -16,7 +16,7 @@
             <div [ngClass]="{'status-blurred': showBlur }" (click)="turnOffBlur($event)">
                 <p [innerHTML]="status.Content"></p>
             </div>
-            <modal-gallery (click)="$event.stopPropagation()" [modalImages]="imagesArray"
+            <modal-gallery *ngIf="imagesArray.length > 0" (click)="$event.stopPropagation()" [modalImages]="imagesArray"
                            [enableCloseOutside]="true"
                            [downloadable]="true"
                            [buttonsConfig]="{download: true}">
@@ -25,7 +25,7 @@
 
         <!-- Buttons Row -->
         <div class="row">
-            <div class="btn-group-lg text-center" role="group">
+            <div class="col-sm-4 col-sm-offset-4">
                 <button class="btn btn-secondary comments-btn status-btn" type="button" title="Reply" (click)="notifyTimelineCommentsClicked($event)">
                     <fa name="comments"></fa>
                     <!--<span>{{ status.ReblogCount }}</span>-->
@@ -39,7 +39,7 @@
                     <fa *ngIf="status.IsFavourited" name="heart" class="heart-color"></fa>
                     <span>{{ status.FavouritesCount }}</span>
                 </button>
-                <button class="btn btn-secondary message-btn status-btn" type="button" title="Mention" (click)="directMessage($event)">
+                <button class="btn btn-secondary message-btn status-btn" type="button" title="Mention" (click)="mention($event)">
                     <fa name="at"></fa>
                 </button>
             </div>
