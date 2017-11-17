@@ -26,10 +26,10 @@
                     <div class="form-horizontal">
                         <div class="pull-left">
                             <div class="form-inline">
-                                <button type="button" class="c-btn-sm c-btn-secondary spoilerButton" [ngClass]="{'c-bg-warning': model.contentWarning, 'spoilerButton': !model.contentWarning }" (click)="toggleContentWarning()">
+                                <button type="button" class="c-btn c-btn-sm c-btn-secondary spoilerButton" [ngClass]="{'c-bg-warning': model.contentWarning, 'spoilerButton': !model.contentWarning }" (click)="toggleContentWarning()">
                                     <fa name="exclamation-triangle" size="1"></fa>
                                 </button>
-                                <label class="c-btn-sm c-btn-secondary">
+                                <label class="c-btn c-btn-sm c-btn-secondary">
                                     <fa name="cloud-upload" size="1"></fa>
                                     <input #fileInput style="display: none !important;" type="file" (change)="onFileChange($event)">
                                 </label>
