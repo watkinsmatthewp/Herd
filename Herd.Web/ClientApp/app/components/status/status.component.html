@@ -25,21 +25,21 @@
 
         <!-- Buttons Row -->
         <div class="row">
-            <div class="col-sm-4 col-sm-offset-4">
-                <button class="btn btn-secondary comments-btn status-btn" type="button" title="Reply" (click)="notifyTimelineCommentsClicked($event)">
+            <div class="c-btn-group-sm c-text-center">
+                <button class="btn-sm btn-secondary comments-btn status-btn" type="button" title="Reply" (click)="notifyTimelineCommentsClicked($event)">
                     <fa name="comments"></fa>
                     <!--<span>{{ status.ReblogCount }}</span>-->
                 </button>
-                <button class="btn btn-secondary retweet-btn status-btn" type="button" title="Retweet" (click)="toggleRepost($event)">
+                <button class="btn-sm btn-secondary retweet-btn status-btn" type="button" title="Retweet" (click)="toggleRepost($event)">
                     <fa name="retweet" [ngClass]="{'retweet-color': status.IsReblogged }"></fa>
                     <span>{{ status.ReblogCount }}</span>
                 </button>
-                <button class="btn btn-secondary like-btn status-btn" type="button" title="Like" (click)="toggleLike($event)">
+                <button class="btn-sm btn-secondary like-btn status-btn" type="button" title="Like" (click)="toggleLike($event)">
                     <fa *ngIf="!status.IsFavourited" name="heart-o"></fa>
                     <fa *ngIf="status.IsFavourited" name="heart" class="heart-color"></fa>
                     <span>{{ status.FavouritesCount }}</span>
                 </button>
-                <button class="btn btn-secondary message-btn status-btn" type="button" title="Mention" (click)="mention($event)">
+                <button class="btn-sm btn-secondary message-btn status-btn" type="button" title="Mention" (click)="mention($event)">
                     <fa name="at"></fa>
                 </button>
             </div>
