@@ -46,7 +46,7 @@
                                     <small>{{ maxStatusLength - model.status.length }}</small>
                                 </div>
                             </div>
-                            <button [disabled]="loading || !f.valid" type="submit" class="c-btn-sm c-btn-primary">
+                            <button [disabled]="loading || !f.valid" type="submit" class="c-btn c-btn-sm c-btn-primary">
                                 <fa *ngIf="loading" name="spinner" spin=true></fa>
                                 <span><fa name="pencil"></fa> {{ actionName }}</span>
                             </button>

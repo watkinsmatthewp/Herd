@@ -32,17 +32,7 @@
    
     <!-- Middle Column -->
     <div class="col-sm-12 col-md-7 col-lg-6 col-lg-pull-3">
-        <div class="panel">
-            <!--<div class="panel-heading text-center" style="min-height: 50px;">
-                <div>
-                    <div *ngIf="loading" class="btn pull-left">
-                        <fa name="spinner" spin=true></fa>
-                    </div>
-                    <button *ngIf="newStatusList.Items.length > 0"   class="c-btn c-btn-primary c-btn-sm" type="button" (click)="viewNewItems()">{{newStatusList.Items.length}} New Statuses</button>
-                    <button *ngIf="newStatusList.Items.length === 0" class="c-btn c-btn-primary c-btn-sm" type="button" (click)="scrollToTop()"><fa name="chevron-up"></fa>Scroll to top</button>
-                </div>
-            </div>-->
-            
+        <div class="panel">            
             <div #statusesWrapper class="panel-body statusesWrapper"
                 data-infinite-scroll
                     debounce
@@ -59,10 +49,10 @@
                     </div>
                 </div>
                 <div class="infiniteStaticButtons">
-                    <button *ngIf="newStatusList.Items.length > 0" class="c-btn c-btn-primary c-btn-sm" type="button" (click)="viewNewItems()">
+                    <button *ngIf="newStatusList.Items.length > 0" class="c-btn c-btn-sm c-btn-primary" type="button" (click)="viewNewItems()">
                         {{newStatusList.Items.length}} new status(es)
                     </button>
-                    <button *ngIf="newStatusList.Items.length === 0" class="c-btn c-btn-primary c-btn-sm" type="button" (click)="scrollToTop()">
+                    <button *ngIf="newStatusList.Items.length === 0" class="c-btn c-btn-sm c-btn-primary" type="button" (click)="scrollToTop()">
                         <fa name="chevron-up"></fa>
                     </button>
                 </div>
@@ -70,8 +60,6 @@
         </div>
     </div>
 
-    
-    
 </div>
 
 

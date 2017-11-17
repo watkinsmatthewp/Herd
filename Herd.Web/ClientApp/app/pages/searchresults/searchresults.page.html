@@ -8,8 +8,8 @@
                 <div class="panel">
                     <div class="panel-heading text-center">
                         <div *ngIf="loading" class="btn pull-left"><fa name="spinner" spin=true></fa></div>
-                        <button *ngIf="newStatusList.Items.length > 0" class="c-btn c-btn-primary c-btn-sm" type="button" (click)="viewNewStatuses()">{{ new_statuses.length }} New Statuses</button>
-                        <button class="c-btn c-btn-primary c-btn-sm pull-right" type="button" (click)="scrollToTop('statuses')"><fa name="chevron-up"></fa>Scroll to top</button>
+                        <button *ngIf="newStatusList.Items.length > 0" class="c-btn c-btn-sm c-btn-primary" type="button" (click)="viewNewStatuses()">{{ new_statuses.length }} New Statuses</button>
+                        <button class="c-btn c-btn-sm c-btn-primary pull-right" type="button" (click)="scrollToTop('statuses')"><fa name="chevron-up"></fa>Scroll to top</button>
                     </div>
                     <div class="panel-body">
                         <div *ngIf="statusList.Items.length > 0" #statusesWrapper class="scrollWrapper"
@@ -37,7 +37,7 @@
                 <div class="panel">
                     <div class="panel-heading text-center">
                         <div *ngIf="loading" class="btn pull-left"><fa name="spinner" spin=true></fa></div>
-                        <button class="c-btn c-btn-primary c-btn-sm pull-right" type="button" (click)="scrollToTop('users')"><fa name="chevron-up"></fa>Scroll to top</button>
+                        <button class="c-btn c-btn-sm c-btn-primary pull-right" type="button" (click)="scrollToTop('users')"><fa name="chevron-up"></fa>Scroll to top</button>
                     </div>
                     <div class="panel-body text-center">
                         <div *ngIf="userList.Items.length > 0" #usersWrapper class="scrollWrapper"
