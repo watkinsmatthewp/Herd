@@ -5,3 +5,4 @@ export * from './status-form/status-form.component';
 export * from './status-form/status-form-modal/status-form-modal.component';
 export * from './usercard/usercard.component';
 export * from './profile-updater/profile-updater.component';
+export * from './hashtags/top-hashtags.component';

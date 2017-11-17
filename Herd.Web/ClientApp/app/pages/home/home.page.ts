@@ -28,8 +28,6 @@ export class HomePage implements OnInit {
     account: Account = new Account();
     statusList: PagedList<Status> = new PagedList<Status>();
     newStatusList: PagedList<Status> = new PagedList<Status>();
-    //homeFeed: Status[] = [];
-    //newItems: Status[] = [];
     
     hashtags: string[] = [];
 
