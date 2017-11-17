@@ -182,6 +182,36 @@ describe('Service: HttpClient Service', () => {
             });
         }));
 
+        it('should successfully make a basic PostForm request', inject([], () => {
+            // Create a mockedResponse
+            const formData: FormData = new FormData();
+            formData.append('message', "Hello World");
+            formData.append('visibility', String(1));                
+
+            // Make the request
+            httpClient.postForm("api/mastodon-posts/new", formData).subscribe((response) => {
+                expect(response).toBeDefined();
+                expect(response.Message).toBeDefined();
+            });
+        }));
+
+        it('should fail to make a basic PostForm request with options', inject([], () => {
+            // Create a mockedResponse
+            const formData: FormData = new FormData();
+            formData.append('message', "Hello World");
+            formData.append('visibility', String(1));
+            
+            let headers = new Headers({ 'Content-Type': 'plain/text' });
+            let options = new RequestOptions({
+                headers: headers
+            });
+
+            // Make the request
+            httpClient.postForm("api/mastodon-posts/new", formData, options).subscribe((response) => {
+                expect(response).toBeUndefined();
+            });
+        }));
+
         it('should successfully make a Post request with options', inject([], () => {
             // Create a mockedResponse
             const mockResponse = {

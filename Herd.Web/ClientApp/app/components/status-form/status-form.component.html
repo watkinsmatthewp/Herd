@@ -3,17 +3,17 @@
 
         <form name="form" (ngSubmit)="f.form.valid && submitStatus(f)" #f="ngForm" enctype="multipart/form-data" novalidate>
             <!--  Title and Remaining Chars -->
-            <div class="row">
+            <!--<div class="row">
                 <div class="col-sm-12">
                     <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !status.valid }">
-                        <div class="c-header-xs">{{ actionName }} | <small>{{ maxStatusLength - model.status.length }}</small></div>
+                        <div class="c-body">{{ actionName }} | <small>{{ maxStatusLength - model.status.length }}</small></div>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <!-- Visibility -->
             <div class="row">
                 <div class="form-group col-sm-3">
-                    <select name="visibility" class="c-btn c-btn-secondary c-btn-secondary-outline" [(ngModel)]="model.visibility" selected=0 required>
+                    <select name="visibility" class="c-select-sm" [(ngModel)]="model.visibility" selected=0 required>
                         <option *ngFor="let visibility of visibilityOptions" [ngValue]="visibility.value" title="{{ visibility.context }}">{{ visibility.option }}</option>
                     </select>
                 </div>
@@ -42,6 +42,9 @@
                             </label>
                         </div>
                         <div class="pull-right c-btn-group">
+                            <div class="charLimitOffset">
+                                <p><small>{{ maxStatusLength - model.status.length }}</small></p>
+                            </div>
                             <button [disabled]="loading || !f.valid" type="submit" class="c-btn c-btn-primary">
                                 <fa *ngIf="loading" name="spinner" spin=true></fa>
                                 <span><fa name="pencil"></fa> {{ actionName }}</span>

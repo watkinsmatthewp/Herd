@@ -1,160 +1,148 @@
-﻿<div class="row">
-    <!-- Banner Image -->
-    <div class="header-image-box">
-        <img class="header-pic" src="{{ account?.MastodonHeaderImageURL }}" />
+﻿<!-- Banner Image -->
+<div class="header-image-box">
+    <img class="header-pic" src="{{ account?.MastodonHeaderImageURL }}" />
+    <div class="profile-image-box">
+        <img *ngIf="account" class="profile-pic" src="{{ account?.MastodonProfileImageURL }}" />
+    </div>
+</div>
+
+<div class="row profile-content">
+    <!-- Left Column -->
+    <div class="col-sm-6 col-lg-3">
+        <div class="panel">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-sm-7">
+                        <div class="c-body-text">
+                            <p><strong>{{ account?.MastodonDisplayName }}</strong></p>
+                            <p>@{{ account?.MastodonUserName }}</p>
+                        </div>
+                    </div>
+                    <div *ngIf="account && !isCurrentUser()" class="col-sm-5">
+                        <button *ngIf="isFollowing" class="c-btn c-btn-primary c-btn-sm follow-btn" (mouseenter)="followUnfollowText = 'Unfollow';" (mouseleave)="followUnfollowText = 'Following';" (click)="togglefollow()">
+                            {{followUnfollowText}}
+                        </button>
+                        <button *ngIf="!isFollowing" class="c-btn c-btn-secondary c-btn-sm c-btn-secondary-outline not-following-btn" (click)="togglefollow()">
+                            Follow
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p [innerHTML]="account?.MastodonShortBio"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="row profile-content">
-        <!-- Left Column -->
-        <div class="col-sm-3">
-            <div class="col-lg-12">
-                <div class="profile-image-box">
-                    <img *ngIf="account" class="profile-pic" src="{{ account?.MastodonProfileImageURL }}" />
-                </div>
-                <div class="panel">
-                    <div class="panel-heading">
+    <!-- Right Column -->
+    <div class="col-sm-6 col-lg-3 col-lg-push-6">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3>Future Box</h3>
+            </div>
+            <div class="panel-body">
+
+            </div>
+        </div>
+    </div>
+        
+    <!-- Middle Column -->
+    <div class="col-sm-12 col-lg-6 col-lg-pull-3">
+        <div class="panel">
+            <div class="panel-body">
+                <tabset #staticTabs>
+                    <tab heading="Posts ({{ account?.PostCount }})">
                         <div class="row">
-                            <div class="col-sm-8">
-                                <p>
-                                    <strong>{{ account?.MastodonDisplayName }}</strong>
-                                    <br />
-                                    @{{ account?.MastodonUserName }}
-                                </p>
-                            </div>
-                            <div *ngIf="account && !isCurrentUser()" class="col-sm-4">
-                                <button *ngIf="isFollowing" class="c-btn c-btn-primary follow-btn" (mouseenter)="followUnfollowText = 'Unfollow';" (mouseleave)="followUnfollowText = 'Following';" (click)="togglefollow()">
-                                    {{followUnfollowText}}
-                                </button>
-                                <button *ngIf="!isFollowing" class="c-btn c-btn-secondary c-btn-secondary-outline not-following-btn" (click)="togglefollow()">
-                                    Follow
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row col-sm-12">
-                            <p [innerHTML]="account?.MastodonShortBio"></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        
-        <!-- Middle Column -->
-        <div class="col-sm-6">
-            <div class="info-bar">
-                <div class="panel">
-                    <div class="panel-body">
-                        <tabset #staticTabs>
-                            <tab heading="Posts ({{ account?.PostCount }})">
-                                <ng-container *ngIf="account">
-                                    <div class="panel">
-                                        <div class="panel-heading text-center" style="min-height: 50px;">
-                                            <div>
-                                                <div *ngIf="loading" class="btn pull-left">
-                                                    <fa name="spinner" spin=true></fa>
-                                                </div>
-                                                <button *ngIf="newStatusList.Items.length > 0" class="c-btn c-btn-primary" type="button" (click)="viewNewStatuses()">{{newStatusList.Items.length}} New Statuses</button>
-                                                <button class="c-btn c-btn-primary pull-right" type="button" (click)="scrollToTop('statuses')"><fa name="chevron-up"></fa>Scroll to top</button>
-                                            </div>
+                            <ng-container *ngIf="account">
+                                <div class="panel">
+                                    <div class="panel-heading text-center tabContentHeader">
+                                        <div *ngIf="loading" class="btn pull-left">
+                                            <fa name="spinner" spin=true></fa>
                                         </div>
-                                        <div #statusesWrapper class="panel-body statusesWrapper"
-                                             data-infinite-scroll
-                                             debounce
-                                             [infiniteScrollContainer]="statusesWrapper"
-                                             [scrollWindow]="false"
-                                             [infiniteScrollDistance]="3"
-                                             [infiniteScrollThrottle]="1500"
-                                             (scrolled)="onScrollDown($event, 'statuses')">
+                                        <button *ngIf="newStatusList.Items.length > 0" class="c-btn c-btn-primary c-btn-sm" type="button" (click)="viewNewStatuses()">{{newStatusList.Items.length}} New Statuses</button>
+                                        <button class="c-btn c-btn-primary c-btn-sm pull-right" type="button" (click)="scrollToTop('statuses')"><fa name="chevron-up"></fa>Scroll to top</button>
+                                    </div>
+                                    <div #statusesWrapper class="panel-body tabWrapper"
+                                         data-infinite-scroll
+                                         debounce
+                                         [infiniteScrollContainer]="statusesWrapper"
+                                         [scrollWindow]="false"
+                                         [infiniteScrollDistance]="3"
+                                         [infiniteScrollThrottle]="1500"
+                                         (scrolled)="onScrollDown($event, 'statuses')">
 
-                                            <div *ngFor="let status of statusList.Items">
-                                                <status [status]="status"></status>
+                                        <div *ngFor="let status of statusList.Items">
+                                            <status [status]="status"></status>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </tab>
+                    <tab heading="Following ({{ account?.FollowingCount }})">
+                        <div class="row">
+                            <ng-container *ngIf="account">
+                                <div class="panel">
+                                    <div class="panel-heading text-center tabContentHeader">
+                                        <div *ngIf="loading" class="btn pull-left"><fa name="spinner" spin=true></fa></div>
+                                        <button class="c-btn c-btn-primary c-btn-sm pull-right" type="button" (click)="scrollToTop('following')"><fa name="chevron-up"></fa>Scroll to top</button>
+                                    </div>
+                                    <div #followingWrapper class="panel-body tabWrapper"
+                                            data-infinite-scroll
+                                            debounce
+                                            [infiniteScrollContainer]="followingWrapper"
+                                            [scrollWindow]="false"
+                                            [infiniteScrollDistance]="3"
+                                            [infiniteScrollThrottle]="1500"
+                                            (scrolled)="onScrollDown($event, 'following')">
+
+                                        <div *ngFor="let user of followingList.Items" class="text-center">
+                                            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4">
+                                                <usercard [userCard]="user" showBio="true" showActions="true" showFollowButton="true" size="small"></usercard>
                                             </div>
                                         </div>
                                     </div>
-                                </ng-container>
-                            </tab>
-                            <tab heading="Following ({{ account?.FollowingCount }})">
-                                <div class="row">
-                                    <ng-container *ngIf="account">
-                                        <div class="panel">
-                                            <div class="panel-heading text-center" style="min-height: 50px;">
-                                                <div>
-                                                    <div *ngIf="loading" class="btn pull-left">
-                                                        <fa name="spinner" spin=true></fa>
-                                                    </div>
-                                                    <button class="c-btn c-btn-primary pull-right" type="button" (click)="scrollToTop('following')"><fa name="chevron-up"></fa>Scroll to top</button>
-                                                </div>
-                                            </div>
-                                            <div #followingWrapper class="panel-body statusesWrapper"
-                                                 data-infinite-scroll
-                                                 debounce
-                                                 [infiniteScrollContainer]="followingWrapper"
-                                                 [scrollWindow]="false"
-                                                 [infiniteScrollDistance]="3"
-                                                 [infiniteScrollThrottle]="1500"
-                                                 (scrolled)="onScrollDown($event, 'following')">
+                                </div>
+                            </ng-container>
+                        </div> 
+                    </tab>
+                    <tab heading="Followers ({{ account?.FollowersCount }})">
+                        <div class="row">
+                            <ng-container *ngIf="account">
+                                <div class="panel">
+                                    <div class="panel-heading text-center tabContentHeader">
+                                        <div *ngIf="loading" class="btn pull-left"><fa name="spinner" spin=true></fa></div>
+                                        <button class="c-btn c-btn-primary c-btn-sm pull-right" type="button" (click)="scrollToTop('followers')"><fa name="chevron-up"></fa>Scroll to top</button>
+                                    </div>
+                                    <div #followersWrapper class="panel-body tabWrapper"
+                                         data-infinite-scroll
+                                         debounce
+                                         [infiniteScrollContainer]="followersWrapper"
+                                         [scrollWindow]="false"
+                                         [infiniteScrollDistance]="3"
+                                         [infiniteScrollThrottle]="1500"
+                                         (scrolled)="onScrollDown($event, 'followers')">
 
-                                                <div *ngFor="let user of followingList.Items" class="text-center">
-                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-                                                        <usercard [userCard]="user" showBio="true" showActions="true" showFollowButton="true"></usercard>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </ng-container>
-                                </div> 
-                            </tab>
-                            <tab heading="Followers ({{ account?.FollowersCount }})">
-                                <ng-container *ngIf="account">
-                                    <div class="panel">
-                                        <div class="panel-heading text-center" style="min-height: 50px;">
-                                            <div>
-                                                <div *ngIf="loading" class="btn pull-left">
-                                                    <fa name="spinner" spin=true></fa>
-                                                </div>
-                                                <button class="c-btn c-btn-primary pull-right" type="button" (click)="scrollToTop('followers')"><fa name="chevron-up"></fa>Scroll to top</button>
-                                            </div>
-                                        </div>
-                                        <div #followersWrapper class="panel-body statusesWrapper"
-                                             data-infinite-scroll
-                                             debounce
-                                             [infiniteScrollContainer]="followersWrapper"
-                                             [scrollWindow]="false"
-                                             [infiniteScrollDistance]="3"
-                                             [infiniteScrollThrottle]="1500"
-                                             (scrolled)="onScrollDown($event, 'followers')">
-
-                                            <div class="row">
-                                                <div *ngFor="let user of followerList.Items" class="text-center">
-                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-                                                        <usercard [userCard]="user" showBio="true" showActions="true" showFollowButton="true"></usercard>
-                                                    </div>
-                                                </div>
+                                        <div *ngFor="let user of followerList.Items" class="text-center">
+                                            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4">
+                                                <usercard [userCard]="user" showBio="true" showActions="true" showFollowButton="true" size="small"></usercard>
                                             </div>
                                         </div>
                                     </div>
-                                </ng-container>
-                            </tab>
-                        </tabset>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Right Column -->
-        <div class="col-sm-3">
-            <div class="panel pushTop">
-                <div class="panel-heading">
-                    <h3>Future Box</h3>
-                </div>
-                <div class="panel-body">
-                    
-                </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </tab>
+                </tabset>
             </div>
         </div>
     </div>
+        
+        
 </div>
 
 

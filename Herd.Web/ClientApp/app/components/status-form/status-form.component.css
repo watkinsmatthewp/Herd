@@ -26,6 +26,10 @@ textarea {
     background-color: #f59f00;
 }
 
+.charLimitOffset {
+    padding-right: .5em;
+}
+
 .close {
     position: absolute;
     top: 0;
