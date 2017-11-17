@@ -400,4 +400,99 @@ describe('Service: Status Service', () => {
 
     });
 
+
+    describe('Top Hashtags', () => {
+        it('should return an array of 5 hashtag objects',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Success: true,
+                    Data: {
+                        HashTags: [
+                            { "Name": "test", "Score": 127.734375 },
+                            { "Name": "icanhaztwitter", "Score": 50.0 },
+                            { "Name": "testing", "Score": 12.5 },
+                            { "Name": "sometimes", "Score": 6.25 },
+                            { "Name": "cantwaituntilgraduation", "Score": 3.125 }
+                        ]
+                    }
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the request
+                statusService.getTopHashtags().subscribe((hashtagList) => {
+                    expect(hashtagList).toBeDefined();
+                    expect(hashtagList.length).toBe(5);
+                    expect(hashtagList[0].Name).toBe("test");
+                    expect(hashtagList[1].Name).toBe("icanhaztwitter");
+                    expect(hashtagList[2].Name).toBe("testing");
+                    expect(hashtagList[3].Name).toBe("sometimes");
+                    expect(hashtagList[4].Name).toBe("cantwaituntilgraduation");
+                });
+            })
+        );
+
+        it('should return an array of 0 hashtag objects when no hashtags',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Success: true,
+                    Data: {
+                        HashTags: []
+                    }
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the request
+                statusService.getTopHashtags().subscribe((hashtagList) => {
+                    expect(hashtagList).toBeDefined();
+                    expect(hashtagList.length).toBe(0);
+                });
+            })
+        );
+
+        it('should return an array of up to 30 hashtag objects when using optional parameters',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Success: true,
+                    Data: {
+                        HashTags: [
+                            { "Name": "test", "Score": 127.734375 },
+                            { "Name": "icanhaztwitter", "Score": 50.0 },
+                            { "Name": "testing", "Score": 12.5 }
+                        ]
+                    }
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the request
+                let amountHashtags: number = 5;
+                statusService.getTopHashtags(amountHashtags).subscribe((hashtagList) => {
+                    expect(hashtagList).toBeDefined();
+                    expect(hashtagList.length).toBeLessThan(amountHashtags);
+                });
+            })
+        );
+
+    });
+
 });
