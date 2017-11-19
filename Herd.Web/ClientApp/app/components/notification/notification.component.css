@@ -6,3 +6,18 @@
     width: 60px;
     height: 60px;
 }
+
+.notification-title {
+    font-weight: bold;
+    font-size: 120%;
+}
+
+.statusesWrapper {
+    height: 87vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.time-stamp {
+    color: #adb5bd;
+}
