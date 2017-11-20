@@ -57,7 +57,7 @@ export class StatusTimelineComponent implements OnInit {
                         });
                 }
 
-                // Call on scroll down
+                // Set getPreviousStatuses
                 this.getPreviousStatuses = function (): void {
                     this.loading = true;
                     this.statusService.search({ onlyOnActiveUserTimeline: true, maxID: this.statusList.PageInformation.EarlierPageMaxID })
@@ -69,7 +69,7 @@ export class StatusTimelineComponent implements OnInit {
                         });
                 }
 
-                // Function to check for new statuses
+                // Set checkForNewStatuses
                 this.checkForNewStatuses = function (): void {
                     this.statusService.search({ onlyOnActiveUserTimeline: true, sinceID: this.statusList.Items[0].Id })
                         .finally(() => this.loading = false)
@@ -80,6 +80,7 @@ export class StatusTimelineComponent implements OnInit {
                 break;
             }
             case TimelineTypeEnum.PROFILE: {
+                // Set getInitialFeed 
                 this.getInitialFeed = function (): void {
                     this.statusService.search({ authorMastodonUserID: this.userID })
                         .subscribe(statusList => {
@@ -89,6 +90,7 @@ export class StatusTimelineComponent implements OnInit {
                         });
                 }
 
+                // Set getPreviousStatuses
                 this.getPreviousStatuses = function (): void {
                     this.loading = true;
                     this.statusService.search({ authorMastodonUserID: this.userID, maxID: this.statusList.PageInformation.EarlierPageMaxID })
@@ -100,6 +102,7 @@ export class StatusTimelineComponent implements OnInit {
                         });
                 }
 
+                // Set checkForNewStatuses
                 this.checkForNewStatuses = function (): void {
                     this.statusService.search({ authorMastodonUserID: this.userID, sinceID: this.statusList.Items[0].Id })
                         .finally(() => this.loading = false)
@@ -110,14 +113,17 @@ export class StatusTimelineComponent implements OnInit {
                 break;
             }
             case TimelineTypeEnum.SEARCH: {
+                // Set getInitialFeed 
                 this.getInitialFeed = function (): void {
 
                 }
 
+                // Set getPreviousStatuses
                 this.getPreviousStatuses = function (): void {
 
                 }
 
+                // Set checkForNewStatuses
                 this.checkForNewStatuses = function (): void {
 
                 }
@@ -125,7 +131,9 @@ export class StatusTimelineComponent implements OnInit {
             }
         }
 
-        if (this.autoCheckForStatuses) setInterval(() => { this.checkForNewStatuses(); }, 10 * 1000);
+        if (this.autoCheckForStatuses) {
+            //setInterval(() => { this.checkForNewStatuses(); }, 10 * 1000);
+        }
     }
 
     /**
