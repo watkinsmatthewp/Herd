@@ -359,5 +359,43 @@ namespace Herd.Business.ApiWrappers
         }
 
         #endregion Posts
+
+        #region Notifications
+
+        /// <summary>
+        /// Goes through each notification in a list of MastodonNotifications and adds context to each Post,
+        /// if the notification has a Post
+        /// </summary>
+        /// <param name="mastodonNotifications"></param>
+        /// <param name="mastodonPostContextOptions"></param>
+        /// <returns></returns>
+        public async Task AddContextToMastodonNotificationsPosts(IEnumerable<MastodonNotification> mastodonNotifications, MastodonPostContextOptions mastodonPostContextOptions = null)
+        {
+            foreach (var mastodonNotification in mastodonNotifications)
+            {
+                if (mastodonNotification != null)
+                {
+                    await AddContextToMastodonPost(mastodonNotification.Status, mastodonPostContextOptions);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the lastest notifications for the active Mastodon user
+        /// </summary>
+        /// <param name="mastodonPostContextOptions"></param>
+        /// <param name="pagingOptions"></param>
+        /// <returns></returns>
+        public async Task<PagedList<MastodonNotification>> GetActiveUserNotifications(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
+        {
+            var effectivePagingOptions = pagingOptions ?? new PagingOptions();
+            var mastodonClient = BuildMastodonApiClient();
+            var mastodonNotificationsApiResult = await mastodonClient.GetNotifications(effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
+            var result = PagedList<MastodonNotification>.Create(mastodonNotificationsApiResult, s => s.ToMastodonNotification());
+            await AddContextToMastodonNotificationsPosts(result.Elements, mastodonPostContextOptions);
+            return result;
+        }
+
+        #endregion Notifications
     }
 }

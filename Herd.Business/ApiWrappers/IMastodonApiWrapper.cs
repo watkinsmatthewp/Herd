@@ -73,5 +73,14 @@ namespace Herd.Business.ApiWrappers
 
         Task<MastodonAttachment> UploadAttachment(Stream attachment);
         #endregion Posts
+
+        #region Notifications
+
+        Task<PagedList<MastodonNotification>> GetActiveUserNotifications(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null);
+
+        Task AddContextToMastodonNotificationsPosts(IEnumerable<MastodonNotification> mastodonNotifications, MastodonPostContextOptions mastodonPostContextOptions = null);
+
+        #endregion Notifications
+
     }
 }
