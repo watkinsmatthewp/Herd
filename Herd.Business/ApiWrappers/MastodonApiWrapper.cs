@@ -240,6 +240,8 @@ namespace Herd.Business.ApiWrappers
             return (await BuildMastodonApiClient().UpdateCredentials(display_name, bio, avatar, header)).ToMastodonUser();
         }
 
+
+
         #endregion User
 
         #region Posts

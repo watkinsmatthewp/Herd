@@ -136,6 +136,22 @@ namespace Herd.Business
             return (Visibility)visibility;
         }
 
+        #region Notifications
+
+        public static MastodonNotification ToMastodonNotification(this Notification notification)
+        {
+            return new MastodonNotification
+            {
+                Id = notification.Id.ToString(),
+                Type = notification.Type,
+                CreatedAt = notification.CreatedAt,
+                Account = notification.Account.ToMastodonUser(),
+                Status = notification.Status.ToPost()
+            };
+        }
+
+        #endregion Notifications
+
         #endregion Posts
 
         #region General

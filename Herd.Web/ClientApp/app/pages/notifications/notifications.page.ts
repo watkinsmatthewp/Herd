@@ -14,7 +14,7 @@ export class NotificationsPage implements OnInit {
     ngOnInit() {
         this.testNotification = new Notification();
         this.testNotification.Id = 5;
-        this.testNotification.Type = "reblog";
+        this.testNotification.Type = "follow";
         this.testNotification.CreatedAt = new Date();
         this.testNotification.Status = new Status();
         this.testNotification.Account = new Account();
