@@ -75,5 +75,28 @@ namespace Herd.Web.Controllers.HerdApi
                 Header = update.Header
             }));
         }
+
+        [HttpGet("notifications")]
+        public IActionResult GetNotifications
+        (
+            bool includeAncestors = false,
+            bool includeDescendants = false,
+            int max = 30,
+            string maxID = null,
+            string sinceID = null
+        )
+        {
+            return ApiJson(App.GetNotifications(new GetMastodonNotificationsCommand
+            {
+                IncludeAncestors = includeAncestors,
+                IncludeDescendants = includeDescendants,
+                PagingOptions = new PagingOptions
+                {
+                    Limit = max,
+                    MaxID = maxID,
+                    SinceID = sinceID
+                }
+            }));
+        }
     }
 }
