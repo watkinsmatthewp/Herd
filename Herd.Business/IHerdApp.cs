@@ -37,6 +37,9 @@ namespace Herd.Business
 
         CommandResult RepostPost(RepostMastodonPostCommand repostCommand);
 
+        // Notifications
+        CommandResult<GetMastodonNotificationCommandResultData> GetNotifications(GetMastodonNotificationsCommand getMastodonNotificationsCommand);
+
         // HashTags
         CommandResult<GetTopHashTagsCommandResultData> GetTopHashTags(GetTopHashTagsCommand getTopHashTagsCommand);
         CommandResult CreateTopHashTags();

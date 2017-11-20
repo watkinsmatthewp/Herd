@@ -299,6 +299,29 @@ namespace Herd.Business
 
         #endregion Mastodon Posts
 
+        #region Mastodon Notifications
+
+        /// <summary>
+        /// Gets Mastodon notifcations for the current Mastodon user with the apiWrapper
+        /// </summary>
+        /// <param name="getMastodonNotificationsCommand"></param>
+        /// <returns></returns>
+        public CommandResult<GetMastodonNotificationCommandResultData> GetNotifications(GetMastodonNotificationsCommand getMastodonNotificationsCommand)
+        {
+            return ProcessCommand<GetMastodonNotificationCommandResultData>(result =>
+            {
+                var pageInformation = new PageInformation();
+                result.Data = new GetMastodonNotificationCommandResultData
+                {
+                    Notifications = GetNotifications(getMastodonNotificationsCommand, pageInformation).Synchronously(),
+                    PageInformation = pageInformation
+                };
+
+            });
+        }
+
+        #endregion Mastodon Notifications
+
         #region HashTags
 
         public CommandResult<GetTopHashTagsCommandResultData> GetTopHashTags(GetTopHashTagsCommand getTopHashTagsCommand)
@@ -458,6 +481,25 @@ namespace Herd.Business
         }
 
         #endregion Mastodon Posts
+
+        #region Mastodon Notifications
+        /// <summary>
+        /// private helper method to get notifications for the active Mastodon user
+        /// </summary>
+        /// <param name="getMastodonNotificationsCommand"></param>
+        /// <param name="refPageInformtation"></param>
+        /// <returns></returns>
+        private async Task<IList<MastodonNotification>> GetNotifications(GetMastodonNotificationsCommand getMastodonNotificationsCommand, PageInformation refPageInformtation)
+        {
+            var mastodonPostContexOptions = new MastodonPostContextOptions { IncludeAncestors = getMastodonNotificationsCommand.IncludeAncestors, IncludeDescendants = getMastodonNotificationsCommand.IncludeDescendants };
+            var result = await _mastodonApiWrapper.GetActiveUserNotifications(mastodonPostContexOptions, getMastodonNotificationsCommand.PagingOptions);
+            // I beleive this is all that is needed in this context for updated the refPagedList?
+            UpdatedRefPagedList(refPageInformtation, result);
+            return result.Elements;
+
+        }
+
+        #endregion Mastodon Notifications
 
         #region Generic
 
