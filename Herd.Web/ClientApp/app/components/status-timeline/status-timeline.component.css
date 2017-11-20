@@ -1,0 +1,11 @@
+﻿.statusesWrapper {
+    height: 87vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.infiniteStaticButtons {
+    position: absolute;
+    top: 0.5%;
+    right: 5%;
+}

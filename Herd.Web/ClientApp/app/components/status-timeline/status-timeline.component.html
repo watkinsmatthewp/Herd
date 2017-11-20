@@ -1,0 +1,24 @@
+﻿<div #statusesWrapper class="statusesWrapper"
+     data-infinite-scroll
+     debounce
+     [infiniteScrollContainer]="statusesWrapper"
+     [scrollWindow]="false"
+     [infiniteScrollDistance]="3"
+     [infiniteScrollThrottle]="1500"
+     (scrolled)="onScrollDown($event)">
+
+    <status-form *ngIf="showStatusForm" actionName="Create Status"></status-form>
+    <div *ngFor="let status of statusList.Items" class="row">
+        <div class="col-sm-12">
+            <status [status]="status"></status>
+        </div>
+    </div>
+    <div class="infiniteStaticButtons">
+        <button *ngIf="newStatusList.Items.length > 0" class="c-btn c-btn-sm c-btn-primary" type="button" (click)="viewNewItems()">
+            {{newStatusList.Items.length}} new status(es)
+        </button>
+        <button *ngIf="newStatusList.Items.length === 0" class="c-btn c-btn-sm c-btn-primary" type="button" (click)="scrollToTop()">
+            <fa name="chevron-up"></fa>
+        </button>
+    </div>
+</div>

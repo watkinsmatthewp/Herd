@@ -54,18 +54,8 @@
                                         <button *ngIf="newStatusList.Items.length > 0" class="c-btn c-btn-sm c-btn-primary" type="button" (click)="viewNewStatuses()">{{newStatusList.Items.length}} New Statuses</button>
                                         <button class="c-btn c-btn-sm c-btn-primary pull-right" type="button" (click)="scrollToTop('statuses')"><fa name="chevron-up"></fa>Scroll to top</button>
                                     </div>
-                                    <div #statusesWrapper class="panel-body tabWrapper"
-                                         data-infinite-scroll
-                                         debounce
-                                         [infiniteScrollContainer]="statusesWrapper"
-                                         [scrollWindow]="false"
-                                         [infiniteScrollDistance]="3"
-                                         [infiniteScrollThrottle]="1500"
-                                         (scrolled)="onScrollDown($event, 'statuses')">
-
-                                        <div *ngFor="let status of statusList.Items">
-                                            <status [status]="status"></status>
-                                        </div>
+                                    <div class="panel-body">
+                                         <status-timeline [timelineType]="timelineType" autoCheckForStatuses="true" [userID]="account.MastodonUserId"></status-timeline>
                                     </div>
                                 </div>
                             </ng-container>

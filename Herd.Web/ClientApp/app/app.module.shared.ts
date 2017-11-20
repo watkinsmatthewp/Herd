@@ -24,7 +24,7 @@ import {
 // Components
 import {
     InstancePickerComponent, NavMenuComponent,
-    StatusComponent, StatusFormComponent, StatusFormModalComponent,
+    StatusComponent, StatusFormComponent, StatusFormModalComponent, StatusTimelineComponent,
     TopHashtagsComponent, UserCardComponent, ProfileUpdaterComponent
 } from './components';
 
@@ -47,7 +47,7 @@ import { SafePipe } from './pipes';
         LoginPage, NotificationsPage, ProfilePage, RegisterPage, SearchResultsPage, SettingsPage,
         // Components
         InstancePickerComponent, NavMenuComponent,
-        StatusComponent, StatusFormComponent, StatusFormModalComponent,
+        StatusComponent, StatusFormComponent, StatusFormModalComponent, StatusTimelineComponent,
         TopHashtagsComponent, UserCardComponent, ProfileUpdaterComponent,
         // Pipes
         SafePipe
