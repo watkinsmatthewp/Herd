@@ -12,6 +12,13 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ModalGalleryModule } from 'angular-modal-gallery';
 import { TabsModule } from 'ngx-bootstrap';
 import { SimpleNotificationsModule } from 'angular2-notifications';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+
+const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+    suppressScrollX: true,
+    wheelPropagation: true
+};
 
 
 // Pages
@@ -55,6 +62,7 @@ import { SafePipe } from './pipes';
     imports: [
         Angular2FontawesomeModule, BsModalModule, CardModule, CommonModule, 
         HttpModule, FormsModule, InfiniteScrollModule, ModalGalleryModule.forRoot(),
+        PerfectScrollbarModule.forRoot(PERFECT_SCROLLBAR_CONFIG),
         TabsModule.forRoot(), SimpleNotificationsModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },

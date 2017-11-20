@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input, ViewChild } from '@angular/core';
+﻿import { Component, OnInit, Input, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 
 import { TimelineTypeEnum } from "../../models";
 import { StatusService } from "../../services";
@@ -10,33 +10,42 @@ import { NotificationsService } from "angular2-notifications";
     templateUrl: './status-timeline.component.html',
     styleUrls: ['./status-timeline.component.css']
 })
-export class StatusTimelineComponent implements OnInit {
+export class StatusTimelineComponent implements OnInit, OnChanges {
     @Input() timelineType: TimelineTypeEnum;
     @Input() showStatusForm: boolean = false;
     @Input() autoCheckForStatuses: boolean = false;
     @Input() userID: string;
-
-    @ViewChild('statusesWrapper') statusesWrapper: any;
-
+    @Input() search: string;
+    @ViewChild('ps') scrollBar: any;
+    // Status Lists 
     statusList: PagedList<Status> = new PagedList<Status>();
     newStatusList: PagedList<Status> = new PagedList<Status>();
-
+    // Functions to call 
     getInitialFeed: Function;
     getPreviousStatuses: Function;
     checkForNewStatuses: Function;
-
-
+    // Loading variable
     loading: boolean = false;
 
 
     constructor(private statusService: StatusService, private toastService: NotificationsService) {}
 
     ngOnInit() {
-        // Check for required input
+        // Check for required input - we AT LEAST need to know which types of statuses to get
         if (this.timelineType < 0) throw new Error("TimelineType is required");
 
         this.setupFunctions();
         this.getInitialFeed();
+    }
+
+    /**
+     * On state changes do stuff
+     * @param changes shows old value vs new value of state change
+     */
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.search && changes.search.previousValue) {
+            this.getInitialFeed();
+        }
     }
 
     private setupFunctions() {
@@ -65,7 +74,7 @@ export class StatusTimelineComponent implements OnInit {
                         .subscribe(newStatusList => {
                             this.appendItems(this.statusList.Items, newStatusList.Items);
                             this.statusList.PageInformation = newStatusList.PageInformation;
-                            this.statusesWrapper.nativeElement.scrollTo(0, this.statusesWrapper.nativeElement.scrollTop);
+                            this.triggerScroll();
                         });
                 }
 
@@ -98,7 +107,7 @@ export class StatusTimelineComponent implements OnInit {
                         .subscribe(newStatusList => {
                             this.appendItems(this.statusList.Items, newStatusList.Items);
                             this.statusList.PageInformation = newStatusList.PageInformation;
-                            this.statusesWrapper.nativeElement.scrollTo(0, this.statusesWrapper.nativeElement.scrollTop);
+                            this.triggerScroll();
                         });
                 }
 
@@ -115,26 +124,40 @@ export class StatusTimelineComponent implements OnInit {
             case TimelineTypeEnum.SEARCH: {
                 // Set getInitialFeed 
                 this.getInitialFeed = function (): void {
-
+                    this.statusService.search({ hashtag: this.search })
+                        .subscribe(statusList => {
+                            this.statusList = statusList;
+                        });
                 }
 
                 // Set getPreviousStatuses
                 this.getPreviousStatuses = function (): void {
-
+                    this.loading = true;
+                    this.statusService.search({ hashtag: this.search, maxID: this.statusList.PageInformation.EarlierPageMaxID })
+                        .finally(() => this.loading = false)
+                        .subscribe(newStatusList => {
+                            this.appendItems(this.statusList.Items, newStatusList.Items);
+                            this.statusList.PageInformation = newStatusList.PageInformation;
+                            this.triggerScroll();
+                        });
                 }
 
                 // Set checkForNewStatuses
                 this.checkForNewStatuses = function (): void {
-
+                    this.statusService.search({ hashtag: this.search, sinceID: this.statusList.Items[0].Id })
+                        .finally(() => this.loading = false)
+                        .subscribe(newStatusList => {
+                            this.newStatusList = newStatusList;
+                        });
                 }
                 break;
             }
         }
 
-        if (this.autoCheckForStatuses) {
-            //setInterval(() => { this.checkForNewStatuses(); }, 10 * 1000);
-        }
+        if (this.autoCheckForStatuses) setInterval(() => { this.checkForNewStatuses(); }, 10 * 1000);
     }
+
+    /** ----------------------------------------------------------- Button Actions ----------------------------------------------------------- */
 
     /**
      * Add the new items to main feed array, scroll to top, empty newItems
@@ -149,16 +172,25 @@ export class StatusTimelineComponent implements OnInit {
      * Scrolls the status area to the top
      */
     scrollToTop() {
-        this.statusesWrapper.nativeElement.scrollTo(0, 0);
+        this.scrollBar.directiveRef.scrollToTop(0, 500);
+    }
+
+    /** ----------------------------------------------------------- Infinite Scrolling ----------------------------------------------------------- */
+
+    triggerScroll() {
+        this.scrollBar.directiveRef.scrollToY(this.scrollBar.directiveRef.position(true).y - 1);
+        this.scrollBar.directiveRef.scrollToY(this.scrollBar.directiveRef.position(true).y + 1);
     }
 
     /**
-     * Infinite scroll function that is called
-     * when scrolling down and near end of view port
-     * @param ev
+     * When reach end of page, load next
+     * @param event
      */
-    onScrollDown(ev: any) {
-        this.getPreviousStatuses();
+    reachEnd(event: any) {
+        // This check prevents this from being called prematurely on page load
+        if (event.target.getAttribute('class').indexOf("ps--scrolling-y") >= 0) {
+            this.getPreviousStatuses();
+        }
     }
 
     /** Infinite Scrolling Handling */

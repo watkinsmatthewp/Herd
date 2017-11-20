@@ -5,7 +5,7 @@ import { Observable } from "rxjs/Observable";
 
 import { AccountService, EventAlertService, StatusService } from "../../services";
 import { Account, Status, PagedList } from '../../models/mastodon';
-import { Storage, EventAlertEnum } from '../../models';
+import { Storage, EventAlertEnum, TimelineTypeEnum } from '../../models';
 import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 import { TabsetComponent } from "ngx-bootstrap";
 import { Subscription } from "rxjs/Rx";
@@ -30,10 +30,9 @@ export class ProfilePage implements OnInit, AfterViewInit {
     replyStatus: Status;
 
     account: Account;
+    timelineType: TimelineTypeEnum = TimelineTypeEnum.PROFILE;
     followingList: PagedList<Account> = new PagedList<Account>();
     followerList: PagedList<Account> = new PagedList<Account>();
-    statusList: PagedList<Status> = new PagedList<Status>();
-    newStatusList: PagedList<Status> = new PagedList<Status>();
 
     isFollowing: boolean = false;
     followUnfollowText: string = "Following";
@@ -59,10 +58,7 @@ export class ProfilePage implements OnInit, AfterViewInit {
                 this.getUserAccount(userID);
                 this.getFollowing(userID);
                 this.getFollowers(userID);
-                this.getMostRecentUserPosts(userID);
             });
-
-        setInterval(() => { this.checkForNewStatuses(); }, 10 * 1000);
 
         // Setup subscription to update modals on status click
         this.eventAlertService.getMessage().subscribe(event => {
@@ -142,19 +138,6 @@ export class ProfilePage implements OnInit, AfterViewInit {
     }
 
     /**
-     * Get the posts that this user has made
-     * @param userID
-     */
-    getMostRecentUserPosts(userID: string) {
-        this.statusService.search({ authorMastodonUserID: userID })
-            .subscribe(statusList => {
-                this.statusList = statusList;
-            }, error => {
-                this.toastService.error("Error", error.error);
-            });
-    }
-
-    /**
      * Get the follows of this user
      * @param userID
      */
@@ -210,25 +193,6 @@ export class ProfilePage implements OnInit, AfterViewInit {
             });
     }
 
-    checkForNewStatuses() {
-        this.statusService.search({ authorMastodonUserID: this.account.MastodonUserId, sinceID: this.statusList.Items[0].Id })
-            .finally(() => this.loading = false)
-            .subscribe(newStatusList => {
-                this.newStatusList = newStatusList;
-            });
-    }
-
-    getPreviousStatuses() {
-        this.loading = true;
-        this.statusService.search({ authorMastodonUserID: this.account.MastodonUserId, maxID: this.statusList.PageInformation.EarlierPageMaxID })
-            .finally(() => this.loading = false)
-            .subscribe(newStatusList => {
-                this.appendItems(this.statusList.Items, newStatusList.Items);
-                this.statusList.PageInformation = newStatusList.PageInformation;
-                this.statusesWrapper.nativeElement.scrollTo(0, this.statusesWrapper.nativeElement.scrollTop);
-            });
-    }
-
     getMoreFollowing() {
         let userID = this.account.MastodonUserId;
         this.accountService.search({ followedByMastodonUserID: userID, includeFollowedByActiveUser: true, maxID: this.followingList.PageInformation.EarlierPageMaxID })
@@ -253,25 +217,12 @@ export class ProfilePage implements OnInit, AfterViewInit {
             });
     }
 
-    /**
-     * Add the new items to main feed array, scroll to top, empty newItems
-     */
-    viewNewStatuses() {
-        this.prependItems(this.statusList.Items, this.newStatusList.Items);
-        this.scrollToTop('statuses');
-        this.newStatusList = new PagedList<Status>();
-    }
-
-
-
 
     /**
      * Scrolls the status area to the top
      */
     scrollToTop(tab: string) {
-        if (tab === 'statuses')
-            this.statusesWrapper.nativeElement.scrollTo(0, 0);
-        else if (tab === 'following')
+        if (tab === 'following')
             this.followingWrapper.nativeElement.scrollTo(0, 0);
         else if (tab === 'followers')
             this.followersWrapper.nativeElement.scrollTo(0, 0);
@@ -284,9 +235,7 @@ export class ProfilePage implements OnInit, AfterViewInit {
      * @param ev
      */
     onScrollDown(ev: any, tab: string) {
-        if (tab === 'statuses')
-            this.getPreviousStatuses();
-        else if (tab === 'following')
+        if (tab === 'following')
             this.getMoreFollowing();
         else if (tab === 'followers')
             this.getMoreFollowers();

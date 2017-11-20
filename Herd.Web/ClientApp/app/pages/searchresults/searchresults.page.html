@@ -2,66 +2,52 @@
 <h3 *ngIf="finishedSearching" class="c-header-md text-center">Search Results for <small>"{{ search }}"</small></h3>
 
 <div class="row col-sm-offset-2 col-sm-8">  
-    <tabset #staticTabs>
-        <tab heading="Statuses">
-            <ng-container>
-                <div class="panel">
-                    <div class="panel-heading text-center">
-                        <div *ngIf="loading" class="btn pull-left"><fa name="spinner" spin=true></fa></div>
-                        <button *ngIf="newStatusList.Items.length > 0" class="c-btn c-btn-sm c-btn-primary" type="button" (click)="viewNewStatuses()">{{ new_statuses.length }} New Statuses</button>
-                        <button class="c-btn c-btn-sm c-btn-primary pull-right" type="button" (click)="scrollToTop('statuses')"><fa name="chevron-up"></fa>Scroll to top</button>
-                    </div>
-                    <div class="panel-body">
-                        <div *ngIf="statusList.Items.length > 0" #statusesWrapper class="scrollWrapper"
-                             data-infinite-scroll
-                             debounce
-                             [infiniteScrollContainer]="statusesWrapper"
-                             [scrollWindow]="false"
-                             [infiniteScrollDistance]="3"
-                             [infiniteScrollThrottle]="1500"
-                             (scrolled)="onScrollDown($event, 'statuses')">
-                            <div *ngFor="let status of statusList.Items">
-                                <status [status]="status"></status>
+    <div class="panel">
+        <div class="panel-body">
+            <tabset #staticTabs>
+                <tab heading="Statuses">
+                    <ng-container>
+                        <div class="panel">
+                            <div class="panel-body" style="height: 74vh;">
+                                <div *ngIf="finishedSearching && statusTimeline.statusList.Items.length === 0" class="c-header-md text-center">
+                                    <h3>No results</h3>
+                                </div>
+                                <status-timeline #statusTimeline [timelineType]="timelineType" autoCheckForStatuses="true" [search]="search"></status-timeline>
+
                             </div>
                         </div>
-                        <div *ngIf="statusList.Items.length === 0" class="text-center">
-                            <h3>No results</h3>
-                        </div>
-                    </div>        
-                </div>
-            </ng-container>
-        </tab>
-
-        <tab heading="Users">
-            <ng-container>
-                <div class="panel">
-                    <div class="panel-heading text-center">
-                        <div *ngIf="loading" class="btn pull-left"><fa name="spinner" spin=true></fa></div>
-                        <button class="c-btn c-btn-sm c-btn-primary pull-right" type="button" (click)="scrollToTop('users')"><fa name="chevron-up"></fa>Scroll to top</button>
-                    </div>
-                    <div class="panel-body text-center">
-                        <div *ngIf="userList.Items.length > 0" #usersWrapper class="scrollWrapper"
-                             data-infinite-scroll
-                             debounce
-                             [infiniteScrollContainer]="usersWrapper"
-                             [scrollWindow]="false"
-                             [infiniteScrollDistance]="3"
-                             [infiniteScrollThrottle]="1500">
-                            <div *ngFor="let user of userList.Items">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-                                    <usercard *ngIf="!isCurrentUser(user.MastodonUserId)" [userCard]="user" showBio="true" showActions="true" showFollowButton="true"></usercard>
+                    </ng-container>
+                </tab>
+                <tab heading="Users">
+                    <ng-container>
+                        <div class="panel">
+                            <div class="panel-heading text-center">
+                                <div *ngIf="loading" class="btn pull-left"><fa name="spinner" spin=true></fa></div>
+                                <button class="c-btn c-btn-sm c-btn-primary pull-right" type="button" (click)="scrollToTop('users')"><fa name="chevron-up"></fa>Scroll to top</button>
+                            </div>
+                            <div class="panel-body text-center">
+                                <div *ngIf="userList.Items.length > 0" #usersWrapper class="scrollWrapper"
+                                     data-infinite-scroll
+                                     debounce
+                                     [infiniteScrollContainer]="usersWrapper"
+                                     [scrollWindow]="false"
+                                     [infiniteScrollDistance]="3"
+                                     [infiniteScrollThrottle]="1500">
+                                    <div *ngFor="let user of userList.Items">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                                            <usercard *ngIf="!isCurrentUser(user.MastodonUserId)" [userCard]="user" showBio="true" showActions="true" showFollowButton="true"></usercard>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="userList.Items.length === 0">
+                                    <h3>No results</h3>
                                 </div>
                             </div>
-                        </div>
-                        <div *ngIf="userList.Items.length === 0">
-                            <h3>No results</h3>
-                        </div>
-                    </div>
-                    
-                </div>
-            </ng-container>
-        </tab>
 
-    </tabset>
-
+                        </div>
+                    </ng-container>
+                </tab>
+            </tabset>
+        </div>
+    </div>
 </div>
