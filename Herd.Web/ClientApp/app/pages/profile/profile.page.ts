@@ -15,7 +15,7 @@ import { AccountListComponent, StatusTimelineComponent } from "../../components/
 @Component({
     selector: 'profile',
     templateUrl: './profile.page.html',
-    styleUrls: ['./profile.page.css']
+    styleUrls: ['./profile.page.css'],
 })
 export class ProfilePage implements OnInit, AfterViewInit {
     public listTypeEnum = ListTypeEnum;
@@ -29,6 +29,7 @@ export class ProfilePage implements OnInit, AfterViewInit {
     account: Account;
     isFollowing: boolean = false;
     followUnfollowText: string = "Following";
+    showFullBanner: boolean = true;
     loading: boolean = false;
     // Modal Variables
     statusId: number;
@@ -98,6 +99,10 @@ export class ProfilePage implements OnInit, AfterViewInit {
             return true;
         }
         return false;
+    }
+
+    toggleShowBanner(): void {
+        this.showFullBanner = !this.showFullBanner;
     }
 
     /**

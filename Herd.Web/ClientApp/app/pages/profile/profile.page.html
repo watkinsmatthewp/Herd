@@ -1,5 +1,7 @@
 ﻿<!-- Banner Image -->
-<div class="header-image-box">
+<div class="header-image-box" [ngClass]="{'profile-small-image-box': showFullBanner }">
+    <fa *ngIf="!showFullBanner" class="resize-header-image-box-button" name="chevron-up" (click)="toggleShowBanner()"></fa>
+    <fa *ngIf="showFullBanner" class="resize-header-image-box-button" name="chevron-down" (click)="toggleShowBanner()"></fa>
     <img class="header-pic" src="{{ account?.MastodonHeaderImageURL }}" />
     <div class="profile-image-box">
         <img *ngIf="account" class="profile-pic" src="{{ account?.MastodonProfileImageURL }}" />
