@@ -121,9 +121,7 @@ export class AccountService {
         if (notificationsParams.sinceID)
             queryString += "&sinceID=" + notificationsParams.sinceID;
 
-        console.log(queryString);
-
-        return this.httpClient.get('api/mastodon-posts/notifications' + queryString)
+        return this.httpClient.get('api/mastodon-users/notifications' + queryString)
             .map(response => response as PagedList<MastodonNotification>);
     }
 

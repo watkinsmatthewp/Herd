@@ -125,6 +125,7 @@ export class HttpClientService {
      */
     protected mapRequest(res: Response) {
         let json = res.text() ? res.json() : {};
+        //console.log("json", json);
         if (json.Success == false) {
             let errors: string = "";
             let systemErrors = json.SystemErrors;

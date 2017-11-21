@@ -1,9 +1,6 @@
 ﻿<div class="row">
-
     <div class="panel">
-
         <div class="panel-body">
-
             <div *ngIf="notificationList.Items.length > 0" #notificationsWrapper class="scrollWrapper"
                  data-infinite-scroll
                  debounce
@@ -12,18 +9,15 @@
                  [infiniteScrollDistance]="3"
                  [infiniteScrollThrottle]="1500"
                  (scrolled)="onScrollDown($event)">
-                <div *ngFor="let notification of notificationsList.Items">
+                <div *ngFor="let notification of notificationList.Items">
                     <notification [notification]="notification"></notification>
                 </div>
             </div>
             <div *ngIf="notificationList.Items.length === 0" class="text-center">
                 <h3>No results</h3>
             </div>
-
         </div>
-
     </div>
-
 </div>
 
 <!--

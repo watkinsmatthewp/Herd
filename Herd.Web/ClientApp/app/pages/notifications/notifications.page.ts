@@ -16,6 +16,8 @@ export class NotificationsPage implements OnInit {
 
     notificationList: PagedList<MastodonNotification> = new PagedList<MastodonNotification>();
 
+    loading: boolean = false;
+
     constructor(private activatedRoute: ActivatedRoute, private eventAlertService: EventAlertService,
         private toastService: NotificationsService, private accountService: AccountService,
         private localStorage: Storage) { }
@@ -26,8 +28,10 @@ export class NotificationsPage implements OnInit {
     }
 
     getInitialNotifications() {
+        this.loading = true;
 
         this.accountService.getHerdNotifications({ includeAncestors: true, includeDescendants: true })
+            .finally(() => this.loading = false)
             .subscribe(notificationList => {
                 this.notificationList = notificationList;
             }, error => {
@@ -37,6 +41,7 @@ export class NotificationsPage implements OnInit {
     }
 
     getPreviousNotifications() {
+        console.log("Dang");
         this.accountService.getHerdNotifications({ includeAncestors: true, includeDescendants: true, maxID: this.notificationList.PageInformation.EarlierPageMaxID })
             .subscribe(newNotificationList => {
                 this.appendItems(this.notificationList.Items, newNotificationList.Items);
