@@ -9,10 +9,10 @@
                     <span class="time-stamp"> | {{ notification.CreatedAt | date: 'short' }}</span>
                 </div>
                 <div>
-                    <img class="profile-picture" src="{{ notification.Status.Author.MastodonProfileImageURL }}" />
-                    <a [routerLink]="['/profile', notification.Status.Author.MastodonUserId]">
-                        <span class="author-name">{{ notification.Status.Author.MastodonDisplayName }}</span>
-                        <span class="username">@{{ notification.Status.Author.MastodonUserName }}</span>
+                    <img class="profile-picture" src="{{ notification.Account.MastodonProfileImageURL }}" />
+                    <a [routerLink]="['/profile', notification.Account.MastodonUserId]">
+                        <span class="author-name">{{ notification.Account.MastodonDisplayName }}</span>
+                        <span class="username">@{{ notification.Account.MastodonUserName }}</span>
                     </a>
                 </div>
             </div>
