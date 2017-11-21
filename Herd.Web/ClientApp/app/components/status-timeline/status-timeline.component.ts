@@ -16,7 +16,7 @@ export class StatusTimelineComponent implements OnInit, OnChanges {
     @Input() autoCheckForStatuses: boolean = false;
     @Input() userID: string;
     @Input() search: string;
-    @ViewChild('ps') scrollBar: any;
+    @ViewChild('ps') private scrollBar: any;
     // Status Lists 
     statusList: PagedList<Status> = new PagedList<Status>();
     newStatusList: PagedList<Status> = new PagedList<Status>();
@@ -25,7 +25,7 @@ export class StatusTimelineComponent implements OnInit, OnChanges {
     getPreviousStatuses: Function;
     checkForNewStatuses: Function;
     // Loading variable
-    loading: boolean = false;
+    private loading: boolean = false;
 
 
     constructor(private statusService: StatusService, private toastService: NotificationsService) {}
@@ -167,7 +167,7 @@ export class StatusTimelineComponent implements OnInit, OnChanges {
     /**
      * Add the new items to main feed array, scroll to top, empty newItems
      */
-    viewNewItems() {
+    private viewNewItems() {
         this.prependItems(this.statusList.Items, this.newStatusList.Items);
         this.scrollToTop();
         this.newStatusList = new PagedList<Status>();
@@ -176,13 +176,13 @@ export class StatusTimelineComponent implements OnInit, OnChanges {
     /**
      * Scrolls the status area to the top
      */
-    scrollToTop() {
+    private scrollToTop() {
         this.scrollBar.directiveRef.scrollToTop(0, 500);
     }
 
     /** ----------------------------------------------------------- Infinite Scrolling ----------------------------------------------------------- */
 
-    triggerScroll() {
+    private triggerScroll() {
         this.scrollBar.directiveRef.scrollToY(this.scrollBar.directiveRef.position(true).y - 1);
         this.scrollBar.directiveRef.scrollToY(this.scrollBar.directiveRef.position(true).y + 1);
     }
@@ -191,7 +191,7 @@ export class StatusTimelineComponent implements OnInit, OnChanges {
      * When reach end of page, load next
      * @param event
      */
-    reachEnd(event: any) {
+    private reachEnd(event: any) {
         // This check prevents this from being called prematurely on page load
         if (event.target.getAttribute('class').indexOf("ps--scrolling-y") >= 0) {
             this.getPreviousStatuses();
@@ -199,7 +199,7 @@ export class StatusTimelineComponent implements OnInit, OnChanges {
     }
 
     /** Infinite Scrolling Handling */
-    addItems(oldItems: any[], newItems: any[], _method: any) {
+    private addItems(oldItems: any[], newItems: any[], _method: any) {
         oldItems[_method].apply(oldItems, newItems);
     }
 
@@ -208,7 +208,7 @@ export class StatusTimelineComponent implements OnInit, OnChanges {
      * @param startIndex
      * @param endIndex
      */
-    appendItems(oldItems: any[], newItems: any[]) {
+    private appendItems(oldItems: any[], newItems: any[]) {
         this.addItems(oldItems, newItems, 'push');
     }
 
@@ -217,7 +217,7 @@ export class StatusTimelineComponent implements OnInit, OnChanges {
      * @param startIndex
      * @param endIndex
      */
-    prependItems(oldItems: any[], newItems: any[]) {
+    private prependItems(oldItems: any[], newItems: any[]) {
         this.addItems(oldItems, newItems, 'unshift');
     }
 

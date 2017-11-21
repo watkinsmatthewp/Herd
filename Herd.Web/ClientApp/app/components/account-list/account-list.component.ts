@@ -17,14 +17,14 @@ export class AccountListComponent implements OnInit, OnChanges {
     @Input() userID: string;
     @Output() finishedSearching: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-    @ViewChild('ps') scrollBar: any;
+    @ViewChild('ps') private scrollBar: any;
     // Account Lists 
     accountList: PagedList<Account> = new PagedList<Account>();
     // Functions to call 
     getInitialItems: Function;
     getPreviousItems: Function;
     // Loading variable
-    loading: boolean = false;
+    private loading: boolean = false;
 
 
     constructor(private accountService: AccountService, private eventAlertService: EventAlertService,
@@ -141,7 +141,7 @@ export class AccountListComponent implements OnInit, OnChanges {
     /**
      * Add the new items to main feed array, scroll to top, empty newItems
      */
-    viewNewItems() {
+    private viewNewItems() {
         //this.prependItems(this.accountList.Items, this.newaccountList.Items);
         //this.scrollToTop();
         //this.newaccountList = new PagedList<Status>();
@@ -150,13 +150,13 @@ export class AccountListComponent implements OnInit, OnChanges {
     /**
      * Scrolls the status area to the top
      */
-    scrollToTop() {
+    private scrollToTop() {
         this.scrollBar.directiveRef.scrollToTop(0, 500);
     }
 
     /** ----------------------------------------------------------- Infinite Scrolling ----------------------------------------------------------- */
 
-    triggerScroll() {
+    private triggerScroll() {
         this.scrollBar.directiveRef.scrollToY(this.scrollBar.directiveRef.position(true).y - 1);
         this.scrollBar.directiveRef.scrollToY(this.scrollBar.directiveRef.position(true).y + 1);
     }
@@ -165,7 +165,7 @@ export class AccountListComponent implements OnInit, OnChanges {
      * When reach end of page, load next
      * @param event
      */
-    reachEnd(event: any) {
+    private reachEnd(event: any) {
         console.log("event", event);
         // This check prevents this from being called prematurely on page load
         if (event.target.getAttribute('class').indexOf("ps--scrolling-y") >= 0) {
@@ -174,7 +174,7 @@ export class AccountListComponent implements OnInit, OnChanges {
     }
 
     /** Infinite Scrolling Handling */
-    addItems(oldItems: any[], newItems: any[], _method: any) {
+    private addItems(oldItems: any[], newItems: any[], _method: any) {
         oldItems[_method].apply(oldItems, newItems);
     }
 
@@ -183,7 +183,7 @@ export class AccountListComponent implements OnInit, OnChanges {
      * @param startIndex
      * @param endIndex
      */
-    appendItems(oldItems: any[], newItems: any[]) {
+    private appendItems(oldItems: any[], newItems: any[]) {
         this.addItems(oldItems, newItems, 'push');
     }
 
@@ -192,7 +192,7 @@ export class AccountListComponent implements OnInit, OnChanges {
      * @param startIndex
      * @param endIndex
      */
-    prependItems(oldItems: any[], newItems: any[]) {
+    private prependItems(oldItems: any[], newItems: any[]) {
         this.addItems(oldItems, newItems, 'unshift');
     }
 

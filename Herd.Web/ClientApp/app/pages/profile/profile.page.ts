@@ -36,12 +36,9 @@ export class ProfilePage implements OnInit, AfterViewInit {
     replyStatus: Status;
 
     constructor(
-        private accountService: AccountService,
-        private eventAlertService: EventAlertService,
-        private localStorage: Storage,
-        private route: ActivatedRoute,
-        private statusService: StatusService,
-        private toastService: NotificationsService) {
+        private accountService: AccountService, private eventAlertService: EventAlertService,
+        private localStorage: Storage, private route: ActivatedRoute,
+        private statusService: StatusService, private toastService: NotificationsService) {
     }
 
     /**
@@ -75,8 +72,8 @@ export class ProfilePage implements OnInit, AfterViewInit {
                     break;
                 }
                 case EventAlertEnum.UPDATE_FOLLOWING_AND_FOLLOWERS: {
-                    //this.getFollowers(this.account.MastodonUserId);
-                    //this.getFollowing(this.account.MastodonUserId);
+                    this.followerList.getInitialItems();
+                    this.followingList.getInitialItems();
                     break;
                 }
             }
