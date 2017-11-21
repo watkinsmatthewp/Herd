@@ -6,7 +6,7 @@ import { NotificationsService } from "angular2-notifications";
 import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 
 import { StatusService, EventAlertService, AccountService } from "../../services";
-import { EventAlertEnum, Storage, TimelineTypeEnum } from '../../models';
+import { EventAlertEnum, ListTypeEnum, Storage } from '../../models';
 import { Account, Hashtag, PagedList, Status } from "../../models/mastodon";
 
 @Component({
@@ -15,15 +15,16 @@ import { Account, Hashtag, PagedList, Status } from "../../models/mastodon";
     styleUrls: ['./home.page.css']
 })
 export class HomePage implements OnInit {
+    public listTypeEnum = ListTypeEnum;
     @ViewChild('specificStatusModal') specificStatusModal: BsModalComponent;
     @ViewChild('replyStatusModal') replyStatusModal: BsModalComponent;
 
+    account: Account = new Account();
+    loading: boolean = false;
+    // Modal Variables
     statusId: number;
     specificStatus: Status;
     replyStatus: Status;
-    timelineType: TimelineTypeEnum = TimelineTypeEnum.HOME;
-    account: Account = new Account();
-    loading: boolean = false;
     
 
     constructor(private activatedRoute: ActivatedRoute, private eventAlertService: EventAlertService,

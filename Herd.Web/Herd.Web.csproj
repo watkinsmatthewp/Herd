@@ -46,7 +46,6 @@
     <None Remove="ClientApp\app\models\mastodon\Hashtag.ts" />
     <None Remove="ClientApp\app\models\mastodon\PagedList.ts" />
     <None Remove="ClientApp\app\models\mastodon\Visibility.ts" />
-    <None Remove="ClientApp\app\models\TimelineType.enum.ts" />
     <None Remove="ClientApp\app\pages\index.ts" />
     <None Remove="ClientApp\app\pages\searchResults\searchresults.page.ts" />
     <None Remove="ClientApp\app\pages\settings\settings.page.ts" />
@@ -83,7 +82,7 @@
     <TypeScriptCompile Include="ClientApp\app\models\mastodon\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\mastodon\PagedList.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\mastodon\Visibility.ts" />
-    <TypeScriptCompile Include="ClientApp\app\models\TimelineType.enum.ts" />
+    <TypeScriptCompile Include="ClientApp\app\models\ListType.enum.ts" />
     <TypeScriptCompile Include="ClientApp\app\pages\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\pages\notifications\notifications.page.ts" />
     <TypeScriptCompile Include="ClientApp\app\pages\profile\profile.page.ts" />

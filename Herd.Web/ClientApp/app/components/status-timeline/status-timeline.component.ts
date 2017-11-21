@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 
-import { TimelineTypeEnum } from "../../models";
+import { ListTypeEnum } from "../../models";
 import { StatusService } from "../../services";
 import { PagedList, Status } from "../../models/mastodon";
 import { NotificationsService } from "angular2-notifications";
@@ -11,7 +11,7 @@ import { NotificationsService } from "angular2-notifications";
     styleUrls: ['./status-timeline.component.css']
 })
 export class StatusTimelineComponent implements OnInit, OnChanges {
-    @Input() timelineType: TimelineTypeEnum;
+    @Input() listType: ListTypeEnum;
     @Input() showStatusForm: boolean = false;
     @Input() autoCheckForStatuses: boolean = false;
     @Input() userID: string;
@@ -32,7 +32,7 @@ export class StatusTimelineComponent implements OnInit, OnChanges {
 
     ngOnInit() {
         // Check for required input - we AT LEAST need to know which types of statuses to get
-        if (this.timelineType < 0) throw new Error("TimelineType is required");
+        if (this.listType < 0) throw new Error("TimelineType is required");
 
         this.setupFunctions();
         this.getInitialFeed();
@@ -43,16 +43,17 @@ export class StatusTimelineComponent implements OnInit, OnChanges {
      * @param changes shows old value vs new value of state change
      */
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.search && changes.search.previousValue) {
+        if ((changes.search && changes.search.previousValue) || (changes.userID && changes.userID.previousValue)) {
             this.getInitialFeed();
         }
     }
 
     private setupFunctions() {
-        switch (+this.timelineType) {
-            case TimelineTypeEnum.HOME: {
+        switch (+this.listType) {
+            case ListTypeEnum.HOME: {
                 // Set getInitialFeed 
                 this.getInitialFeed = function (): void {
+                    this.statusList.Items = [];
                     this.loading = true;
                     let progress = this.toastService.info("Retrieving", "home timeline ...", { timeOut: 0 });
 
@@ -88,10 +89,13 @@ export class StatusTimelineComponent implements OnInit, OnChanges {
                 }
                 break;
             }
-            case TimelineTypeEnum.PROFILE: {
+            case ListTypeEnum.PROFILE: {
                 // Set getInitialFeed 
                 this.getInitialFeed = function (): void {
+                    this.statusList.Items = [];
+                    this.loading = true;
                     this.statusService.search({ authorMastodonUserID: this.userID })
+                        .finally(() => this.loading = false)
                         .subscribe(statusList => {
                             this.statusList = statusList;
                         }, error => {
@@ -114,17 +118,19 @@ export class StatusTimelineComponent implements OnInit, OnChanges {
                 // Set checkForNewStatuses
                 this.checkForNewStatuses = function (): void {
                     this.statusService.search({ authorMastodonUserID: this.userID, sinceID: this.statusList.Items[0].Id })
-                        .finally(() => this.loading = false)
                         .subscribe(newStatusList => {
                             this.newStatusList = newStatusList;
                         });
                 }
                 break;
             }
-            case TimelineTypeEnum.SEARCH: {
+            case ListTypeEnum.SEARCH: {
                 // Set getInitialFeed 
+                this.loading = true;
                 this.getInitialFeed = function (): void {
+                    this.statusList.Items = [];
                     this.statusService.search({ hashtag: this.search })
+                        .finally(() => this.loading = false)
                         .subscribe(statusList => {
                             this.statusList = statusList;
                         });
@@ -145,7 +151,6 @@ export class StatusTimelineComponent implements OnInit, OnChanges {
                 // Set checkForNewStatuses
                 this.checkForNewStatuses = function (): void {
                     this.statusService.search({ hashtag: this.search, sinceID: this.statusList.Items[0].Id })
-                        .finally(() => this.loading = false)
                         .subscribe(newStatusList => {
                             this.newStatusList = newStatusList;
                         });

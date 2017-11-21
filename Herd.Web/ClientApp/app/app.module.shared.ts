@@ -30,7 +30,7 @@ import {
 
 // Components
 import {
-    InstancePickerComponent, NavMenuComponent,
+    AccountListComponent, InstancePickerComponent, NavMenuComponent,
     StatusComponent, StatusFormComponent, StatusFormModalComponent, StatusTimelineComponent,
     TopHashtagsComponent, UserCardComponent, ProfileUpdaterComponent
 } from './components';
@@ -50,7 +50,7 @@ import { SafePipe } from './pipes';
 @NgModule({
     declarations: [
         // Page
-        AdminPage, AppPage, HomePage, LocalFeedPage,
+        AccountListComponent, AdminPage, AppPage, HomePage, LocalFeedPage,
         LoginPage, NotificationsPage, ProfilePage, RegisterPage, SearchResultsPage, SettingsPage,
         // Components
         InstancePickerComponent, NavMenuComponent,

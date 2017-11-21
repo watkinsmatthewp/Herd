@@ -5,10 +5,11 @@ import { Observable } from "rxjs/Observable";
 
 import { AccountService, EventAlertService, StatusService } from "../../services";
 import { Account, Status, PagedList } from '../../models/mastodon';
-import { Storage, EventAlertEnum, TimelineTypeEnum } from '../../models';
+import { Storage, EventAlertEnum, ListTypeEnum } from '../../models';
 import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 import { TabsetComponent } from "ngx-bootstrap";
 import { Subscription } from "rxjs/Rx";
+import { AccountListComponent, StatusTimelineComponent } from "../../components/index";
 
 
 @Component({
@@ -17,26 +18,22 @@ import { Subscription } from "rxjs/Rx";
     styleUrls: ['./profile.page.css']
 })
 export class ProfilePage implements OnInit, AfterViewInit {
+    public listTypeEnum = ListTypeEnum;
     @ViewChild('staticTabs') staticTabs: TabsetComponent;
+    @ViewChild('statusList') statusList: StatusTimelineComponent;
+    @ViewChild('followingList') followingList: AccountListComponent;
+    @ViewChild('followerList') followerList: AccountListComponent;
     @ViewChild('specificStatusModal') specificStatusModal: BsModalComponent;
     @ViewChild('replyStatusModal') replyStatusModal: BsModalComponent;
-    @ViewChild('statusesWrapper') statusesWrapper: any;
-    @ViewChild('followingWrapper') followingWrapper: any;
-    @ViewChild('followersWrapper') followersWrapper: any;
 
+    account: Account;
+    isFollowing: boolean = false;
+    followUnfollowText: string = "Following";
+    loading: boolean = false;
     // Modal Variables
     statusId: number;
     specificStatus: Status;
     replyStatus: Status;
-
-    account: Account;
-    timelineType: TimelineTypeEnum = TimelineTypeEnum.PROFILE;
-    followingList: PagedList<Account> = new PagedList<Account>();
-    followerList: PagedList<Account> = new PagedList<Account>();
-
-    isFollowing: boolean = false;
-    followUnfollowText: string = "Following";
-    loading: boolean = false;
 
     constructor(
         private accountService: AccountService,
@@ -55,9 +52,13 @@ export class ProfilePage implements OnInit, AfterViewInit {
         this.route.paramMap
             .switchMap((params: ParamMap) => Observable.of(params.get('id') || "-1"))
             .subscribe(userID => {
+                // if id switches we need to update the entire page again
                 this.getUserAccount(userID);
-                this.getFollowing(userID);
-                this.getFollowers(userID);
+                if (this.followingList && this.followerList && this.statusList) {
+                    this.followerList.userID = userID;
+                    this.followingList.userID = userID;
+                    this.statusList.userID = userID;
+                }
             });
 
         // Setup subscription to update modals on status click
@@ -74,8 +75,8 @@ export class ProfilePage implements OnInit, AfterViewInit {
                     break;
                 }
                 case EventAlertEnum.UPDATE_FOLLOWING_AND_FOLLOWERS: {
-                    this.getFollowers(this.account.MastodonUserId);
-                    this.getFollowing(this.account.MastodonUserId);
+                    //this.getFollowers(this.account.MastodonUserId);
+                    //this.getFollowing(this.account.MastodonUserId);
                     break;
                 }
             }
@@ -83,7 +84,7 @@ export class ProfilePage implements OnInit, AfterViewInit {
     }
 
     /**
-     * Update default tab
+     * Update selected tab
      */
     ngAfterViewInit() {
         this.route.queryParams
@@ -137,27 +138,7 @@ export class ProfilePage implements OnInit, AfterViewInit {
             });
     }
 
-    /**
-     * Get the follows of this user
-     * @param userID
-     */
-    getFollowers(userID: string) {
-        this.accountService.search({ followsMastodonUserID: userID, includeFollowsActiveUser: true })
-            .subscribe(followerList => {
-                this.followerList = followerList;
-            });
-    }
-
-    /**
-     * Get who this user is following
-     * @param userID
-     */
-    getFollowing(userID: string) {
-        this.accountService.search({ followedByMastodonUserID: userID, includeFollowedByActiveUser: true })
-            .subscribe(followingList => {
-                this.followingList = followingList;
-            });
-    }
+    /** ----------------------------------------------------------- Modal Actions ----------------------------------------------------------- */
 
     updateSpecificStatus(statusId: string): void {
         this.loading = true;
@@ -191,77 +172,6 @@ export class ProfilePage implements OnInit, AfterViewInit {
             }, error => {
                 this.toastService.error("Error", error.error);
             });
-    }
-
-    getMoreFollowing() {
-        let userID = this.account.MastodonUserId;
-        this.accountService.search({ followedByMastodonUserID: userID, includeFollowedByActiveUser: true, maxID: this.followingList.PageInformation.EarlierPageMaxID })
-            .subscribe(newUsersList => {
-                if (newUsersList.Items.length > 0) {
-                    this.appendItems(this.followingList.Items, newUsersList.Items);
-                    this.followingList.PageInformation = newUsersList.PageInformation;
-                    this.followingWrapper.nativeElement.scrollTo(0, this.followingWrapper.nativeElement.scrollTop);
-                }
-            });
-    }
-
-    getMoreFollowers() {
-        let userID = this.account.MastodonUserId;
-        this.accountService.search({ followsMastodonUserID: userID, includeFollowsActiveUser: true, maxID: this.followerList.PageInformation.EarlierPageMaxID })
-            .subscribe(newUsersList => {
-                if (newUsersList.Items.length > 0) {
-                    this.appendItems(this.followerList.Items, newUsersList.Items);
-                    this.followerList.PageInformation = newUsersList.PageInformation;
-                    this.followersWrapper.nativeElement.scrollTo(0, this.followersWrapper.nativeElement.scrollTop);
-                }
-            });
-    }
-
-
-    /**
-     * Scrolls the status area to the top
-     */
-    scrollToTop(tab: string) {
-        if (tab === 'following')
-            this.followingWrapper.nativeElement.scrollTo(0, 0);
-        else if (tab === 'followers')
-            this.followersWrapper.nativeElement.scrollTo(0, 0);
-        
-    }
-
-    /**
-     * Infinite scroll function that is called
-     * when scrolling down and near end of view port
-     * @param ev
-     */
-    onScrollDown(ev: any, tab: string) {
-        if (tab === 'following')
-            this.getMoreFollowing();
-        else if (tab === 'followers')
-            this.getMoreFollowers();
-    }
-
-    /** Infinite Scrolling Handling */
-    addItems(oldItems: any[], newItems: any[], _method: any) {
-        oldItems[_method].apply(oldItems, newItems);
-    }
-
-    /**
-     * Add items to end of list
-     * @param startIndex
-     * @param endIndex
-     */
-    appendItems(oldItems: any[], newItems: any[]) {
-        this.addItems(oldItems, newItems, 'push');
-    }
-
-    /**
-     * Add items to beginning of list
-     * @param startIndex
-     * @param endIndex
-     */
-    prependItems(oldItems: any[], newItems: any[]) {
-        this.addItems(oldItems, newItems, 'unshift');
     }
 
 }

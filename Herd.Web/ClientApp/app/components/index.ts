@@ -1,4 +1,5 @@
-﻿export * from './instance-picker/instance-picker.component';
+﻿export * from './account-list/account-list.component';
+export * from './instance-picker/instance-picker.component';
 export * from './navmenu/navmenu.component';
 export * from './status/status.component';
 export * from './status-form/status-form.component';

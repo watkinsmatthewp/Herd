@@ -1,51 +1,30 @@
-﻿<h3 *ngIf="!finishedSearching" class="c-header-md text-center">Searching for <small>"{{ search }}"</small> ...</h3>
-<h3 *ngIf="finishedSearching" class="c-header-md text-center">Search Results for <small>"{{ search }}"</small></h3>
+﻿<h3 class="c-header-md text-center">{{ searchingText }} <small>"{{ search }}"</small> ...</h3>
 
 <div class="row col-sm-offset-2 col-sm-8">  
     <div class="panel">
         <div class="panel-body">
             <tabset #staticTabs>
                 <tab heading="Statuses">
-                    <ng-container>
-                        <div class="panel">
-                            <div class="panel-body" style="height: 74vh;">
-                                <div *ngIf="finishedSearching && statusTimeline.statusList.Items.length === 0" class="c-header-md text-center">
-                                    <h3>No results</h3>
+                    <div class="row">
+                        <ng-container>
+                            <div class="panel">
+                                <div class="panel-body tabContentHeight">
+                                    <status-timeline #statusTimeline [listType]="listTypeEnum.SEARCH" autoCheckForStatuses="true" [search]="search"></status-timeline>
                                 </div>
-                                <status-timeline #statusTimeline [timelineType]="timelineType" autoCheckForStatuses="true" [search]="search"></status-timeline>
-
                             </div>
-                        </div>
-                    </ng-container>
+                        </ng-container>
+                    </div>
                 </tab>
                 <tab heading="Users">
-                    <ng-container>
-                        <div class="panel">
-                            <div class="panel-heading text-center">
-                                <div *ngIf="loading" class="btn pull-left"><fa name="spinner" spin=true></fa></div>
-                                <button class="c-btn c-btn-sm c-btn-primary pull-right" type="button" (click)="scrollToTop('users')"><fa name="chevron-up"></fa>Scroll to top</button>
-                            </div>
-                            <div class="panel-body text-center">
-                                <div *ngIf="userList.Items.length > 0" #usersWrapper class="scrollWrapper"
-                                     data-infinite-scroll
-                                     debounce
-                                     [infiniteScrollContainer]="usersWrapper"
-                                     [scrollWindow]="false"
-                                     [infiniteScrollDistance]="3"
-                                     [infiniteScrollThrottle]="1500">
-                                    <div *ngFor="let user of userList.Items">
-                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-                                            <usercard *ngIf="!isCurrentUser(user.MastodonUserId)" [userCard]="user" showBio="true" showActions="true" showFollowButton="true"></usercard>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div *ngIf="userList.Items.length === 0">
-                                    <h3>No results</h3>
+                    <div class="row">
+                        <ng-container>
+                            <div class="panel">
+                                <div class="panel-body tabContentHeight text-center">
+                                    <account-list #userList [listType]="listTypeEnum.SEARCH" [search]="search" (finishedSearching)="updateSearchingText($event)"></account-list>
                                 </div>
                             </div>
-
-                        </div>
-                    </ng-container>
+                        </ng-container>
+                    </div>
                 </tab>
             </tabset>
         </div>
