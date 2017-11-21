@@ -17,7 +17,8 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 
 const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true,
-    wheelPropagation: true
+    wheelPropagation: true,
+    minScrollbarLength: 50,
 };
 
 
