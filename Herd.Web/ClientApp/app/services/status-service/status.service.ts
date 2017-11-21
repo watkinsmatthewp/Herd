@@ -131,4 +131,5 @@ export class StatusService {
         return this.httpClient.get('api/mastodon-posts/top-hashtags' + queryString)
             .map(response => response.HashTags as Hashtag[]);
     }
+
 }

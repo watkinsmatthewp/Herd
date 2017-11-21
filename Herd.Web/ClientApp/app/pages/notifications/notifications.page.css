@@ -1,0 +1,11 @@
+﻿.notificationsWrapper {
+    height: 87vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.scrollWrapper {
+    height: 350px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}

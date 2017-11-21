@@ -2,7 +2,7 @@
 import { Observable } from "rxjs/Observable";
 
 import { User } from '../../models';
-import { Account, Status, PagedList } from '../../models/mastodon';
+import { Account, Status, PagedList, MastodonNotification } from '../../models/mastodon';
 import { HttpClientService } from '../http-client-service/http-client.service';
 
 /**
@@ -30,6 +30,14 @@ export interface AccountSearchParams {
     max?: number,
     maxID?: string,
     sinceID?: string,
+}
+
+export interface NotificationsParams {
+    includeAncestors?: boolean,
+    includeDescendants?: boolean,
+    max?: number,
+    maxID?: string,
+    sinceID?: string
 }
 
 @Injectable()
@@ -97,6 +105,26 @@ export class AccountService {
             formData.append('header', header);
 
         return this.httpClient.postForm('api/mastodon-users/update', formData);
+    }
+
+    getHerdNotifications(notificationsParams: NotificationsParams): Observable<PagedList<MastodonNotification>> {
+        let queryString = "?";
+
+        if (notificationsParams.includeAncestors)
+            queryString += "&includeAncestors=" + notificationsParams.includeAncestors;
+        if (notificationsParams.includeDescendants)
+            queryString += "&includeDescendants=" + notificationsParams.includeDescendants;
+        if (notificationsParams.max)
+            queryString += "&max=" + notificationsParams.max;
+        if (notificationsParams.maxID)
+            queryString += "&maxID=" + notificationsParams.maxID;
+        if (notificationsParams.sinceID)
+            queryString += "&sinceID=" + notificationsParams.sinceID;
+
+        console.log(queryString);
+
+        return this.httpClient.get('api/mastodon-posts/notifications' + queryString)
+            .map(response => response as PagedList<MastodonNotification>);
     }
 
 }

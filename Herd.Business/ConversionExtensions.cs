@@ -146,7 +146,7 @@ namespace Herd.Business
                 Type = notification.Type,
                 CreatedAt = notification.CreatedAt,
                 Account = notification.Account.ToMastodonUser(),
-                Status = notification.Status.ToPost()
+                Status = notification.Status?.ToPost()
             };
         }
 

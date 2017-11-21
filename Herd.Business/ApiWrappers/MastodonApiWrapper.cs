@@ -373,7 +373,7 @@ namespace Herd.Business.ApiWrappers
         {
             foreach (var mastodonNotification in mastodonNotifications)
             {
-                if (mastodonNotification != null)
+                if (mastodonNotification.Status != null)
                 {
                     await AddContextToMastodonPost(mastodonNotification.Status, mastodonPostContextOptions);
                 }

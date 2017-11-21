@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Notification } from '../../models/mastodon';
+import { MastodonNotification } from '../../models/mastodon';
 import { StatusService, EventAlertService } from "../../services";
 import { Status } from '../../models/mastodon';
 import { EventAlertEnum } from "../../models/index";
@@ -13,7 +13,7 @@ import { EventAlertEnum } from "../../models/index";
 })
 export class NotificationComponent implements OnInit {
 
-    @Input() notification: Notification;
+    @Input() notification: MastodonNotification;
 
     constructor(private router: Router, private statusService: StatusService, private eventAlertService: EventAlertService) { }
 
