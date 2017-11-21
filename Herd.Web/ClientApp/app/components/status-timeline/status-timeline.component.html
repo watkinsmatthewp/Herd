@@ -1,0 +1,20 @@
+﻿<perfect-scrollbar #ps class="statusesWrapper" [scrollIndicators]="true" (psYReachEnd)="reachEnd($event)">
+    <div class="infiniteStaticButtons">
+        <button *ngIf="newStatusList.Items.length > 0" class="c-btn c-btn-sm c-btn-primary" type="button" (click)="viewNewItems()">
+            {{newStatusList.Items.length}} new status(es)
+        </button>
+        <button *ngIf="newStatusList.Items.length === 0 && statusList.Items.length > 0" class="c-btn c-btn-sm c-btn-primary" type="button" (click)="scrollToTop()">
+            <fa name="chevron-up"></fa>
+        </button>
+    </div>
+    <status-form *ngIf="showStatusForm" actionName="Create Status"></status-form>
+    <div *ngFor="let status of statusList.Items" class="row">
+        <div class="col-sm-12">
+            <status [status]="status"></status>
+        </div>
+    </div>
+    <div class="static-loading-more">
+        <fa *ngIf="loading" name="spinner" spin=true size="3"></fa>
+    </div>
+    
+</perfect-scrollbar>

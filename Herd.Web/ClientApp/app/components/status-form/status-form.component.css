@@ -6,6 +6,7 @@
 
 textarea {
     resize: none;
+    /**overflow-x: hidden;*/
 }
 
 .image-row {

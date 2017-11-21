@@ -6,7 +6,7 @@ import { NotificationsService } from "angular2-notifications";
 import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 
 import { StatusService, EventAlertService, AccountService } from "../../services";
-import { EventAlertEnum, Storage } from '../../models';
+import { EventAlertEnum, ListTypeEnum, Storage } from '../../models';
 import { Account, Hashtag, PagedList, Status } from "../../models/mastodon";
 
 @Component({
@@ -15,19 +15,17 @@ import { Account, Hashtag, PagedList, Status } from "../../models/mastodon";
     styleUrls: ['./home.page.css']
 })
 export class HomePage implements OnInit {
+    public listTypeEnum = ListTypeEnum;
     @ViewChild('specificStatusModal') specificStatusModal: BsModalComponent;
     @ViewChild('replyStatusModal') replyStatusModal: BsModalComponent;
-    @ViewChild('statusesWrapper') statusesWrapper: any;
 
+    account: Account = new Account();
+    loading: boolean = false;
+    // Modal Variables
     statusId: number;
     specificStatus: Status;
     replyStatus: Status;
-
-    loading: boolean = false;
-
-    account: Account = new Account();
-    statusList: PagedList<Status> = new PagedList<Status>();
-    newStatusList: PagedList<Status> = new PagedList<Status>();
+    
 
     constructor(private activatedRoute: ActivatedRoute, private eventAlertService: EventAlertService,
                 private toastService: NotificationsService, private statusService: StatusService,
@@ -49,51 +47,16 @@ export class HomePage implements OnInit {
             }
         });
 
-        setInterval(() => { this.checkForNewStatuses(); }, 10 * 1000);
-        this.getMostRecentHomeFeed();
-        this.getaccount();
+        this.getAccount();
     }
 
-    getaccount() {
+    getAccount() {
         let currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
         let userID = currentUser.MastodonConnection.MastodonUserID;
         this.accountService.search({ mastodonUserID: userID, includeFollowedByActiveUser: true, includeFollowsActiveUser: true })
             .map(response => response.Items[0] as Account)
             .subscribe(account => {
                 this.account = account;
-            });
-    }
-
-    getMostRecentHomeFeed() {
-        this.loading = true;
-        let progress = this.toastService.info("Retrieving", "home timeline ...", { timeOut: 0 });
-
-        this.statusService.search({ onlyOnActiveUserTimeline: true })
-            .finally(() => this.loading = false)
-            .subscribe(statusList => {
-                this.toastService.remove(progress.id);
-                this.statusList = statusList;
-            }, error => {
-                this.toastService.error("Error", error.error);
-            });
-    }
-
-    checkForNewStatuses() {
-        this.statusService.search({ onlyOnActiveUserTimeline: true, sinceID: this.statusList.Items[0].Id })
-            .finally(() => this.loading = false)
-            .subscribe(newStatusList => {
-                this.newStatusList = newStatusList;
-            });
-    }
-
-    getPreviousStatuses() {
-        this.loading = true;
-        this.statusService.search({ onlyOnActiveUserTimeline: true, maxID: this.statusList.PageInformation.EarlierPageMaxID })
-            .finally(() => this.loading = false)
-            .subscribe(newStatusList => {
-                this.appendItems(this.statusList.Items, newStatusList.Items);
-                this.statusList.PageInformation = newStatusList.PageInformation;
-                this.statusesWrapper.nativeElement.scrollTo(0, this.statusesWrapper.nativeElement.scrollTop);
             });
     }
 
@@ -131,51 +94,4 @@ export class HomePage implements OnInit {
             });
     }
 
-    /**
-     * Add the new items to main feed array, scroll to top, empty newItems
-     */
-    viewNewItems() {
-        this.prependItems(this.statusList.Items, this.newStatusList.Items);
-        this.scrollToTop();
-        this.newStatusList = new PagedList<Status>();
-    }
-
-    /**
-     * Scrolls the status area to the top
-     */
-    scrollToTop() {
-        this.statusesWrapper.nativeElement.scrollTo(0, 0);
-    }
-
-    /**
-     * Infinite scroll function that is called
-     * when scrolling down and near end of view port
-     * @param ev
-     */
-    onScrollDown(ev: any) {
-        this.getPreviousStatuses();
-    }
-
-    /** Infinite Scrolling Handling */
-    addItems(oldItems: any[], newItems: any[], _method: any) {
-        oldItems[_method].apply(oldItems, newItems);
-    }
-
-    /**
-     * Add items to end of list
-     * @param startIndex
-     * @param endIndex
-     */
-    appendItems(oldItems: any[], newItems: any[]) {
-        this.addItems(oldItems, newItems, 'push');
-    }
-
-    /**
-     * Add items to beginning of list
-     * @param startIndex
-     * @param endIndex
-     */
-    prependItems(oldItems: any[], newItems: any[]) {
-        this.addItems(oldItems, newItems, 'unshift');
-    }
 }

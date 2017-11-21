@@ -12,6 +12,13 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ModalGalleryModule } from 'angular-modal-gallery';
 import { TabsModule } from 'ngx-bootstrap';
 import { SimpleNotificationsModule } from 'angular2-notifications';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+
+const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+    suppressScrollX: true,
+    wheelPropagation: true
+};
 
 
 // Pages
@@ -23,8 +30,8 @@ import {
 
 // Components
 import {
-    InstancePickerComponent, NavMenuComponent,
-    StatusComponent, StatusFormComponent, StatusFormModalComponent,
+    AccountListComponent, InstancePickerComponent, NavMenuComponent,
+    StatusComponent, StatusFormComponent, StatusFormModalComponent, StatusTimelineComponent,
     TopHashtagsComponent, UserCardComponent, ProfileUpdaterComponent
 } from './components';
 
@@ -43,11 +50,11 @@ import { SafePipe } from './pipes';
 @NgModule({
     declarations: [
         // Page
-        AdminPage, AppPage, HomePage, LocalFeedPage,
+        AccountListComponent, AdminPage, AppPage, HomePage, LocalFeedPage,
         LoginPage, NotificationsPage, ProfilePage, RegisterPage, SearchResultsPage, SettingsPage,
         // Components
         InstancePickerComponent, NavMenuComponent,
-        StatusComponent, StatusFormComponent, StatusFormModalComponent,
+        StatusComponent, StatusFormComponent, StatusFormModalComponent, StatusTimelineComponent,
         TopHashtagsComponent, UserCardComponent, ProfileUpdaterComponent,
         // Pipes
         SafePipe
@@ -55,6 +62,7 @@ import { SafePipe } from './pipes';
     imports: [
         Angular2FontawesomeModule, BsModalModule, CardModule, CommonModule, 
         HttpModule, FormsModule, InfiniteScrollModule, ModalGalleryModule.forRoot(),
+        PerfectScrollbarModule.forRoot(PERFECT_SCROLLBAR_CONFIG),
         TabsModule.forRoot(), SimpleNotificationsModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
