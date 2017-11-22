@@ -6,6 +6,7 @@
 
 textarea {
     resize: none;
+    background-color: #002b49;
     /**overflow-x: hidden;*/
 }
 
@@ -23,9 +24,25 @@ textarea {
     width: 60px;
 }
 
-.spoilerButton:hover {
-    background-color: #f59f00;
+.spoilerButton {
+    background-color: transparent;
+    color: #50d4ff;
 }
+
+    .spoilerButton:hover {
+        background-color: #f59f00;
+        color: #404040;
+    }
+
+.fileButton {
+    background-color: transparent;
+    color: #50d4ff;
+}
+
+    .fileButton:hover {
+        background-color: #002B49;
+        color: #50d4ff;
+    }
 
 .charLimitOffset {
     padding-right: .5em;

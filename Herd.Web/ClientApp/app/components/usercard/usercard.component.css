@@ -19,12 +19,12 @@
         text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
     }
 
-    .username {
-        font-size: 80%;
-        font-style: italic;
-        font-weight: bold;
-        color: #00b6f2;
-    }
+.username {
+    font-size: 80%;
+    font-style: italic;
+    font-weight: bold;
+    color: #93e4ff;
+}
 
 .user-bio {
     /*margin: 0 auto 0 auto;
@@ -32,11 +32,11 @@
     max-height: 55px;
     overflow: hidden;
     /*display: block;*/
-    color: #282b31;
+    color: #fff;
 }
 
 .quick-info {
-    color: #282b31;
+    color: #fff;
 }
 
 .quick-info-border {

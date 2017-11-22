@@ -1,7 +1,94 @@
 ﻿body {
-    background-color: #ccedff;
+    background-color: #002B49;
+    color: #fff;
+    font-family: 'Source Sans Pro';
 }
 
-.c-btn {
-    box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+.panel {
+    background-color: #00375e;
 }
+
+/* BUTTONS */
+.c-btn {
+    box-shadow: 1px 1px 4px rgba(80, 212, 255, .6);
+}
+
+.c-btn-primary {
+    background: #00375e;
+}
+
+    .c-btn-primary:hover {
+        background: #50d4ff;
+    }
+
+    .c-btn.c-btn-secondary-outline {
+        border: 1px solid #50d4ff;
+        color: #50d4ff;
+    }
+
+        .c-btn.c-btn-secondary-outline:hover {
+            border: 1px solid #50d4ff;
+            background-color: #00375e;
+        }
+
+.button {
+    background-color: #002B49;
+    color: #fff;
+}
+
+.btn-default {
+    background-color: #002B49;
+    border: 1px solid #50d4ff;
+    color: #fff;
+}
+
+    .btn-default:hover {
+        background-color: #00375e;
+        border: 1px solid #50d4ff;
+        color: #fff;
+    }
+
+/* HEADERS */
+.c-header-xs {
+    color: #fff;
+}
+
+.c-header-sm {
+    color: #fff;
+}
+
+.c-header-md {
+    color: #fff;
+}
+
+.c-header-lg {
+    color:#fff;
+}
+
+.c-header-xl {
+    color: #fff;
+}
+
+.c-header-xxl {
+    color: #fff;
+}
+
+/* TEXT */
+.c-text, .c-body-text, .c-body-text-xs, .c-body-text-sm, .c-body-text-md, .c-body-text-lg, .c-body-text-xl {
+    color: #fff;
+    font-family: 'Source Sans Pro';
+}
+
+.form-control {
+    color: #fff;
+    border: 1px solid #50d4ff;
+    background-color: #002B49;
+}
+
+a {
+    color: #93e4ff;
+}
+
+    a:hover {
+        color: #50d4ff;
+    }

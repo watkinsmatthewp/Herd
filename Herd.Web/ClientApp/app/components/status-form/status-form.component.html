@@ -29,7 +29,7 @@
                                 <button type="button" class="c-btn c-btn-sm c-btn-secondary spoilerButton" [ngClass]="{'c-bg-warning': model.contentWarning, 'spoilerButton': !model.contentWarning }" (click)="toggleContentWarning()">
                                     <fa name="exclamation-triangle" size="1"></fa>
                                 </button>
-                                <label class="c-btn c-btn-sm c-btn-secondary">
+                                <label class="c-btn c-btn-sm c-btn-secondary fileButton">
                                     <fa name="cloud-upload" size="1"></fa>
                                     <input #fileInput style="display: none !important;" type="file" (change)="onFileChange($event)">
                                 </label>
