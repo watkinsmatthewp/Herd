@@ -10,19 +10,24 @@
 
 /* BUTTONS */
 .c-btn {
-    box-shadow: 1px 1px 4px rgba(80, 212, 255, .6);
+    box-shadow: 2px 2px 2px rgba(80, 212, 255, .6);
 }
 
+    .c-btn:hover {
+        background-color: #00375e;
+    }
+
 .c-btn-primary {
-    background: #00375e;
+    background: #002B49;
 }
 
     .c-btn-primary:hover {
-        background: #50d4ff;
+        background: ##00375e;
     }
 
     .c-btn.c-btn-secondary-outline {
         border: 1px solid #50d4ff;
+        background-color: #002B49;
         color: #50d4ff;
     }
 
@@ -47,6 +52,14 @@
         border: 1px solid #50d4ff;
         color: #fff;
     }
+
+a:focus {
+    color: #50d4ff;
+    cursor: default;
+    background-color: transparent;
+    border: 1px solid #50d4ff;
+    border-bottom-color: transparent;
+}
 
 /* HEADERS */
 .c-header-xs {

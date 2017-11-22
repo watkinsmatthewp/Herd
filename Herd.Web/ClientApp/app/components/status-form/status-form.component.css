@@ -27,6 +27,7 @@ textarea {
 .spoilerButton {
     background-color: transparent;
     color: #50d4ff;
+    border: 1px solid #50d4ff;
 }
 
     .spoilerButton:hover {
@@ -37,6 +38,7 @@ textarea {
 .fileButton {
     background-color: transparent;
     color: #50d4ff;
+    border: 1px solid #50d4ff;
 }
 
     .fileButton:hover {
