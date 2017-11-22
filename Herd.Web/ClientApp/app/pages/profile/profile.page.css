@@ -9,6 +9,12 @@
     align-items: center;
 }
 
+    .resize-header-image-box-button {
+        position: absolute;
+        top: 0;
+        right: 2.5%;
+    }
+
     .header-pic {
         width: 100%;
         /*height: auto;*/
@@ -30,6 +36,9 @@
         border: 2px solid white;
     }
 
+    .profile-small-image-box {
+        height: 140px;
+    }
 
 
 .profile-content {

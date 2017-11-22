@@ -7,7 +7,7 @@
     <div *ngFor="let user of accountList.Items" class="text-center">
         <!-- If on search page show this -->
         <div *ngIf="listType === listTypeEnum.SEARCH">
-            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4">
+            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
                 <usercard [userCard]="user" showBio="true" showActions="true" showFollowButton="true" size="small"></usercard>
             </div>
         </div>
