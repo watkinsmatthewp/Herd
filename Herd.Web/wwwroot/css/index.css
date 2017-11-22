@@ -8,9 +8,13 @@
     background-color: #00375e;
 }
 
+.well {
+    border: 1px solid #00497c;
+}
+
 /* BUTTONS */
 .c-btn {
-    box-shadow: 2px 2px 2px rgba(80, 212, 255, .6);
+    box-shadow: 0px 1px 1px rgba(80, 212, 255, .6);
 }
 
     .c-btn:hover {
@@ -96,6 +100,10 @@ a:focus {
     color: #fff;
     border: 1px solid #50d4ff;
     background-color: #002B49;
+}
+
+.navbar-inverse .navbar-brand {
+    color:#93e4ff;
 }
 
 a {
