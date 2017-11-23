@@ -11,8 +11,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a *ngIf="!isAuthenticated()" style="overflow: visible;" class='navbar-brand' [routerLink]="['/login']">Herd</a>
-            <a *ngIf="isAuthenticated()" style="overflow: visible;" class='navbar-brand' [routerLink]="['/home']">Herd</a>
+            <button *ngIf="!isAuthenticated()" style="overflow: visible;" class='navbar-brand' [routerLink]="['/login']">Herd</button>
+            <button *ngIf="isAuthenticated()" style="overflow: visible;" class='navbar-brand' [routerLink]="['/home']">Herd</button>
         </div>
 
         <!-- Fully Logged in with instance picked menu --> 
