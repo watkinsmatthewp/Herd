@@ -1,48 +1,63 @@
-﻿<div class="row well well-sm mouseOver status-format" (click)="notifyTimelineStatusClicked($event)">
-    <div class="col-sm-12">
-        <!-- Header Row -->
-        <div class="row status-header">
-            <img class="profile-picture" src="{{ status.Author.MastodonProfileImageURL }}" />
-            <a [routerLink]="['/profile', status.Author.MastodonUserId]">
-                <span class="author-name">{{ status.Author.MastodonDisplayName }}</span>
-                <span class="username">@{{ status.Author.MastodonUserName }}</span>
-            </a>
-            <span class="time-stamp"> | {{ status.CreatedOnUTC | date: 'short' }}</span>
-        </div><!-- ./Header Row -->
+﻿<div class="well well-sm status-format">
 
-        <!-- Body Row -->
-        <div class="row status-body c-body-text-md">
-            <p *ngIf="status.IsSensitive">{{ status.SpoilerText }}</p>
-            <div [ngClass]="{'status-blurred': showBlur }" (click)="turnOffBlur($event)">
-                <p [innerHTML]="status.Content"></p>
+    <div class="row" (click)="notifyTimelineStatusClicked($event)">
+        <div class="col-xs-3 col-sm-2 col-lg-1">
+            <div class="text-center">
+                <img class="profile-picture" src="{{ status.Author.MastodonProfileImageURL }}" />
             </div>
-            <modal-gallery *ngIf="imagesArray.length > 0" (click)="$event.stopPropagation()" [modalImages]="imagesArray"
-                           [enableCloseOutside]="true"
-                           [downloadable]="true"
-                           [buttonsConfig]="{download: true}">
-            </modal-gallery>
-        </div><!-- ./Body Row -->
+        </div><!-- ./col-sm-1 -->
 
-        <!-- Buttons Row -->
-        <div class="row">
-            <div class="c-btn-group-sm c-text-center">
-                <button class="btn btn-sm btn-secondary comments-btn status-btn" type="button" title="Reply" (click)="notifyTimelineCommentsClicked($event)">
-                    <fa name="comments"></fa>
-                    <!--<span>{{ status.ReblogCount }}</span>-->
-                </button>
-                <button class="btn btn-sm btn-secondary retweet-btn status-btn" type="button" title="Retweet" (click)="toggleRepost($event)">
-                    <fa name="retweet" [ngClass]="{'retweet-color': status.IsReblogged }"></fa>
-                    <span>{{ status.ReblogCount }}</span>
-                </button>
-                <button class="btn btn-sm btn-secondary like-btn status-btn" type="button" title="Like" (click)="toggleLike($event)">
-                    <fa *ngIf="!status.IsFavourited" name="heart-o"></fa>
-                    <fa *ngIf="status.IsFavourited" name="heart" class="heart-color"></fa>
-                    <span>{{ status.FavouritesCount }}</span>
-                </button>
-                <button class="btn btn-sm btn-secondary message-btn status-btn" type="button" title="Mention" (click)="mention($event)">
-                    <fa name="at"></fa>
-                </button>
+        <div class="col-xs-8 col-sm-9 col-lg-10">
+            <!-- Context Row -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="c-body-text">
+                        <a [routerLink]="['/profile', status.Author.MastodonUserId]">
+                            <span class="author-name">{{ status.Author.MastodonDisplayName }}</span>
+                            <span class="username">@{{ status.Author.MastodonUserName }}</span>
+                        </a>
+                        <span class="time-stamp c-body-text-sm">| {{ status.CreatedOnUTC | date: 'short' }}</span>
+                    </div>
+                </div>
             </div>
-        </div><!-- ./Buttons Row -->
-    </div><!-- ./status-content -->
-</div><!-- ./Row -->
+
+            <!-- Content Row -->
+            <div class="row status-body c-body-text-md">
+                <div class="col-sm-12">
+                    <p *ngIf="status.IsSensitive">{{ status.SpoilerText }}</p>
+                    <div [ngClass]="{'status-blurred': showBlur }" (click)="turnOffBlur($event)">
+                        <span [innerHTML]="status.Content"></span>
+                    </div>
+                    <modal-gallery *ngIf="imagesArray.length > 0" (click)="$event.stopPropagation()" [modalImages]="imagesArray"
+                                   [enableCloseOutside]="true"
+                                   [downloadable]="true"
+                                   [buttonsConfig]="{download: true}">
+                    </modal-gallery>
+                </div>
+            </div><!-- ./Content Row -->
+
+            <!-- Buttons Row -->
+            <div class="row">
+                <div class="c-btn-group-sm c-text-center">
+                    <button class="btn btn-sm btn-secondary comments-btn status-btn" type="button" title="Reply" (click)="notifyTimelineCommentsClicked($event)">
+                        <fa name="comments"></fa>
+                        <!--<span>{{ status.ReblogCount }}</span>-->
+                    </button>
+                    <button class="btn btn-sm btn-secondary retweet-btn status-btn" type="button" title="Retweet" (click)="toggleRepost($event)">
+                        <fa name="retweet" [ngClass]="{'retweet-color': status.IsReblogged }"></fa>
+                        <span>{{ status.ReblogCount }}</span>
+                    </button>
+                    <button class="btn btn-sm btn-secondary like-btn status-btn" type="button" title="Like" (click)="toggleLike($event)">
+                        <fa *ngIf="!status.IsFavourited" name="heart-o"></fa>
+                        <fa *ngIf="status.IsFavourited" name="heart" class="heart-color"></fa>
+                        <span>{{ status.FavouritesCount }}</span>
+                    </button>
+                    <button class="btn btn-sm btn-secondary message-btn status-btn" type="button" title="Mention" (click)="mention($event)">
+                        <fa name="at"></fa>
+                    </button>
+                </div>
+            </div><!-- ./Buttons Row -->
+
+        </div><!-- ./col-sm-11 -->
+    </div><!-- ./Row -->
+</div>

@@ -14,7 +14,8 @@
 }*/
 
 .profile-picture {
-    width: 45px; 
+    min-width: 45px;
+    width: 45px;
     height: 45px;
 }
 
@@ -41,7 +42,7 @@
 }
 
 .status-body {
-    margin: 0.25em 0.25em 0em 0.25em;
+    padding-top: .25em;
     color: #fff;
 }
 
