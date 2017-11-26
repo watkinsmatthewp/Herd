@@ -1,6 +1,7 @@
 ﻿using Herd.Business.ApiWrappers;
 using Herd.Business.ApiWrappers.MastodonObjectContextOptions;
 using Herd.Business.Models;
+using Herd.Business.Models.CommandResultData;
 using Herd.Business.Models.Commands;
 using Herd.Business.Models.Entities;
 using Herd.Core;
@@ -526,5 +527,47 @@ namespace Herd.Business.UnitTests
         }
 
         #endregion Mastodon Posts
+
+        #region Mastodon Notifications
+        [Fact]
+
+        public void GetNotificationsTest()
+        {
+
+            // Setup the mocked ApiWrapper
+            _mockMastodonApiWrapper
+                .Setup(d => d.GetActiveUserNotifications(It.IsAny<MastodonPostContextOptions>(), It.IsAny<PagingOptions>()))
+                .Returns(Task.FromResult(new PagedList<MastodonNotification>
+                {
+                    Elements = new List<MastodonNotification> {
+                        new MastodonNotification {
+                            Id = "5",
+                            Type = "follow",
+                            Account = new MastodonUser(),
+                            Status = new MastodonPost()
+
+                        }
+                    },
+                    PageInformation = new PageInformation()
+                }));
+
+            // Create the HerdApp using the mock objects
+            var herdApp = new HerdApp(_mockData.Object, _mockHashTagRelevanceManager.Object, _mockMastodonApiWrapper.Object, _mockLogger.Object);
+
+            // Run the HerdApp command (should execute the mock)
+            var result = herdApp.GetNotifications(new GetMastodonNotificationsCommand());
+
+            // Verify the result
+            Assert.True(result?.Success);
+
+            Assert.Equal("follow", result.Data.Notifications[0].Type);
+
+            _mockMastodonApiWrapper.Verify(a =>
+                a.GetActiveUserNotifications(It.IsAny<MastodonPostContextOptions>(), It.IsAny<PagingOptions>()),
+                Times.Once());
+
+        }
+
+        #endregion Mastodon Notifications
     }
 }
