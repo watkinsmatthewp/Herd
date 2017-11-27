@@ -25,6 +25,7 @@ namespace Herd.Web.Controllers.HerdApi
         public IActionResult Search
         (
             bool onlyOnActiveUserTimeline = false,
+            bool onlyOnPublicTimeline = false,
             string authorMastodonUserID = null,
             string postID = null,
             string hashtag = null,
@@ -37,7 +38,8 @@ namespace Herd.Web.Controllers.HerdApi
         {
             return ApiJson(App.SearchPosts(new SearchMastodonPostsCommand
             {
-                OnlyOnlyOnActiveUserTimeline = onlyOnActiveUserTimeline,
+                OnlyOnActiveUserTimeline = onlyOnActiveUserTimeline,
+                OnlyOnPublicTimeline = onlyOnPublicTimeline,
                 ByAuthorMastodonUserID = authorMastodonUserID,
                 PostID = postID,
                 HavingHashTag = hashtag,

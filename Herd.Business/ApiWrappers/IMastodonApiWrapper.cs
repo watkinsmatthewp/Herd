@@ -69,6 +69,8 @@ namespace Herd.Business.ApiWrappers
 
         Task<PagedList<MastodonPost>> GetPostsOnActiveUserTimeline(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null);
 
+        Task<PagedList<MastodonPost>> GetPostsOnPublicTimeline(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null);
+
         Task<MastodonPost> CreateNewPost(string message, MastodonPostVisibility visibility, string replyStatusId = null, IEnumerable<string> mediaIds = null, bool sensitive = false, string spoilerText = null);
 
         Task<MastodonAttachment> UploadAttachment(Stream attachment);

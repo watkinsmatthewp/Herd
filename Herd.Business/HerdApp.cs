@@ -409,9 +409,13 @@ namespace Herd.Business
             {
                 posts = await FilterByAuthorUserID(posts, searchMastodonPostsCommand.ByAuthorMastodonUserID, searchMastodonPostsCommand.PagingOptions.SinceID, searchMastodonPostsCommand.PagingOptions.MaxID, refPageInformtation);
             }
-            if (searchMastodonPostsCommand.OnlyOnlyOnActiveUserTimeline)
+            if (searchMastodonPostsCommand.OnlyOnActiveUserTimeline)
             {
                 posts = await FilterByOnActiveUserTimeline(posts, searchMastodonPostsCommand.PagingOptions.SinceID, searchMastodonPostsCommand.PagingOptions.MaxID, refPageInformtation);
+            }
+            if (searchMastodonPostsCommand.OnlyOnPublicTimeline)
+            {
+                posts = await FilterByOnPublicTimeline(posts, searchMastodonPostsCommand.PagingOptions.SinceID, searchMastodonPostsCommand.PagingOptions.MaxID, refPageInformtation);
             }
             if (!string.IsNullOrWhiteSpace(searchMastodonPostsCommand.HavingHashTag))
             {
@@ -450,6 +454,10 @@ namespace Herd.Business
         private Task<Dictionary<string, MastodonPost>> FilterByOnActiveUserTimeline(Dictionary<string, MastodonPost> postSet1, string sinceID, string maxID, PageInformation refPageInformtation)
         {
             return Filter(postSet1, () => _mastodonApiWrapper.GetPostsOnActiveUserTimeline(pagingOptions: new PagingOptions { SinceID = sinceID, MaxID = maxID }), p => p.Id, refPageInformtation);
+        }
+        private Task<Dictionary<string, MastodonPost>> FilterByOnPublicTimeline(Dictionary<string, MastodonPost> postSet1, string sinceID, string maxID, PageInformation refPageInformtation)
+        {
+            return Filter(postSet1, () => _mastodonApiWrapper.GetPostsOnPublicTimeline(pagingOptions: new PagingOptions { SinceID = sinceID, MaxID = maxID }), p => p.Id, refPageInformtation);
         }
 
         private Task<Dictionary<string, MastodonPost>> FilterByHashTag(Dictionary<string, MastodonPost> postSet1, string hashTag, string sinceID, string maxID, PageInformation refPageInformtation)

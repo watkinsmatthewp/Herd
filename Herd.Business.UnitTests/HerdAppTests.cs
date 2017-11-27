@@ -493,7 +493,7 @@ namespace Herd.Business.UnitTests
 
             var result = herdApp.SearchPosts(new SearchMastodonPostsCommand
             {
-                OnlyOnlyOnActiveUserTimeline = true
+                OnlyOnActiveUserTimeline = true
             });
 
             Assert.True(result?.Success);

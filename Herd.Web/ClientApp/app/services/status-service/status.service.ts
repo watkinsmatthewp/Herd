@@ -21,6 +21,7 @@ import { Hashtag, PagedList, Status } from '../../models/mastodon';
 */
 export interface StatusSearchParams {
     onlyOnActiveUserTimeline?: boolean,
+    onlyOnPublicTimeline?: boolean,
     authorMastodonUserID?: string,
     postID?: string,
     hashtag?: string,
@@ -41,6 +42,8 @@ export class StatusService {
             
         if (searchParams.onlyOnActiveUserTimeline)
             queryString += "onlyOnActiveUserTimeline=" + searchParams.onlyOnActiveUserTimeline
+        if (searchParams.onlyOnPublicTimeline)
+            queryString += "OnlyOnPublicTimeline=" + searchParams.onlyOnPublicTimeline
         if (searchParams.authorMastodonUserID)
             queryString += "&authorMastodonUserID=" + searchParams.authorMastodonUserID
         if (searchParams.postID)

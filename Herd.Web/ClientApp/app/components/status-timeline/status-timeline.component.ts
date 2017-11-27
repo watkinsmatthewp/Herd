@@ -89,6 +89,45 @@ export class StatusTimelineComponent implements OnInit, OnChanges {
                 }
                 break;
             }
+            case ListTypeEnum.LOCAL: {
+                // Set getInitialFeed 
+                this.getInitialFeed = function (): void {
+                    this.statusList.Items = [];
+                    this.loading = true;
+                    let progress = this.toastService.info("Retrieving", "local timeline ...", { timeOut: 0 });
+
+                    this.statusService.search({ onlyOnPublicTimeline: true })
+                        .finally(() => this.loading = false)
+                        .subscribe(statusList => {
+                            this.toastService.remove(progress.id);
+                            this.statusList = statusList;
+                        }, error => {
+                            this.toastService.error("Error", error.error);
+                        });
+                }
+
+                // Set getPreviousStatuses
+                this.getPreviousStatuses = function (): void {
+                    this.loading = true;
+                    this.statusService.search({ onlyOnPublicTimeline: true, maxID: this.statusList.PageInformation.EarlierPageMaxID })
+                        .finally(() => this.loading = false)
+                        .subscribe(newStatusList => {
+                            this.appendItems(this.statusList.Items, newStatusList.Items);
+                            this.statusList.PageInformation = newStatusList.PageInformation;
+                            this.triggerScroll();
+                        });
+                }
+
+                // Set checkForNewStatuses
+                this.checkForNewStatuses = function (): void {
+                    this.statusService.search({ onlyOnPublicTimeline: true, sinceID: this.statusList.Items[0].Id })
+                        .finally(() => this.loading = false)
+                        .subscribe(newStatusList => {
+                            this.newStatusList = newStatusList;
+                        });
+                }
+                break;
+            }
             case ListTypeEnum.PROFILE: {
                 // Set getInitialFeed 
                 this.getInitialFeed = function (): void {

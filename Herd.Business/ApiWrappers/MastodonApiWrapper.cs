@@ -350,6 +350,16 @@ namespace Herd.Business.ApiWrappers
             return result;
         }
 
+        public async Task<PagedList<MastodonPost>> GetPostsOnPublicTimeline(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
+        {
+            var effectivePagingOptions = pagingOptions ?? new PagingOptions();
+            var mastodonClient = BuildMastodonApiClient();
+            var mastodonPostsApiResult = await mastodonClient.GetPublicTimeline(effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit, true);
+            var result = PagedList<MastodonPost>.Create(mastodonPostsApiResult, s => s.ToPost());
+            await AddContextToMastodonPosts(result.Elements, mastodonPostContextOptions);
+            return result;
+        }
+
         public async Task<MastodonPost> CreateNewPost(string message, MastodonPostVisibility visibility, string replyStatusId = null, IEnumerable<string> mediaIds = null, bool sensitive = false, string spoilerText = null)
         {
             var mastodonClient = BuildMastodonApiClient();
