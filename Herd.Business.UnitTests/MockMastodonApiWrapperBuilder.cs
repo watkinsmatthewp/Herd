@@ -38,6 +38,7 @@ namespace Herd.Business.UnitTests
         public bool AllowGetPostsByAuthorUserIdMethod { get; set; }
         public bool AllowGetPostsByHashTagMethod { get; set; }
         public bool AllowGetPostsOnActiveUserTimelineMethod { get; set; }
+        public bool AllowGetPostsOnPublicTimelineMethod { get; set; }
 
         public Mock<IMastodonApiWrapper> BuildMockMastodonApiWrapper()
         {
@@ -122,6 +123,13 @@ namespace Herd.Business.UnitTests
             {
                 mockMastodonApiWrapper
                     .Setup(a => a.GetPostsOnActiveUserTimeline(It.IsAny<MastodonPostContextOptions>(), It.IsAny<PagingOptions>()))
+                    .Returns<MastodonPostContextOptions, PagingOptions>(GetPostsOnTimeline);
+            }
+
+            if (AllowGetPostsOnPublicTimelineMethod)
+            {
+                mockMastodonApiWrapper
+                    .Setup(a => a.GetPostsOnPublicTimeline(It.IsAny<MastodonPostContextOptions>(), It.IsAny<PagingOptions>()))
                     .Returns<MastodonPostContextOptions, PagingOptions>(GetPostsOnTimeline);
             }
 
