@@ -54,7 +54,7 @@ import { SafePipe } from './pipes';
         AccountListComponent, AdminPage, AppPage, HomePage, LocalFeedPage,
         LoginPage, NotificationsPage, ProfilePage, RegisterPage, SearchResultsPage, SettingsPage,
         // Components
-        InstancePickerComponent, NavMenuComponent, NotificationComponent
+        InstancePickerComponent, NavMenuComponent, NotificationComponent,
         StatusComponent, StatusFormComponent, StatusFormModalComponent, StatusTimelineComponent,
         TopHashtagsComponent, UserCardComponent, ProfileUpdaterComponent,
         // Pipes
