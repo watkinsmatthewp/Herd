@@ -250,6 +250,16 @@ namespace Herd.Business.ApiWrappers
         }
 
         /// <summary>
+        /// Likes or unlikes a post
+        /// </summary>
+        /// <param name="postID"></param>
+        /// <returns></returns>
+        public async Task DeletePost(string postID)
+        {
+           await BuildMastodonApiClient().DeleteStatus(postID.ToLong());
+        }
+
+        /// <summary>
         /// Reposts or un-reposts a post
         /// </summary>
         /// <param name="postID"></param>

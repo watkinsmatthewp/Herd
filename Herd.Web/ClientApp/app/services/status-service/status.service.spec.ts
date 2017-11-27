@@ -461,6 +461,53 @@ describe('Service: Status Service', () => {
             })
         );
 
+        it('should be able to delete a status',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Success: true,
+                    Data: {}
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the request
+                statusService.delete("1").subscribe((statusList) => {
+                }, error => {
+                    fail();
+                });
+            })
+        );
+
+        it('should fail at deleting a status',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Success: false,
+                    Data: {}
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the request
+                statusService.delete("1").subscribe((statusList) => {
+                    fail();
+                }, error => {
+
+                });
+            })
+        );
+
     });
 
 

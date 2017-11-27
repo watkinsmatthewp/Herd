@@ -52,12 +52,25 @@
                         <fa *ngIf="status.IsFavourited" name="heart" class="heart-color"></fa>
                         <span>{{ status.FavouritesCount }}</span>
                     </button>
-                    <button class="btn btn-sm btn-secondary message-btn status-btn" type="button" title="Mention" (click)="mention($event)">
-                        <fa name="at"></fa>
-                    </button>
+                    <div class="btn-group" dropdown>
+                        <a dropdownToggle (click)="$event.stopPropagation()"><fa name="caret-down" size="2"></fa></a>
+                        
+                        <ul *dropdownMenu class="dropdown-menu" role="menu">
+                            <li role="menuitem"><a class="dropdown-item" (click)="mention($event)"> Mention @{{ status.Author.MastodonUserName }}</a></li>
+                            <li *ngIf="isCurrentUser()" role="menuitem"><a class="dropdown-item" (click)="openDeleteModal($event, confirmDeleteModal)"> Delete status</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div><!-- ./Buttons Row -->
 
         </div><!-- ./col-sm-11 -->
     </div><!-- ./Row -->
 </div>
+
+<ng-template #confirmDeleteModal>
+    <div class="modal-body text-center" style="color: black;">
+        <p>Are you sure you want to delete this status?</p>
+        <button type="button" class="c-btn c-btn-primary" (click)="answerDeleteConfirmation(true)">Yes</button>
+        <button type="button" class="c-btn c-btn-primary" (click)="answerDeleteConfirmation(false)">No</button>
+    </div>
+</ng-template>

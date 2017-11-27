@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, Input, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 
-import { ListTypeEnum } from "../../models";
-import { StatusService } from "../../services";
+import { ListTypeEnum, EventAlertEnum } from "../../models";
+import { StatusService, EventAlertService } from "../../services";
 import { PagedList, Status } from "../../models/mastodon";
 import { NotificationsService } from "angular2-notifications";
 
@@ -28,7 +28,7 @@ export class StatusTimelineComponent implements OnInit, OnChanges {
     private loading: boolean = false;
 
 
-    constructor(private statusService: StatusService, private toastService: NotificationsService) {}
+    constructor(private statusService: StatusService, private toastService: NotificationsService, private eventAlertService: EventAlertService) {}
 
     ngOnInit() {
         // Check for required input - we AT LEAST need to know which types of statuses to get
@@ -36,6 +36,26 @@ export class StatusTimelineComponent implements OnInit, OnChanges {
 
         this.setupFunctions();
         this.getInitialFeed();
+
+        this.eventAlertService.getMessage().subscribe(event => {
+            switch (event.eventType) {
+                case EventAlertEnum.REMOVE_STATUS: {
+                    let statusID: string = event.statusID;
+
+                    for (var i = 0; i < this.statusList.Items.length; i++) {
+                        let status = this.statusList.Items[i];
+                        if (status.Id === statusID) {
+                            if (i > -1) {
+                                this.statusList.Items.splice(i, 1);
+                            }
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+            }
+        });
     }
 
     /**

@@ -84,5 +84,14 @@ namespace Herd.Web.Controllers.HerdApi
                 Like = body["like"].Value<bool>()
             }));
         }
+
+        [HttpPost("delete")]
+        public IActionResult Delete([FromBody] JObject body)
+        {
+            return ApiJson(App.DeletePost(new DeleteMastodonPostCommand
+            {
+                PostID = body["statusID"].Value<string>(),
+            }));
+        }
     }
 }

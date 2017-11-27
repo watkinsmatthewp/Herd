@@ -228,6 +228,19 @@ namespace Herd.Business
         #region Mastodon Posts
 
         /// <summary>
+        /// Processes a command to delete a post
+        /// </summary>
+        /// <param name="deleteCommand"></param>
+        /// <returns></returns>
+        public CommandResult DeletePost(DeleteMastodonPostCommand deleteCommand)
+        {
+            return ProcessCommand(result =>
+            {
+                _mastodonApiWrapper.DeletePost(deleteCommand.PostID).Synchronously();
+            });
+        }
+
+        /// <summary>
         /// Processes a command to like a post
         /// </summary>
         /// <param name="likeCommand"></param>

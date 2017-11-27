@@ -121,6 +121,16 @@ export class StatusService {
     }
 
     /**
+     * Deletes the status
+     */
+    delete(statusID: string) {
+        let body = {
+            'statusID': statusID
+        }
+        return this.httpClient.post('api/mastodon-posts/delete', body);
+    }
+
+    /**
      * Get the top n hashtags defaulting to 10.
      * @param max amount of hashtags to get
      */

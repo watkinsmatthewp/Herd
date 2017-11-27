@@ -57,6 +57,8 @@ namespace Herd.Business.ApiWrappers
 
         Task<MastodonPost> Like(string postID, bool like);
 
+        Task DeletePost(string postID);
+
         Task AddContextToMastodonPosts(IEnumerable<MastodonPost> mastodonPosts, MastodonPostContextOptions mastodonPostContextOptions = null);
 
         Task AddContextToMastodonPost(MastodonPost mastodonPost, MastodonPostContextOptions mastodonPostContextOptions = null);

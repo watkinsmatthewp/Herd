@@ -10,7 +10,7 @@ import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawe
 import { BsModalModule } from 'ng2-bs3-modal';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ModalGalleryModule } from 'angular-modal-gallery';
-import { TabsModule } from 'ngx-bootstrap';
+import { TabsModule, BsDropdownModule, ModalModule } from 'ngx-bootstrap';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
@@ -61,8 +61,8 @@ import { SafePipe } from './pipes';
         SafePipe
     ],
     imports: [
-        Angular2FontawesomeModule, BsModalModule, CardModule, CommonModule, 
-        HttpModule, FormsModule, InfiniteScrollModule, ModalGalleryModule.forRoot(),
+        Angular2FontawesomeModule, BsModalModule, BsDropdownModule.forRoot(), CardModule, CommonModule, 
+        HttpModule, FormsModule, InfiniteScrollModule, ModalGalleryModule.forRoot(), ModalModule.forRoot(),
         PerfectScrollbarModule.forRoot(PERFECT_SCROLLBAR_CONFIG),
         TabsModule.forRoot(), SimpleNotificationsModule.forRoot(),
         RouterModule.forRoot([
