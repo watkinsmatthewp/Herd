@@ -1,13 +1,21 @@
 ﻿.header-image-box {
     width: 100%;
-    max-height: 280px;
+    max-height: 335px;
     top: 0px;
     overflow: hidden;
     border-radius: 5px;
-    border: 5px solid white;
+    border: 5px solid #00375e;
     display: flex;
     align-items: center;
 }
+
+    .resize-header-image-box-button {
+        text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+        color: white;
+        position: absolute;
+        top: 0;
+        right: 2.5%;
+    }
 
     .header-pic {
         width: 100%;
@@ -23,13 +31,16 @@
         left: 2.5%;
     }
 
-        .profile-pic {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 5px solid white;
-        }
+    .profile-pic {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 2px solid white;
+    }
 
+    .profile-small-image-box {
+        height: 140px;
+    }
 
 
 .profile-content {
@@ -38,14 +49,8 @@
 }
 
 
-.tabWrapper {
-    height: 550px;
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
-
-.tabContentHeader {
-    min-height: 35px;
+.tabContentHeight {
+    height: 50vh;
 }
 
 .follow-btn:hover {

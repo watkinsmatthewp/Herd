@@ -35,6 +35,8 @@ namespace Herd.Business
 
         CommandResult LikePost(LikeMastodonPostCommand likeCommand);
 
+        CommandResult DeletePost(DeleteMastodonPostCommand likeCommand);
+
         CommandResult RepostPost(RepostMastodonPostCommand repostCommand);
 
         // Notifications

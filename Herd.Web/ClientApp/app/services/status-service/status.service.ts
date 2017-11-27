@@ -21,6 +21,7 @@ import { Hashtag, PagedList, Status } from '../../models/mastodon';
 */
 export interface StatusSearchParams {
     onlyOnActiveUserTimeline?: boolean,
+    onlyOnPublicTimeline?: boolean,
     authorMastodonUserID?: string,
     postID?: string,
     hashtag?: string,
@@ -41,6 +42,8 @@ export class StatusService {
             
         if (searchParams.onlyOnActiveUserTimeline)
             queryString += "onlyOnActiveUserTimeline=" + searchParams.onlyOnActiveUserTimeline
+        if (searchParams.onlyOnPublicTimeline)
+            queryString += "OnlyOnPublicTimeline=" + searchParams.onlyOnPublicTimeline
         if (searchParams.authorMastodonUserID)
             queryString += "&authorMastodonUserID=" + searchParams.authorMastodonUserID
         if (searchParams.postID)
@@ -115,6 +118,16 @@ export class StatusService {
             'like': like,
         }
         return this.httpClient.post('api/mastodon-posts/like', body);
+    }
+
+    /**
+     * Deletes the status
+     */
+    delete(statusID: string) {
+        let body = {
+            'statusID': statusID
+        }
+        return this.httpClient.post('api/mastodon-posts/delete', body);
     }
 
     /**

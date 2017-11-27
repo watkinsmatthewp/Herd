@@ -252,6 +252,16 @@ namespace Herd.Business.ApiWrappers
         }
 
         /// <summary>
+        /// Likes or unlikes a post
+        /// </summary>
+        /// <param name="postID"></param>
+        /// <returns></returns>
+        public async Task DeletePost(string postID)
+        {
+           await BuildMastodonApiClient().DeleteStatus(postID.ToLong());
+        }
+
+        /// <summary>
         /// Reposts or un-reposts a post
         /// </summary>
         /// <param name="postID"></param>
@@ -347,6 +357,16 @@ namespace Herd.Business.ApiWrappers
             var effectivePagingOptions = pagingOptions ?? new PagingOptions();
             var mastodonClient = BuildMastodonApiClient();
             var mastodonPostsApiResult = await mastodonClient.GetHomeTimeline(effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
+            var result = PagedList<MastodonPost>.Create(mastodonPostsApiResult, s => s.ToPost());
+            await AddContextToMastodonPosts(result.Elements, mastodonPostContextOptions);
+            return result;
+        }
+
+        public async Task<PagedList<MastodonPost>> GetPostsOnPublicTimeline(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
+        {
+            var effectivePagingOptions = pagingOptions ?? new PagingOptions();
+            var mastodonClient = BuildMastodonApiClient();
+            var mastodonPostsApiResult = await mastodonClient.GetPublicTimeline(effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit, true);
             var result = PagedList<MastodonPost>.Create(mastodonPostsApiResult, s => s.ToPost());
             await AddContextToMastodonPosts(result.Elements, mastodonPostContextOptions);
             return result;

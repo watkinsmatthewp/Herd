@@ -1,11 +1,13 @@
-﻿import { Component, OnInit, Input } from '@angular/core';
+﻿import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap';
 import { Image } from 'angular-modal-gallery';
 
 import { StatusService, EventAlertService } from "../../services";
 import { Status } from '../../models/mastodon';
-import { EventAlertEnum } from "../../models/index";
+import { EventAlertEnum, Storage } from "../../models";
 
 
 @Component({
@@ -15,10 +17,12 @@ import { EventAlertEnum } from "../../models/index";
 })
 export class StatusComponent implements OnInit {
     @Input() status: Status;
+    modalRef: BsModalRef;
     showBlur: boolean = false;
     imagesArray: Array<Image> = [];
 
-    constructor(private router: Router, private statusService: StatusService, private eventAlertService: EventAlertService) {}
+    constructor(private router: Router, private statusService: StatusService, private localStorage: Storage,
+                private eventAlertService: EventAlertService, private modalService: BsModalService) { }
 
     ngOnInit() {
         if (this.status.IsSensitive === true) {
@@ -26,7 +30,18 @@ export class StatusComponent implements OnInit {
         }
 
         // Add the status images to the imagesArray
-        this.imagesArray.push(new Image(this.status.MediaAttachment));
+        if (this.status.MediaAttachment) {
+            this.imagesArray.push(new Image(this.status.MediaAttachment));
+        }
+    }
+
+    isCurrentUser(): boolean {
+        let currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+        let userID = currentUser.MastodonConnection.MastodonUserID;
+        if (userID === this.status.Author.MastodonUserId) {
+            return true;
+        }
+        return false;
     }
 
     turnOffBlur(event: any): void {
@@ -68,11 +83,24 @@ export class StatusComponent implements OnInit {
         event.stopPropagation();
     }
 
+    openDeleteModal(event: any, template: TemplateRef<any>) {
+        this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
+        event.stopPropagation();
+    }
+
+    answerDeleteConfirmation(answer: boolean): void {
+        if (answer) {
+            this.statusService.delete(this.status.Id).subscribe();
+            this.eventAlertService.addEvent(EventAlertEnum.REMOVE_STATUS, { statusID: this.status.Id });
+        }
+        this.modalRef.hide();
+    }
+
     /**
      * Set status form text to author of status
      * @param event
      */
-    directMessage(event: any) {
+    mention(event: any) {
         this.eventAlertService.addEvent(EventAlertEnum.UPDATE_STATUS_FORM_TEXT, { statusText: "@" + this.status.Author.MastodonUserName });
         event.stopPropagation();
     }

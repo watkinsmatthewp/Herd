@@ -25,6 +25,7 @@ namespace Herd.Web.Controllers.HerdApi
         public IActionResult Search
         (
             bool onlyOnActiveUserTimeline = false,
+            bool onlyOnPublicTimeline = false,
             string authorMastodonUserID = null,
             string postID = null,
             string hashtag = null,
@@ -37,7 +38,8 @@ namespace Herd.Web.Controllers.HerdApi
         {
             return ApiJson(App.SearchPosts(new SearchMastodonPostsCommand
             {
-                OnlyOnlyOnActiveUserTimeline = onlyOnActiveUserTimeline,
+                OnlyOnActiveUserTimeline = onlyOnActiveUserTimeline,
+                OnlyOnPublicTimeline = onlyOnPublicTimeline,
                 ByAuthorMastodonUserID = authorMastodonUserID,
                 PostID = postID,
                 HavingHashTag = hashtag,
@@ -80,6 +82,15 @@ namespace Herd.Web.Controllers.HerdApi
             {
                 PostID = body["statusID"].Value<string>(),
                 Like = body["like"].Value<bool>()
+            }));
+        }
+
+        [HttpPost("delete")]
+        public IActionResult Delete([FromBody] JObject body)
+        {
+            return ApiJson(App.DeletePost(new DeleteMastodonPostCommand
+            {
+                PostID = body["statusID"].Value<string>(),
             }));
         }
     }

@@ -1,9 +1,9 @@
 ﻿.card {
-    background-color: #fff;
-    border-top: 1px solid #cdcfd2;
-    border-bottom: 1px solid #cdcfd2;
-    border-left: 1px solid #cdcfd2;
-    border-right: 1px solid #cdcfd2;
+    background-color: #00375e;
+    border-top: 1px solid #00497c;
+    border-bottom: 1px solid #00497c;
+    border-left: 1px solid #00497c;
+    border-right: 1px solid #00497c;
     display: inline-flex;
     flex-direction: column;
     height: 350px;
@@ -65,7 +65,7 @@
 }
 
 .card-title {
-    color: #282b31;
+    color: #fff;
     font-weight: 300;
     font-size: 26px;
     margin: 0;
@@ -84,7 +84,7 @@
     position: relative;
     bottom: 0;
     width: inherit;
-    border-top: 1px solid #e2e3e4;
+    border-top: 1px solid #1c65a0;
     bottom: 0;
     flex-shrink: 0;
     padding: 7px 0;

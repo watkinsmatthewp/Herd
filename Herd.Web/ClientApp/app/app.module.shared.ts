@@ -10,8 +10,16 @@ import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawe
 import { BsModalModule } from 'ng2-bs3-modal';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ModalGalleryModule } from 'angular-modal-gallery';
-import { TabsModule } from 'ngx-bootstrap';
+import { TabsModule, BsDropdownModule, ModalModule } from 'ngx-bootstrap';
 import { SimpleNotificationsModule } from 'angular2-notifications';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+
+const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+    suppressScrollX: true,
+    wheelPropagation: true,
+    minScrollbarLength: 50,
+};
 
 
 // Pages
@@ -23,8 +31,8 @@ import {
 
 // Components
 import {
-    InstancePickerComponent, NavMenuComponent, NotificationComponent,
-    StatusComponent, StatusFormComponent, StatusFormModalComponent,
+    AccountListComponent, InstancePickerComponent, NavMenuComponent, NotificationComponent,
+    StatusComponent, StatusFormComponent, StatusFormModalComponent, StatusTimelineComponent,
     TopHashtagsComponent, UserCardComponent, ProfileUpdaterComponent
 } from './components';
 
@@ -43,18 +51,19 @@ import { SafePipe } from './pipes';
 @NgModule({
     declarations: [
         // Page
-        AdminPage, AppPage, HomePage, LocalFeedPage,
+        AccountListComponent, AdminPage, AppPage, HomePage, LocalFeedPage,
         LoginPage, NotificationsPage, ProfilePage, RegisterPage, SearchResultsPage, SettingsPage,
         // Components
-        InstancePickerComponent, NavMenuComponent, NotificationComponent,
-        StatusComponent, StatusFormComponent, StatusFormModalComponent,
+        InstancePickerComponent, NavMenuComponent, NotificationComponent
+        StatusComponent, StatusFormComponent, StatusFormModalComponent, StatusTimelineComponent,
         TopHashtagsComponent, UserCardComponent, ProfileUpdaterComponent,
         // Pipes
         SafePipe
     ],
     imports: [
-        Angular2FontawesomeModule, BsModalModule, CardModule, CommonModule, 
-        HttpModule, FormsModule, InfiniteScrollModule, ModalGalleryModule.forRoot(),
+        Angular2FontawesomeModule, BsModalModule, BsDropdownModule.forRoot(), CardModule, CommonModule, 
+        HttpModule, FormsModule, InfiniteScrollModule, ModalGalleryModule.forRoot(), ModalModule.forRoot(),
+        PerfectScrollbarModule.forRoot(PERFECT_SCROLLBAR_CONFIG),
         TabsModule.forRoot(), SimpleNotificationsModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },

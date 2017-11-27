@@ -1,5 +1,7 @@
 ﻿<!-- Banner Image -->
-<div class="header-image-box">
+<div class="header-image-box" [ngClass]="{'profile-small-image-box': showFullBanner }" (click)="toggleShowBanner()">
+    <fa *ngIf="!showFullBanner" class="resize-header-image-box-button" name="chevron-up"></fa>
+    <fa *ngIf="showFullBanner" class="resize-header-image-box-button" name="chevron-down"></fa> 
     <img class="header-pic" src="{{ account?.MastodonHeaderImageURL }}" />
     <div class="profile-image-box">
         <img *ngIf="account" class="profile-pic" src="{{ account?.MastodonProfileImageURL }}" />
@@ -13,16 +15,16 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-sm-7">
-                        <div class="c-body-text">
+                        <div class="c-header-xs">
                             <p><strong>{{ account?.MastodonDisplayName }}</strong></p>
                             <p>@{{ account?.MastodonUserName }}</p>
                         </div>
                     </div>
                     <div *ngIf="account && !isCurrentUser()" class="col-sm-5">
-                        <button *ngIf="isFollowing" class="c-btn c-btn-primary c-btn-sm follow-btn" (mouseenter)="followUnfollowText = 'Unfollow';" (mouseleave)="followUnfollowText = 'Following';" (click)="togglefollow()">
+                        <button *ngIf="isFollowing" class="c-btn c-btn-sm c-btn-primary follow-btn" (mouseenter)="followUnfollowText = 'Unfollow';" (mouseleave)="followUnfollowText = 'Following';" (click)="togglefollow()">
                             {{followUnfollowText}}
                         </button>
-                        <button *ngIf="!isFollowing" class="c-btn c-btn-secondary c-btn-sm c-btn-secondary-outline not-following-btn" (click)="togglefollow()">
+                        <button *ngIf="!isFollowing" class="c-btn c-btn-sm c-btn-secondary c-btn-secondary-outline not-following-btn" (click)="togglefollow()">
                             Follow
                         </button>
                     </div>
@@ -43,29 +45,12 @@
         <div class="panel">
             <div class="panel-body">
                 <tabset #staticTabs>
-                    <tab heading="Posts ({{ account?.PostCount | number }})">
+                    <tab heading="Statuses ({{ account?.PostCount | number }})">
                         <div class="row">
                             <ng-container *ngIf="account">
                                 <div class="panel">
-                                    <div class="panel-heading text-center tabContentHeader">
-                                        <div *ngIf="loading" class="btn pull-left">
-                                            <fa name="spinner" spin=true></fa>
-                                        </div>
-                                        <button *ngIf="newStatusList.Items.length > 0" class="c-btn c-btn-primary c-btn-sm" type="button" (click)="viewNewStatuses()">{{newStatusList.Items.length}} New Statuses</button>
-                                        <button class="c-btn c-btn-primary c-btn-sm pull-right" type="button" (click)="scrollToTop('statuses')"><fa name="chevron-up"></fa>Scroll to top</button>
-                                    </div>
-                                    <div #statusesWrapper class="panel-body tabWrapper"
-                                         data-infinite-scroll
-                                         debounce
-                                         [infiniteScrollContainer]="statusesWrapper"
-                                         [scrollWindow]="false"
-                                         [infiniteScrollDistance]="3"
-                                         [infiniteScrollThrottle]="1500"
-                                         (scrolled)="onScrollDown($event, 'statuses')">
-
-                                        <div *ngFor="let status of statusList.Items">
-                                            <status [status]="status"></status>
-                                        </div>
+                                    <div class="panel-body tabContentHeight">
+                                         <status-timeline #statusList [listType]="listTypeEnum.PROFILE" [userID]="account.MastodonUserId" autoCheckForStatuses="true"></status-timeline>
                                     </div>
                                 </div>
                             </ng-container>
@@ -75,24 +60,8 @@
                         <div class="row">
                             <ng-container *ngIf="account">
                                 <div class="panel">
-                                    <div class="panel-heading text-center tabContentHeader">
-                                        <div *ngIf="loading" class="btn pull-left"><fa name="spinner" spin=true></fa></div>
-                                        <button class="c-btn c-btn-primary c-btn-sm pull-right" type="button" (click)="scrollToTop('following')"><fa name="chevron-up"></fa>Scroll to top</button>
-                                    </div>
-                                    <div #followingWrapper class="panel-body tabWrapper"
-                                            data-infinite-scroll
-                                            debounce
-                                            [infiniteScrollContainer]="followingWrapper"
-                                            [scrollWindow]="false"
-                                            [infiniteScrollDistance]="3"
-                                            [infiniteScrollThrottle]="1500"
-                                            (scrolled)="onScrollDown($event, 'following')">
-
-                                        <div *ngFor="let user of followingList.Items" class="text-center">
-                                            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4">
-                                                <usercard [userCard]="user" showBio="true" showActions="true" showFollowButton="true" size="small"></usercard>
-                                            </div>
-                                        </div>
+                                    <div class="panel-body tabContentHeight">
+                                        <account-list #followingList [listType]="listTypeEnum.PROFILEFOLLOWING" [userID]="account.MastodonUserId"></account-list>
                                     </div>
                                 </div>
                             </ng-container>
@@ -102,24 +71,8 @@
                         <div class="row">
                             <ng-container *ngIf="account">
                                 <div class="panel">
-                                    <div class="panel-heading text-center tabContentHeader">
-                                        <div *ngIf="loading" class="btn pull-left"><fa name="spinner" spin=true></fa></div>
-                                        <button class="c-btn c-btn-primary c-btn-sm pull-right" type="button" (click)="scrollToTop('followers')"><fa name="chevron-up"></fa>Scroll to top</button>
-                                    </div>
-                                    <div #followersWrapper class="panel-body tabWrapper"
-                                         data-infinite-scroll
-                                         debounce
-                                         [infiniteScrollContainer]="followersWrapper"
-                                         [scrollWindow]="false"
-                                         [infiniteScrollDistance]="3"
-                                         [infiniteScrollThrottle]="1500"
-                                         (scrolled)="onScrollDown($event, 'followers')">
-
-                                        <div *ngFor="let user of followerList.Items" class="text-center">
-                                            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4">
-                                                <usercard [userCard]="user" showBio="true" showActions="true" showFollowButton="true" size="small"></usercard>
-                                            </div>
-                                        </div>
+                                    <div class="panel-body tabContentHeight">
+                                        <account-list #followerList [listType]="listTypeEnum.PROFILEFOLLOWERS" [userID]="account.MastodonUserId"></account-list>
                                     </div>
                                 </div>
                             </ng-container>
