@@ -1,7 +1,6 @@
 ﻿body {
     background-color: #002B49;
     color: #fff;
-    font-family: 'Source Sans Pro';
 }
 
 .panel {
@@ -10,6 +9,10 @@
 
 .well {
     border: 1px solid #00497c;
+}
+
+.modal-content {
+    background-color: #00497c;
 }
 
 /* BUTTONS */
@@ -63,6 +66,12 @@ a:focus {
     background-color: transparent;
     border: 1px solid #50d4ff;
     border-bottom-color: transparent;
+}
+
+.nav-tabs > li.active > a {
+    color: #002B49;
+    background-color: #79BDE8;
+    border: 1px solid #fff;
 }
 
 /* HEADERS */
