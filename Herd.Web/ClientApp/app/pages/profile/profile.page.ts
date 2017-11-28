@@ -1,7 +1,8 @@
 ﻿import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { NotificationsService } from "angular2-notifications";
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, NavigationEnd, Router } from '@angular/router';
 import { Observable } from "rxjs/Observable";
+import { Title } from "@angular/platform-browser";
 
 import { AccountService, EventAlertService, StatusService } from "../../services";
 import { Account, Status, PagedList } from '../../models/mastodon';
@@ -10,6 +11,7 @@ import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 import { TabsetComponent } from "ngx-bootstrap";
 import { Subscription } from "rxjs/Rx";
 import { AccountListComponent, StatusTimelineComponent } from "../../components/index";
+
 
 
 @Component({
@@ -37,9 +39,27 @@ export class ProfilePage implements OnInit, AfterViewInit {
     replyStatus: Status;
 
     constructor(
-        private accountService: AccountService, private eventAlertService: EventAlertService,
+        private accountService: AccountService, private router: Router, private titleService: Title, private eventAlertService: EventAlertService,
         private localStorage: Storage, private route: ActivatedRoute,
         private statusService: StatusService, private toastService: NotificationsService) {
+        router.events.subscribe(event => {
+            if (event instanceof NavigationEnd) {
+                var title = this.getTitle(router.routerState, router.routerState.root).join('-');
+                titleService.setTitle(title);
+            }
+        });
+    }
+
+    private getTitle(state: any, parent: any): any {
+        var data = [];
+        if (parent && parent.snapshot.data && parent.snapshot.data.title) {
+            data.push(parent.snapshot.data.title);
+        }
+
+        if (state && parent) {
+            data.push(... this.getTitle(state, state.firstChild(parent)));
+        }
+        return data;
     }
 
     /**

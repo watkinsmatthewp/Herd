@@ -1,5 +1,6 @@
 ﻿import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Title } from "@angular/platform-browser";
 
 import { Storage, ListTypeEnum } from '../../models';
 import { StatusTimelineComponent, AccountListComponent } from "../../components/index";
@@ -18,7 +19,26 @@ export class SearchResultsPage implements OnInit {
     search: string;
     searchingText: string = "Searching for ";
 
-    constructor(private route: ActivatedRoute, private router: Router, private localStorage: Storage) { }
+    constructor(private route: ActivatedRoute, private router: Router, private titleService: Title, private localStorage: Storage) {
+        router.events.subscribe(event => {
+            if (event instanceof NavigationEnd) {
+                var title = this.getTitle(router.routerState, router.routerState.root).join('-');
+                titleService.setTitle(title);
+            }
+        });
+    }
+
+    private getTitle(state: any, parent: any): any {
+        var data = [];
+        if (parent && parent.snapshot.data && parent.snapshot.data.title) {
+            data.push(parent.snapshot.data.title);
+        }
+
+        if (state && parent) {
+            data.push(... this.getTitle(state, state.firstChild(parent)));
+        }
+        return data;
+    }
 
     ngOnInit(): void {
         this.route

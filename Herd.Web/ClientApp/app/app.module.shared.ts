@@ -68,24 +68,23 @@ import { SafePipe } from './pipes';
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             // Admin Page 
-            { path: 'admin', component: AdminPage, data: { title: "Admin" } },
+            { path: 'admin', component: AdminPage, data: { title: "Herd - Admin" } },
             // Login, Register
-            { path: 'login', component: LoginPage, data: { title: "Login" } },
-            { path: 'register', component: RegisterPage, data: { title: "Registration" } },
+            { path: 'login', component: LoginPage, data: { title: "Herd - Login" } },
+            { path: 'register', component: RegisterPage, data: { title: "Herd - Registration" } },
             // Account Settings
             { path: 'instance-picker', component: InstancePickerComponent, canActivate: [AuthGuard], data: { title: "Instance Picker" } },
             // TimeLines
-            { path: 'home', component: HomePage, canActivate: [AuthGuard], data: { title: "Home" } },
-            { path: 'localfeed', component: LocalFeedPage, canActivate: [AuthGuard], data: { title: "Local Feed" } },
+            { path: 'home', component: HomePage, canActivate: [AuthGuard], data: { title: "Herd - Home" } },
+            { path: 'localfeed', component: LocalFeedPage, canActivate: [AuthGuard], data: { title: "Herd - Public Feed" } },
             // Notification
-            { path: 'notifications', component: NotificationsPage, canActivate: [AuthGuard], data: { title: "Notifications" } },
+            { path: 'notifications', component: NotificationsPage, canActivate: [AuthGuard], data: { title: "Herd - Notifications" } },
             // Profile
-            { path: 'profile/:id', component: ProfilePage, canActivate: [AuthGuard], data: { title: "Profile" } },
+            { path: 'profile/:id', component: ProfilePage, canActivate: [AuthGuard], data: { title: "Herd - Profile" } },
             // Search Results (am I doing this right?)
-            { path: 'searchresults', component: SearchResultsPage, canActivate: [AuthGuard], data: { title: "Search Results" } },
+            { path: 'searchresults', component: SearchResultsPage, canActivate: [AuthGuard], data: { title: "Herd - Search Results" } },
             // Settings Page
-            { path: 'settings', component: SettingsPage, canActivate: [AuthGuard], data: { title: "Settings" } },
-            // Status Page
+            { path: 'settings', component: SettingsPage, canActivate: [AuthGuard], data: {title: "Herd - Settings"} },
             { path: 'status-view', component: StatusViewPage, canActivate: [AuthGuard], data: { title: "Status View" } },
             // Etc Pages
             { path: '**', redirectTo: 'home' },
