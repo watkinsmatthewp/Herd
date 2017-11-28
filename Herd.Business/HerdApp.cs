@@ -219,7 +219,7 @@ namespace Herd.Business
             //});
             return ProcessCommand(result =>
             {
-                _mastodonApiWrapper.updateMastodonProfile(update.DisplayName, update.Bio, update.Avatar, update.Header).Synchronously();
+                _mastodonApiWrapper.UpdateMastodonProfile(update.DisplayName, update.Bio, update.Avatar, update.Header).Synchronously();
             });
         }
 

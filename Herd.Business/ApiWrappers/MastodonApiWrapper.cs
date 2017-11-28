@@ -51,6 +51,8 @@ namespace Herd.Business.ApiWrappers
 
         #region Private helper
 
+        // TODO: Once https://github.com/glacasa/Mastonet/pull/29 is included in the package,
+        // replace MastdoonClient with IMastodonClient here
         private MastodonClient BuildMastodonApiClient()
         {
             if (AppRegistration == null)
@@ -234,7 +236,7 @@ namespace Herd.Business.ApiWrappers
         /// <param name="avatar"></param>
         /// <param name="header"></param>
         /// <returns></returns>
-        public async Task<MastodonUser> updateMastodonProfile(string display_name, string bio, string avatar, string header)
+        public async Task<MastodonUser> UpdateMastodonProfile(string display_name, string bio, string avatar, string header)
         {
             System.Diagnostics.Debug.WriteLine(avatar);
             return (await BuildMastodonApiClient().UpdateCredentials(display_name, bio, avatar, header)).ToMastodonUser();
