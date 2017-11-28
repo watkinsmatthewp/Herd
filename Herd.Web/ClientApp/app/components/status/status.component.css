@@ -53,7 +53,7 @@
 }
 
 .comments-btn:not([disabled]):hover {
-    color: blue;
+    color: #79BDE8;
 }
 
 .retweet-btn:not([disabled]):hover {
