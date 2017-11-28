@@ -16,7 +16,7 @@
                             <span class="author-name">{{ status.Author.MastodonDisplayName }}</span>
                             <span class="username">@{{ status.Author.MastodonUserName }}</span>
                         </a>
-                        <span class="time-stamp c-body-text-sm">| {{ status.CreatedOnUTC | date: 'short' }}</span>
+                        <span class="time-stamp c-body-text-sm">{{ status.CreatedOnUTC | date: 'short' }}</span>
                     </div>
                 </div>
             </div>
