@@ -1,6 +1,18 @@
 ﻿<div class="row">
     <div class="panel">
         <div class="panel-body">
+            <notification-list></notification-list>
+        </div>
+    </div>
+</div>
+
+<!--
+    
+
+
+div class="row">
+    <div class="panel">
+        <div class="panel-body">
             <div>
                 <div *ngFor="let notification of notificationList.Items">
                     <notification [notification]="notification"></notification>
@@ -13,7 +25,8 @@
     </div>
 </div>
 
-<!--
+
+
     <div class="row col-sm-offset-2 col-sm-8">
         <notification [notification]="testNotification"></notification>
     </div>

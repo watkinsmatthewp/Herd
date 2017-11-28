@@ -1,7 +1,7 @@
 ﻿<perfect-scrollbar #ps class="statusesWrapper" [scrollIndicators]="true" (psYReachEnd)="reachEnd($event)">
-    <div *ngFor="let notification of notificationList.Items" class="text-center">
+    <div *ngFor="let notification of notificationList.Items" class="row">
         <div>
-            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
+            <div class="col-sm-12">
                 <notification [notification]="notification"></notification>
             </div>
         </div>
