@@ -91,7 +91,7 @@ namespace Herd.Web
                         HerdWebApp.Instance.Logger.Error(errorID, "Error processing request", new Dictionary<string, string>
                         {
                             ["PATH"] = context.Request.Path,
-                            ["HEDERS"] = FormatHeaders(context.Request.Headers),
+                            ["HEADERS"] = FormatHeaders(context.Request.Headers),
                             ["BODY"] = await new StreamReader(context.Request.Body ?? new MemoryStream()).ReadToEndAsync(),
                         }, error);
                     }
@@ -119,7 +119,17 @@ namespace Herd.Web
 
         private void OnRun()
         {
-            var app = new HerdApp(new FileDataProvider(), new MastodonApiWrapper("mastodon.xyz"), HerdWebApp.Instance.Logger);
+            var dataProvider = new FileDataProvider();
+            var hashTagRelevanceManager = new HashTagRelevanceManager(new HashTagRelevanceManagerConfiguration(), dataProvider);
+            hashTagRelevanceManager.StartTimeIntervalFlushTimer();
+
+            var app = new HerdApp(dataProvider, hashTagRelevanceManager, new MastodonApiWrapper("mastodon.xyz"), HerdWebApp.Instance.Logger);
+
+            try
+            {
+                app.CreateTopHashTags();
+            }
+            catch { }
 
             try
             {

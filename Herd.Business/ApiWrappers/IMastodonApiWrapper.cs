@@ -41,9 +41,9 @@ namespace Herd.Business.ApiWrappers
 
         Task<MastodonUser> GetMastodonAccount(string id, MastodonUserContextOptions mastodonUserContextOptions = null);
 
-        Task<IList<MastodonUser>> GetFollowing(string followerUserID, MastodonUserContextOptions mastodonUserContextOptions = null, PagingOptions pagingOptions = null);
+        Task<PagedList<MastodonUser>> GetFollowing(string followerUserID, MastodonUserContextOptions mastodonUserContextOptions = null, PagingOptions pagingOptions = null);
 
-        Task<IList<MastodonUser>> GetFollowers(string followingUserID, MastodonUserContextOptions mastodonUserContextOptions = null, PagingOptions pagingOptions = null);
+        Task<PagedList<MastodonUser>> GetFollowers(string followingUserID, MastodonUserContextOptions mastodonUserContextOptions = null, PagingOptions pagingOptions = null);
 
         Task<MastodonRelationship> Follow(string userID, bool followUser);
 
@@ -57,17 +57,21 @@ namespace Herd.Business.ApiWrappers
 
         Task<MastodonPost> Like(string postID, bool like);
 
+        Task DeletePost(string postID);
+
         Task AddContextToMastodonPosts(IEnumerable<MastodonPost> mastodonPosts, MastodonPostContextOptions mastodonPostContextOptions = null);
 
         Task AddContextToMastodonPost(MastodonPost mastodonPost, MastodonPostContextOptions mastodonPostContextOptions = null);
 
         Task<MastodonPost> GetPost(string postID, MastodonPostContextOptions mastodonPostContextOptions = null);
 
-        Task<IList<MastodonPost>> GetPostsByAuthorUserID(string authorMastodonUserID, MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null);
+        Task<PagedList<MastodonPost>> GetPostsByAuthorUserID(string authorMastodonUserID, MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null);
 
-        Task<IList<MastodonPost>> GetPostsByHashTag(string hashTag, MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null);
+        Task<PagedList<MastodonPost>> GetPostsByHashTag(string hashTag, MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null);
 
-        Task<IList<MastodonPost>> GetPostsOnActiveUserTimeline(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null);
+        Task<PagedList<MastodonPost>> GetPostsOnActiveUserTimeline(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null);
+
+        Task<PagedList<MastodonPost>> GetPostsOnPublicTimeline(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null);
 
         Task<MastodonPost> CreateNewPost(string message, MastodonPostVisibility visibility, string replyStatusId = null, IEnumerable<string> mediaIds = null, bool sensitive = false, string spoilerText = null);
 

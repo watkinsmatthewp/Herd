@@ -1,9 +1,9 @@
 ﻿.status-format {
-    background-color: #ffffff;
+    background-color: #00375e;
 }
 
     .status-format:hover {
-        background-color: #f8f9fa;
+        background-color: #002B49;
         box-shadow: 2px 2px 2px #4dadf7;
     }
 
@@ -14,8 +14,9 @@
 }*/
 
 .profile-picture {
-    width: 60px; 
-    height: 60px;
+    min-width: 45px;
+    width: 45px;
+    height: 45px;
 }
 
 .author-name {
@@ -29,7 +30,7 @@
 }
 
 .time-stamp {
-    color: #adb5bd;
+    color: #d1dde6;
 }
 
 .status-blurred {
@@ -41,7 +42,8 @@
 }
 
 .status-body {
-    margin: 0.5em;
+    padding-top: .25em;
+    color: #fff;
 }
 
 /* ------------- Buttons -------------*/

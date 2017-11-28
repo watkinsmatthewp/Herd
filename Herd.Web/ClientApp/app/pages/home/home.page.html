@@ -1,41 +1,30 @@
 <div class="row">
     <!-- Left Column -->
     <div class="col-sm-12 col-md-5 col-lg-3">
-        <div class="text-center" [ngClass]="{'c-full-page-loader': !userCard.MastodonUserId }"> 
-            <usercard *ngIf="userCard" [userCard]="userCard" fillWidth="true" showBio="true" showActions="true" showQuickInfo="true"></usercard>
+        <div class="text-center" [ngClass]="{'c-full-page-loader': !account.MastodonUserId }"> 
+            <usercard *ngIf="account" [userCard]="account" fillWidth="true" showBio="true" showActions="true" showQuickInfo="true"></usercard>
         </div>
-        <div class="panel">
+        
+        <!-- This will have to be the same as the middle column below -->
+        <div class="panel hidden-lg">
             <div class="panel-heading">
                 <h3 class="c-header-md c-text-center">Popular Hashtags</h3>
             </div>
             <div class="panel-body">
-                <ol class="c-ol two-column">
-                    <li *ngFor="let hashtag of hashtags">
-                        <a [routerLink]="['/searchresults']" [queryParams]="{ searchString: hashtag }">{{ hashtag }}</a>
-                    </li>
-                </ol>
-            </div>
-        </div>
-
-        <!-- This will have to be the same as the middle column below -->
-        <div class="panel hidden-lg">
-            <div class="panel-heading">
-                <div class="c-header-md text-center">Future Integrations Box</div>
-            </div>
-            <div class="panel-body">
+                <top-hashtags></top-hashtags>
             </div>
         </div>
     </div>
 
     <!-- Right Column -->
     <!-- This has to be the same as the panel in "Left Column" -->
-    <div class="hidden-xs col-sm-12 hidden-sm
-                col-md-5 hidden-md col-lg-3 col-lg-push-6">
+    <div class="hidden-xs col-sm-12 hidden-sm col-md-5 hidden-md col-lg-3 col-lg-push-6">
         <div class="panel">
             <div class="panel-heading">
-                <div class="c-header-md text-center">Future Integrations Box</div>
+                <h3 class="c-header-md c-text-center">Popular Hashtags</h3>
             </div>
             <div class="panel-body">
+                <top-hashtags></top-hashtags>
             </div>
         </div>
     </div>
@@ -43,44 +32,18 @@
    
     <!-- Middle Column -->
     <div class="col-sm-12 col-md-7 col-lg-6 col-lg-pull-3">
-        <status-form #homeStatusForm actionName="Create Status"></status-form>
-
-        <div class="panel">
-            <div class="panel-heading text-center" style="min-height: 50px;">
-                <div>
-                    <div *ngIf="loading" class="btn pull-left">
-                        <fa name="spinner" spin=true></fa>
-                    </div>
-                    <button *ngIf="newItems.length > 0" class="c-btn c-btn-primary" type="button" (click)="viewNewItems()">{{newItems.length}} New Statuses</button>
-                    <button class="c-btn c-btn-primary pull-right" type="button" (click)="scrollToTop()"><fa name="chevron-up"></fa>Scroll to top</button>
-                </div>
-            </div>
-            <div #statusesWrapper class="panel-body statusesWrapper" 
-                data-infinite-scroll
-                    debounce
-                    [infiniteScrollContainer]="statusesWrapper"
-                    [scrollWindow]="false"
-                    [infiniteScrollDistance]="3"
-                    [infiniteScrollThrottle]="1500"
-                    (scrolled)="onScrollDown($event)">
-                 
-                <div *ngFor="let status of homeFeed" class="row">
-                    <div class="col-sm-12">
-                        <status [status]="status"></status>
-                    </div>
-                </div>
+        <div class="panel">            
+            <div class="panel-body statusWrapper">
+                <status-timeline [listType]="listTypeEnum.HOME" showStatusForm="true" autoCheckForStatuses="true"></status-timeline>
             </div>
         </div>
     </div>
 
-    
-    
 </div>
 
 
 
 <!-- Modals -->
-
 <bs-modal #specificStatusModal>
     <bs-modal-header [showDismiss]="true"></bs-modal-header>
     <bs-modal-body>

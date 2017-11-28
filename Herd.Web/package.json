@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@angular/animations": "4.2.5",
+    "@angular/cli": "1.2.6",
     "@angular/common": "4.2.5",
     "@angular/compiler": "4.2.5",
     "@angular/compiler-cli": "4.2.5",
@@ -48,6 +49,7 @@
     "ng2-bs3-modal": "^0.13.0",
     "ngx-bootstrap": "^1.9.3",
     "ngx-infinite-scroll": "^0.6.1",
+    "ngx-perfect-scrollbar": "^4.9.4",
     "preboot": "4.5.2",
     "raw-loader": "0.5.1",
     "reflect-metadata": "0.1.10",
@@ -59,7 +61,7 @@
     "webpack": "^2.5.1",
     "webpack-hot-middleware": "2.18.2",
     "webpack-merge": "4.1.0",
-    "zone.js": "0.8.12"
+    "zone.js": "0.8.14"
   },
   "devDependencies": {
     "@types/chai": "4.0.1",

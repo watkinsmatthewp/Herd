@@ -1,4 +1,4 @@
-﻿<card [fillWidth]="fillWidth" [headerImgSrc]="userCard.MastodonHeaderImageURL">
+﻿<card [fillWidth]="fillWidth" [headerImgSrc]="userCard.MastodonHeaderImageURL" [size]="size">
     <card-title>
         <div *ngIf="userCard.MastodonProfileImageURL">
             <img class="profile-picture" src="{{ userCard.MastodonProfileImageURL }}" align="middle" />
@@ -30,21 +30,21 @@
                 <br />
                 <div class="row">
                     <div class="col-xs-4">
-                        <div class="c-btn c-btn-primary-outline c-btn-sm" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '0'}">
+                        <div style="width: 90%;" class="c-btn c-btn-sm c-btn-secondary-outline" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '0'}">
                             <p>Statuses</p>
-                            <p>{{userCard.PostCount}}</p>
+                            <p>{{ userCard.PostCount | number }}</p>
                         </div>
                     </div>
                     <div class="col-xs-4">
-                        <div class="c-btn c-btn-primary-outline c-btn-sm" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '1'}">
+                        <div style="width: 90%;" class="c-btn c-btn-sm c-btn-secondary-outline" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '1'}">
                             <p>Follows</p>
-                            <p>{{userCard.FollowingCount}}</p>
+                            <p>{{ userCard.FollowingCount | number }}</p>
                         </div>
                     </div>
                     <div class="col-xs-4">
-                        <div class="c-btn c-btn-primary-outline c-btn-sm" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '2'}">
+                        <div style="width: 90%;" class="c-btn c-btn-sm c-btn-secondary-outline" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '2'}">
                             <p>Followers</p>
-                            <p>{{userCard.FollowersCount}}</p>
+                            <p>{{ userCard.FollowersCount | number}}</p>
                         </div>
                     </div>
                 </div>

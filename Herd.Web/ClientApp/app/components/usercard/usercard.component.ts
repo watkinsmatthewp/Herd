@@ -13,6 +13,7 @@ import { EventAlertEnum } from '../../models'
 export class UserCardComponent implements OnInit {
     @Input() userCard: Account;
     @Input() fillWidth: boolean = false;
+    @Input() size: string;
     @Input() showBio: boolean = false;
     @Input() showActions: boolean = false;
     @Input() showFollowButton: boolean = false;

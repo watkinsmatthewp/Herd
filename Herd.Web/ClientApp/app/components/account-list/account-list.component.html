@@ -1,0 +1,25 @@
+﻿<perfect-scrollbar #ps class="statusesWrapper" [scrollIndicators]="true" (psYReachEnd)="reachEnd($event)">
+    <div class="infiniteStaticButtons">
+        <button *ngIf="accountList.Items.length > 0" class="c-btn c-btn-sm c-btn-primary" type="button" (click)="scrollToTop()">
+            <fa name="chevron-up"></fa>
+        </button>
+    </div>
+    <div *ngFor="let user of accountList.Items" class="text-center">
+        <!-- If on search page show this -->
+        <div *ngIf="listType === listTypeEnum.SEARCH">
+            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
+                <usercard [userCard]="user" showBio="true" showActions="true" showFollowButton="true" size="small"></usercard>
+            </div>
+        </div>
+
+        <!-- If on profile page show this -->
+        <div *ngIf="listType === listTypeEnum.PROFILEFOLLOWING || listType === listTypeEnum.PROFILEFOLLOWERS">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                <usercard [userCard]="user" showBio="true" showActions="true" showFollowButton="true"></usercard>
+            </div>
+        </div>
+    </div>
+    <div class="static-loading-more">
+        <fa *ngIf="loading" name="spinner" spin=true size="3"></fa>
+    </div>
+</perfect-scrollbar>

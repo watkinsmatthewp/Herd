@@ -43,6 +43,16 @@ namespace Herd.Data.Providers
 
         #endregion Users
 
+        #region Hash tags
+
+        public TopHashTagsList GetTopHashTagsList(int id) => GetEntity<TopHashTagsList>(1);
+
+        public TopHashTagsList CreateTopHashTagsList(TopHashTagsList topHashTagsList) => CreateEntity(topHashTagsList);
+
+        public void UpdateTopHashTagsList(TopHashTagsList topHashTagsList) => UpdateEntity(topHashTagsList);
+
+        #endregion
+
         #region Abstract overrides
 
         protected abstract IEnumerable<string> GetAllKeys(string rootKey);

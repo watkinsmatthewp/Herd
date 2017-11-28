@@ -1,0 +1,45 @@
+﻿<!-- Create Status modal -->
+<status-form-modal modalId="navmenu-StatusFormModal"></status-form-modal>
+
+<header class="c-header c-header-inverse">
+    <div class="c-header-left">
+        <div class="c-header-item">
+            <a *ngIf="!isAuthenticated()" style="overflow: visible;" class="c-header-item-link c-header-logo" [routerLink]="['/login']">Herd</a>
+            <a *ngIf="isAuthenticated()" style="overflow: visible;" class="c-header-item-link c-header-logo" [routerLink]="['/home']">Herd</a>
+        </div>
+
+    </div>
+
+    <div *ngIf="isAuthenticated() && isConnectedToMastodon()">
+        <div class="c-header-center">
+            <div class="c-header-item">
+                <a class="c-header-item-link" href="#">
+                    <span class="fa fa-search" aria-hidden="true"></span>
+                </a>
+            </div>
+        </div>
+
+        <div class="c-header-right">
+            
+            <div class="c-header-item">
+                <span class="c-dropdown">
+                    <a class="c-header-item-link" href="#">
+                        <span data-text="AB" data-status="success">Options</span>&nbsp;
+                        <fa name="caret-down" aria-hidden="true"></fa>
+                    </a>
+                    <div class="c-dropdown-list c-dropdown-list-below c-dropdown-list-right">
+                        <li><a href="javascript:void(0)" class="c-a">Help</a></li>
+                        <li><a href="javascript:void(0)" class="c-a">Contact Support</a></li>
+                        <li><a href="javascript:void(0)" class="c-a">Settings</a></li>
+                        <li><a href="javascript:void(0)" class="c-a">Log Out</a></li>
+                    </div>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="isAuthenticated() && !isConnectedToMastodon()">
+
+    </div>
+
+</header>

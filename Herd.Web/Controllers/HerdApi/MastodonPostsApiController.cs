@@ -1,21 +1,31 @@
 ﻿using Herd.Business.Models;
 using Herd.Business.Models.Commands;
 using Herd.Business.Models.Entities;
+using Herd.Core;
 using Herd.Web.CustomAttributes;
 using Herd.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Linq;
 
 namespace Herd.Web.Controllers.HerdApi
 {
     [Route("api/mastodon-posts")]
     public class MastodonPostsApiController : BaseApiController
     {
+        [HttpGet("top-hashtags")]
+        public IActionResult TopHashTags(int max = 30)
+        {
+            return ApiJson(App.GetTopHashTags(new GetTopHashTagsCommand { Limit = max })
+                .Then(r => r.Data.HashTags = r.Data.HashTags.OrderByDescending(h => h).ToArray()));
+        }
+
         [HttpGet("search")]
         public IActionResult Search
         (
             bool onlyOnActiveUserTimeline = false,
+            bool onlyOnPublicTimeline = false,
             string authorMastodonUserID = null,
             string postID = null,
             string hashtag = null,
@@ -28,7 +38,8 @@ namespace Herd.Web.Controllers.HerdApi
         {
             return ApiJson(App.SearchPosts(new SearchMastodonPostsCommand
             {
-                OnlyOnlyOnActiveUserTimeline = onlyOnActiveUserTimeline,
+                OnlyOnActiveUserTimeline = onlyOnActiveUserTimeline,
+                OnlyOnPublicTimeline = onlyOnPublicTimeline,
                 ByAuthorMastodonUserID = authorMastodonUserID,
                 PostID = postID,
                 HavingHashTag = hashtag,
@@ -71,6 +82,15 @@ namespace Herd.Web.Controllers.HerdApi
             {
                 PostID = body["statusID"].Value<string>(),
                 Like = body["like"].Value<bool>()
+            }));
+        }
+
+        [HttpPost("delete")]
+        public IActionResult Delete([FromBody] JObject body)
+        {
+            return ApiJson(App.DeletePost(new DeleteMastodonPostCommand
+            {
+                PostID = body["statusID"].Value<string>(),
             }));
         }
     }

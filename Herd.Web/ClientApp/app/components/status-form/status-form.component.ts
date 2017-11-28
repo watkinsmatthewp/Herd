@@ -33,12 +33,13 @@ export class StatusFormComponent {
             "value": Visibility.PUBLIC,
             "icon": "globe"
         },
-        {
-            "option": "Private",
-            "context": "Followers only",
-            "value": Visibility.PRIVATE,
-            "icon": "lock"
-        },
+        // Currently not using Mastodon as a federation so no need for private for now.
+        //{
+        //    "option": "Private",
+        //    "context": "Followers only",
+        //    "value": Visibility.PRIVATE,
+        //    "icon": "lock"
+        //},
         {
             "option": "Direct",
             "context": "Mentioned users only",

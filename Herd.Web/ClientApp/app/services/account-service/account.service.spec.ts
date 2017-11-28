@@ -33,9 +33,13 @@ describe('Service: Account Service', () => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {
-                        Users: [
+                        Items: [
                             { MastodonUserId: '1', MastodonDisplayName: 'John Jane' },
-                        ]
+                        ],
+                        PageInformation: {
+                            "EarlierPageMaxID": "0",
+                            "NewerPageSinceID": "1270662"
+                        }
                     }
                 };
 
@@ -56,10 +60,13 @@ describe('Service: Account Service', () => {
                     includeFollowing: true,
                     includeFollowsActiveUser: true,
                     includeFollowedByActiveUser: true,
-                    max: 30
+                    max: 30,
+                    maxID: "101010",
+                    sinceID: "0"
                 }
+
                 accountService.search(params)
-                    .map(users => users[0] as Account)
+                    .map(userList => userList.Items[0] as Account)
                     .subscribe((user) => {
                         expect(user.MastodonUserId).toBe("1");
                         expect(user.MastodonDisplayName).toBe("John Jane");
@@ -74,9 +81,13 @@ describe('Service: Account Service', () => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {
-                        Users: [
+                        Items: [
                             { MastodonUserId: '1', MastodonDisplayName: 'John Jane' },
-                        ]
+                        ],
+                        PageInformation: {
+                            "EarlierPageMaxID": "0",
+                            "NewerPageSinceID": "1270662"
+                        }
                     }
                 };
 
@@ -89,7 +100,7 @@ describe('Service: Account Service', () => {
 
                 // Make the login request from our authentication service
                 accountService.search({ mastodonUserID: "1" })
-                    .map(users => users[0] as Account)
+                    .map(userList => userList.Items[0] as Account)
                     .subscribe((user) => {
                         expect(user.MastodonUserId).toBe("1");
                         expect(user.MastodonDisplayName).toBe("John Jane");
@@ -102,7 +113,8 @@ describe('Service: Account Service', () => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {
-                        Users: []
+                        Items: [],
+                        PageInformation: {}
                     }
                 };
 
@@ -114,8 +126,8 @@ describe('Service: Account Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                accountService.search({ mastodonUserID: "1" }).subscribe((users) => {
-                    expect(users.length).toBe(0);
+                accountService.search({ mastodonUserID: "1" }).subscribe((userList) => {
+                    expect(userList.Items.length).toBe(0);
                 });
             })
         );
@@ -127,12 +139,16 @@ describe('Service: Account Service', () => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {
-                        Users: [
+                        Items: [
                             { MastodonUserId: '1', MastodonDisplayName: 'John Jane' },
                             { MastodonUserId: '2', MastodonDisplayName: 'Jane Smith' },
                             { MastodonUserId: '3', MastodonDisplayName: 'Jane Doe' },
                             { MastodonUserId: '4', MastodonDisplayName: 'Doe Jane' },
-                        ]
+                        ],
+                        PageInformation: {
+                            "EarlierPageMaxID": "0",
+                            "NewerPageSinceID": "1270662"
+                        }
                     }
                 };
 
@@ -144,15 +160,15 @@ describe('Service: Account Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                accountService.search({ name: "Jane" }).subscribe((usercard) => {
-                    expect(usercard[0].MastodonUserId).toBe("1");
-                    expect(usercard[0].MastodonDisplayName).toBe("John Jane");
-                    expect(usercard[1].MastodonUserId).toBe("2");
-                    expect(usercard[1].MastodonDisplayName).toBe("Jane Smith");
-                    expect(usercard[2].MastodonUserId).toBe("3");
-                    expect(usercard[2].MastodonDisplayName).toBe("Jane Doe");
-                    expect(usercard[3].MastodonUserId).toBe("4");
-                    expect(usercard[3].MastodonDisplayName).toBe("Doe Jane");
+                accountService.search({ name: "Jane" }).subscribe((userList) => {
+                    expect(userList.Items[0].MastodonUserId).toBe("1");
+                    expect(userList.Items[0].MastodonDisplayName).toBe("John Jane");
+                    expect(userList.Items[1].MastodonUserId).toBe("2");
+                    expect(userList.Items[1].MastodonDisplayName).toBe("Jane Smith");
+                    expect(userList.Items[2].MastodonUserId).toBe("3");
+                    expect(userList.Items[2].MastodonDisplayName).toBe("Jane Doe");
+                    expect(userList.Items[3].MastodonUserId).toBe("4");
+                    expect(userList.Items[3].MastodonDisplayName).toBe("Doe Jane");
                 });
             })
         );
@@ -162,7 +178,8 @@ describe('Service: Account Service', () => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {
-                        Users: []
+                        Items: [],
+                        PageInformation: {}
                     }
                 };
 
@@ -174,8 +191,8 @@ describe('Service: Account Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                accountService.search({ name: "John" }).subscribe((users) => {
-                    expect(users.length).toBe(0);
+                accountService.search({ name: "John" }).subscribe((userList) => {
+                    expect(userList.Items.length).toBe(0);
                 });
             })
         );
@@ -187,13 +204,17 @@ describe('Service: Account Service', () => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {
-                        Users: [new Account(), new Account(), new Account()]
+                        Items: [new Account(), new Account(), new Account()],
+                        PageInformation: {
+                            "EarlierPageMaxID": "0",
+                            "NewerPageSinceID": "1270662"
+                        }
                     }
                 };
 
-                mockResponse.Data.Users[0].FollowsActiveUser = true;
-                mockResponse.Data.Users[1].FollowsActiveUser = true;
-                mockResponse.Data.Users[2].FollowsActiveUser = true;
+                mockResponse.Data.Items[0].FollowsActiveUser = true;
+                mockResponse.Data.Items[1].FollowsActiveUser = true;
+                mockResponse.Data.Items[2].FollowsActiveUser = true;
                 
 
                 // If there is an HTTP request intercept it and return the above mockedResponse
@@ -204,10 +225,10 @@ describe('Service: Account Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                accountService.search({ mastodonUserID: "1" }).subscribe((usercard) => {
-                    expect(usercard[0].FollowsActiveUser).toBeTruthy();
-                    expect(usercard[1].FollowsActiveUser).toBeTruthy();
-                    expect(usercard[2].FollowsActiveUser).toBeTruthy();
+                accountService.search({ mastodonUserID: "1" }).subscribe((userList) => {
+                    expect(userList.Items[0].FollowsActiveUser).toBeTruthy();
+                    expect(userList.Items[1].FollowsActiveUser).toBeTruthy();
+                    expect(userList.Items[2].FollowsActiveUser).toBeTruthy();
                 });
             })
         );
@@ -217,7 +238,11 @@ describe('Service: Account Service', () => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {
-                        Users: []
+                        Items: []
+                    },
+                    PageInformation: {
+                        "EarlierPageMaxID": "0",
+                        "NewerPageSinceID": "1270662"
                     }
                 };
 
@@ -229,8 +254,8 @@ describe('Service: Account Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                accountService.search({ mastodonUserID: "1" }).subscribe((user) => {
-                    expect(user.length).toBe(0);
+                accountService.search({ mastodonUserID: "1" }).subscribe((userList) => {
+                    expect(userList.Items.length).toBe(0);
                 });
             })
         );
@@ -242,13 +267,17 @@ describe('Service: Account Service', () => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {
-                        Users: [new Account(), new Account(), new Account()]
+                        Items: [new Account(), new Account(), new Account()],
+                        PageInformation: {
+                            "EarlierPageMaxID": "0",
+                            "NewerPageSinceID": "1270662"
+                        }
                     }
                 };
 
-                mockResponse.Data.Users[0].IsFollowedByActiveUser = true;
-                mockResponse.Data.Users[1].IsFollowedByActiveUser = true;
-                mockResponse.Data.Users[2].IsFollowedByActiveUser = true;
+                mockResponse.Data.Items[0].IsFollowedByActiveUser = true;
+                mockResponse.Data.Items[1].IsFollowedByActiveUser = true;
+                mockResponse.Data.Items[2].IsFollowedByActiveUser = true;
 
 
                 // If there is an HTTP request intercept it and return the above mockedResponse
@@ -259,10 +288,10 @@ describe('Service: Account Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                accountService.search({ mastodonUserID: "1" }).subscribe((usercard) => {
-                    expect(usercard[0].IsFollowedByActiveUser).toBeTruthy();
-                    expect(usercard[1].IsFollowedByActiveUser).toBeTruthy();
-                    expect(usercard[2].IsFollowedByActiveUser).toBeTruthy();
+                accountService.search({ mastodonUserID: "1" }).subscribe((userList) => {
+                    expect(userList.Items[0].IsFollowedByActiveUser).toBeTruthy();
+                    expect(userList.Items[1].IsFollowedByActiveUser).toBeTruthy();
+                    expect(userList.Items[2].IsFollowedByActiveUser).toBeTruthy();
                 });
             })
         );
@@ -272,7 +301,8 @@ describe('Service: Account Service', () => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {
-                        Users: []
+                        Items: [],
+                        PageInformation: {}
                     }
                 };
 
@@ -284,8 +314,8 @@ describe('Service: Account Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                accountService.search({ mastodonUserID: "1" }).subscribe((user) => {
-                    expect(user.length).toBe(0);
+                accountService.search({ mastodonUserID: "1" }).subscribe((userList) => {
+                    expect(userList.Items.length).toBe(0);
                 });
             })
         );

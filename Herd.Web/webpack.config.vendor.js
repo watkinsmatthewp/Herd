@@ -75,7 +75,7 @@ module.exports = (env) => {
                 name: '[name]_[hash]'
             })
         ].concat(isDevBuild ? [] : [
-            new webpack.optimize.UglifyJsPlugin()
+            //new webpack.optimize.UglifyJsPlugin()
         ])
     });
 

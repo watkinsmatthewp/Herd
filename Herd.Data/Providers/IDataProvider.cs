@@ -21,5 +21,10 @@ namespace Herd.Data.Providers
         UserAccount CreateUser(UserAccount user);
 
         void UpdateUser(UserAccount user);
+
+        // Top Hashtags
+        TopHashTagsList GetTopHashTagsList(int id);
+        TopHashTagsList CreateTopHashTagsList(TopHashTagsList topHashTagsList);
+        void UpdateTopHashTagsList(TopHashTagsList topHashTagsList);
     }
 }

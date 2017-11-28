@@ -51,6 +51,8 @@ namespace Herd.Business.ApiWrappers
 
         #region Private helper
 
+        // TODO: Once https://github.com/glacasa/Mastonet/pull/29 is included in the package,
+        // replace MastdoonClient with IMastodonClient here
         private MastodonClient BuildMastodonApiClient()
         {
             if (AppRegistration == null)
@@ -128,24 +130,24 @@ namespace Herd.Business.ApiWrappers
             return mastodonUsers;
         }
 
-        public async Task<IList<MastodonUser>> GetFollowing(string followerUserID, MastodonUserContextOptions mastodonUserContextOptions = null, PagingOptions pagingOptions = null)
+        public async Task<PagedList<MastodonUser>> GetFollowing(string followerUserID, MastodonUserContextOptions mastodonUserContextOptions = null, PagingOptions pagingOptions = null)
         {
             var effectivePagingOptions = pagingOptions ?? new PagingOptions();
             var mastodonClient = BuildMastodonApiClient();
-            var mastodonUsersApiTask = mastodonClient.GetAccountFollowing(followerUserID.ToLong(), effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
-            var mastodonUsers = (await mastodonUsersApiTask).Select(u => u.ToMastodonUser()).ToList();
-            await AddContextToMastodonUsers(mastodonUsers, mastodonUserContextOptions);
-            return mastodonUsers;
+            var mastodonUsersApiResult = await mastodonClient.GetAccountFollowing(followerUserID.ToLong(), effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
+            var result = PagedList<MastodonUser>.Create(mastodonUsersApiResult, u => u.ToMastodonUser());
+            await AddContextToMastodonUsers(result.Elements, mastodonUserContextOptions);
+            return result;
         }
 
-        public async Task<IList<MastodonUser>> GetFollowers(string followingUserID, MastodonUserContextOptions mastodonUserContextOptions = null, PagingOptions pagingOptions = null)
+        public async Task<PagedList<MastodonUser>> GetFollowers(string followingUserID, MastodonUserContextOptions mastodonUserContextOptions = null, PagingOptions pagingOptions = null)
         {
             var effectivePagingOptions = pagingOptions ?? new PagingOptions();
             var mastodonClient = BuildMastodonApiClient();
-            var mastodonUsersApiTask = mastodonClient.GetAccountFollowers(followingUserID.ToLong(), effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
-            var mastodonUsers = (await mastodonUsersApiTask).Select(u => u.ToMastodonUser()).ToList();
-            await AddContextToMastodonUsers(mastodonUsers, mastodonUserContextOptions);
-            return mastodonUsers;
+            var mastodonUsersApiResult = await mastodonClient.GetAccountFollowers(followingUserID.ToLong(), effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
+            var result = PagedList<MastodonUser>.Create(mastodonUsersApiResult, u => u.ToMastodonUser());
+            await AddContextToMastodonUsers(result.Elements, mastodonUserContextOptions);
+            return result;
         }
 
         public async Task AddContextToMastodonUsers(IEnumerable<MastodonUser> mastodonUsers, MastodonUserContextOptions mastodonUserContextOptions = null)
@@ -264,6 +266,16 @@ namespace Herd.Business.ApiWrappers
         }
 
         /// <summary>
+        /// Likes or unlikes a post
+        /// </summary>
+        /// <param name="postID"></param>
+        /// <returns></returns>
+        public async Task DeletePost(string postID)
+        {
+           await BuildMastodonApiClient().DeleteStatus(postID.ToLong());
+        }
+
+        /// <summary>
         /// Reposts or un-reposts a post
         /// </summary>
         /// <param name="postID"></param>
@@ -334,34 +346,44 @@ namespace Herd.Business.ApiWrappers
             return post;
         }
 
-        public async Task<IList<MastodonPost>> GetPostsByAuthorUserID(string authorMastodonUserID, MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
+        public async Task<PagedList<MastodonPost>> GetPostsByAuthorUserID(string authorMastodonUserID, MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
         {
             var effectivePagingOptions = pagingOptions ?? new PagingOptions();
             var mastodonClient = BuildMastodonApiClient();
-            var mastodonPostsApiTask = mastodonClient.GetAccountStatuses(authorMastodonUserID.ToLong(), effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit, false, false);
-            var posts = (await mastodonPostsApiTask).Select(s => s.ToPost()).ToList();
-            await AddContextToMastodonPosts(posts, mastodonPostContextOptions);
-            return posts;
+            var mastodonPostsApiResult = await mastodonClient.GetAccountStatuses(authorMastodonUserID.ToLong(), effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit, false, false);
+            var result = PagedList<MastodonPost>.Create(mastodonPostsApiResult, s => s.ToPost());
+            await AddContextToMastodonPosts(result.Elements, mastodonPostContextOptions);
+            return result;
         }
 
-        public async Task<IList<MastodonPost>> GetPostsByHashTag(string hashTag, MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
+        public async Task<PagedList<MastodonPost>> GetPostsByHashTag(string hashTag, MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
         {
             var effectivePagingOptions = pagingOptions ?? new PagingOptions();
             var mastodonClient = BuildMastodonApiClient();
-            var mastodonPostsApiTask = mastodonClient.GetTagTimeline(hashTag, effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
-            var posts = (await mastodonPostsApiTask).Select(s => s.ToPost()).ToList();
-            await AddContextToMastodonPosts(posts, mastodonPostContextOptions);
-            return posts;
+            var mastodonPostsApiResult = await mastodonClient.GetTagTimeline(hashTag, effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
+            var result = PagedList<MastodonPost>.Create(mastodonPostsApiResult, s => s.ToPost());
+            await AddContextToMastodonPosts(result.Elements, mastodonPostContextOptions);
+            return result;
         }
 
-        public async Task<IList<MastodonPost>> GetPostsOnActiveUserTimeline(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
+        public async Task<PagedList<MastodonPost>> GetPostsOnActiveUserTimeline(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
         {
             var effectivePagingOptions = pagingOptions ?? new PagingOptions();
             var mastodonClient = BuildMastodonApiClient();
-            var mastodonPostsApiTask = mastodonClient.GetHomeTimeline(effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
-            var posts = (await mastodonPostsApiTask).Select(s => s.ToPost()).ToList();
-            await AddContextToMastodonPosts(posts, mastodonPostContextOptions);
-            return posts;
+            var mastodonPostsApiResult = await mastodonClient.GetHomeTimeline(effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
+            var result = PagedList<MastodonPost>.Create(mastodonPostsApiResult, s => s.ToPost());
+            await AddContextToMastodonPosts(result.Elements, mastodonPostContextOptions);
+            return result;
+        }
+
+        public async Task<PagedList<MastodonPost>> GetPostsOnPublicTimeline(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
+        {
+            var effectivePagingOptions = pagingOptions ?? new PagingOptions();
+            var mastodonClient = BuildMastodonApiClient();
+            var mastodonPostsApiResult = await mastodonClient.GetPublicTimeline(effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit, true);
+            var result = PagedList<MastodonPost>.Create(mastodonPostsApiResult, s => s.ToPost());
+            await AddContextToMastodonPosts(result.Elements, mastodonPostContextOptions);
+            return result;
         }
 
         public async Task<MastodonPost> CreateNewPost(string message, MastodonPostVisibility visibility, string replyStatusId = null, IEnumerable<string> mediaIds = null, bool sensitive = false, string spoilerText = null)

@@ -38,6 +38,7 @@ namespace Herd.Business.UnitTests
         public bool AllowGetPostsByAuthorUserIdMethod { get; set; }
         public bool AllowGetPostsByHashTagMethod { get; set; }
         public bool AllowGetPostsOnActiveUserTimelineMethod { get; set; }
+        public bool AllowGetPostsOnPublicTimelineMethod { get; set; }
 
         public Mock<IMastodonApiWrapper> BuildMockMastodonApiWrapper()
         {
@@ -122,6 +123,13 @@ namespace Herd.Business.UnitTests
             {
                 mockMastodonApiWrapper
                     .Setup(a => a.GetPostsOnActiveUserTimeline(It.IsAny<MastodonPostContextOptions>(), It.IsAny<PagingOptions>()))
+                    .Returns<MastodonPostContextOptions, PagingOptions>(GetPostsOnTimeline);
+            }
+
+            if (AllowGetPostsOnPublicTimelineMethod)
+            {
+                mockMastodonApiWrapper
+                    .Setup(a => a.GetPostsOnPublicTimeline(It.IsAny<MastodonPostContextOptions>(), It.IsAny<PagingOptions>()))
                     .Returns<MastodonPostContextOptions, PagingOptions>(GetPostsOnTimeline);
             }
 
@@ -236,18 +244,18 @@ namespace Herd.Business.UnitTests
             return mastodonUsers;
         }
 
-        private async Task<IList<MastodonUser>> GetFollowing(string id, MastodonUserContextOptions mastodonUserContextOptions, PagingOptions pagingOptions)
+        private async Task<PagedList<MastodonUser>> GetFollowing(string id, MastodonUserContextOptions mastodonUserContextOptions, PagingOptions pagingOptions)
         {
             var users = GetFollowingUsers(id).ToArray();
             await AddContextToMastodonUsers(users, mastodonUserContextOptions);
-            return users;
+            return new PagedList<MastodonUser> { Elements = users };
         }
 
-        private async Task<IList<MastodonUser>> GetFollowers(string id, MastodonUserContextOptions mastodonUserContextOptions, PagingOptions pagingOptions)
+        private async Task<PagedList<MastodonUser>> GetFollowers(string id, MastodonUserContextOptions mastodonUserContextOptions, PagingOptions pagingOptions)
         {
             var users = GetFollowerUsers(id).ToArray();
             await AddContextToMastodonUsers(users, mastodonUserContextOptions);
-            return users;
+            return new PagedList<MastodonUser> { Elements = users };
         }
 
         private MastodonUser BuildUser(string id) => new MastodonUser
@@ -316,26 +324,26 @@ namespace Herd.Business.UnitTests
             return post;
         }
 
-        private async Task<IList<MastodonPost>> GetPostsByAuthorUserID(string authorUserID, MastodonPostContextOptions mastodonPostContextOptions, PagingOptions pagingOptions)
+        private async Task<PagedList<MastodonPost>> GetPostsByAuthorUserID(string authorUserID, MastodonPostContextOptions mastodonPostContextOptions, PagingOptions pagingOptions)
         {
             var posts = _postsAndAuthors.Where(p => p.Value == authorUserID).Select(p => BuildPost(p.Key)).ToArray();
             await AddContextToMastodonPosts(posts, mastodonPostContextOptions);
-            return posts;
+            return new PagedList<MastodonPost> { Elements = posts };
         }
 
-        private async Task<IList<MastodonPost>> GetPostsByHashTag(string hashTag, MastodonPostContextOptions mastodonPostContextOptions, PagingOptions pagingOptions)
+        private async Task<PagedList<MastodonPost>> GetPostsByHashTag(string hashTag, MastodonPostContextOptions mastodonPostContextOptions, PagingOptions pagingOptions)
         {
             var posts = _postsAndAuthors.Keys.Select(BuildPost).Where(p => p.Content.Contains(hashTag, StringComparison.OrdinalIgnoreCase)).ToArray();
             await AddContextToMastodonPosts(posts, mastodonPostContextOptions);
-            return posts;
+            return new PagedList<MastodonPost> { Elements = posts };
         }
 
-        private async Task<IList<MastodonPost>> GetPostsOnTimeline(MastodonPostContextOptions mastodonPostContextOptions, PagingOptions pagingOptions)
+        private async Task<PagedList<MastodonPost>> GetPostsOnTimeline(MastodonPostContextOptions mastodonPostContextOptions, PagingOptions pagingOptions)
         {
             var authorUserIDs = GetFollowingUserIDs(ActiveUserID).ToHashSet();
             var posts = _postsAndAuthors.Where(p => authorUserIDs.Contains(p.Value)).Select(p => BuildPost(p.Key)).ToArray();
             await AddContextToMastodonPosts(posts, mastodonPostContextOptions);
-            return posts;
+            return new PagedList<MastodonPost> { Elements = posts };
         }
 
         private IEnumerable<string> GetAncestorPostIDs(string targetPostID)

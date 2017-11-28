@@ -6,8 +6,8 @@ import { NotificationsService } from "angular2-notifications";
 import { BsModalComponent } from "ng2-bs3-modal/ng2-bs3-modal";
 
 import { StatusService, EventAlertService, AccountService } from "../../services";
-import { EventAlertEnum, Storage } from '../../models';
-import { Status, Account } from "../../models/mastodon";
+import { EventAlertEnum, ListTypeEnum, Storage } from '../../models';
+import { Account, Hashtag, PagedList, Status } from "../../models/mastodon";
 
 @Component({
     selector: 'home',
@@ -15,19 +15,17 @@ import { Status, Account } from "../../models/mastodon";
     styleUrls: ['./home.page.css']
 })
 export class HomePage implements OnInit {
+    public listTypeEnum = ListTypeEnum;
     @ViewChild('specificStatusModal') specificStatusModal: BsModalComponent;
     @ViewChild('replyStatusModal') replyStatusModal: BsModalComponent;
-    @ViewChild('statusesWrapper') statusesWrapper: any;
 
+    account: Account = new Account();
+    loading: boolean = false;
+    // Modal Variables
     statusId: number;
     specificStatus: Status;
     replyStatus: Status;
-
-    loading: boolean = false;
-    homeFeed: Status[] = [];
-    newItems: Status[] = [];
-    userCard: Account = new Account();
-    hashtags: string[] = [];
+    
 
     constructor(private activatedRoute: ActivatedRoute, private eventAlertService: EventAlertService,
                 private toastService: NotificationsService, private statusService: StatusService,
@@ -49,59 +47,16 @@ export class HomePage implements OnInit {
             }
         });
 
-        setInterval(() => { this.checkForNewItems(); }, 10 * 1000);
-        this.getMostRecentHomeFeed();
-        this.getUserCard();
-        this.getPopularHashtags();
+        this.getAccount();
     }
 
-    getUserCard() {
+    getAccount() {
         let currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
         let userID = currentUser.MastodonConnection.MastodonUserID;
         this.accountService.search({ mastodonUserID: userID, includeFollowedByActiveUser: true, includeFollowsActiveUser: true })
-            .map(response => response[0] as Account)
+            .map(response => response.Items[0] as Account)
             .subscribe(account => {
-                this.userCard = account;
-            });
-    }
-
-    getMostRecentHomeFeed() {
-        this.loading = true;
-        let progress = this.toastService.info("Retrieving", "home timeline ...", { timeOut: 0 });
-
-        this.statusService.search({ onlyOnActiveUserTimeline: true })
-            .finally(() => this.loading = false)
-            .subscribe(feed => {
-                this.toastService.remove(progress.id);
-                this.homeFeed = feed;
-            }, error => {
-                this.toastService.error("Error", error.error);
-            });
-    }
-
-    getPopularHashtags() {
-        console.log("Getting hashtags");
-        // call service to get hashtags, for now just mocked.
-        this.hashtags.push("lunch", "ipreo", "Avengers", "Iron Man", "Black Widow", "Captain America", "The Hulk", "Nick Fury", "Doctor Strange", "Clint Barton");
-        console.log("got them");
-    }
-
-    checkForNewItems() {
-        this.statusService.search({ onlyOnActiveUserTimeline: true, sinceID: this.homeFeed[0].Id })
-            .finally(() => this.loading = false)
-            .subscribe(newItems => {
-                this.newItems = newItems;
-            });
-    }
-
-    getPreviousStatuses() {
-        this.loading = true;
-        this.statusService.search({ onlyOnActiveUserTimeline: true, maxID: this.homeFeed[this.homeFeed.length - 1].Id })
-            .finally(() => this.loading = false)
-            .subscribe(new_items => {
-                this.appendItems(this.homeFeed, new_items);
-                let currentYPosition = this.statusesWrapper.nativeElement.scrollTop;
-                this.statusesWrapper.nativeElement.scrollTo(0, currentYPosition);
+                this.account = account;
             });
     }
 
@@ -109,7 +64,7 @@ export class HomePage implements OnInit {
         this.loading = true;
         //let progress = this.toastService.info("Retrieving" , "status info ...");
         this.statusService.search({ postID: statusId, includeAncestors: true, includeDescendants: true })
-            .map(posts => posts[0] as Status)
+            .map(postList => postList.Items[0] as Status)
             .finally(() =>  this.loading = false)
             .subscribe(data => {
                // this.toastService.remove(progress.id);
@@ -127,7 +82,7 @@ export class HomePage implements OnInit {
         this.loading = true;
         //let progress = this.toastService.info("Retrieving",  "status info ...");
         this.statusService.search({ postID: statusId, includeAncestors: false, includeDescendants: false })
-            .map(posts => posts[0] as Status)
+            .map(postList => postList.Items[0] as Status)
             .finally(() => this.loading = false)
             .subscribe(data => {
                 //this.toastService.remove(progress.id);
@@ -139,51 +94,4 @@ export class HomePage implements OnInit {
             });
     }
 
-    /**
-     * Add the new items to main feed array, scroll to top, empty newItems
-     */
-    viewNewItems() {
-        this.prependItems(this.homeFeed, this.newItems);
-        this.scrollToTop();
-        this.newItems = [];
-    }
-
-    /**
-     * Scrolls the status area to the top
-     */
-    scrollToTop() {
-        this.statusesWrapper.nativeElement.scrollTo(0, 0);
-    }
-
-    /**
-     * Infinite scroll function that is called
-     * when scrolling down and near end of view port
-     * @param ev
-     */
-    onScrollDown(ev: any) {
-        this.getPreviousStatuses();
-    }
-
-    /** Infinite Scrolling Handling */
-    addItems(oldItems: any[], newItems: any[], _method: any) {
-        oldItems[_method].apply(oldItems, newItems);
-    }
-
-    /**
-     * Add items to end of list
-     * @param startIndex
-     * @param endIndex
-     */
-    appendItems(oldItems: any[], newItems: any[]) {
-        this.addItems(oldItems, newItems, 'push');
-    }
-
-    /**
-     * Add items to beginning of list
-     * @param startIndex
-     * @param endIndex
-     */
-    prependItems(oldItems: any[], newItems: any[]) {
-        this.addItems(oldItems, newItems, 'unshift');
-    }
 }

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
 
 import { HttpClientService } from '../http-client-service/http-client.service';
-import { Status } from '../../models/mastodon';
+import { Hashtag, PagedList, Status } from '../../models/mastodon';
 
 /**
     let params = {
@@ -21,6 +21,7 @@ import { Status } from '../../models/mastodon';
 */
 export interface StatusSearchParams {
     onlyOnActiveUserTimeline?: boolean,
+    onlyOnPublicTimeline?: boolean,
     authorMastodonUserID?: string,
     postID?: string,
     hashtag?: string,
@@ -36,11 +37,13 @@ export class StatusService {
 
     constructor(private http: Http, private httpClient: HttpClientService) {}
 
-    search(searchParams: StatusSearchParams): Observable<Status[]> {
+    search(searchParams: StatusSearchParams): Observable<PagedList<Status>> {
         let queryString = "?"
             
         if (searchParams.onlyOnActiveUserTimeline)
             queryString += "onlyOnActiveUserTimeline=" + searchParams.onlyOnActiveUserTimeline
+        if (searchParams.onlyOnPublicTimeline)
+            queryString += "OnlyOnPublicTimeline=" + searchParams.onlyOnPublicTimeline
         if (searchParams.authorMastodonUserID)
             queryString += "&authorMastodonUserID=" + searchParams.authorMastodonUserID
         if (searchParams.postID)
@@ -59,7 +62,7 @@ export class StatusService {
             queryString += "&max=" + searchParams.max
 
         return this.httpClient.get('api/mastodon-posts/search' + queryString)
-            .map(response => response.Posts as Status[]);
+            .map(response => response as PagedList<Status>);
     }
 
     /**
@@ -115,5 +118,30 @@ export class StatusService {
             'like': like,
         }
         return this.httpClient.post('api/mastodon-posts/like', body);
+    }
+
+    /**
+     * Deletes the status
+     */
+    delete(statusID: string) {
+        let body = {
+            'statusID': statusID
+        }
+        return this.httpClient.post('api/mastodon-posts/delete', body);
+    }
+
+    /**
+     * Get the top n hashtags defaulting to 10.
+     * @param max amount of hashtags to get
+     */
+    getTopHashtags(max?: number): Observable<Hashtag[]> {
+        let queryString = "?"
+        if (max) {
+            queryString += "max=" + max;
+        } else {
+            queryString += "max=" + 10;
+        }
+        return this.httpClient.get('api/mastodon-posts/top-hashtags' + queryString)
+            .map(response => response.HashTags as Hashtag[]);
     }
 }

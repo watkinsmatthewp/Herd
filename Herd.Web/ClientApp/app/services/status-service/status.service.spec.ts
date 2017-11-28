@@ -33,11 +33,15 @@ describe('Service: Status Service', () => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {
-                        Posts: [
+                        Items: [
                             { Content: 'Content1', Id: "1", Url: 'example.com/1' },
                             { Content: 'Content2', Id: "2", Url: 'example.com/2' },
                             { Content: 'Content3', Id: "3", Url: 'example.com/3' },
-                        ]
+                        ],
+                        PageInformation: {
+                            "EarlierPageMaxID": "0",
+                            "NewerPageSinceID": "1270662"
+                        }
                     }
                 };
 
@@ -51,6 +55,7 @@ describe('Service: Status Service', () => {
                 // Make the request
                 let params = {
                     onlyOnActiveUserTimeline: true,
+                    onlyOnPublicTimeline: false,
                     authorMastodonUserID: "1",
                     postID: "1",
                     hashtag: "#hello",
@@ -60,13 +65,13 @@ describe('Service: Status Service', () => {
                     maxID: "5000",
                     sinceID: "4000"
                 }
-                statusService.search(params).subscribe((response) => {
-                    expect(response[0].Content).toBe("Content1");
-                    expect(response[0].Id).toBe("1");
-                    expect(response[1].Content).toBe("Content2");
-                    expect(response[1].Id).toBe("2");
-                    expect(response[2].Content).toBe("Content3");
-                    expect(response[2].Id).toBe("3");
+                statusService.search(params).subscribe((statusList) => {
+                    expect(statusList.Items[0].Content).toBe("Content1");
+                    expect(statusList.Items[0].Id).toBe("1");
+                    expect(statusList.Items[1].Content).toBe("Content2");
+                    expect(statusList.Items[1].Id).toBe("2");
+                    expect(statusList.Items[2].Content).toBe("Content3");
+                    expect(statusList.Items[2].Id).toBe("3");
                 });
             })
         );
@@ -78,11 +83,15 @@ describe('Service: Status Service', () => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {
-                        Posts: [
+                        Items: [
                             { Content: 'Content1', Id: "1", Url: 'example.com/1' },
                             { Content: 'Content2', Id: "2", Url: 'example.com/2' },
                             { Content: 'Content3', Id: "3", Url: 'example.com/3' },
-                        ]  
+                        ],
+                        PageInformation: {
+                            "EarlierPageMaxID": "0",
+                            "NewerPageSinceID": "1270662"
+                        }
                     }
                 };
 
@@ -94,13 +103,13 @@ describe('Service: Status Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                statusService.search({ onlyOnActiveUserTimeline: true }).subscribe((response) => {
-                    expect(response[0].Content).toBe("Content1");
-                    expect(response[0].Id).toBe("1");
-                    expect(response[1].Content).toBe("Content2");
-                    expect(response[1].Id).toBe("2");
-                    expect(response[2].Content).toBe("Content3");
-                    expect(response[2].Id).toBe("3");
+                statusService.search({ onlyOnActiveUserTimeline: true }).subscribe((statusList) => {
+                    expect(statusList.Items[0].Content).toBe("Content1");
+                    expect(statusList.Items[0].Id).toBe("1");
+                    expect(statusList.Items[1].Content).toBe("Content2");
+                    expect(statusList.Items[1].Id).toBe("2");
+                    expect(statusList.Items[2].Content).toBe("Content3");
+                    expect(statusList.Items[2].Id).toBe("3");
                 });
             })
         );
@@ -110,7 +119,8 @@ describe('Service: Status Service', () => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {
-                        Posts: []
+                        Items: [],
+                        PageInformation: {}
                     }
                 };
 
@@ -122,8 +132,70 @@ describe('Service: Status Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                statusService.search({ onlyOnActiveUserTimeline: true }).subscribe((response) => {
-                    expect(response.length).toBe(0);
+                statusService.search({ onlyOnActiveUserTimeline: true }).subscribe((statusList) => {
+                    expect(statusList.Items.length).toBe(0);
+                });
+            })
+        );
+    });
+
+    describe('Get Public Timeline', () => {
+        it('should return an array of statuses',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Data: {
+                        Items: [
+                            { Content: 'Content1', Id: "1", Url: 'example.com/1' },
+                            { Content: 'Content2', Id: "2", Url: 'example.com/2' },
+                            { Content: 'Content3', Id: "3", Url: 'example.com/3' },
+                        ],
+                        PageInformation: {
+                            "EarlierPageMaxID": "0",
+                            "NewerPageSinceID": "1270662"
+                        }
+                    }
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the login request from our authentication service
+                statusService.search({ onlyOnPublicTimeline: true }).subscribe((statusList) => {
+                    expect(statusList.Items[0].Content).toBe("Content1");
+                    expect(statusList.Items[0].Id).toBe("1");
+                    expect(statusList.Items[1].Content).toBe("Content2");
+                    expect(statusList.Items[1].Id).toBe("2");
+                    expect(statusList.Items[2].Content).toBe("Content3");
+                    expect(statusList.Items[2].Id).toBe("3");
+                });
+            })
+        );
+
+        it('should return an empty array of statuses if following no one',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Data: {
+                        Items: [],
+                        PageInformation: {}
+                    }
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the login request from our authentication service
+                statusService.search({ onlyOnPublicTimeline: true }).subscribe((statusList) => {
+                    expect(statusList.Items.length).toBe(0);
                 });
             })
         );
@@ -135,11 +207,15 @@ describe('Service: Status Service', () => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {
-                        Posts: [
+                        Items: [
                             { Content: 'Content1', Id: "1", Url: 'example.com/1' },
                             { Content: 'Content2', Id: "2", Url: 'example.com/2' },
                             { Content: 'Content3', Id: "3", Url: 'example.com/3' },
-                        ]
+                        ],
+                        PageInformation: {
+                            "EarlierPageMaxID": "0",
+                            "NewerPageSinceID": "1270662"
+                        }
                     }
                 };
 
@@ -151,13 +227,13 @@ describe('Service: Status Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                statusService.search({}).subscribe((response) => {
-                    expect(response[0].Content).toBe("Content1");
-                    expect(response[0].Id).toBe("1");
-                    expect(response[1].Content).toBe("Content2");
-                    expect(response[1].Id).toBe("2");
-                    expect(response[2].Content).toBe("Content3");
-                    expect(response[2].Id).toBe("3");
+                statusService.search({}).subscribe((statusList) => {
+                    expect(statusList.Items[0].Content).toBe("Content1");
+                    expect(statusList.Items[0].Id).toBe("1");
+                    expect(statusList.Items[1].Content).toBe("Content2");
+                    expect(statusList.Items[1].Id).toBe("2");
+                    expect(statusList.Items[2].Content).toBe("Content3");
+                    expect(statusList.Items[2].Id).toBe("3");
                 });
             })
         );
@@ -167,7 +243,8 @@ describe('Service: Status Service', () => {
                 // Create a mockedResponse
                 const mockResponse = {
                     Data: {
-                        Posts: []
+                        Items: [],
+                        PageInformation: {}
                     }
                 };
 
@@ -179,8 +256,8 @@ describe('Service: Status Service', () => {
                 });
 
                 // Make the login request from our authentication service
-                statusService.search({}).subscribe((response) => {
-                    expect(response.length).toBe(0);
+                statusService.search({}).subscribe((statusList) => {
+                    expect(statusList.Items.length).toBe(0);
                 });
             })
         );
@@ -193,9 +270,13 @@ describe('Service: Status Service', () => {
                 const mockResponse = {
                     Success: true,
                     Data: {
-                        Posts: [
+                        Items: [
                             { Content: 'Content1', Id: "1", Url: 'example.com/1' },
-                        ]
+                        ],
+                        PageInformation: {
+                            "EarlierPageMaxID": "0",
+                            "NewerPageSinceID": "1270662"
+                        }
                     }
                 };
 
@@ -208,7 +289,7 @@ describe('Service: Status Service', () => {
 
                 // Make the request
                 statusService.search({ postID: "1", includeAncestors: false, includeDescendants: false })
-                    .map(posts => posts[0] as Status)
+                    .map(statusList => statusList.Items[0] as Status)
                     .subscribe((status) => {
                         expect(status).toBeDefined();
                         expect(status.Id).toBe("1");
@@ -224,13 +305,17 @@ describe('Service: Status Service', () => {
                 const mockResponse = {
                     Success: true,
                     Data: {
-                        Posts: [
+                        Items: [
                             {
                                 Content: 'Content1', Id: "1", Url: 'example.com/1',
                                 Ancestors: [{ Content: 'Ancestor1', Id: "2", Url: 'example.com/2'}],
                                 Descendants: [{ Content: 'Descendant1', Id: "3", Url: 'example.com/3' }],
                             },
-                        ]
+                        ],
+                        PageInformation: {
+                            "EarlierPageMaxID": "0",
+                            "NewerPageSinceID": "1270662"
+                        }
                     }
                 };
 
@@ -243,7 +328,7 @@ describe('Service: Status Service', () => {
 
                 // Make the request
                 statusService.search({ postID: "1", includeAncestors: true, includeDescendants: true })
-                    .map(posts => posts[0] as Status)
+                    .map(statusList => statusList.Items[0] as Status)
                     .subscribe((status) => {
                         expect(status).toBeDefined();
                         expect(status.Id).toBe("1");
@@ -275,7 +360,7 @@ describe('Service: Status Service', () => {
                 // Make the request
                 let message = "hello world";
                 let visibility = Visibility.PUBLIC;
-                statusService.makeNewStatus(message, visibility).subscribe((response) => {
+                statusService.makeNewStatus(message, visibility).subscribe((statusList) => {
                 }, error => {
                     fail();
                 });
@@ -298,7 +383,7 @@ describe('Service: Status Service', () => {
                 });
 
                 // Make the request
-                statusService.like("1", true).subscribe((response) => {
+                statusService.like("1", true).subscribe((statusList) => {
                 }, error => {
                     fail();
                 });
@@ -321,7 +406,7 @@ describe('Service: Status Service', () => {
                 });
 
                 // Make the request
-                statusService.like("1", true).subscribe((response) => {
+                statusService.like("1", true).subscribe((statusList) => {
                     fail();
                 }, error => {
                     
@@ -345,7 +430,7 @@ describe('Service: Status Service', () => {
                 });
 
                 // Make the request
-                statusService.repost("1", true).subscribe((response) => {
+                statusService.repost("1", true).subscribe((statusList) => {
                 }, error => {
                     fail();
                 });
@@ -368,10 +453,152 @@ describe('Service: Status Service', () => {
                 });
 
                 // Make the request
-                statusService.repost("1", true).subscribe((response) => {
+                statusService.repost("1", true).subscribe((statusList) => {
                     fail();
                 }, error => {
 
+                });
+            })
+        );
+
+        it('should be able to delete a status',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Success: true,
+                    Data: {}
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the request
+                statusService.delete("1").subscribe((statusList) => {
+                }, error => {
+                    fail();
+                });
+            })
+        );
+
+        it('should fail at deleting a status',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Success: false,
+                    Data: {}
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the request
+                statusService.delete("1").subscribe((statusList) => {
+                    fail();
+                }, error => {
+
+                });
+            })
+        );
+
+    });
+
+
+    describe('Top Hashtags', () => {
+        it('should return an array of 5 hashtag objects',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Success: true,
+                    Data: {
+                        HashTags: [
+                            { "Name": "test", "Score": 127.734375 },
+                            { "Name": "icanhaztwitter", "Score": 50.0 },
+                            { "Name": "testing", "Score": 12.5 },
+                            { "Name": "sometimes", "Score": 6.25 },
+                            { "Name": "cantwaituntilgraduation", "Score": 3.125 }
+                        ]
+                    }
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the request
+                statusService.getTopHashtags().subscribe((hashtagList) => {
+                    expect(hashtagList).toBeDefined();
+                    expect(hashtagList.length).toBe(5);
+                    expect(hashtagList[0].Name).toBe("test");
+                    expect(hashtagList[1].Name).toBe("icanhaztwitter");
+                    expect(hashtagList[2].Name).toBe("testing");
+                    expect(hashtagList[3].Name).toBe("sometimes");
+                    expect(hashtagList[4].Name).toBe("cantwaituntilgraduation");
+                });
+            })
+        );
+
+        it('should return an array of 0 hashtag objects when no hashtags',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Success: true,
+                    Data: {
+                        HashTags: []
+                    }
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the request
+                statusService.getTopHashtags().subscribe((hashtagList) => {
+                    expect(hashtagList).toBeDefined();
+                    expect(hashtagList.length).toBe(0);
+                });
+            })
+        );
+
+        it('should return an array of up to 30 hashtag objects when using optional parameters',
+            inject([XHRBackend], (mockBackend: MockBackend) => {
+                // Create a mockedResponse
+                const mockResponse = {
+                    Success: true,
+                    Data: {
+                        HashTags: [
+                            { "Name": "test", "Score": 127.734375 },
+                            { "Name": "icanhaztwitter", "Score": 50.0 },
+                            { "Name": "testing", "Score": 12.5 }
+                        ]
+                    }
+                };
+
+                // If there is an HTTP request intercept it and return the above mockedResponse
+                mockBackend.connections.subscribe((connection: MockConnection) => {
+                    connection.mockRespond(new Response(new ResponseOptions({
+                        body: JSON.stringify(mockResponse)
+                    })));
+                });
+
+                // Make the request
+                let amountHashtags: number = 5;
+                statusService.getTopHashtags(amountHashtags).subscribe((hashtagList) => {
+                    expect(hashtagList).toBeDefined();
+                    expect(hashtagList.length).toBeLessThan(amountHashtags);
                 });
             })
         );

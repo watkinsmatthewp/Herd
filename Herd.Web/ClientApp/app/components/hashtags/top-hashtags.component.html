@@ -1,0 +1,8 @@
+﻿<ol *ngIf="hashtags.length > 0" class="c-ol two-column">
+    <li *ngFor="let hashtag of hashtags">
+        <a [routerLink]="['/searchresults']" [queryParams]="{ searchString: hashtag.Name }">#{{ hashtag.Name }}</a>
+    </li>
+</ol>
+<div class="text-center">
+    <p *ngIf="hashtags.length === 0" class="c-body-text">No popular hashtags at this time.</p>
+</div>

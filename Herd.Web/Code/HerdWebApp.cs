@@ -1,6 +1,8 @@
-﻿using Herd.Data.Providers;
+﻿using Herd.Business;
+using Herd.Data.Providers;
 using Herd.Logging;
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Herd.Web.Code
@@ -16,10 +18,14 @@ namespace Herd.Web.Code
         private Lazy<IDataProvider> _dataProvider;
         public IDataProvider DataProvider => _dataProvider.Value;
 
+        private Lazy<IHashTagRelevanceManager> _hashTagRelevanceManager;
+        public IHashTagRelevanceManager HashTagRelevanceManager => _hashTagRelevanceManager.Value;
+
         private HerdWebApp()
         {
             _logger = new Lazy<ILogger>(BuildLogger);
             _dataProvider = new Lazy<IDataProvider>(BuildDataProvider);
+            _hashTagRelevanceManager = new Lazy<IHashTagRelevanceManager>(BuildHashTagRelevanceManager);
         }
 
         private ILogger BuildLogger()
@@ -32,5 +38,18 @@ namespace Herd.Web.Code
         }
 
         private IDataProvider BuildDataProvider() => new FileDataProvider();
+
+        private IHashTagRelevanceManager BuildHashTagRelevanceManager() => new HashTagRelevanceManager(BuildHashTagRelevanceManagerConfiguration(), DataProvider);
+
+        private HashTagRelevanceManagerConfiguration BuildHashTagRelevanceManagerConfiguration()
+        {
+            var config = new HashTagRelevanceManagerConfiguration();
+            if (Debugger.IsAttached)
+            {
+                config.TimeFlushInterval = null;
+                config.DataFlushPostInterval = 2;
+            }
+            return config;
+        }
     }
 }

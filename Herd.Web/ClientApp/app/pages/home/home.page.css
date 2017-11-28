@@ -1,10 +1,4 @@
-﻿.statusesWrapper {
-    height: 550px;
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
-
-.two-column {
+﻿.two-column {
     -moz-column-count: 2;
     -moz-column-gap: 20px;
     -moz-column-fill: auto;
@@ -15,4 +9,8 @@
     column-gap: 20px;
     column-fill: auto;
     list-style-position: inside;
+}
+
+.statusWrapper {
+    height: 85vh;
 }

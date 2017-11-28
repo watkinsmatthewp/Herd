@@ -11,15 +11,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a *ngIf="!isAuthenticated()" style="overflow: visible;" class='navbar-brand' [routerLink]="['/login']">Herd</a>
-            <a *ngIf="isAuthenticated()" style="overflow: visible;" class='navbar-brand' [routerLink]="['/home']">Herd</a>
+            <button *ngIf="!isAuthenticated()" style="overflow: visible;" class='navbar-brand' [routerLink]="['/login']">Herd</button>
+            <button *ngIf="isAuthenticated()" style="overflow: visible;" class='navbar-brand' [routerLink]="['/home']">Herd</button>
         </div>
 
         <!-- Fully Logged in with instance picked menu --> 
         <div *ngIf="isAuthenticated() && isConnectedToMastodon()" class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav">
-                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/home']"><fa name="home"></fa> Home</a></li>
-                <li *ngIf="false" [routerLinkActive]="['link-active']"><a [routerLink]="['/localfeed']"><fa name="globe"></fa> Local Feed</a></li>
+                <li [routerLinkActive]="['link-active']"><a [routerLink]="['/localfeed']"><fa name="globe"></fa> Public Feed</a></li>
                 <li *ngIf="false" [routerLinkActive]="['link-active']"><a [routerLink]="['/notifications']"><fa name="bell"></fa> Notifications</a></li>
             </ul>
 

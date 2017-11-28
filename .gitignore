@@ -4,7 +4,7 @@
 /Herd/wwwroot/dist
 
 /coverage-reports/html
-
+.nvm/
 /Properties/launchSettings.json
 
 ## Ignore Visual Studio temporary files, build results, and
