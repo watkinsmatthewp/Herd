@@ -1,10 +1,12 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Title } from "@angular/platform-browser";
 
 import { AuthenticationService } from '../../services';
 import { NotificationsService } from "angular2-notifications";
 import { Storage } from '../../models';
+
 
 
 @Component({
@@ -17,12 +19,28 @@ export class LoginPage implements OnInit {
     loading = false;
     returnUrl: string;
 
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private authenticationService: AuthenticationService,
-        private toastService: NotificationsService,
-        private localStorage: Storage) { }
+    constructor(private route: ActivatedRoute, private router: Router, private titleService: Title,
+                private authenticationService: AuthenticationService, private toastService: NotificationsService,
+                private localStorage: Storage) {
+        router.events.subscribe(event => {
+            if (event instanceof NavigationEnd) {
+                var title = this.getTitle(router.routerState, router.routerState.root).join('-');
+                titleService.setTitle(title);
+            }
+        });
+    }
+
+    private getTitle(state: any, parent: any): any {
+        var data = [];
+        if (parent && parent.snapshot.data && parent.snapshot.data.title) {
+            data.push(parent.snapshot.data.title);
+        }
+
+        if (state && parent) {
+            data.push(... this.getTitle(state, state.firstChild(parent)));
+        }
+        return data;
+    }
 
     ngOnInit() {
         // reset login status

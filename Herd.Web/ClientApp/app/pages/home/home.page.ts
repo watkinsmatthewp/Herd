@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router, NavigationEnd } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 import { TabsetComponent } from 'ngx-bootstrap';
 import { NotificationsService } from "angular2-notifications";
@@ -27,11 +28,18 @@ export class HomePage implements OnInit {
     replyStatus: Status;
     
 
-    constructor(private activatedRoute: ActivatedRoute, private eventAlertService: EventAlertService,
-                private toastService: NotificationsService, private statusService: StatusService,
-                private accountService: AccountService, private localStorage: Storage) { }
+    constructor(private router: Router, private activatedRoute: ActivatedRoute, private titleService: Title,
+                private eventAlertService: EventAlertService, private toastService: NotificationsService,
+                private statusService: StatusService, private accountService: AccountService, private localStorage: Storage) {
+        router.events.subscribe(event => {
+            if (event instanceof NavigationEnd) {
+                var title = this.getTitle(router.routerState, router.routerState.root).join('-');
+                titleService.setTitle(title);
+            }
+        });
+    }
 
-    ngOnInit() {
+    ngOnInit() {  
         this.eventAlertService.getMessage().subscribe(event => {
             switch (event.eventType) {
                 case EventAlertEnum.UPDATE_SPECIFIC_STATUS: {
@@ -48,6 +56,18 @@ export class HomePage implements OnInit {
         });
 
         this.getAccount();
+    }
+
+    private getTitle(state: any, parent: any): any {
+        var data = [];
+        if (parent && parent.snapshot.data && parent.snapshot.data.title) {
+            data.push(parent.snapshot.data.title);
+        }
+
+        if (state && parent) {
+            data.push(... this.getTitle(state, state.firstChild(parent)));
+        }
+        return data;
     }
 
     getAccount() {
