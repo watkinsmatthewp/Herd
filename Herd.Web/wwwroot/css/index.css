@@ -102,7 +102,6 @@ a:focus {
 /* TEXT */
 .c-text, .c-body-text, .c-body-text-xs, .c-body-text-sm, .c-body-text-md, .c-body-text-lg, .c-body-text-xl {
     color: #fff;
-    font-family: 'Source Sans Pro';
 }
 
 .form-control {
