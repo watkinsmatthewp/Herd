@@ -27,25 +27,20 @@
             
 
             <div *ngIf="showQuickInfo" class="quick-info">
-                <br />
                 <div class="row">
-                    <div class="col-xs-4">
-                        <div style="width: 90%;" class="c-btn c-btn-sm c-btn-secondary-outline" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '0'}">
+                    <div class="col-xs-12">
+                        <button class="c-btn c-btn-sm c-btn-secondary-outline col-xs-4" type="button" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '0'}">
                             <p>Statuses</p>
                             <p>{{ userCard.PostCount | number }}</p>
-                        </div>
-                    </div>
-                    <div class="col-xs-4">
-                        <div style="width: 90%;" class="c-btn c-btn-sm c-btn-secondary-outline" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '1'}">
+                        </button>
+                        <button class="c-btn c-btn-sm c-btn-secondary-outline col-xs-4" type="button" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '1'}">
                             <p>Follows</p>
                             <p>{{ userCard.FollowingCount | number }}</p>
-                        </div>
-                    </div>
-                    <div class="col-xs-4">
-                        <div style="width: 90%;" class="c-btn c-btn-sm c-btn-secondary-outline" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '2'}">
+                        </button>
+                        <button class="c-btn c-btn-sm c-btn-secondary-outline col-xs-4" type="button" [routerLink]="['/profile', userCard.MastodonUserId]" [queryParams]="{tabIndex: '2'}">
                             <p>Followers</p>
                             <p>{{ userCard.FollowersCount | number}}</p>
-                        </div>
+                        </button>
                     </div>
                 </div>
             </div>
