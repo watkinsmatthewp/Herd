@@ -31,6 +31,16 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <li><a class="btn" data-toggle="modal" data-target="#navmenu-StatusFormModal"> <fa name="pencil"></fa> Create Status</a></li>
+                <!-- Drop Down for notifications-->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <fa name="bell"></fa> Notifications <span class="caret"></span></a>
+                    
+                    <ul class="dropdown-menu">
+                        <li> <a class="dropdown-item">NOTE</a> </li>
+                    </ul>
+
+                </li>
+
                 <!-- Drop Down -->
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Options <span class="caret"></span></a>
@@ -39,11 +49,15 @@
                         <li [routerLinkActive]="['link-active']"><a [routerLink]="['/instance-picker']"><fa name="bell"></fa> Instance Picker</a></li>
                         <li [routerLinkActive]="['link-active']"><a [routerLink]="['/settings']"><fa name="gear"></fa> Settings </a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a [routerLink]="['/login']" (click)="logout()"><fa name="sign-out"></fa> Logout</a></li>
+                        <li><a [routerLink]="['/login']" (click)="logout()"><fa name="sign-out"></fa>Logout</a></li>
                     </ul>
                 </li>
             </ul>
         </div><!-- /.navbar-collapse -->
+
+        <!-- <ul class="dropdown-menu">
+                        <li> <a class="dropdown-item">NOTE</a> </li>
+             </ul> -->
 
         <!-- Logged in but didn't pick instance --> 
         <div *ngIf="isAuthenticated() && !isConnectedToMastodon()" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

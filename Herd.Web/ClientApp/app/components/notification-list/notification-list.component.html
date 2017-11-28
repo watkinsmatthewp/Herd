@@ -1,0 +1,12 @@
+﻿<perfect-scrollbar #ps class="statusesWrapper" [scrollIndicators]="true" (psYReachEnd)="reachEnd($event)">
+    <div *ngFor="let notification of notificationList.Items" class="text-center">
+        <div>
+            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
+                <notification [notification]="notification"></notification>
+            </div>
+        </div>
+    </div>
+    <div class="static-loading-more">
+        <fa *ngIf="loading" name="spinner" spin=true size="3"></fa>
+    </div>
+</perfect-scrollbar>

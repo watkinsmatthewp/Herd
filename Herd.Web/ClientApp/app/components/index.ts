@@ -9,3 +9,4 @@ export * from './profile-updater/profile-updater.component';
 export * from './hashtags/top-hashtags.component';
 export * from './status-timeline/status-timeline.component';
 export * from './notification/notification.component';
+export * from './notification-list/notification-list.component';

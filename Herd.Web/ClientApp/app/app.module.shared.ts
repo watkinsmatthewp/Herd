@@ -33,7 +33,7 @@ import {
 import {
     AccountListComponent, InstancePickerComponent, NavMenuComponent, NotificationComponent,
     StatusComponent, StatusFormComponent, StatusFormModalComponent, StatusTimelineComponent,
-    TopHashtagsComponent, UserCardComponent, ProfileUpdaterComponent
+    TopHashtagsComponent, UserCardComponent, ProfileUpdaterComponent, NotificationListComponent
 } from './components';
 
 // Guards
@@ -56,7 +56,7 @@ import { SafePipe } from './pipes';
         // Components
         InstancePickerComponent, NavMenuComponent, NotificationComponent,
         StatusComponent, StatusFormComponent, StatusFormModalComponent, StatusTimelineComponent,
-        TopHashtagsComponent, UserCardComponent, ProfileUpdaterComponent,
+        TopHashtagsComponent, UserCardComponent, ProfileUpdaterComponent, NotificationListComponent,
         // Pipes
         SafePipe
     ],

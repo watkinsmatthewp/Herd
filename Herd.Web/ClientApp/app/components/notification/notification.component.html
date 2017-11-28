@@ -1,4 +1,65 @@
-﻿<div class="row well well-sm mouseOver notification-format">
+﻿<div class="well well-sm notification-format">
+
+    <div class="row">
+
+        <div *ngIf='notification.Type === "follow"' class="col-sm-12">
+            <div>
+                <img class="profile-picture" src="{{ notification.Account.MastodonProfileImageURL }}" />
+                <a [routerLink]="['/profile', notification.Account.MastodonUserId]">
+                    <span class="notification-title">{{notification.Account.MastodonDisplayName}} followed you</span>
+                </a>
+                <span class="time-stamp"> | {{ notification.CreatedAt | date: 'short' }}</span>
+            </div>
+        </div>
+
+        <div *ngIf='notification.Type === "favourite"' class="col-sm-12">
+            <div>
+                <img class="profile-picture" src="{{ notification.Account.MastodonProfileImageURL }}" />
+                <a [routerLink]="['/profile', notification.Account.MastodonUserId]">
+                    <span class="notification-title">{{notification.Account.MastodonDisplayName}} liked your status</span>
+                </a>
+                <span class="time-stamp"> | {{ notification.CreatedAt | date: 'short' }}</span>
+            </div>
+        </div>
+
+        <div *ngIf='notification.Type === "mention"' class="col-sm-12">
+            <div>
+                <img class="profile-picture" src="{{ notification.Account.MastodonProfileImageURL }}" />
+                <a [routerLink]="['/profile', notification.Account.MastodonUserId]">
+                    <span class="notification-title">{{notification.Account.MastodonDisplayName}} mentioned you</span>
+                </a>
+                <span class="time-stamp"> | {{ notification.CreatedAt | date: 'short' }}</span>
+            </div>
+        </div>
+
+        <div *ngIf='notification.Type === "reblog"' class="col-sm-12">
+            <div>
+                <img class="profile-picture" src="{{ notification.Account.MastodonProfileImageURL }}" />
+                <a [routerLink]="['/profile', notification.Account.MastodonUserId]">
+                    <span class="notification-title">{{notification.Account.MastodonDisplayName}} reposted your status</span>
+                </a>
+                <span class="time-stamp"> | {{ notification.CreatedAt | date: 'short' }}</span>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!--
+    
+
+    <div class="row well well-sm mouseOver notification-format">
 
     <div class="col-sm-12">
 
@@ -53,3 +114,7 @@
 
     </div>
 </div>
+
+
+
+-->

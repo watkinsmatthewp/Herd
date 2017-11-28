@@ -1,0 +1,11 @@
+﻿.static-loading-more {
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
+}
+
+.statusesWrapper {
+    height: -webkit-fill-available;
+    /*overflow-y: scroll;*/
+    overflow-x: hidden;
+}
