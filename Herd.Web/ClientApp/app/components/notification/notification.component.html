@@ -8,7 +8,7 @@
                 <a [routerLink]="['/profile', notification.Account.MastodonUserId]">
                     <span class="notification-title">{{notification.Account.MastodonDisplayName}} followed you</span>
                 </a>
-                <span class="time-stamp"> | {{ notification.CreatedAt | date: 'short' }}</span>
+                <div class="time-stamp">{{ notification.CreatedAt | date: 'short' }}</div>
             </div>
         </div>
 
@@ -18,7 +18,7 @@
                 <a [routerLink]="['/profile', notification.Account.MastodonUserId]">
                     <span class="notification-title">{{notification.Account.MastodonDisplayName}} liked your status</span>
                 </a>
-                <span class="time-stamp"> | {{ notification.CreatedAt | date: 'short' }}</span>
+                <div class="time-stamp">{{ notification.CreatedAt | date: 'short' }}</div>
             </div>
         </div>
 
@@ -28,7 +28,7 @@
                 <a [routerLink]="['/profile', notification.Account.MastodonUserId]">
                     <span class="notification-title">{{notification.Account.MastodonDisplayName}} mentioned you</span>
                 </a>
-                <span class="time-stamp"> | {{ notification.CreatedAt | date: 'short' }}</span>
+                <div class="time-stamp">{{ notification.CreatedAt | date: 'short' }}</div>
             </div>
         </div>
 
@@ -38,7 +38,7 @@
                 <a [routerLink]="['/profile', notification.Account.MastodonUserId]">
                     <span class="notification-title">{{notification.Account.MastodonDisplayName}} reposted your status</span>
                 </a>
-                <span class="time-stamp"> | {{ notification.CreatedAt | date: 'short' }}</span>
+                <div class="time-stamp">{{ notification.CreatedAt | date: 'short' }}</div>
             </div>
         </div>
 

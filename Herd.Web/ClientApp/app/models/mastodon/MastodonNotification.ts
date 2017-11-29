@@ -2,7 +2,7 @@
 import { Status } from './Status';
 
 export class MastodonNotification {
-    Id: number;
+    Id: string;
     Type: string;
     CreatedAt: Date;
     Account: Account;

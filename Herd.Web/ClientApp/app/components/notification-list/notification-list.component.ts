@@ -15,8 +15,9 @@ export class NotificationListComponent implements OnInit, OnChanges {
 
     @ViewChild('ps') private scrollBar: any;
 
-    // Notifications List
+    // Notification Lists
     notificationList: PagedList<MastodonNotification> = new PagedList<MastodonNotification>();
+    newNotificationList: PagedList<MastodonNotification> = new PagedList<MastodonNotification>();
 
     // Loading Variable
     private loading: boolean = false;
@@ -26,6 +27,7 @@ export class NotificationListComponent implements OnInit, OnChanges {
 
     ngOnInit() {
         this.getInitialItems();
+        //setInterval(() => { this.checkForNewNotifications(); }, 10 * 1000);
     }
 
     /**
@@ -66,6 +68,14 @@ export class NotificationListComponent implements OnInit, OnChanges {
             });
     }
 
+    private checkForNewNotifications() {
+        this.accountService.getHerdNotifications({ includeAncestors: true, includeDescendants: true, sinceID: this.notificationList.Items[0].Id })
+            .finally(() => this.loading = false)
+            .subscribe(newNotificationList => {
+                this.newNotificationList = newNotificationList;
+            });
+    }
+
 
     /** ----------------------------------------------------------- Button Actions ----------------------------------------------------------- */
 
@@ -73,7 +83,9 @@ export class NotificationListComponent implements OnInit, OnChanges {
      * Add the new items to main feed array, scroll to top, empty newItems
      */
     private viewNewItems() {
-        
+        this.prependItems(this.notificationList.Items, this.newNotificationList.Items);
+        this.scrollToTop();
+        this.newNotificationList = new PagedList<MastodonNotification>();
     }
 
     /**

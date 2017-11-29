@@ -42,3 +42,8 @@ li.link-active a:focus {
         text-overflow: ellipsis;
     }
 }
+
+.notification-dropdown-format {
+    background-color: #00375e;
+    width: 300px;
+}
