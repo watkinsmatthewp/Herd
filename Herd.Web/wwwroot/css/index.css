@@ -68,10 +68,17 @@ a:focus {
     border-bottom-color: transparent;
 }
 
-.nav-tabs > li.active > a {
+.nav-tabs > li.active > a, 
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
     color: #002B49;
     background-color: #79BDE8;
     border: 1px solid #fff;
+}
+
+.nav > li > a:hover,
+.nav > li > a:focus {
+
 }
 
 /* HEADERS */
