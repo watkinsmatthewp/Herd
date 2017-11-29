@@ -8,3 +8,4 @@ export * from './profile/profile.page';
 export * from './register/register.page';
 export * from './searchResults/searchResults.page';
 export * from './settings/settings.page';
+export * from './status-view/status-view.page';

@@ -26,7 +26,7 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 import {
     AdminPage, AppPage, HomePage, LocalFeedPage,
     LoginPage, NotificationsPage, ProfilePage, RegisterPage,
-    SearchResultsPage, SettingsPage
+    SearchResultsPage, SettingsPage, StatusViewPage
 } from './pages';
 
 // Components
@@ -52,7 +52,7 @@ import { SafePipe } from './pipes';
     declarations: [
         // Page
         AccountListComponent, AdminPage, AppPage, HomePage, LocalFeedPage,
-        LoginPage, NotificationsPage, ProfilePage, RegisterPage, SearchResultsPage, SettingsPage,
+        LoginPage, NotificationsPage, ProfilePage, RegisterPage, SearchResultsPage, SettingsPage, StatusViewPage,
         // Components
         InstancePickerComponent, NavMenuComponent, NotificationComponent,
         StatusComponent, StatusFormComponent, StatusFormModalComponent, StatusTimelineComponent,
@@ -84,7 +84,9 @@ import { SafePipe } from './pipes';
             // Search Results (am I doing this right?)
             { path: 'searchresults', component: SearchResultsPage, canActivate: [AuthGuard], data: { title: "Search Results" } },
             // Settings Page
-            { path: 'settings', component: SettingsPage, canActivate: [AuthGuard], data: {title: "Settings"} },
+            { path: 'settings', component: SettingsPage, canActivate: [AuthGuard], data: { title: "Settings" } },
+            // Status Page
+            { path: 'status-view', component: StatusViewPage, canActivate: [AuthGuard], data: { title: "Status View" } },
             // Etc Pages
             { path: '**', redirectTo: 'home' },
 

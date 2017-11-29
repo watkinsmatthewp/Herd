@@ -27,7 +27,7 @@ export class NotificationListComponent implements OnInit, OnChanges {
 
     ngOnInit() {
         this.getInitialItems();
-        //setInterval(() => { this.checkForNewNotifications(); }, 10 * 1000);
+        setInterval(() => { this.checkForNewNotifications(); }, 10 * 1000);
     }
 
     /**
