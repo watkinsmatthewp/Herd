@@ -36,12 +36,13 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         <fa *ngIf="newNotification" name="bell" class="new-notification"> </fa>
                         <fa *ngIf="!newNotification" name="bell"> </fa>
+                        <span *ngIf="newNotification">({{newNotificationCount}}) </span>
                         Notifications
                         <span class="caret"></span>
                     </a>
                     
                     <ul class="dropdown-menu notification-dropdown-format">
-                        <li> <notification-list (onNewNotification)="setNewNotifcations($event)"></notification-list> </li>
+                        <li> <notification-list (onNewNotification)="setNewNotification($event)" (onNewNotificationCount)="setNewNotificationCount($event)"></notification-list> </li>
                     </ul>
 
                 </li>

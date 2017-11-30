@@ -15,6 +15,7 @@ export class NotificationListComponent implements OnInit, OnChanges {
 
     @ViewChild('ps') private scrollBar: any;
     @Output() onNewNotification = new EventEmitter<boolean>();
+    @Output() onNewNotificationCount = new EventEmitter<number>();
 
     // Notification Lists
     notificationList: PagedList<MastodonNotification> = new PagedList<MastodonNotification>();
@@ -77,6 +78,7 @@ export class NotificationListComponent implements OnInit, OnChanges {
                 if (newNotificationList.Items.length > 0) {
                     this.newNotificationList = newNotificationList;
                     this.onNewNotification.emit(true);
+                    this.onNewNotificationCount.emit(newNotificationList.Items.length);
                     this.viewNewItems();
                 }
             });
