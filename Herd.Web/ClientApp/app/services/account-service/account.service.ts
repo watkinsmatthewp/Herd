@@ -15,7 +15,9 @@ import { HttpClientService } from '../http-client-service/http-client.service';
         includeFollowing: true,
         includeFollowsActiveUser: true,
         includeFollowedByActiveUser: true,
-        max: 30
+        max: 30,
+        maxID: "2020202",
+        sinceID: "20202"
     }
 */
 export interface AccountSearchParams {
