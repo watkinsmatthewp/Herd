@@ -29,7 +29,7 @@ export class NavMenuComponent implements OnInit {
         private accountService: AccountService) { }
 
     ngOnInit() {
-        //this.setNewNotifcations(true);
+        //this.setNewNotification(true);
         //this.newNotificationCount = 5;
     }
 
@@ -41,6 +41,11 @@ export class NavMenuComponent implements OnInit {
 
     setNewNotificationCount(count: number) {
         this.newNotificationCount = count;
+    }
+
+    resetNewNotifications() {
+        this.newNotification = false;
+        this.newNotificationCount = 0;
     }
 
     // NOTIFICATIONS LOGIC END
