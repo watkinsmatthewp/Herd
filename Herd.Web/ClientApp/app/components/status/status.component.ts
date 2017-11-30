@@ -105,4 +105,8 @@ export class StatusComponent implements OnInit {
         event.stopPropagation();
     }
 
+    copyUrlLink(event: any) {
+        event.stopPropagation();
+    }
+
 }

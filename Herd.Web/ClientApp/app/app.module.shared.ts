@@ -84,8 +84,9 @@ import { SafePipe } from './pipes';
             // Search Results (am I doing this right?)
             { path: 'searchresults', component: SearchResultsPage, canActivate: [AuthGuard], data: { title: "Herd - Search Results" } },
             // Settings Page
-            { path: 'settings', component: SettingsPage, canActivate: [AuthGuard], data: {title: "Herd - Settings"} },
-            { path: 'status-view', component: StatusViewPage, canActivate: [AuthGuard], data: { title: "Status View" } },
+            { path: 'settings', component: SettingsPage, canActivate: [AuthGuard], data: { title: "Herd - Settings" } },
+            // Status View Page
+            { path: 'status/:id', component: StatusViewPage, canActivate: [AuthGuard], data: { title: "Status View" } },
             // Etc Pages
             { path: '**', redirectTo: 'home' },
 
