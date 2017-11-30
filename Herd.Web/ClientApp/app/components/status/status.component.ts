@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit, Input, TemplateRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, UrlSerializer } from '@angular/router';
 
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap';
@@ -19,9 +19,11 @@ export class StatusComponent implements OnInit {
     @Input() status: Status;
     modalRef: BsModalRef;
     showBlur: boolean = false;
+    copyText: string = "";
     imagesArray: Array<Image> = [];
 
-    constructor(private router: Router, private statusService: StatusService, private localStorage: Storage,
+    constructor(private router: Router, private urlSerializer: UrlSerializer,
+                private statusService: StatusService, private localStorage: Storage,
                 private eventAlertService: EventAlertService, private modalService: BsModalService) { }
 
     ngOnInit() {
@@ -33,6 +35,11 @@ export class StatusComponent implements OnInit {
         if (this.status.MediaAttachment) {
             this.imagesArray.push(new Image(this.status.MediaAttachment));
         }
+        
+        // Set copy url text
+        let tree = this.router.createUrlTree(['status', this.status.Id]);
+        let fullURL = window.location.origin + this.urlSerializer.serialize(tree);
+        this.copyText = fullURL;
     }
 
     isCurrentUser(): boolean {
@@ -104,9 +111,4 @@ export class StatusComponent implements OnInit {
         this.eventAlertService.addEvent(EventAlertEnum.UPDATE_STATUS_FORM_TEXT, { statusText: "@" + this.status.Author.MastodonUserName });
         event.stopPropagation();
     }
-
-    copyUrlLink(event: any) {
-        event.stopPropagation();
-    }
-
 }

@@ -8,6 +8,7 @@ import { CardModule } from './components/card'
 // External Dependencies
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 import { BsModalModule } from 'ng2-bs3-modal';
+import { ClipboardModule } from 'ngx-clipboard';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ModalGalleryModule } from 'angular-modal-gallery';
 import { TabsModule, BsDropdownModule, ModalModule } from 'ngx-bootstrap';
@@ -61,7 +62,7 @@ import { SafePipe } from './pipes';
         SafePipe
     ],
     imports: [
-        Angular2FontawesomeModule, BsModalModule, BsDropdownModule.forRoot(), CardModule, CommonModule, 
+        Angular2FontawesomeModule, BsModalModule, BsDropdownModule.forRoot(), ClipboardModule, CardModule, CommonModule, 
         HttpModule, FormsModule, InfiniteScrollModule, ModalGalleryModule.forRoot(), ModalModule.forRoot(),
         PerfectScrollbarModule.forRoot(PERFECT_SCROLLBAR_CONFIG),
         TabsModule.forRoot(), SimpleNotificationsModule.forRoot(),
