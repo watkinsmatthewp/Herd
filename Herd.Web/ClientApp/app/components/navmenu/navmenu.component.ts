@@ -21,79 +21,20 @@ export class NavMenuComponent implements OnInit {
     userID: string = "";
 
     notificationsLoading: boolean = false;
+    newNotification: boolean = false;
 
     constructor(private authService: AuthenticationService, private toastService: NotificationsService,
         private route: ActivatedRoute, private router: Router, private localStorage: Storage,
         private accountService: AccountService) { }
 
+    ngOnInit() {
+        //this.setNewNotifcations(false);
+    }
+
     // NOTIFICATIONS LOGIC START
 
-    ngOnInit() {
-        this.notificationList.Items = [];
-        this.getInitialNotifications();
-    }
-
-    getInitialNotifications() {
-        this.notificationsLoading = true;
-
-        this.accountService.getHerdNotifications({ includeAncestors: true, includeDescendants: true })
-            .finally(() => this.notificationsLoading = false)
-            .subscribe(notificationList => {
-                this.notificationList = notificationList;
-                this.toastService.success("Successfully", "Pulled Notifications.");
-            }, error => {
-                this.toastService.error("Error", error.error);
-            });
-    }
-
-    getPreviousNotifications() {
-        this.accountService.getHerdNotifications({ includeAncestors: true, includeDescendants: true, maxID: this.notificationList.PageInformation.EarlierPageMaxID })
-            .subscribe(newNotificationList => {
-                this.appendItems(this.notificationList.Items, newNotificationList.Items);
-                this.notificationList.PageInformation = newNotificationList.PageInformation;
-                this.notificationsWrapper.nativeElement.scrollTo(0, this.notificationsWrapper.nativeElement.scrollTop);
-            }, error => {
-                this.toastService.error("Error", error.error);
-            });
-    }
-
-    /**
-     * Scrolls the list area to the top
-     */
-    scrollToTop(tab: string) {
-        this.notificationsWrapper.nativeElement.scrollTo(0, 0);
-    }
-
-    /**
-     * Infinite scroll function that is called
-     * when scrolling down and near end of view port
-     * @param ev
-     */
-    onScrollDown(ev: any) {
-        this.getPreviousNotifications();
-    }
-
-    /** Infinite Scrolling Handling */
-    addItems(oldItems: any[], newItems: any[], _method: any) {
-        oldItems[_method].apply(oldItems, newItems);
-    }
-
-    /**
-     * Add items to end of list
-     * @param startIndex
-     * @param endIndex
-     */
-    appendItems(oldItems: any[], newItems: any[]) {
-        this.addItems(oldItems, newItems, 'push');
-    }
-
-    /**
-     * Add items to beginning of list
-     * @param startIndex
-     * @param endIndex
-     */
-    prependItems(oldItems: any[], newItems: any[]) {
-        this.addItems(oldItems, newItems, 'unshift');
+    setNewNotifcations(toggle: boolean) {
+        this.newNotification = toggle;
     }
 
     // NOTIFICATIONS LOGIC END

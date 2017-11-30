@@ -14,6 +14,7 @@ export class NotificationListComponent implements OnInit, OnChanges {
 
 
     @ViewChild('ps') private scrollBar: any;
+    @Output() onNewNotification = new EventEmitter<boolean>();
 
     // Notification Lists
     notificationList: PagedList<MastodonNotification> = new PagedList<MastodonNotification>();
@@ -28,6 +29,7 @@ export class NotificationListComponent implements OnInit, OnChanges {
     ngOnInit() {
         this.getInitialItems();
         setInterval(() => { this.checkForNewNotifications(); }, 10 * 1000);
+        //this.onNewNotification.emit(true);
     }
 
     /**
@@ -72,7 +74,11 @@ export class NotificationListComponent implements OnInit, OnChanges {
         this.accountService.getHerdNotifications({ includeAncestors: true, includeDescendants: true, sinceID: this.notificationList.Items[0].Id })
             .finally(() => this.loading = false)
             .subscribe(newNotificationList => {
-                this.newNotificationList = newNotificationList;
+                if (newNotificationList.Items.length > 0) {
+                    this.newNotificationList = newNotificationList;
+                    this.onNewNotification.emit(true);
+                    this.viewNewItems();
+                }
             });
     }
 
