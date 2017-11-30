@@ -164,7 +164,7 @@ export class ProfilePage implements OnInit, AfterViewInit {
 
     updateSpecificStatus(statusId: string): void {
         this.loading = true;
-        //let progress = this.toastService.info("Retrieving", "status info ...");
+        //let progress = this.toastService.info("Retrieving", "status info ...", { showProgressBar: false, pauseOnHover: false });
         this.statusService.search({ postID: statusId, includeAncestors: true, includeDescendants: true })
             .map(postList => postList.Items[0] as Status)
             .finally(() => this.loading = false)
@@ -182,7 +182,7 @@ export class ProfilePage implements OnInit, AfterViewInit {
 
     updateReplyStatusModal(statusId: string): void {
         this.loading = true;
-        //let progress = this.toastService.info("Retrieving", "status info ...");
+        //let progress = this.toastService.info("Retrieving", "status info ...", { showProgressBar: false, pauseOnHover: false });
         this.statusService.search({ postID: statusId, includeAncestors: false, includeDescendants: false })
             .map(postList => postList.Items[0] as Status)
             .finally(() => this.loading = false)

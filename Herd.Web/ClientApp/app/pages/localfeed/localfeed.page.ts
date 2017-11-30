@@ -12,7 +12,8 @@ import { Account, Hashtag, PagedList, Status } from "../../models/mastodon";
 
 @Component({
     selector: 'localfeed',
-    templateUrl: './localfeed.page.html'
+    templateUrl: './localfeed.page.html',
+    styleUrls: ['./localfeed.page.css']
 })
 export class LocalFeedPage implements OnInit {
     public listTypeEnum = ListTypeEnum;

@@ -1,11 +1,11 @@
-﻿<h3 class="c-header-md text-center">{{ searchingText }} "{{ search }}" ...</h3>
+﻿<h4 class="c-header-md text-center">{{ searchingText }} "{{ search }}" ...</h4>
 
-<div class="row col-sm-offset-1 col-sm-10">  
-    <div class="panel">
-        <div class="panel-body">
-            <tabset #staticTabs>
-                <tab heading="Statuses">
-                    <div class="row">
+<div class="row">
+    <div class="col-sm-10 col-sm-offset-1">
+        <div class="panel">
+            <div class="panel-body">
+                <tabset #staticTabs>
+                    <tab heading="Statuses">
                         <ng-container>
                             <div class="panel">
                                 <div class="panel-body tabContentHeight">
@@ -13,10 +13,8 @@
                                 </div>
                             </div>
                         </ng-container>
-                    </div>
-                </tab>
-                <tab heading="Users">
-                    <div class="row">
+                    </tab>
+                    <tab heading="Users">
                         <ng-container>
                             <div class="panel">
                                 <div class="panel-body tabContentHeight text-center">
@@ -24,9 +22,9 @@
                                 </div>
                             </div>
                         </ng-container>
-                    </div>
-                </tab>
-            </tabset>
+                    </tab>
+                </tabset>
+            </div>
         </div>
     </div>
 </div>
