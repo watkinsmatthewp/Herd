@@ -1,6 +1,6 @@
-﻿<div class="well well-sm status-format">
+﻿<div class="well well-sm status-format" (click)="notifyTimelineStatusClicked($event)">
 
-    <div class="row" (click)="notifyTimelineStatusClicked($event)">
+    <div class="row">
         <div class="col-xs-3 col-sm-2 col-lg-1">
             <div class="text-center">
                 <img class="profile-picture" src="{{ status.Author.MastodonProfileImageURL }}" />

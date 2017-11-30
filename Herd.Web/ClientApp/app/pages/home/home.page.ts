@@ -82,12 +82,12 @@ export class HomePage implements OnInit {
 
     updateSpecificStatus(statusId: string): void {
         this.loading = true;
-        //let progress = this.toastService.info("Retrieving" , "status info ...");
+        //let progress = this.toastService.info("Retrieving", "status info ...", { showProgressBar: false, pauseOnHover: false });
         this.statusService.search({ postID: statusId, includeAncestors: true, includeDescendants: true })
             .map(postList => postList.Items[0] as Status)
             .finally(() =>  this.loading = false)
             .subscribe(data => {
-               // this.toastService.remove(progress.id);
+                //this.toastService.remove(progress.id);
                 this.specificStatus = data;
                 this.specificStatus.Ancestors = data.Ancestors;
                 this.specificStatus.Descendants = data.Descendants;
@@ -100,7 +100,7 @@ export class HomePage implements OnInit {
 
     updateReplyStatusModal(statusId: string): void {
         this.loading = true;
-        //let progress = this.toastService.info("Retrieving",  "status info ...");
+        //let progress = this.toastService.info("Retrieving", "status info ...", { showProgressBar: false, pauseOnHover: false });
         this.statusService.search({ postID: statusId, includeAncestors: false, includeDescendants: false })
             .map(postList => postList.Items[0] as Status)
             .finally(() => this.loading = false)
@@ -108,7 +108,7 @@ export class HomePage implements OnInit {
                 //this.toastService.remove(progress.id);
                 this.replyStatus = data;
                 this.replyStatusModal.open();
-                //this.toastService.success("Finished", "retrieving status.")
+               //this.toastService.success("Finished", "retrieving status.")
             }, error => {
                 this.toastService.error("Error", error.error);
             });
