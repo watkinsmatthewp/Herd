@@ -251,8 +251,8 @@ namespace Herd.Business.ApiWrappers
             (
                 display_name,
                 bio,
-                avatarImage == null ? null : new MediaDefinition(avatarImage, "avatar"),
-                headerImage == null ? null : new MediaDefinition(headerImage, "header")
+                avatarImage == null ? null : new MediaDefinition(avatarImage, Guid.NewGuid().ToString()),
+                headerImage == null ? null : new MediaDefinition(headerImage, Guid.NewGuid().ToString())
             );
             return (await apiTask).ToMastodonUser();
         }
