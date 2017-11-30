@@ -1,7 +1,6 @@
 ﻿body {
     background-color: #002B49;
     color: #fff;
-    font-family: 'Source Sans Pro';
 }
 
 .panel {
@@ -10,6 +9,10 @@
 
 .well {
     border: 1px solid #00497c;
+}
+
+.modal-content {
+    background-color: #00497c;
 }
 
 /* BUTTONS */
@@ -65,6 +68,12 @@ a:focus {
     border-bottom-color: transparent;
 }
 
+.nav-tabs > li.active > a {
+    color: #002B49;
+    background-color: #79BDE8;
+    border: 1px solid #fff;
+}
+
 /* HEADERS */
 .c-header-xs {
     color: #fff;
@@ -93,7 +102,6 @@ a:focus {
 /* TEXT */
 .c-text, .c-body-text, .c-body-text-xs, .c-body-text-sm, .c-body-text-md, .c-body-text-lg, .c-body-text-xl {
     color: #fff;
-    font-family: 'Source Sans Pro';
 }
 
 .form-control {
