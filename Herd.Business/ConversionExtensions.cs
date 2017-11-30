@@ -91,50 +91,36 @@ namespace Herd.Business
 
         #region Posts
 
-        public static MastodonPost ToPost(this Status status)
+        public static MastodonPost ToPost(this Status status) => new MastodonPost
         {
-            var post = new MastodonPost
-            {
-                Author = status.Account.ToMastodonUser(),
-                Content = status.Content,
-                CreatedOnUTC = status.CreatedAt,
-                FavouritesCount = status.FavouritesCount,
-                Id = status.Id.ToString(),
-                InReplyToPostId = status.InReplyToId.ToString(),
-                IsFavourited = status.Favourited,
-                IsReblogged = status.Reblogged,
-                IsSensitive = status.Sensitive,
-                MediaAttachment = status.MediaAttachments.Count() > 0 ?status.MediaAttachments.ElementAt(0).Url : "",
-                ReblogCount = status.ReblogCount,
-                SpoilerText = status.SpoilerText,
-                Visibility = status.Visibility.ToMastodonPostVisibility(),
-            };
+            Author = status.Account.ToMastodonUser(),
+            Content = status.Content,
+            CreatedOnUTC = status.CreatedAt,
+            FavouritesCount = status.FavouritesCount,
+            Id = status.Id.ToString(),
+            InReplyToPostId = status.InReplyToId.ToString(),
+            IsFavourited = status.Favourited,
+            IsReblogged = status.Reblogged,
+            IsSensitive = status.Sensitive,
+            MediaAttachment = status.MediaAttachments.FirstOrDefault()?.Url ?? "",
+            ReblogCount = status.ReblogCount,
+            SpoilerText = status.SpoilerText,
+            Visibility = status.Visibility.ToMastodonPostVisibility(),
+        };
 
-            return post;
-        }
-
-        public static MastodonAttachment ToMastodonAttachment(this Attachment attachment)
+        public static MastodonAttachment ToMastodonAttachment(this Attachment attachment) => new MastodonAttachment
         {
-            return new MastodonAttachment
-            {
-                Id = attachment.Id.ToString(),
-                Type = attachment.Type,
-                Url = attachment.Url,
-                RemoteUrl = attachment.RemoteUrl,
-                PreviewUrl = attachment.PreviewUrl,
-                TextUrl = attachment.TextUrl
-            };
-        }
+            Id = attachment.Id.ToString(),
+            Type = attachment.Type,
+            Url = attachment.Url,
+            RemoteUrl = attachment.RemoteUrl,
+            PreviewUrl = attachment.PreviewUrl,
+            TextUrl = attachment.TextUrl
+        };
 
-        public static MastodonPostVisibility ToMastodonPostVisibility(this Visibility visibility)
-        {
-            return (MastodonPostVisibility)visibility;
-        }
+        public static MastodonPostVisibility ToMastodonPostVisibility(this Visibility visibility) => (MastodonPostVisibility)visibility;
 
-        public static Visibility ToVisibility(this MastodonPostVisibility visibility)
-        {
-            return (Visibility)visibility;
-        }
+        public static Visibility ToVisibility(this MastodonPostVisibility visibility) => (Visibility)visibility;
 
         #endregion Posts
 

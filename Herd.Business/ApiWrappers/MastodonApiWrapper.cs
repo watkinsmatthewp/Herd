@@ -15,6 +15,9 @@ namespace Herd.Business.ApiWrappers
 {
     public class MastodonApiWrapper : IMastodonApiWrapper
     {
+        IAuthenticationClient _authClient;
+        IMastodonClient _mastodonClient;
+        
         #region Public properties
 
         public string MastodonHostInstance { get; set; }
@@ -26,44 +29,65 @@ namespace Herd.Business.ApiWrappers
 
         #region Constructors
 
-        public MastodonApiWrapper()
-            : this(null as string) { }
+        public MastodonApiWrapper(IAuthenticationClient authClient = null, IMastodonClient mastodonClient = null)
+            : this(null as string, authClient, mastodonClient) { }
 
-        public MastodonApiWrapper(string mastodonHostInstance)
-            : this(null as Registration)
+        public MastodonApiWrapper(string mastodonHostInstance, IAuthenticationClient authClient = null, IMastodonClient mastodonClient = null)
+            : this(null as Registration, authClient, mastodonClient)
         {
             MastodonHostInstance = mastodonHostInstance;
         }
 
-        public MastodonApiWrapper(Registration registration)
-            : this(registration, null)
+        public MastodonApiWrapper(Registration registration, IAuthenticationClient authClient = null, IMastodonClient mastodonClient = null)
+            : this(registration, null, authClient, mastodonClient)
         {
         }
 
-        public MastodonApiWrapper(Registration registration, UserMastodonConnectionDetails userMastodonConnectionDetails)
+        public MastodonApiWrapper(Registration registration, UserMastodonConnectionDetails userMastodonConnectionDetails, IAuthenticationClient authClient = null, IMastodonClient mastodonClient = null)
         {
             AppRegistration = registration;
             MastodonHostInstance = AppRegistration?.Instance;
             UserMastodonConnectionDetails = userMastodonConnectionDetails;
+            _authClient = authClient;
+            _mastodonClient = mastodonClient;
         }
 
         #endregion Constructors
 
         #region Private helper
 
-        // TODO: Once https://github.com/glacasa/Mastonet/pull/29 is included in the package,
-        // replace MastdoonClient with IMastodonClient here
-        private MastodonClient BuildMastodonApiClient()
+        private IMastodonClient GetOrCreateMastodonClient()
         {
-            if (AppRegistration == null)
+            if (_mastodonClient == null)
             {
-                throw new ArgumentNullException(nameof(AppRegistration));
+                if (AppRegistration == null)
+                {
+                    throw new ArgumentNullException(nameof(AppRegistration));
+                }
+                if (UserMastodonConnectionDetails == null)
+                {
+                    throw new ArgumentNullException(nameof(UserMastodonConnectionDetails));
+                }
+                _mastodonClient = new MastodonClient(AppRegistration.ToMastodonAppRegistration(), UserMastodonConnectionDetails.ToMastodonAuth());
             }
-            if (UserMastodonConnectionDetails == null)
+
+            return _mastodonClient;
+        }
+
+        private IAuthenticationClient BuildMastodonAuthenticationClient()
+        {
+            if (_authClient == null)
             {
-                throw new ArgumentNullException(nameof(UserMastodonConnectionDetails));
+                if (string.IsNullOrWhiteSpace(MastodonHostInstance))
+                {
+                    throw new ArgumentException($"{nameof(MastodonHostInstance)} cannot be null or empty");
+                }
+                _authClient = AppRegistration == null
+                    ? new AuthenticationClient(MastodonHostInstance)
+                    : new AuthenticationClient(AppRegistration.ToMastodonAppRegistration());
             }
-            return new MastodonClient(AppRegistration.ToMastodonAppRegistration(), UserMastodonConnectionDetails.ToMastodonAuth());
+
+            return _authClient;
         }
 
         #endregion Private helper
@@ -79,26 +103,11 @@ namespace Herd.Business.ApiWrappers
         public async Task<UserMastodonConnectionDetails> Connect(string token)
         {
             UserMastodonConnectionDetails = (await BuildMastodonAuthenticationClient().ConnectWithCode(token)).ToHerdConnectionDetails(AppRegistration.ID, "-1");
-            UserMastodonConnectionDetails.MastodonUserID = (await BuildMastodonApiClient().GetCurrentUser()).Id.ToString();
+            UserMastodonConnectionDetails.MastodonUserID = (await GetOrCreateMastodonClient().GetCurrentUser()).Id.ToString();
             return UserMastodonConnectionDetails;
         }
 
         #endregion Auth - Public methods
-
-        #region Auth - Private methods
-
-        private AuthenticationClient BuildMastodonAuthenticationClient()
-        {
-            if (string.IsNullOrWhiteSpace(MastodonHostInstance))
-            {
-                throw new ArgumentException($"{nameof(MastodonHostInstance)} cannot be null or empty");
-            }
-            return AppRegistration == null
-                ? new AuthenticationClient(MastodonHostInstance)
-                : new AuthenticationClient(AppRegistration.ToMastodonAppRegistration());
-        }
-
-        #endregion Auth - Private methods
 
         #endregion Auth
 
@@ -106,7 +115,7 @@ namespace Herd.Business.ApiWrappers
 
         public async Task<MastodonUser> GetActiveUserMastodonAccount(MastodonUserContextOptions mastodonUserContextOptions = null)
         {
-            var mastodonClient = BuildMastodonApiClient();
+            var mastodonClient = GetOrCreateMastodonClient();
             var mastodonUser = (await mastodonClient.GetCurrentUser()).ToMastodonUser();
             await AddContextToMastodonUser(mastodonUser, mastodonUserContextOptions);
             return mastodonUser;
@@ -114,7 +123,7 @@ namespace Herd.Business.ApiWrappers
 
         public async Task<MastodonUser> GetMastodonAccount(string id, MastodonUserContextOptions mastodonUserContextOptions = null)
         {
-            var mastodonClient = BuildMastodonApiClient();
+            var mastodonClient = GetOrCreateMastodonClient();
             var mastodonUser = (await mastodonClient.GetAccount(id.ToLong())).ToMastodonUser();
             await AddContextToMastodonUser(mastodonUser, mastodonUserContextOptions);
             return mastodonUser;
@@ -123,7 +132,7 @@ namespace Herd.Business.ApiWrappers
         public async Task<IList<MastodonUser>> GetUsersByName(string name, MastodonUserContextOptions mastodonUserContextOptions = null, PagingOptions pagingOptions = null)
         {
             var effectivePagingOptions = pagingOptions ?? new PagingOptions();
-            var mastodonClient = BuildMastodonApiClient();
+            var mastodonClient = GetOrCreateMastodonClient();
             var mastodonUsersApiTask = mastodonClient.SearchAccounts(name, effectivePagingOptions.Limit);
             var mastodonUsers = (await mastodonUsersApiTask).Select(u => u.ToMastodonUser()).ToList();
             await AddContextToMastodonUsers(mastodonUsers, mastodonUserContextOptions);
@@ -133,7 +142,7 @@ namespace Herd.Business.ApiWrappers
         public async Task<PagedList<MastodonUser>> GetFollowing(string followerUserID, MastodonUserContextOptions mastodonUserContextOptions = null, PagingOptions pagingOptions = null)
         {
             var effectivePagingOptions = pagingOptions ?? new PagingOptions();
-            var mastodonClient = BuildMastodonApiClient();
+            var mastodonClient = GetOrCreateMastodonClient();
             var mastodonUsersApiResult = await mastodonClient.GetAccountFollowing(followerUserID.ToLong(), effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
             var result = PagedList<MastodonUser>.Create(mastodonUsersApiResult, u => u.ToMastodonUser());
             await AddContextToMastodonUsers(result.Elements, mastodonUserContextOptions);
@@ -143,7 +152,7 @@ namespace Herd.Business.ApiWrappers
         public async Task<PagedList<MastodonUser>> GetFollowers(string followingUserID, MastodonUserContextOptions mastodonUserContextOptions = null, PagingOptions pagingOptions = null)
         {
             var effectivePagingOptions = pagingOptions ?? new PagingOptions();
-            var mastodonClient = BuildMastodonApiClient();
+            var mastodonClient = GetOrCreateMastodonClient();
             var mastodonUsersApiResult = await mastodonClient.GetAccountFollowers(followingUserID.ToLong(), effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
             var result = PagedList<MastodonUser>.Create(mastodonUsersApiResult, u => u.ToMastodonUser());
             await AddContextToMastodonUsers(result.Elements, mastodonUserContextOptions);
@@ -153,7 +162,7 @@ namespace Herd.Business.ApiWrappers
         public async Task AddContextToMastodonUsers(IEnumerable<MastodonUser> mastodonUsers, MastodonUserContextOptions mastodonUserContextOptions = null)
         {
             var effectiveMastodonUserContext = mastodonUserContextOptions ?? new MastodonUserContextOptions();
-            var mastodonClient = BuildMastodonApiClient();
+            var mastodonClient = GetOrCreateMastodonClient();
 
             foreach (var mastodonUser in mastodonUsers)
             {
@@ -190,7 +199,7 @@ namespace Herd.Business.ApiWrappers
         public async Task AddContextToMastodonUser(MastodonUser mastodonUser, MastodonUserContextOptions mastodonUserContextOptions = null)
         {
             var effectiveMastodonUserContext = mastodonUserContextOptions ?? new MastodonUserContextOptions();
-            var mastodonClient = BuildMastodonApiClient();
+            var mastodonClient = GetOrCreateMastodonClient();
 
             if (effectiveMastodonUserContext.IncludeFollowers)
             {
@@ -220,11 +229,11 @@ namespace Herd.Business.ApiWrappers
         {
             if (followUser)
             {
-                return (await BuildMastodonApiClient().Follow(userID.ToLong())).ToMastodonRelationship();
+                return (await GetOrCreateMastodonClient().Follow(userID.ToLong())).ToMastodonRelationship();
             }
             else
             {
-                return (await BuildMastodonApiClient().Unfollow(userID.ToLong())).ToMastodonRelationship();
+                return (await GetOrCreateMastodonClient().Unfollow(userID.ToLong())).ToMastodonRelationship();
             }
         }
 
@@ -238,22 +247,14 @@ namespace Herd.Business.ApiWrappers
         /// <returns></returns>
         public async Task<MastodonUser> UpdateMastodonProfile(string display_name, string bio, Stream avatarImage, Stream headerImage)
         {
-            var apiTask = BuildMastodonApiClient().UpdateCredentials(display_name, bio, await ReadBase64(avatarImage), await ReadBase64(headerImage));
+            var apiTask = GetOrCreateMastodonClient().UpdateCredentials
+            (
+                display_name,
+                bio,
+                avatarImage == null ? null : new MediaDefinition(avatarImage, "avatar"),
+                headerImage == null ? null : new MediaDefinition(headerImage, "header")
+            );
             return (await apiTask).ToMastodonUser();
-        }
-
-        async Task<string> ReadBase64(Stream stream)
-        {
-            if (stream?.Length > 0)
-            {
-                using (stream)
-                {
-                    var bytes = new byte[stream.Length];
-                    await stream.ReadAsync(bytes, 0, (int)(stream.Length));
-                    return Convert.ToBase64String(bytes);
-                }
-            }
-            return null;
         }
 
         #endregion User
@@ -262,7 +263,7 @@ namespace Herd.Business.ApiWrappers
 
         public async Task<MastodonAttachment> UploadAttachment(Stream attachment)
         {
-            return (await BuildMastodonApiClient().UploadMedia(attachment)).ToMastodonAttachment();
+            return (await GetOrCreateMastodonClient().UploadMedia(attachment)).ToMastodonAttachment();
         }
 
         /// <summary>
@@ -272,7 +273,7 @@ namespace Herd.Business.ApiWrappers
         /// <returns></returns>
         public async Task DeletePost(string postID)
         {
-           await BuildMastodonApiClient().DeleteStatus(postID.ToLong());
+           await GetOrCreateMastodonClient().DeleteStatus(postID.ToLong());
         }
 
         /// <summary>
@@ -285,11 +286,11 @@ namespace Herd.Business.ApiWrappers
         {
             if (repost)
             {
-                return (await BuildMastodonApiClient().Reblog(postID.ToLong())).ToPost();
+                return (await GetOrCreateMastodonClient().Reblog(postID.ToLong())).ToPost();
             }
             else
             {
-                return (await BuildMastodonApiClient().Unreblog(postID.ToLong())).ToPost();
+                return (await GetOrCreateMastodonClient().Unreblog(postID.ToLong())).ToPost();
             }
         }
 
@@ -303,11 +304,11 @@ namespace Herd.Business.ApiWrappers
         {
             if (like)
             {
-                return (await BuildMastodonApiClient().Favourite(postID.ToLong())).ToPost();
+                return (await GetOrCreateMastodonClient().Favourite(postID.ToLong())).ToPost();
             }
             else
             {
-                return (await BuildMastodonApiClient().Unfavourite(postID.ToLong())).ToPost();
+                return (await GetOrCreateMastodonClient().Unfavourite(postID.ToLong())).ToPost();
             }
         }
 
@@ -322,7 +323,7 @@ namespace Herd.Business.ApiWrappers
         public async Task AddContextToMastodonPost(MastodonPost mastodonPost, MastodonPostContextOptions mastodonPostContextOptions = null)
         {
             var effectiveMastodonPostContextOptions = mastodonPostContextOptions ?? new MastodonPostContextOptions();
-            var mastodonClient = BuildMastodonApiClient();
+            var mastodonClient = GetOrCreateMastodonClient();
 
             if (effectiveMastodonPostContextOptions.IncludeAncestors || effectiveMastodonPostContextOptions.IncludeDescendants)
             {
@@ -340,7 +341,7 @@ namespace Herd.Business.ApiWrappers
 
         public async Task<MastodonPost> GetPost(string postID, MastodonPostContextOptions mastodonPostContextOptions = null)
         {
-            var mastodonClient = BuildMastodonApiClient();
+            var mastodonClient = GetOrCreateMastodonClient();
             var post = (await mastodonClient.GetStatus(postID.ToLong())).ToPost();
             await AddContextToMastodonPost(post, mastodonPostContextOptions);
             return post;
@@ -349,7 +350,7 @@ namespace Herd.Business.ApiWrappers
         public async Task<PagedList<MastodonPost>> GetPostsByAuthorUserID(string authorMastodonUserID, MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
         {
             var effectivePagingOptions = pagingOptions ?? new PagingOptions();
-            var mastodonClient = BuildMastodonApiClient();
+            var mastodonClient = GetOrCreateMastodonClient();
             var mastodonPostsApiResult = await mastodonClient.GetAccountStatuses(authorMastodonUserID.ToLong(), effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit, false, false);
             var result = PagedList<MastodonPost>.Create(mastodonPostsApiResult, s => s.ToPost());
             await AddContextToMastodonPosts(result.Elements, mastodonPostContextOptions);
@@ -359,7 +360,7 @@ namespace Herd.Business.ApiWrappers
         public async Task<PagedList<MastodonPost>> GetPostsByHashTag(string hashTag, MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
         {
             var effectivePagingOptions = pagingOptions ?? new PagingOptions();
-            var mastodonClient = BuildMastodonApiClient();
+            var mastodonClient = GetOrCreateMastodonClient();
             var mastodonPostsApiResult = await mastodonClient.GetTagTimeline(hashTag, effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
             var result = PagedList<MastodonPost>.Create(mastodonPostsApiResult, s => s.ToPost());
             await AddContextToMastodonPosts(result.Elements, mastodonPostContextOptions);
@@ -369,7 +370,7 @@ namespace Herd.Business.ApiWrappers
         public async Task<PagedList<MastodonPost>> GetPostsOnActiveUserTimeline(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
         {
             var effectivePagingOptions = pagingOptions ?? new PagingOptions();
-            var mastodonClient = BuildMastodonApiClient();
+            var mastodonClient = GetOrCreateMastodonClient();
             var mastodonPostsApiResult = await mastodonClient.GetHomeTimeline(effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
             var result = PagedList<MastodonPost>.Create(mastodonPostsApiResult, s => s.ToPost());
             await AddContextToMastodonPosts(result.Elements, mastodonPostContextOptions);
@@ -379,7 +380,7 @@ namespace Herd.Business.ApiWrappers
         public async Task<PagedList<MastodonPost>> GetPostsOnPublicTimeline(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
         {
             var effectivePagingOptions = pagingOptions ?? new PagingOptions();
-            var mastodonClient = BuildMastodonApiClient();
+            var mastodonClient = GetOrCreateMastodonClient();
             var mastodonPostsApiResult = await mastodonClient.GetPublicTimeline(effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit, true);
             var result = PagedList<MastodonPost>.Create(mastodonPostsApiResult, s => s.ToPost());
             await AddContextToMastodonPosts(result.Elements, mastodonPostContextOptions);
@@ -388,7 +389,7 @@ namespace Herd.Business.ApiWrappers
 
         public async Task<MastodonPost> CreateNewPost(string message, MastodonPostVisibility visibility, string replyStatusId = null, IEnumerable<string> mediaIds = null, bool sensitive = false, string spoilerText = null)
         {
-            var mastodonClient = BuildMastodonApiClient();
+            var mastodonClient = GetOrCreateMastodonClient();
             return (await mastodonClient.PostStatus(message, visibility.ToVisibility(), replyStatusId.ToNullableLong(), mediaIds.ToLongs(), sensitive, spoilerText)).ToPost();
         }
 

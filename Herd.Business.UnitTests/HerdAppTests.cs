@@ -513,6 +513,7 @@ namespace Herd.Business.UnitTests
                 AllowAddContextToMastodonPostMethod = true,
                 AllowAddContextToMastodonPostsMethod = true,
                 AllowGetPostsOnPublicTimelineMethod = true,
+                ActiveUserID = "2"
             };
 
             mockApiWrapperBuilder.SetupUsers(1, 2, 3, 4);
@@ -536,12 +537,14 @@ namespace Herd.Business.UnitTests
             });
 
             Assert.True(result?.Success);
-            Assert.Equal(3, result.Data.Posts.Count);
-            Assert.Equal("4", result.Data.Posts[0].Id);
-            Assert.Equal("5", result.Data.Posts[1].Id);
-            Assert.Equal("6", result.Data.Posts[2].Id);
+            Assert.Equal(5, result.Data.Posts.Count);
+            Assert.Equal("1", result.Data.Posts[0].Id);
+            Assert.Equal("2", result.Data.Posts[1].Id);
+            Assert.Equal("4", result.Data.Posts[2].Id);
+            Assert.Equal("5", result.Data.Posts[3].Id);
+            Assert.Equal("6", result.Data.Posts[4].Id);
 
-            mockMastodonApiWrapper.Verify(a => a.GetPostsOnActiveUserTimeline(It.IsAny<MastodonPostContextOptions>(), It.IsAny<PagingOptions>()), Times.Once());
+            mockMastodonApiWrapper.Verify(a => a.GetPostsOnPublicTimeline(It.IsAny<MastodonPostContextOptions>(), It.IsAny<PagingOptions>()), Times.Once());
         }
 
         [Fact]
