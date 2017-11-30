@@ -15,9 +15,11 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-sm-7">
+                        <div class="c-header-md">
+                            <p>{{ account?.MastodonDisplayName }}</p>
+                        </div>
                         <div class="c-header-xs">
-                            <p><strong>{{ account?.MastodonDisplayName }}</strong></p>
-                            <p>@{{ account?.MastodonUserName }}</p>
+                            <em><p>@{{ account?.MastodonUserName }}</p></em>
                         </div>
                     </div>
                     <div *ngIf="account && !isCurrentUser()" class="col-sm-5">
