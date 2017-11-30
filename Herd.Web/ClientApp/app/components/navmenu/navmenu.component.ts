@@ -22,19 +22,25 @@ export class NavMenuComponent implements OnInit {
 
     notificationsLoading: boolean = false;
     newNotification: boolean = false;
+    newNotificationCount: number = 0;
 
     constructor(private authService: AuthenticationService, private toastService: NotificationsService,
         private route: ActivatedRoute, private router: Router, private localStorage: Storage,
         private accountService: AccountService) { }
 
     ngOnInit() {
-        //this.setNewNotifcations(false);
+        //this.setNewNotifcations(true);
+        //this.newNotificationCount = 5;
     }
 
     // NOTIFICATIONS LOGIC START
 
-    setNewNotifcations(toggle: boolean) {
+    setNewNotification(toggle: boolean) {
         this.newNotification = toggle;
+    }
+
+    setNewNotificationCount(count: number) {
+        this.newNotificationCount = count;
     }
 
     // NOTIFICATIONS LOGIC END
