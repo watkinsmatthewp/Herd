@@ -205,21 +205,19 @@ namespace Herd.Business
         /// <summary>
         /// Updates current user's mastodon profiles information
         /// </summary>
-        /// <param name="updateMastodonProfile"></param>
+        /// <param name="updateMastodonProfileCommand"></param>
         /// <returns></returns>
-        public CommandResult UpdateUserMastodonProfile(UpdateUserMastodonProfileCommand update)
+        public CommandResult UpdateUserMastodonProfile(UpdateUserMastodonProfileCommand updateMastodonProfileCommand)
         {
-            // This can be used to return the new account, if needed. Code not tested
-            //return ProcessCommand<UpdateUserMastodonProfileCommandResultData>(result =>
-            //{
-            //    result.Data = new UpdateUserMastodonProfileCommandResultData
-            //    {
-            //        UpdatedUser = _mastodonApiWrapper.updateMastodonProfile(update.DisplayName, update.Bio, update.Avatar, update.Header).Synchronously()
-            //    };
-            //});
             return ProcessCommand(result =>
             {
-                _mastodonApiWrapper.UpdateMastodonProfile(update.DisplayName, update.Bio, update.Avatar, update.Header).Synchronously();
+                _mastodonApiWrapper.UpdateMastodonProfile
+                (
+                    updateMastodonProfileCommand.DisplayName,
+                    updateMastodonProfileCommand.Bio,
+                    updateMastodonProfileCommand.AvatarImageStream,
+                    updateMastodonProfileCommand.HeaderImageStream
+                ).Synchronously();
             });
         }
 
@@ -420,19 +418,19 @@ namespace Herd.Business
             }
             if (!string.IsNullOrWhiteSpace(searchMastodonPostsCommand.ByAuthorMastodonUserID))
             {
-                posts = await FilterByAuthorUserID(posts, searchMastodonPostsCommand.ByAuthorMastodonUserID, searchMastodonPostsCommand.PagingOptions.SinceID, searchMastodonPostsCommand.PagingOptions.MaxID, refPageInformtation);
+                posts = await FilterByAuthorUserID(posts, searchMastodonPostsCommand.ByAuthorMastodonUserID, searchMastodonPostsCommand.PagingOptions?.SinceID, searchMastodonPostsCommand.PagingOptions?.MaxID, refPageInformtation);
             }
             if (searchMastodonPostsCommand.OnlyOnActiveUserTimeline)
             {
-                posts = await FilterByOnActiveUserTimeline(posts, searchMastodonPostsCommand.PagingOptions.SinceID, searchMastodonPostsCommand.PagingOptions.MaxID, refPageInformtation);
+                posts = await FilterByOnActiveUserTimeline(posts, searchMastodonPostsCommand.PagingOptions?.SinceID, searchMastodonPostsCommand.PagingOptions?.MaxID, refPageInformtation);
             }
             if (searchMastodonPostsCommand.OnlyOnPublicTimeline)
             {
-                posts = await FilterByOnPublicTimeline(posts, searchMastodonPostsCommand.PagingOptions.SinceID, searchMastodonPostsCommand.PagingOptions.MaxID, refPageInformtation);
+                posts = await FilterByOnPublicTimeline(posts, searchMastodonPostsCommand.PagingOptions?.SinceID, searchMastodonPostsCommand.PagingOptions?.MaxID, refPageInformtation);
             }
             if (!string.IsNullOrWhiteSpace(searchMastodonPostsCommand.HavingHashTag))
             {
-                posts = await FilterByHashTag(posts, searchMastodonPostsCommand.HavingHashTag, searchMastodonPostsCommand.PagingOptions.SinceID, searchMastodonPostsCommand.PagingOptions.MaxID, refPageInformtation);
+                posts = await FilterByHashTag(posts, searchMastodonPostsCommand.HavingHashTag, searchMastodonPostsCommand.PagingOptions?.SinceID, searchMastodonPostsCommand.PagingOptions?.MaxID, refPageInformtation);
             }
 
             await _mastodonApiWrapper.AddContextToMastodonPosts
@@ -468,6 +466,7 @@ namespace Herd.Business
         {
             return Filter(postSet1, () => _mastodonApiWrapper.GetPostsOnActiveUserTimeline(pagingOptions: new PagingOptions { SinceID = sinceID, MaxID = maxID }), p => p.Id, refPageInformtation);
         }
+
         private Task<Dictionary<string, MastodonPost>> FilterByOnPublicTimeline(Dictionary<string, MastodonPost> postSet1, string sinceID, string maxID, PageInformation refPageInformtation)
         {
             return Filter(postSet1, () => _mastodonApiWrapper.GetPostsOnPublicTimeline(pagingOptions: new PagingOptions { SinceID = sinceID, MaxID = maxID }), p => p.Id, refPageInformtation);
@@ -529,14 +528,14 @@ namespace Herd.Business
 
         private void UpdatedRefPagedList<T>(PageInformation refPagedList, PagedList<T> newPagedSet)
         {
-            if (!string.IsNullOrWhiteSpace(newPagedSet.PageInformation.EarlierPageMaxID))
+            if (!string.IsNullOrWhiteSpace(newPagedSet.PageInformation?.EarlierPageMaxID))
             {
                 if (string.IsNullOrWhiteSpace(refPagedList.EarlierPageMaxID) || long.Parse(refPagedList.EarlierPageMaxID) > long.Parse(newPagedSet.PageInformation.NewerPageSinceID))
                 {
                     refPagedList.EarlierPageMaxID = newPagedSet.PageInformation.EarlierPageMaxID;
                 }
             }
-            if (!string.IsNullOrWhiteSpace(newPagedSet.PageInformation.NewerPageSinceID))
+            if (!string.IsNullOrWhiteSpace(newPagedSet.PageInformation?.NewerPageSinceID))
             {
                 if (string.IsNullOrWhiteSpace(refPagedList.NewerPageSinceID) || long.Parse(refPagedList.NewerPageSinceID) < long.Parse(newPagedSet.PageInformation.NewerPageSinceID))
                 {

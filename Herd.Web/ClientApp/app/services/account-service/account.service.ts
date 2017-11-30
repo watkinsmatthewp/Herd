@@ -85,16 +85,16 @@ export class AccountService {
         return this.httpClient.post('api/mastodon-users/follow', body);
     }
 
-    updateUserMastodonAccount(displayName: string, bio: string, avatar: string, header: string) {
+    updateUserMastodonAccount(displayName: string, bio: string, avatar?: File, header?: File) {
         const formData: FormData = new FormData();
         if (displayName)
             formData.append('displayName', displayName);
         if (bio)
             formData.append('bio', bio);
         if (avatar)
-            formData.append('avatar', avatar);
+            formData.append('avatarImage', avatar);
         if (header)
-            formData.append('header', header);
+            formData.append('headerImage', header);
 
         return this.httpClient.postForm('api/mastodon-users/update', formData);
     }

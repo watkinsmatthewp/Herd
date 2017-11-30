@@ -26,16 +26,16 @@ namespace Herd.Business
 
         CommandResult FollowUser(FollowMastodonUserCommand followUserCommand);
 
-        CommandResult UpdateUserMastodonProfile(UpdateUserMastodonProfileCommand update);
+        CommandResult UpdateUserMastodonProfile(UpdateUserMastodonProfileCommand updateMastodonProfileCommand);
 
         // Mastodon posts
         CommandResult<SearchMastodonPostsCommandResultData> SearchPosts(SearchMastodonPostsCommand searchMastodonPostsCommand);
 
         CommandResult CreateNewPost(CreateNewMastodonPostCommand createNewPostCommand);
 
-        CommandResult LikePost(LikeMastodonPostCommand likeCommand);
+        CommandResult DeletePost(DeleteMastodonPostCommand deleteComment);
 
-        CommandResult DeletePost(DeleteMastodonPostCommand likeCommand);
+        CommandResult LikePost(LikeMastodonPostCommand likeCommand);
 
         CommandResult RepostPost(RepostMastodonPostCommand repostCommand);
 

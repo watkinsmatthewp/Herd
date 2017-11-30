@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace Herd.Web.Models
     {
         public string DisplayName { get; set; }
         public string Bio { get; set; }
-        public string Avatar { get; set; }
-        public string Header { get; set; }
+        public IFormFile AvatarImage { get; set; }
+        public IFormFile HeaderImage { get; set; }
     }
 }
