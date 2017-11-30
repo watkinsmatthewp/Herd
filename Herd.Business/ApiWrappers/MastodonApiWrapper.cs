@@ -426,7 +426,7 @@ namespace Herd.Business.ApiWrappers
         public async Task<PagedList<MastodonNotification>> GetActiveUserNotifications(MastodonPostContextOptions mastodonPostContextOptions = null, PagingOptions pagingOptions = null)
         {
             var effectivePagingOptions = pagingOptions ?? new PagingOptions();
-            var mastodonClient = BuildMastodonApiClient();
+            var mastodonClient = GetOrCreateMastodonClient();
             var mastodonNotificationsApiResult = await mastodonClient.GetNotifications(effectivePagingOptions.MaxID.ToNullableLong(), effectivePagingOptions.SinceID.ToNullableLong(), effectivePagingOptions.Limit);
             var result = PagedList<MastodonNotification>.Create(mastodonNotificationsApiResult, s => s.ToMastodonNotification());
             await AddContextToMastodonNotificationsPosts(result.Elements, mastodonPostContextOptions);
