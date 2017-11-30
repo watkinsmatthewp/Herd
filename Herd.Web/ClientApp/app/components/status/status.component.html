@@ -58,6 +58,8 @@
                         <ul *dropdownMenu class="dropdown-menu" role="menu">
                             <li role="menuitem"><a class="dropdown-item" (click)="mention($event)"> Mention @{{ status.Author.MastodonUserName }}</a></li>
                             <li *ngIf="isCurrentUser()" role="menuitem"><a class="dropdown-item" (click)="openDeleteModal($event, confirmDeleteModal)"> Delete status</a></li>
+                            <li role="menuitem"><a class="dropdown-item" (click)="copyUrlLink($event)"> Copy url link to status</a></li>
+                            <li role="menuitem"><a class="dropdown-item" [routerLink]="['/status', status.Id]"> View status page</a></li>
                         </ul>
                     </div>
                 </div>
