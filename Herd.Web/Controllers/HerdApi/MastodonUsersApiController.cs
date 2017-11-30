@@ -58,21 +58,12 @@ namespace Herd.Web.Controllers.HerdApi
         [HttpPost("update")]
         public IActionResult UpdateMastodonUser(UpdateMastodonProfileInputModel update)
         {
-            //return ApiJson(App.UpdateUserMastodonProfile(new UpdateUserMastodonProfileCommand
-            //{
-            //    DisplayName = body["display_name"].Value<string>(),
-            //    Bio = body["bio"].Value<string>(),
-            //    Avatar = body["avatar"].Value<string>(),
-            //    Header = body["header"].Value<string>(),
-            //}));
-
-            //System.Diagnostics.Debug.WriteLine(update.Avatar);
             return ApiJson(App.UpdateUserMastodonProfile(new UpdateUserMastodonProfileCommand
             {
                 DisplayName = update.DisplayName,
                 Bio = update.Bio,
-                Avatar = update.Avatar,
-                Header = update.Header
+                AvatarImageStream = update.AvatarImage?.OpenReadStream(),
+                HeaderImageStream = update.HeaderImage?.OpenReadStream()
             }));
         }
 

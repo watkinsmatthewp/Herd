@@ -123,14 +123,13 @@ namespace Herd.Business.UnitTests
             {
                 mockMastodonApiWrapper
                     .Setup(a => a.GetPostsOnActiveUserTimeline(It.IsAny<MastodonPostContextOptions>(), It.IsAny<PagingOptions>()))
-                    .Returns<MastodonPostContextOptions, PagingOptions>(GetPostsOnTimeline);
+                    .Returns<MastodonPostContextOptions, PagingOptions>(GetPostsOnActiveUserTimeline);
             }
-
             if (AllowGetPostsOnPublicTimelineMethod)
             {
                 mockMastodonApiWrapper
                     .Setup(a => a.GetPostsOnPublicTimeline(It.IsAny<MastodonPostContextOptions>(), It.IsAny<PagingOptions>()))
-                    .Returns<MastodonPostContextOptions, PagingOptions>(GetPostsOnTimeline);
+                    .Returns<MastodonPostContextOptions, PagingOptions>(GetPostsOnPublicTimeline);
             }
 
             return mockMastodonApiWrapper;
@@ -338,10 +337,17 @@ namespace Herd.Business.UnitTests
             return new PagedList<MastodonPost> { Elements = posts };
         }
 
-        private async Task<PagedList<MastodonPost>> GetPostsOnTimeline(MastodonPostContextOptions mastodonPostContextOptions, PagingOptions pagingOptions)
+        private async Task<PagedList<MastodonPost>> GetPostsOnActiveUserTimeline(MastodonPostContextOptions mastodonPostContextOptions, PagingOptions pagingOptions)
         {
             var authorUserIDs = GetFollowingUserIDs(ActiveUserID).ToHashSet();
             var posts = _postsAndAuthors.Where(p => authorUserIDs.Contains(p.Value)).Select(p => BuildPost(p.Key)).ToArray();
+            await AddContextToMastodonPosts(posts, mastodonPostContextOptions);
+            return new PagedList<MastodonPost> { Elements = posts };
+        }
+
+        private async Task<PagedList<MastodonPost>> GetPostsOnPublicTimeline(MastodonPostContextOptions mastodonPostContextOptions, PagingOptions pagingOptions)
+        {
+            var posts = _postsAndAuthors.Where(p => p.Value != ActiveUserID).Select(p => BuildPost(p.Key)).ToArray();
             await AddContextToMastodonPosts(posts, mastodonPostContextOptions);
             return new PagedList<MastodonPost> { Elements = posts };
         }

@@ -33,11 +33,7 @@ namespace Herd.Core
 
         public static T Synchronously<T>(this Task<T> task)
         {
-            if (!task.IsCompleted)
-            {
-                task.Wait();
-            }
-            return task.Result;
+            return task.ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
         public static string Hashed(this string originalValue)

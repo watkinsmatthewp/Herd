@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Herd.Business.Models.Commands
@@ -8,7 +9,7 @@ namespace Herd.Business.Models.Commands
     {
         public string DisplayName { get; set;}
         public string Bio { get; set; }
-        public string Avatar { get; set; }
-        public string Header { get; set; }
+        public Stream AvatarImageStream { get; set; }
+        public Stream HeaderImageStream { get; set; }
     }
 }

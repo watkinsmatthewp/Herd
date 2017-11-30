@@ -47,7 +47,7 @@ namespace Herd.Business.ApiWrappers
 
         Task<MastodonRelationship> Follow(string userID, bool followUser);
 
-        Task<MastodonUser> UpdateMastodonProfile(string display_name, string bio, string avatar, string header);
+        Task<MastodonUser> UpdateMastodonProfile(string display_name, string bio, Stream avatarImage, Stream headerImage);
 
         #endregion User
 
