@@ -16,14 +16,23 @@
     background-color: #00497c;
 }
 
+.dropdown-menu, .dropdown-menu > li > a {
+    background-color: #00375e;
+    color: white;
+}
+    .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+        background-color: #002B49;
+        color: white;
+    }
+
 /* BUTTONS */
 .c-btn {
     box-shadow: 0px 1px 1px rgba(80, 212, 255, .6);
 }
 
-    .c-btn:hover {
-        background-color: #00375e;
-    }
+.c-btn:hover {
+    background-color: #00375e;
+}
 
 .c-btn-primary {
     background: #002B49;
