@@ -1,8 +1,8 @@
-﻿import { Component, OnInit, Input, Output, ViewChild, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
+﻿import { Component, OnInit, Input, Output, ViewChild, EventEmitter } from '@angular/core';
 
-import { ListTypeEnum, Storage, EventAlertEnum } from "../../models";
+import { ListTypeEnum, EventAlertEnum } from "../../models";
 import { AccountService, EventAlertService } from "../../services";
-import { Account, PagedList, MastodonNotification } from "../../models/mastodon";
+import { PagedList, MastodonNotification } from "../../models/mastodon";
 import { NotificationsService } from "angular2-notifications";
 
 @Component({
@@ -10,8 +10,7 @@ import { NotificationsService } from "angular2-notifications";
     templateUrl: './notification-list.component.html',
     styleUrls: ['./notification-list.component.css']
 })
-export class NotificationListComponent implements OnInit, OnChanges {
-
+export class NotificationListComponent implements OnInit {
 
     @ViewChild('ps') private scrollBar: any;
     @Output() onNewNotification = new EventEmitter<boolean>();
@@ -24,25 +23,12 @@ export class NotificationListComponent implements OnInit, OnChanges {
     // Loading Variable
     private loading: boolean = false;
 
-    constructor(private accountService: AccountService, private eventAlertService: EventAlertService,
-        private toastService: NotificationsService, private localStorage: Storage) { }
+    constructor(private accountService: AccountService, private eventAlertService: EventAlertService, private toastService: NotificationsService) { }
 
     ngOnInit() {
         this.getInitialItems();
         setInterval(() => { this.checkForNewNotifications(); }, 10 * 1000);
-        //this.onNewNotification.emit(true);
     }
-
-    /**
-     * On state changes do stuff
-     * @param changes shows old value vs new value of state change
-     */
-    ngOnChanges(changes: SimpleChanges): void {
-        if ((changes.search && changes.search.previousValue) || (changes.userID && changes.userID.previousValue)) {
-            this.getInitialItems();
-        }
-    }
-
 
     private getInitialItems() {
         this.notificationList.Items = [];
