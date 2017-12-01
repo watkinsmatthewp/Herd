@@ -35,9 +35,7 @@ export class ProfileUpdaterComponent implements OnInit {
                 this.toastService.remove(progress.id);
                 this.account = account;
                 this.model.display = this.account.MastodonDisplayName;
-
-                // Strip HTML tags
-                this.model.bio = String(this.account.MastodonShortBio).replace(/<[^>]+>/gm, '');
+                this.model.bio = this.account.MastodonShortBio;
             }, error => {
                 this.toastService.error("Error", error.error);
             });
