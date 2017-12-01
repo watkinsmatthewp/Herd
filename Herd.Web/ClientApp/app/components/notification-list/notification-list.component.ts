@@ -101,7 +101,6 @@ export class NotificationListComponent implements OnInit {
      * @param event
      */
     private reachEnd(event: any) {
-        console.log("event", event);
         // This check prevents this from being called prematurely on page load
         if (event.target.getAttribute('class').indexOf("ps--scrolling-y") >= 0) {
             this.getPreviousItems();
