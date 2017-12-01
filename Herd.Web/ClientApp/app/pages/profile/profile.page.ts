@@ -71,7 +71,12 @@ export class ProfilePage implements OnInit, AfterViewInit {
             .switchMap((params: ParamMap) => Observable.of(params.get('id') || "-1"))
             .subscribe(userID => {
                 // if id switches we need to update the entire page again
-                this.getUserAccount(userID);
+                if (userID.indexOf("@") >= 0) {
+                    this.getUserAccountByName(userID);
+                } else {
+                    this.getUserAccountByID(userID);
+                }
+                
                 if (this.followingList && this.followerList && this.statusList) {
                     this.followerList.userID = userID;
                     this.followingList.userID = userID;
@@ -143,7 +148,7 @@ export class ProfilePage implements OnInit, AfterViewInit {
      * Given a userID, get that Users account
      * @param userId
      */
-    getUserAccount(userID: string) {
+    getUserAccountByID(userID: string) {
         this.loading = true;
         let progress = this.toastService.info("Retrieving", "account information ...", { timeOut: 0 });
         this.accountService.search({ mastodonUserID: userID, includeFollowedByActiveUser: true })
@@ -159,6 +164,28 @@ export class ProfilePage implements OnInit, AfterViewInit {
                 this.toastService.error("Error", error.error);
             });
     }
+
+    /**
+     * Given a user's name, get that Users account
+     * @param userId
+     */
+    getUserAccountByName(name: string) {
+        this.loading = true;
+        let progress = this.toastService.info("Retrieving", "account information ...", { timeOut: 0 });
+        this.accountService.search({ name: name, includeFollowedByActiveUser: true })
+            .map(response => response.Items[0] as Account)
+            .finally(() => this.loading = false)
+            .subscribe(account => {
+                this.toastService.remove(progress.id);
+                this.account = account;
+                if (this.account.IsFollowedByActiveUser) {
+                    this.isFollowing = true;
+                }
+            }, error => {
+                this.toastService.error("Error", error.error);
+            });
+    }
+
 
     /** ----------------------------------------------------------- Modal Actions ----------------------------------------------------------- */
 

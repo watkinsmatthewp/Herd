@@ -47,7 +47,7 @@ import {
 } from './services';
 
 // Pipes
-import { DecodeHtmlPipe, SafePipe, StripHtmlTagsPipe } from './pipes';
+import { DecodeHtmlPipe, SafePipe, StripHtmlTagsPipe, UpdateHtmlLinksPipe } from './pipes';
 
 @NgModule({
     declarations: [
@@ -59,7 +59,7 @@ import { DecodeHtmlPipe, SafePipe, StripHtmlTagsPipe } from './pipes';
         StatusComponent, StatusFormComponent, StatusFormModalComponent, StatusTimelineComponent,
         TopHashtagsComponent, UserCardComponent, ProfileUpdaterComponent, NotificationListComponent,
         // Pipes
-        DecodeHtmlPipe, SafePipe, StripHtmlTagsPipe
+        DecodeHtmlPipe, SafePipe, StripHtmlTagsPipe, UpdateHtmlLinksPipe
     ],
     imports: [
         Angular2FontawesomeModule, BsModalModule, BsDropdownModule.forRoot(), ClipboardModule, CardModule, CommonModule, 

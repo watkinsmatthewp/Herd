@@ -5,9 +5,16 @@
 })
 export class UpdateHtmlLinksPipe implements PipeTransform {
 
+    // Update these base urls if they change
+    profileBase = "/profile/";
+    searchBase = "/searchresults?searchString=";
+
     constructor() { }
 
     /**
+     * Replaces the href attributes from mastodon to use Herds links instead.
+     * NOTE: if the urls are changed in app.module.shared then the profile/searchResults will have to be set as well.
+     *
      * Example:
      *
      *     MENTION WITH '@'
@@ -36,32 +43,29 @@ export class UpdateHtmlLinksPipe implements PipeTransform {
      * @param html
      */
     transform(html: string) {
-        let atIndices = [];
-        let hashIndices = [];
+        var element = document.createElement('div');
+        element.innerHTML = html;
 
-        for (let i = 0; i < html.length; i++) {
-            if (html[i] === "@") atIndices.push(i);
-            if (html[i] === "#") hashIndices.push(i);
-        }
+        // Get all anchors
+        var anchors = element.getElementsByTagName("a");
 
-        if (atIndices.length > 0) {
-            for (let i = 0; i < atIndices.length; i++) {
-                let indexOfAt = atIndices[i];
-                
-                let indexOfNextSpace = html.indexOf(" ", indexOfAt);
-                let subStr = html.substring(indexOfAt, indexOfNextSpace);
+        // Iterate through them
+        for (let i = 0; i < anchors.length; i++) {
+            let el = anchors[i];
+
+            // username link
+            if (el.className.indexOf("u-url") >= 0) {
+                let profileID = el.innerText;
+                el.setAttribute('href', this.profileBase + profileID);
             }
 
-            
-        }
-
-        if (hashIndices.length > 0) {
-            for (let i = 0; i < hashIndices.length; i++) {
-                let indexOfHash = hashIndices[i];
+            // hashtag link
+            if (el.className.indexOf("hashtag") >= 0) {
+                let hashtag = el.getElementsByTagName("span")[0].innerText;
+                el.setAttribute('href', this.searchBase + hashtag);
             }
         }
-
-        return "";
+        return element.outerHTML;
     }
 
 }

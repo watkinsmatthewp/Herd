@@ -26,7 +26,7 @@
                 <div class="col-sm-12">
                     <p *ngIf="status.IsSensitive">{{ status.SpoilerText }}</p>
                     <div [ngClass]="{'status-blurred': showBlur }" (click)="turnOffBlur($event)">
-                        <span [innerHTML]="status.Content"></span>
+                        <span [innerHTML]="status.Content | updateHtmlLinks"></span>
                     </div>
                     <modal-gallery *ngIf="imagesArray.length > 0" (click)="$event.stopPropagation()" [modalImages]="imagesArray"
                                    [enableCloseOutside]="true"

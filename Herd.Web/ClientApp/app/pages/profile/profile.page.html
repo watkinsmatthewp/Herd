@@ -35,7 +35,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-12">
-                        <p [innerHTML]="account?.MastodonShortBio"></p>
+                        <p [innerHTML]="account?.MastodonShortBio | updateHtmlLinks"></p>
                     </div>
                 </div>
             </div>
