@@ -47,7 +47,7 @@ import {
 } from './services';
 
 // Pipes
-import { SafePipe } from './pipes';
+import { DecodeHtmlPipe, SafePipe, StripHtmlTagsPipe } from './pipes';
 
 @NgModule({
     declarations: [
@@ -59,7 +59,7 @@ import { SafePipe } from './pipes';
         StatusComponent, StatusFormComponent, StatusFormModalComponent, StatusTimelineComponent,
         TopHashtagsComponent, UserCardComponent, ProfileUpdaterComponent, NotificationListComponent,
         // Pipes
-        SafePipe
+        DecodeHtmlPipe, SafePipe, StripHtmlTagsPipe
     ],
     imports: [
         Angular2FontawesomeModule, BsModalModule, BsDropdownModule.forRoot(), ClipboardModule, CardModule, CommonModule, 

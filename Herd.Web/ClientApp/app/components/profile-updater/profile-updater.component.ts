@@ -27,15 +27,17 @@ export class ProfileUpdaterComponent implements OnInit {
     ngOnInit() {
         let currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
         let userID = currentUser.MastodonConnection.MastodonUserID;
+
+        let progress = this.toastService.info("Retrieving", "account info ...", { showProgressBar: false, pauseOnHover: false });
         this.accountService.search({ mastodonUserID: userID, includeFollowedByActiveUser: true })
             .map(response => response.Items[0] as Account)
             .subscribe(account => {
+                this.toastService.remove(progress.id);
                 this.account = account;
                 this.model.display = this.account.MastodonDisplayName;
 
                 // Strip HTML tags
                 this.model.bio = String(this.account.MastodonShortBio).replace(/<[^>]+>/gm, '');
-
             }, error => {
                 this.toastService.error("Error", error.error);
             });
