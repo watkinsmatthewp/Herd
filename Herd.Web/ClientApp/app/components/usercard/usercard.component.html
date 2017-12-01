@@ -11,7 +11,7 @@
     </card-title>
     
     <card-content>
-        <div *ngIf="userCard.MastodonShortBio && showBio" class="row col-sm-12 user-bio" [innerHTML]="userCard.MastodonShortBio"></div>
+        <div *ngIf="userCard.MastodonShortBio && showBio" class="row col-sm-12 user-bio" [innerHTML]="userCard.MastodonShortBio | updateHtmlLinks"></div>
     </card-content>
 
     <card-actions *ngIf="showActions">

@@ -51,6 +51,9 @@
     <None Remove="ClientApp\app\pages\index.ts" />
     <None Remove="ClientApp\app\pages\searchResults\searchresults.page.ts" />
     <None Remove="ClientApp\app\pages\settings\settings.page.ts" />
+    <None Remove="ClientApp\app\pipes\decode-html.pipe.ts" />
+    <None Remove="ClientApp\app\pipes\strip-html-tags.pipe.ts" />
+    <None Remove="ClientApp\app\pipes\update-html-links.pipe.ts" />
     <None Remove="ClientApp\app\services\authentication.service.spec.ts" />
     <None Remove="ClientApp\app\services\event-alert-service\event-alert.service.spec.ts" />
     <None Remove="ClientApp\app\services\index.ts" />
@@ -96,7 +99,10 @@
     <TypeScriptCompile Include="ClientApp\app\pages\searchResults\searchResults.page.ts" />
     <TypeScriptCompile Include="ClientApp\app\pages\settings\settings.page.ts" />
     <TypeScriptCompile Include="ClientApp\app\pages\status-view\status-view.page.ts" />
+    <TypeScriptCompile Include="ClientApp\app\pipes\decode-html.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\app\pipes\index.ts" />
+    <TypeScriptCompile Include="ClientApp\app\pipes\strip-html-tags.pipe.ts" />
+    <TypeScriptCompile Include="ClientApp\app\pipes\update-html-links.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\authentication-service\authentication.service.spec.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\authentication-service\authentication.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\event-alert-service\event-alert.service.spec.ts" />

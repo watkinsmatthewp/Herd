@@ -1,17 +1,14 @@
 ﻿<div class="panel">
     <div class="panel-body">
-
         <form name="form" (ngSubmit)="f.form.valid && submitUpdate(f)" #f="ngForm" enctype="multipart/form-data" novalidate>
-
             <input type="text" class="form-control" name="display" [(ngModel)]="model.display" #display="ngModel" required placeholder="Display Name Here" />
-
             <br />
 
-            <textarea class="form-control" name="bio" [(ngModel)]="model.bio" #bio="ngModel" required placeholder="Bio Here" maxlength="120" rows="3"></textarea>
-
+            <!-- [(ngModel)} needs to be split to [ngModel] and (ngModelChanges) so that we can use the pipes -->
+            <textarea class="form-control" name="bio" [ngModel]="model.bio | stripHtmlTags | decodeHtml" (ngModelChange)="model.bio=$event" #bio="ngModel" required placeholder="Bio Here" maxlength="120" rows="3"></textarea>
             <br />
 
-            <div >
+            <div>
                 <label class="c-btn c-btn-secondary">
                     Upload Profile Picture
                     <input #avatarFileInput style="display: none !important;" type="file" (change)="onAvatarFileChange($event)">
@@ -20,10 +17,9 @@
                     {{ model.avatarFilename }}
                 </span>
             </div>
-
             <br />
 
-            <div >
+            <div>
                 <label class="c-btn c-btn-secondary">
                     Upload Header Picture
                     <input #avatarFileInput style="display: none !important;" type="file" (change)="onHeaderFileChange($event)">
@@ -32,15 +28,12 @@
                     {{ model.headerFilename }}
                 </span>
             </div>
-
             <div class="pull-right c-btn-group">
                 <button [disabled]="!f.valid" type="submit" class="c-btn c-btn-primary">
                     <span>Update Profile</span>
                 </button>
             </div>
-
         </form>
 
-
-</div>
+    </div>
 </div>

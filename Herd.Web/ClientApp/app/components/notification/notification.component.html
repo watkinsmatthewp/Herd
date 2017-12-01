@@ -6,8 +6,9 @@
             <div>
                 <img class="profile-picture" src="{{ notification.Account.MastodonProfileImageURL }}" />
                 <a [routerLink]="['/profile', notification.Account.MastodonUserId]">
-                    <span class="notification-title">{{notification.Account.MastodonDisplayName}} followed you</span>
+                    <span class="notification-title">{{notification.Account.MastodonDisplayName}}</span>
                 </a>
+                <span class="notification-title"> followed you</span>
                 <div class="time-stamp">{{ notification.CreatedAt | date: 'short' }}</div>
             </div>
         </div>
@@ -16,7 +17,11 @@
             <div>
                 <img class="profile-picture" src="{{ notification.Account.MastodonProfileImageURL }}" />
                 <a [routerLink]="['/profile', notification.Account.MastodonUserId]">
-                    <span class="notification-title">{{notification.Account.MastodonDisplayName}} liked your status</span>
+                    <span class="notification-title">{{notification.Account.MastodonDisplayName}}</span>
+                </a>
+                <span class="notification-title"> liked your</span>
+                <a [routerLink]="['/status', notification.Status.Id]">
+                    <span class="notification-title"> status</span>
                 </a>
                 <div class="time-stamp">{{ notification.CreatedAt | date: 'short' }}</div>
             </div>
@@ -26,8 +31,12 @@
             <div>
                 <img class="profile-picture" src="{{ notification.Account.MastodonProfileImageURL }}" />
                 <a [routerLink]="['/profile', notification.Account.MastodonUserId]">
-                    <span class="notification-title">{{notification.Account.MastodonDisplayName}} mentioned you</span>
+                    <span class="notification-title">{{notification.Account.MastodonDisplayName}}</span>
                 </a>
+                <a [routerLink]="['/status', notification.Status.Id]">
+                    <span class="notification-title">mentioned</span>
+                </a>
+                <span class="notification-title"> you</span>
                 <div class="time-stamp">{{ notification.CreatedAt | date: 'short' }}</div>
             </div>
         </div>
@@ -36,7 +45,11 @@
             <div>
                 <img class="profile-picture" src="{{ notification.Account.MastodonProfileImageURL }}" />
                 <a [routerLink]="['/profile', notification.Account.MastodonUserId]">
-                    <span class="notification-title">{{notification.Account.MastodonDisplayName}} reposted your status</span>
+                    <span class="notification-title">{{notification.Account.MastodonDisplayName}}</span>
+                </a>
+                <span class="notification-title"> reposted your</span>
+                <a [routerLink]="['/status', notification.Status.Id]">
+                    <span class="notification-title"> status</span>
                 </a>
                 <div class="time-stamp">{{ notification.CreatedAt | date: 'short' }}</div>
             </div>
@@ -45,76 +58,3 @@
 
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-<!--
-    
-
-    <div class="row well well-sm mouseOver notification-format">
-
-    <div class="col-sm-12">
-
-        <div *ngIf='notification.Type === "follow"'>
-            <div class="panel-body">
-                <div>
-                    <span class="notification-title">{{notification.Account.MastodonDisplayName}} followed you</span>
-                    <span class="time-stamp"> | {{ notification.CreatedAt | date: 'short' }}</span>
-                </div>
-                <div>
-                    <img class="profile-picture" src="{{ notification.Account.MastodonProfileImageURL }}" />
-                    <a [routerLink]="['/profile', notification.Account.MastodonUserId]">
-                        <span class="author-name">{{ notification.Account.MastodonDisplayName }}</span>
-                        <span class="username">@{{ notification.Account.MastodonUserName }}</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div *ngIf='notification.Type === "favourite"'>
-            <div class="panel-body">
-                <div>
-                    <span class="notification-title">{{notification.Account.MastodonDisplayName}} liked your status</span>
-                    <span class="time-stamp"> | {{ notification.CreatedAt | date: 'short' }}</span>
-                </div>
-                <div class="col-sm-12">
-                    <status [status]="notification.Status"></status>
-                </div>
-            </div>
-        </div>
-
-        <div *ngIf='notification.Type === "mention"'>
-            <div class="panel-body">
-                <div class="col-sm-12">
-                    <status [status]="notification.Status"></status>
-                </div>
-            </div>
-        </div>
-
-        <div *ngIf='notification.Type === "reblog"'>
-            <div class="panel-body">
-                <div>
-                    <span class="notification-title">{{notification.Account.MastodonDisplayName}} reposted your status</span>
-                    <span class="time-stamp"> | {{ notification.CreatedAt | date: 'short' }}</span>
-                </div>
-                <div class="col-sm-12">
-                    <status [status]="notification.Status"></status>
-                </div>
-            </div>
-        </div>
-
-
-    </div>
-</div>
-
-
-
--->

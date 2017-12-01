@@ -41,7 +41,6 @@ export class NotificationsPage implements OnInit {
     }
 
     getPreviousNotifications() {
-        console.log("Dang");
         this.accountService.getHerdNotifications({ includeAncestors: true, includeDescendants: true, maxID: this.notificationList.PageInformation.EarlierPageMaxID })
             .subscribe(newNotificationList => {
                 this.appendItems(this.notificationList.Items, newNotificationList.Items);

@@ -1,8 +1,12 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { AccountService, EventAlertService } from "../../services";
 import { NotificationsService } from "angular2-notifications";
+import { Router } from '@angular/router';
+
+import { AccountService, EventAlertService } from "../../services";
+import { Account } from "../../models/mastodon";
+import { Storage } from '../../models';
 
 @Component({
     selector: 'profile-updater',
@@ -10,17 +14,31 @@ import { NotificationsService } from "angular2-notifications";
     styleUrls: ['./profile-updater.component.css']
 })
 export class ProfileUpdaterComponent implements OnInit {
-
+    account: Account;
+    userID: string;
     model: any = {
         display: "",
         bio: "",
     };
 
-    constructor(private accountService: AccountService, private eventAlertService: EventAlertService,
-        private toastService: NotificationsService) { }
+    constructor(private router: Router, private accountService: AccountService, private eventAlertService: EventAlertService,
+                private toastService: NotificationsService,  private localStorage: Storage) { }
 
     ngOnInit() {
-        
+        let currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+        let userID = currentUser.MastodonConnection.MastodonUserID;
+
+        let progress = this.toastService.info("Retrieving", "account info ...", { showProgressBar: false, pauseOnHover: false });
+        this.accountService.search({ mastodonUserID: userID, includeFollowedByActiveUser: true })
+            .map(response => response.Items[0] as Account)
+            .subscribe(account => {
+                this.toastService.remove(progress.id);
+                this.account = account;
+                this.model.display = this.account.MastodonDisplayName;
+                this.model.bio = this.account.MastodonShortBio;
+            }, error => {
+                this.toastService.error("Error", error.error);
+            });
     }
 
     onHeaderFileChange(event: any) {
@@ -66,6 +84,7 @@ export class ProfileUpdaterComponent implements OnInit {
             })
             .subscribe(response => {
                 this.toastService.success("Successfully", "Updated Profile");
+                this.router.navigateByUrl('/profile/' + this.account.MastodonUserId);
             }, error => {
                 this.toastService.error(error.error);
             });
