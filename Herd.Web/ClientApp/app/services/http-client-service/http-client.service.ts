@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+﻿import { Injectable, Inject } from '@angular/core';
 import { Http, Response, RequestOptionsArgs, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -17,7 +17,10 @@ export class HttpClientService {
     private responseInterceptors: Array<ResponseInterceptor> = [];
     private requestInterceptors: Array<RequestInterceptor> = [];
 
-    constructor(private http: Http) { }
+    private absoluteURLPattern = /^((?:https:\/\/)|(?:http:\/\/)|(?:www))/;
+
+
+    constructor(private http: Http, @Inject("BASE_URL") private apiUrl: string) { }
 
     /**
      * Create a Get request
@@ -26,8 +29,8 @@ export class HttpClientService {
      */
     get<T>(url: string, options?: RequestOptionsArgs): Observable<any> {
         let request = options != null ?
-            this.http.get(url, this.generateOptions(options)) :
-            this.http.get(url, new RequestOptions({ headers: this.defaultHeaders }));
+            this.http.get(this.generateUrl(url), this.generateOptions(options)) :
+            this.http.get(this.generateUrl(url), new RequestOptions({ headers: this.defaultHeaders }));
 
         return request.map(this.mapRequest)
     }
@@ -41,8 +44,8 @@ export class HttpClientService {
     post<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<any> {
         const newData = this.prepareData(data);
         let request = options != null ?
-            this.http.post(url, newData, this.generateOptions(options)) :
-            this.http.post(url, newData, new RequestOptions({ headers: this.defaultHeaders }));
+            this.http.post(this.generateUrl(url), newData, this.generateOptions(options)) :
+            this.http.post(this.generateUrl(url), newData, new RequestOptions({ headers: this.defaultHeaders }));
 
         return request.map(this.mapRequest)
     }
@@ -55,10 +58,18 @@ export class HttpClientService {
      */
     postForm<T>(url: string, data: FormData, options?: RequestOptionsArgs): Observable<any> {
         let request = options != null ?
-            this.http.post(url, data, this.generateOptions(options)) :
-            this.http.post(url, data, new RequestOptions({ headers: this.defaultFormHeaders }));
+            this.http.post(this.generateUrl(url), data, this.generateOptions(options)) :
+            this.http.post(this.generateUrl(url), data, new RequestOptions({ headers: this.defaultFormHeaders }));
 
         return request.map(this.mapRequest);
+    }
+
+    /**
+     * Checks if the url is valid, if not give it a base url
+     * @param url
+     */
+    protected generateUrl(url: string): string {
+        return url.match(this.absoluteURLPattern) ? url : this.apiUrl + url;
     }
 
     /**
